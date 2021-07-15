@@ -1,0 +1,291 @@
+<!doctype html>
+<html  {$html_attrs}>
+	<head>
+				<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{$pagetitle}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<base href="{$projectPath}">
+		<link REL="stylesheet" href="styles/default.css?{$wizardBuildKey}" type="text/css">
+	{BEGIN rtlCSS}
+	<link REL="stylesheet" href="styles/defaultRTL.css?{$wizardBuildKey}" type="text/css">
+	{END rtlCSS}
+	{BEGIN styleCSSFiles}
+	<link REL="stylesheet" href="{$stylepath}" type="text/css">
+	{END styleCSSFiles}
+	</head>
+
+	<body class="{$stylename} function-search" {$bodyattrs}>
+	{BEGIN body}
+		{$header}
+		<style>
+			{$containerCss}
+		</style>
+		{$locking}
+		<div class="r-small-page" 
+			data-body-align="center"
+			data-body-width="standard"
+		>
+							{BEGIN top_block}
+<div class="r-form" data-location="top" id="form_top_{$pageid}" data-makeup="small" {$form_top} data-pageid="{$pageid}"
+		data-v-width="6"
+	data-v-margin="1"
+	
+>		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="top_c1" data-pageid="{$pageid}"	{$cell_top_c1}
+	class=" r-ori-vert			col-md-12
+	">
+	 
+		<h2 data-itemtype="search_header" data-itemid="search_header" {$item_search_header} data-pageid="{$pageid}" >{$pagetitlelabel public_Recicladoredes search}</h2>
+	</div>					</div>
+	</div>		
+{END top_block}
+									{BEGIN above-grid_block}
+<div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="small" {$form_above-grid} data-pageid="{$pageid}"
+		data-v-width="6"
+	data-v-margin="1"
+	
+>		
+	</div>		
+{END above-grid_block}
+									{BEGIN grid_block}
+
+
+
+
+ 
+	 
+												<table 
+	data-body-align="center"
+	data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" 
+	class="r-edit-form" cellpadding="0" cellspacing="0" 
+	{$grid_hiddenattr} 
+		data-form-width="1"
+		
+		data-v-width="6"
+	>
+	<tbody>
+										<tr>
+										
+
+{BEGIN cellblock_grid_c1}
+<td
+	{$cell_grid_c1}
+	class=" r-ori-vert"
+	
+				data-fullwidth
+		
+			data-cellId="grid_c1" data-pageid="{$pageid}"
+		data-v-cell="6"
+		
+>
+	<div edit-form-cell class="clearfix">
+				
+{BEGIN FotoReciclador_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_FotoReciclador}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="FotoReciclador" 
+	
+	data-signal-error-for="FotoReciclador{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="FotoReciclador" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_FotoReciclador}">
+		{$label public_Recicladoredes FotoReciclador }	</label>
+	<div class="r-search-option">
+		{$searchtype_FotoReciclador}
+	</div>
+	<div class="r-search-field">
+		{$FotoReciclador_editcontrol}	</div>
+	<div class="r-search-field">
+		{$FotoReciclador_editcontrol1}
+	</div>
+	
+</div>
+
+{END FotoReciclador_fieldblock}
+											
+{BEGIN NomReciclador_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_NomReciclador}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="NomReciclador" 
+	
+	data-signal-error-for="NomReciclador{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="NomReciclador" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_NomReciclador}">
+		{$label public_Recicladoredes NomReciclador }	</label>
+	<div class="r-search-option">
+		{$searchtype_NomReciclador}
+	</div>
+	<div class="r-search-field">
+		{$NomReciclador_editcontrol}	</div>
+	<div class="r-search-field">
+		{$NomReciclador_editcontrol1}
+	</div>
+	
+</div>
+
+{END NomReciclador_fieldblock}
+											
+{BEGIN ApeReciclador_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_ApeReciclador}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="ApeReciclador" 
+	
+	data-signal-error-for="ApeReciclador{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="ApeReciclador" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_ApeReciclador}">
+		{$label public_Recicladoredes ApeReciclador }	</label>
+	<div class="r-search-option">
+		{$searchtype_ApeReciclador}
+	</div>
+	<div class="r-search-field">
+		{$ApeReciclador_editcontrol}	</div>
+	<div class="r-search-field">
+		{$ApeReciclador_editcontrol1}
+	</div>
+	
+</div>
+
+{END ApeReciclador_fieldblock}
+											
+{BEGIN TelReciclador_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_TelReciclador}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="TelReciclador" 
+	
+	data-signal-error-for="TelReciclador{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="TelReciclador" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_TelReciclador}">
+		{$label public_Recicladoredes TelReciclador }	</label>
+	<div class="r-search-option">
+		{$searchtype_TelReciclador}
+	</div>
+	<div class="r-search-field">
+		{$TelReciclador_editcontrol}	</div>
+	<div class="r-search-field">
+		{$TelReciclador_editcontrol1}
+	</div>
+	
+</div>
+
+{END TelReciclador_fieldblock}
+											
+{BEGIN DirReciclador_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_DirReciclador}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="DirReciclador" 
+	
+	data-signal-error-for="DirReciclador{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field4" {$item_integrated_search_field4} data-pageid="{$pageid}" data-field="DirReciclador" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_DirReciclador}">
+		{$label public_Recicladoredes DirReciclador }	</label>
+	<div class="r-search-option">
+		{$searchtype_DirReciclador}
+	</div>
+	<div class="r-search-field">
+		{$DirReciclador_editcontrol}	</div>
+	<div class="r-search-field">
+		{$DirReciclador_editcontrol1}
+	</div>
+	
+</div>
+
+{END DirReciclador_fieldblock}
+											
+{BEGIN IdReciclador_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdReciclador}  r-horizontal-field form-horizontal" 
+	
+		data-fieldname="IdReciclador" 
+	
+	data-signal-error-for="IdReciclador{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field5" {$item_integrated_search_field5} data-pageid="{$pageid}" data-field="IdReciclador" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_IdReciclador}">
+		{$label public_Recicladoredes IdReciclador }	</label>
+	<div class="r-search-option">
+		{$searchtype_IdReciclador}
+	</div>
+	<div class="r-search-field">
+		{$IdReciclador_editcontrol}	</div>
+	<div class="r-search-field">
+		{$IdReciclador_editcontrol1}
+	</div>
+	
+</div>
+
+{END IdReciclador_fieldblock}
+	
+								</td>
+			{END cellblock_grid_c1}
+								</tr>
+			</tbody></table>
+{END grid_block}
+									{BEGIN below-grid_block}
+<div class="r-form" data-location="below-grid" id="form_below-grid_{$pageid}" data-makeup="small" {$form_below-grid} data-pageid="{$pageid}"
+		data-v-width="6"
+	data-v-margin="1"
+	
+>		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="below-grid_c1" data-pageid="{$pageid}"	{$cell_below-grid_c1}
+	class="			col-md-12
+	">
+	 
+		<span data-itemtype="search_search" data-itemid="search_search" {$item_search_search} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" {$searchbutton_attrs} >
+							Buscar			</a>
+</span>
+	 
+		<span data-itemtype="search_reset" data-itemid="search_reset" {$item_search_reset} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-default   
+	" {$resetbutton_attrs} >
+							Reiniciar			</a>
+</span>
+	 
+		{BEGIN back_button}
+<span data-itemtype="search_back_list" data-itemid="search_back_list" {$item_search_back_list} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-default   
+	" {$backbutton_attrs} >
+							Volver a la lista			</a>
+</span>
+{END back_button}
+	 
+		{BEGIN cancel_button}
+<span data-itemtype="search_cancel" data-itemid="search_cancel" {$item_search_cancel} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-default   
+	" id="cancelButton{$id}" >
+							Cancelar			</a>
+</span>
+{END cancel_button}
+	</div>					</div>
+	</div>		
+{END below-grid_block}
+			</div>
+		{$footer}
+	{END body}
+	</body>
+</html>

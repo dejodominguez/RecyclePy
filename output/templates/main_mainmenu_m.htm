@@ -1,0 +1,161 @@
+{BEGIN mainmenu_block}
+	<ul class="rnr-b-vmenu tree {$menustyle}" data-menuname="{$menuName}">
+{BEGIN menu_collapse_expand_all}
+	<li class="manage">
+		<div>
+			<a href="#"><img alt="*" src="images/plus.gif">
+				<span class=expand>Expandir todo</span>
+				<span class="hide" style="display:none;">Contraer todo</span>
+			</a>
+		</div>
+	</li>
+{END menu_collapse_expand_all}
+
+	{BEGIN item1_menulink}
+	<li id="item1" class="{$item1_groupclass} {$item1_current} menuLeaf" level=1>
+			<div>
+<img class="menu-icon" src="images/menuicons/account_balances.png" border=0>
+<a {$item1_menulink_attrs} class="{$item1_current}">{$item1_title}</a>
+</div>
+
+	</li>
+	{END item1_menulink}
+
+	{BEGIN item2_menulink}
+	<li id="item2" class="{$item2_groupclass} {$item2_current} menuLeaf" level=1>
+			<div>
+<img class="menu-icon" src="images/menuicons/user.png" border=0>
+<a {$item2_menulink_attrs} class="{$item2_current}">{$item2_title}</a>
+</div>
+
+	</li>
+	{END item2_menulink}
+
+	{BEGIN item3_menulink}
+	<li id="item3" class="{$item3_groupclass} {$item3_current} menuGroup" level=1>
+			<div>
+{BEGIN item3_groupimage}
+<span class="groupbox">
+<img alt="*" src="images/plus.gif" class="groupImg">
+</span>
+{END item3_groupimage}
+<img class="menu-icon" src="images/menuicons/application_cascade.png" border=0>
+<a {$item3_menulink_attrs} class="{$item3_current}">{$item3_title}</a>
+</div>
+
+	</li>
+	
+			{BEGIN item4_menulink}
+			<li id="item4" style="display:none" class="subitem level2 {$item4_groupclass} {$item4_current} menuLeaf" level=2>
+					<div>
+<img class="menu-icon" src="images/menuicons/application_form.png" border=0>
+<a {$item4_menulink_attrs} class="{$item4_current}">{$item4_title}</a>
+</div>
+
+			</li>
+			{END item4_menulink}
+	
+			{BEGIN item5_menulink}
+			<li id="item5" style="display:none" class="subitem level2 {$item5_groupclass} {$item5_current} menuLeaf" level=2>
+					<div>
+<img class="menu-icon" src="images/menuicons/application_form.png" border=0>
+<a {$item5_menulink_attrs} class="{$item5_current}">{$item5_title}</a>
+</div>
+
+			</li>
+			{END item5_menulink}
+	
+			{BEGIN item6_menulink}
+			<li id="item6" style="display:none" class="subitem level2 {$item6_groupclass} {$item6_current} menuLeaf" level=2>
+					<div>
+<img class="menu-icon" src="images/menuicons/application_form.png" border=0>
+<a {$item6_menulink_attrs} class="{$item6_current}">{$item6_title}</a>
+</div>
+
+			</li>
+			{END item6_menulink}
+	{END item3_menulink}
+
+	{BEGIN item7_menulink}
+	<li id="item7" class="{$item7_groupclass} {$item7_current} menuGroup" level=1>
+			<div>
+{BEGIN item7_groupimage}
+<span class="groupbox">
+<img alt="*" src="images/plus.gif" class="groupImg">
+</span>
+{END item7_groupimage}
+<img class="menu-icon" src="images/menuicons/application_cascade.png" border=0>
+<a {$item7_menulink_attrs} class="{$item7_current}">{$item7_title}</a>
+</div>
+
+	</li>
+	
+			{BEGIN item8_menulink}
+			<li id="item8" style="display:none" class="subitem level2 {$item8_groupclass} {$item8_current} menuLeaf" level=2>
+					<div>
+<img class="menu-icon" src="images/menuicons/application_form.png" border=0>
+<a {$item8_menulink_attrs} class="{$item8_current}">{$item8_title}</a>
+</div>
+
+			</li>
+			{END item8_menulink}
+	
+			{BEGIN item9_menulink}
+			<li id="item9" style="display:none" class="subitem level2 {$item9_groupclass} {$item9_current} menuLeaf" level=2>
+					<div>
+<img class="menu-icon" src="images/menuicons/application_view_detail.png" border=0>
+<a {$item9_menulink_attrs} class="{$item9_current}">{$item9_title}</a>
+</div>
+
+			</li>
+			{END item9_menulink}
+	{END item7_menulink}
+
+	{BEGIN item10_menulink}
+	<li id="item10" class="{$item10_groupclass} {$item10_current} menuGroup" level=1>
+			<div>
+{BEGIN item10_groupimage}
+<span class="groupbox">
+<img alt="*" src="images/plus.gif" class="groupImg">
+</span>
+{END item10_groupimage}
+<img class="menu-icon" src="images/menuicons/application_cascade.png" border=0>
+<a {$item10_menulink_attrs} class="{$item10_current}">{$item10_title}</a>
+</div>
+
+	</li>
+	
+			{BEGIN item11_menulink}
+			<li id="item11" style="display:none" class="subitem level2 {$item11_groupclass} {$item11_current} menuLeaf" level=2>
+					<div>
+<img class="menu-icon" src="images/menuicons/application_add.png" border=0>
+<a {$item11_menulink_attrs} class="{$item11_current}">{$item11_title}</a>
+</div>
+
+			</li>
+			{END item11_menulink}
+	
+			{BEGIN item12_menulink}
+			<li id="item12" style="display:none" class="subitem level2 {$item12_groupclass} {$item12_current} menuLeaf" level=2>
+					<div>
+<img class="menu-icon" src="images/menuicons/application_add.png" border=0>
+<a {$item12_menulink_attrs} class="{$item12_current}">{$item12_title}</a>
+</div>
+
+			</li>
+			{END item12_menulink}
+	
+			{BEGIN item13_menulink}
+			<li id="item13" style="display:none" class="subitem level2 {$item13_groupclass} {$item13_current} menuLeaf" level=2>
+					<div>
+<img class="menu-icon" src="images/menuicons/application_add.png" border=0>
+<a {$item13_menulink_attrs} class="{$item13_current}">{$item13_title}</a>
+</div>
+
+			</li>
+			{END item13_menulink}
+	{END item10_menulink}
+</ul>
+{END mainmenu_block}
+
+

@@ -1,0 +1,26 @@
+[data-cellid="top_c2"][data-page=".global_login"][data-cellid="top_c2"][data-page=".global_login"][data-cellid="top_c2"][data-page=".global_login"] {
+  white-space: normal;
+}
+[data-cellid="footer_c1"][data-page=".global_login"][data-cellid="footer_c1"][data-page=".global_login"][data-cellid="footer_c1"][data-page=".global_login"] {
+  width: 33.33333333%;
+}
+[data-cellid="footer_c2"][data-page=".global_login"][data-cellid="footer_c2"][data-page=".global_login"][data-cellid="footer_c2"][data-page=".global_login"] {
+  width: 66.66666667%;
+}
+[data-page=".global_login"][data-itemid="login_header"] {
+  font-weight: bold;
+}
+[data-page=".global_login"][data-itemid="text"] {
+  color: #aef8a7;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 60px;
+  padding-top: 100px;
+  padding-right: 90px;
+}
+[data-page=".global_login"][data-itemid="image"] {
+  width: 300px;
+  height: 200px;
+}
+
+

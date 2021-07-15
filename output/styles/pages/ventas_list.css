@@ -1,0 +1,52 @@
+[data-cellid="grid_headcell_field"][data-page="ventas_list"][data-cellid="grid_headcell_field"][data-page="ventas_list"][data-cellid="grid_headcell_field"][data-page="ventas_list"] {
+  background-color: #9ee6b2;
+}
+[data-cellid="grid_footcell_field"][data-page="ventas_list"][data-cellid="grid_footcell_field"][data-page="ventas_list"][data-cellid="grid_footcell_field"][data-page="ventas_list"] {
+  white-space: nowrap;
+}
+[data-cellid="grid_headcell_field1"][data-page="ventas_list"][data-cellid="grid_headcell_field1"][data-page="ventas_list"][data-cellid="grid_headcell_field1"][data-page="ventas_list"] {
+  background-color: #9ee6b2;
+}
+[data-cellid="grid_footcell_field1"][data-page="ventas_list"][data-cellid="grid_footcell_field1"][data-page="ventas_list"][data-cellid="grid_footcell_field1"][data-page="ventas_list"] {
+  white-space: nowrap;
+}
+[data-cellid="grid_headcell_field2"][data-page="ventas_list"][data-cellid="grid_headcell_field2"][data-page="ventas_list"][data-cellid="grid_headcell_field2"][data-page="ventas_list"] {
+  background-color: #9ee6b2;
+}
+[data-cellid="grid_footcell_field2"][data-page="ventas_list"][data-cellid="grid_footcell_field2"][data-page="ventas_list"][data-cellid="grid_footcell_field2"][data-page="ventas_list"] {
+  white-space: nowrap;
+}
+[data-cellid="grid_headcell_field3"][data-page="ventas_list"][data-cellid="grid_headcell_field3"][data-page="ventas_list"][data-cellid="grid_headcell_field3"][data-page="ventas_list"] {
+  background-color: #9ee6b2;
+}
+[data-cellid="grid_footcell_field3"][data-page="ventas_list"][data-cellid="grid_footcell_field3"][data-page="ventas_list"][data-cellid="grid_footcell_field3"][data-page="ventas_list"] {
+  white-space: nowrap;
+}
+[data-cellid="grid_headcell_icons"][data-page="ventas_list"][data-cellid="grid_headcell_icons"][data-page="ventas_list"][data-cellid="grid_headcell_icons"][data-page="ventas_list"] {
+  background-color: #9ee6b2;
+  width: 30px;
+}
+[data-cellid="grid_cell_icons"][data-page="ventas_list"][data-cellid="grid_cell_icons"][data-page="ventas_list"][data-cellid="grid_cell_icons"][data-page="ventas_list"] {
+  white-space: nowrap;
+}
+[data-cellid="grid_headcell_checkbox"][data-page="ventas_list"][data-cellid="grid_headcell_checkbox"][data-page="ventas_list"][data-cellid="grid_headcell_checkbox"][data-page="ventas_list"] {
+  background-color: #9ee6b2;
+  width: 30px;
+}
+[data-cellid="grid_headcell_details"][data-page="ventas_list"][data-cellid="grid_headcell_details"][data-page="ventas_list"][data-cellid="grid_headcell_details"][data-page="ventas_list"] {
+  background-color: #9ee6b2;
+}
+[data-cellid="grid_cell_details"][data-page="ventas_list"][data-cellid="grid_cell_details"][data-page="ventas_list"][data-cellid="grid_cell_details"][data-page="ventas_list"] {
+  white-space: nowrap;
+}
+[data-page="ventas_list"][data-itemid="details_preview"] {
+  background-color: #ade3ab;
+}
+[data-page="ventas_list"][data-itemid="text"] {
+  color: #80f087;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+

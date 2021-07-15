@@ -1,0 +1,147 @@
+/* details preview */
+
+.rnr-bs-dpreviewrow.rnr-bs-dpreviewrow .dpinline, .bs-details-opened.bs-details-opened.bs-details-opened {
+	background: gray;
+}
+
+
+.dpinline.dpinline.dpinline > div {
+    background: #333;
+    border-color: #111;
+}
+
+.bs-proceed-icon.bs-proceed-icon {
+	color: white;
+}
+
+
+/* icon underlines */
+.glyphicon.glyphicon:not(:hover) {
+	text-decoration: none;
+}
+
+/* popups */
+
+.modal-content.ui-resizable {
+	border: 2px solid #666;
+}
+
+.modal-footer.modal-footer {
+	border-color: #666;
+}
+
+.modal-header.modal-header {
+	border-color: #666;
+}
+
+
+/* welcome */
+
+.bs-welcome-item.bs-welcome-item {
+    border-color: #aaa;
+    background: #666;
+    color: white;
+}
+
+
+/* flexible grid */
+@media (max-width: 767px) {
+
+		.bs-flexgrid.bs-flexgrid  > * > .bs-gridrow.bs-gridrow {
+		border: none;
+		border-radius: 4px;
+	}
+	
+		.bs-flexgrid.bs-flexgrid   .bs-gridrow:not(.rnr-hiddenelem) {
+		background-image: linear-gradient( to bottom, #3c3c3c 42px , transparent 43px );	
+	}
+
+
+	
+.bs-flexgrid.bs-flexgrid.bs-flexgrid.bs-flexgrid > * > * > .bs-gridicons a, 
+.bs-flexgrid.bs-flexgrid.bs-flexgrid.bs-flexgrid > * > * > .bs-griddetails a {
+		color: #0ce3ac;
+}
+		
+}
+
+
+/* sidebar layout */
+
+.bs-sidebarlogo a {
+	color: white;
+}
+
+
+@media (min-width:768px) {
+
+	.sidebar.sidebar {
+		background: #303030;
+		border-right-color: #303030;
+	}
+}
+
+	.sidebar-menu.sidebar-menu a {
+		color: white;
+		border-bottom: 1px solid #464545;
+	}
+
+	.menu-treelike.menu-treelike li > a[aria-expanded="true"] {
+		background-color: #555555;
+		border-bottom-color: #606060;
+	}
+
+	.menu-treelike.menu-treelike ul[data-menulevel]:not([data-menulevel="1"]) > li > a {
+		background-color: #444444;
+		border-bottom-color: #505050;
+	}
+
+
+.bs-adminheader > th, .bs-adminheader > td {
+	text-align: center;
+}
+
+.bs-admin-header:first-child > th {
+	border-top: none;
+	background-color: rgb(24, 24, 24);
+	color: white;
+}
+	
+.mCS-minimal-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar.mCSB_dragger_bar.mCSB_dragger_bar{
+	background-color: #fff; background-color: rgba(255,255,255,0.2);
+	filter: "alpha(opacity=20)"; -ms-filter: "alpha(opacity=20)"; 
+}
+	
+.mCS-minimal-dark.mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar.mCSB_dragger_bar.mCSB_dragger_bar,
+.mCS-minimal-dark.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar.mCSB_dragger_bar.mCSB_dragger_bar{
+	background-color: #fff; background-color: rgba(255,255,255,0.5);
+	filter: "alpha(opacity=50)"; -ms-filter: "alpha(opacity=50)"; 
+}
+
+table > * > * > td.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell {
+	background-color: darkslategray;
+	background-image: none;
+}
+table.indenttables > * > .rightsindent1 > td.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell {
+	background-color: dimgray;
+}
+table.indenttables > * > .rightsindent2 > td.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell {
+	background-color: navy;
+}
+table.indenttables > * > .rightsindent3 > td.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell {
+	background-color: indigo;
+}
+table.indenttables > * > .rightsindent4 > td.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell {
+	background-color: darkolivegreen;
+}
+table.indenttables > * > .rightsindent5 > td.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell.rightscell {
+	background-color: midnightblue;
+}
+
+.rights-modified.rights-modified {
+	color: gray;
+}
+
+.btn.disabled, .btn[disabled] {
+	color: #555;
+}

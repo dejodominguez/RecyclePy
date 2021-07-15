@@ -1,0 +1,10 @@
+[data-page="public_inicio_list"][data-itemid="image"] {
+  width: 300px;
+  height: 270px;
+}
+[data-page="public_inicio_list"][data-itemid="text"] {
+  color: #a9e7bd;
+  font-size: 24px;
+}
+
+

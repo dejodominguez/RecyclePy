@@ -1,0 +1,10 @@
+[data-page=".global_menuinicio1"][data-itemid="text"] {
+  color: #9ee6b2;
+  font-size: 28px;
+}
+[data-page=".global_menuinicio1"][data-itemid="image"] {
+  width: 300px;
+  height: 270px;
+}
+
+

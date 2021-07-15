@@ -1,0 +1,679 @@
+<!doctype html>
+<html  {$html_attrs}>
+	<head>
+				<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{$pagetitle}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<base href="{$projectPath}">
+		<link REL="stylesheet" href="styles/default.css?{$wizardBuildKey}" type="text/css">
+	{BEGIN rtlCSS}
+	<link REL="stylesheet" href="styles/defaultRTL.css?{$wizardBuildKey}" type="text/css">
+	{END rtlCSS}
+	{BEGIN styleCSSFiles}
+	<link REL="stylesheet" href="{$stylepath}" type="text/css">
+	{END styleCSSFiles}
+	</head>
+
+	<body class="{$stylename} function-report" {$bodyattrs}>
+	{BEGIN body}
+		<style>
+		{$containerCss}
+		</style>
+		<div class="r-vbar-page">
+			<div data-width="" data-fixed class="r-left clearfix {$leftbar_class}" >
+								<div data-location="left" id="form_left_{$pageid}" data-makeup="leftbar" {$form_left} data-pageid="{$pageid}">
+{BEGIN left_block}
+ 
+     
+         
+
+			<div data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell class="clearfix " data-itemid="logo1" {$item_logo1}>
+				{BEGIN logo_block}
+	<A data-itemtype="logo" data-itemid="logo1" {$item_logo1} data-pageid="{$pageid}" class="navbar-brand" href="{$home_link}" data-pageid="{$pageid}" {$logo_hiddenattr}>
+		{$logo}
+	</A>
+{END logo_block}
+				<button data-pageid="1" type="button" class="navbar-toggle collapsed" data-runner-toggle="collapse" data-target="[data-mobile-controlled]">	
+					<span class="sr-only">Toggle navigation</span>	
+					<span class="icon-bar"></span>					
+				</button>				
+			</div>
+		
+ 
+
+			<div class="clearfix " data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
+				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Expand" class="btn btn-link   
+	" href="#" >
+					<span class="glyphicon glyphicon-triangle-right"></span>
+										</a>
+</span>
+			</div>
+		
+     
+     
+         
+
+			<div data-cellId="left_c1" data-pageid="{$pageid}" class="clearfix  r-ori-vert " data-itemtype="menu" data-itemid="menu" {$item_menu} data-pageid="{$pageid}">
+				{$menu main}			</div>
+		
+ 
+
+			<div class="clearfix  r-ori-vert" data-cellId="left_c1" data-pageid="{$pageid}" data-itemid="search_panel" {$item_search_panel} data-topcell-item-type="search_panel" >
+				<!-- Begin Search panel content -->
+<div class="searchOptions panel panel-primary searchPanelContainer " {$srchOpt_attrs} data-itemtype="search_panel" data-itemid="search_panel" {$item_search_panel} data-pageid="{$pageid}" >
+
+	<div class="panel-heading">
+		<div class="btn-group" id="addSearchFieldButton{$id}">
+			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Búsqueda			<span class="caret"></span>
+			</button>
+		</div>
+
+
+		<div class="btn-group searchpanel-options" id="searchPanelOptions{$id}">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="glyphicon glyphicon glyphicon-option-vertical"></span>
+			</button>
+			<ul class="dropdown-menu dropdown-left">
+				<li id="showHideSearchType{$id}" {$showHideCtrlsOpt_attrs}><a>Mostrar opciones</a></li>
+				<li role="separator" class="divider"></li>
+				<li class="srchCritTop" style="display: none;"><a><input type="radio" name="srchType{$id}" id="radioAll" {$all_checkbox}><label for="radioAll"><span class="glyphicon">&nbsp;</span>todas las condiciones</label></a></li>
+				<li class="srchCritTop" style="display: none;"><a><input type="radio" name="srchType{$id}" id="radioAny" {$any_checkbox}><label for="radioAny"><span class="glyphicon">&nbsp;</span>cualquier condición</label></a></li>
+				<li role="separator" class="divider"></li>
+				<li><a class="close-button"><span class="glyphicon glyphicon-remove">&nbsp;</span>esconder</a></li>
+			</ul>
+		</div>
+
+
+		</div>
+	<div class="panel-body controlsBlock" {$bottomSearchButt_attrs} >
+
+
+		
+		{BEGIN searchCtrlBlock}
+		<div class="srchPanelRow form-group" {$filterRow_attrs}>
+			<label>{$fLabel}</label>	{$delCtrlButt}
+				<span class="rnr-searchtype">{$searchtype}</span>
+				<span class="rnr-searchcontrol">{$searchcontrol}</span>
+				<span class="rnr-searchcontrol">{$searchcontrol1}</span>
+		</div>
+		{END searchCtrlBlock}
+																		{BEGIN searchCtrlBlock_CantidadOrigen}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_CantidadOrigen}" {$filterRow_attrs_CantidadOrigen}>
+			<label>{$label public_GestionRegistrosOrigen_Report CantidadOrigen }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_CantidadOrigen}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_CantidadOrigen}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_CantidadOrigen}</span>
+						</div>
+		{END searchCtrlBlock_CantidadOrigen}
+																{BEGIN searchCtrlBlock_NombreCompleto}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_NombreCompleto}" {$filterRow_attrs_NombreCompleto}>
+			<label>{$label public_GestionRegistrosOrigen_Report NombreCompleto }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_NombreCompleto}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_NombreCompleto}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_NombreCompleto}</span>
+						</div>
+		{END searchCtrlBlock_NombreCompleto}
+																{BEGIN searchCtrlBlock_Lng}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_Lng}" {$filterRow_attrs_Lng}>
+			<label>{$label public_GestionRegistrosOrigen_Report Lng }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_Lng}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_Lng}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_Lng}</span>
+						</div>
+		{END searchCtrlBlock_Lng}
+																{BEGIN searchCtrlBlock_Lat}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_Lat}" {$filterRow_attrs_Lat}>
+			<label>{$label public_GestionRegistrosOrigen_Report Lat }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_Lat}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_Lat}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_Lat}</span>
+						</div>
+		{END searchCtrlBlock_Lat}
+																{BEGIN searchCtrlBlock_DescriResiduo}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_DescriResiduo}" {$filterRow_attrs_DescriResiduo}>
+			<label>{$label public_GestionRegistrosOrigen_Report DescriResiduo }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_DescriResiduo}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_DescriResiduo}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_DescriResiduo}</span>
+						</div>
+		{END searchCtrlBlock_DescriResiduo}
+																{BEGIN searchCtrlBlock_DescriMedTipOrigen}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_DescriMedTipOrigen}" {$filterRow_attrs_DescriMedTipOrigen}>
+			<label>{$label public_GestionRegistrosOrigen_Report DescriMedTipOrigen }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_DescriMedTipOrigen}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_DescriMedTipOrigen}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_DescriMedTipOrigen}</span>
+						</div>
+		{END searchCtrlBlock_DescriMedTipOrigen}
+																{BEGIN searchCtrlBlock_DescriBarrio}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_DescriBarrio}" {$filterRow_attrs_DescriBarrio}>
+			<label>{$label public_GestionRegistrosOrigen_Report DescriBarrio }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_DescriBarrio}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_DescriBarrio}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_DescriBarrio}</span>
+						</div>
+		{END searchCtrlBlock_DescriBarrio}
+																{BEGIN searchCtrlBlock_DirecUsuario}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_DirecUsuario}" {$filterRow_attrs_DirecUsuario}>
+			<label>{$label public_GestionRegistrosOrigen_Report DirecUsuario }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_DirecUsuario}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_DirecUsuario}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_DirecUsuario}</span>
+						</div>
+		{END searchCtrlBlock_DirecUsuario}
+																{BEGIN searchCtrlBlock_NombreUsuario}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_NombreUsuario}" {$filterRow_attrs_NombreUsuario}>
+			<label>{$label public_GestionRegistrosOrigen_Report NombreUsuario }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_NombreUsuario}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_NombreUsuario}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_NombreUsuario}</span>
+						</div>
+		{END searchCtrlBlock_NombreUsuario}
+																{BEGIN searchCtrlBlock_IdUsuario}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_IdUsuario}" {$filterRow_attrs_IdUsuario}>
+			<label>{$label public_GestionRegistrosOrigen_Report IdUsuario }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_IdUsuario}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_IdUsuario}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_IdUsuario}</span>
+						</div>
+		{END searchCtrlBlock_IdUsuario}
+																{BEGIN searchCtrlBlock_IdGesRegOrigen}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_IdGesRegOrigen}" {$filterRow_attrs_IdGesRegOrigen}>
+			<label>{$label public_GestionRegistrosOrigen_Report IdGesRegOrigen }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_IdGesRegOrigen}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_IdGesRegOrigen}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_IdGesRegOrigen}</span>
+						</div>
+		{END searchCtrlBlock_IdGesRegOrigen}
+																{BEGIN searchCtrlBlock_GPSMapaGoo}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_GPSMapaGoo}" {$filterRow_attrs_GPSMapaGoo}>
+			<label>{$label public_GestionRegistrosOrigen_Report GPSMapaGoo }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_GPSMapaGoo}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_GPSMapaGoo}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_GPSMapaGoo}</span>
+						</div>
+		{END searchCtrlBlock_GPSMapaGoo}
+																{BEGIN searchCtrlBlock_FotoOrigen}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_FotoOrigen}" {$filterRow_attrs_FotoOrigen}>
+			<label>{$label public_GestionRegistrosOrigen_Report FotoOrigen }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_FotoOrigen}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_FotoOrigen}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_FotoOrigen}</span>
+						</div>
+		{END searchCtrlBlock_FotoOrigen}
+		
+
+	</div>
+
+	<div class="panel-footer bottomSearchButt" {$bottomSearchButt_attrs}>
+		<button class="btn btn-primary" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
+		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
+	</div>
+</div>
+<!-- End Search panel content -->
+			</div>
+		
+    {END left_block}
+</div>				</div>	
+			<div class="r-content-col" data-resize-left="leftbar">
+				<div  class="r-topheader" data-resize-name="topbar">
+									{BEGIN supertop_block}
+<nav class="navbar navbar-default" 
+	data-location="supertop" id="form_supertop_{$pageid}" data-makeup="leftbar" {$form_supertop} data-pageid="{$pageid}" >
+			 
+							 
+				<span class="navbar-form  r-ori-vert navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
+				<span data-itemtype="collapse_button" data-itemid="collapse_button" {$item_collapse_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Collapse" class="btn-link   
+	 glyphicon glyphicon-triangle-left" href="#" >		
+				
+								</a>
+</span>
+			</span>
+							 
+							 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="simple_search" {$item_simple_search} data-topcell-item-type="simple_search" >
+				<span data-itemtype="simple_search" data-itemid="simple_search" {$item_simple_search} data-pageid="{$pageid}" class="form-group">
+
+<div  class="input-group">
+{BEGIN searchform_text}
+	<input type="search" class="form-control" {$searchfor_attrs} size="25">
+{END searchform_text}
+	<span class="input-group-btn">
+	{BEGIN searchform_showall}
+		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
+			<span class="glyphicon glyphicon-remove"></span>
+		</button>
+	{END searchform_showall}
+	{BEGIN searchform_search}
+	<button {$searchbutton_attrs} class="btn btn-primary" >
+		<span class="glyphicon glyphicon-search"></span>
+	</button>
+	{END searchform_search}
+	</span>
+</div>
+		
+</span>			</span>
+		 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="list_options" {$item_list_options} data-topcell-item-type="list_options" >
+				<span data-itemtype="list_options" data-itemid="list_options" {$item_list_options} data-pageid="{$pageid}" data-small data-button-item>
+	<span class="dropdown ">
+		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
+							<span class="glyphicon glyphicon-cog"></span>
+									<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+								<li data-itemtype="advsearch_link" data-itemid="advsearch_link" {$item_advsearch_link} data-pageid="{$pageid}" data-small >
+				<a   href="gestionregistrosorigen_report_search.php" {$advsearchlink_attrs}  title="" >
+				
+		Búsqueda avanzada		
+		</a>
+	</li>
+							{BEGIN searchPanelTopButtons}
+	<li data-itemtype="show_search_panel" data-itemid="show_search_panel" {$item_show_search_panel} data-pageid="{$pageid}" data-small >
+				<a  id="showOptPanel{$id}"  title="" >
+				
+		Mostrar panel de búsqueda		
+		</a>
+	</li>
+{END searchPanelTopButtons}
+							{BEGIN searchPanelTopButtons}
+	<li data-itemtype="hide_search_panel" data-itemid="hide_search_panel" {$item_hide_search_panel} data-pageid="{$pageid}" data-small >
+				<a  id="hideOptPanel{$id}"  title="" >
+				
+		Ocultar panel de búsqueda		
+		</a>
+	</li>
+{END searchPanelTopButtons}
+					</ul>
+	</span>
+</span>
+			</span>
+		 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="loginform_login" {$item_loginform_login} data-topcell-item-type="loginform_login" >
+				{BEGIN guestloginbutton}
+<span data-itemtype="loginform_login" data-itemid="loginform_login" {$item_loginform_login} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" href="#" {$guestloginlink_attrs} >
+							Conectar			</a>
+</span>
+{END guestloginbutton}
+			</span>
+		 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="username_button" {$item_username_button} data-topcell-item-type="username_button" >
+				{BEGIN loggedas_message}
+<span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
+	<span class="dropdown ">
+		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
+							<span class="glyphicon glyphicon-user"></span>
+						{$username}			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
+				<a  href="#" {$logoutlink_attrs}  title="" >
+				
+		Desconectarse		
+		</a>
+	</li>
+{END logoutbutton}
+					</ul>
+	</span>
+</span>
+{END loggedas_message}
+			</span>
+								</nav>
+{END supertop_block}
+						{$locking}
+				</div>	
+				<div class="r-body" data-resize-top="topbar" data-body-width="full">
+					{$header}
+					<div class="r-top">
+									{BEGIN top_block}
+<div class="r-form" data-location="top" id="form_top_{$pageid}" data-makeup="leftbar" {$form_top} data-pageid="{$pageid}" >		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="top_c1" data-pageid="{$pageid}"	{$cell_top_c1}
+	class=" r-ori-vert			col-md-12
+	
+">
+		 
+		{BEGIN breadcrumb}
+<ol class="breadcrumb" data-itemtype="breadcrumb" data-itemid="breadcrumb" {$item_breadcrumb} data-pageid="{$pageid}">
+<li ><a href="{$crumb_home_link}"><span class="glyphicon glyphicon-home"></span></a>{$crumb_dropdown}</li>
+{BEGIN crumb}
+  <li class="{$crumb_item_class}">
+{BEGIN crumb_title_link}
+	<a {$crumb_attrs}>{$crumb_title}</a>
+{END crumb_title_link}
+{BEGIN crumb_title_span}
+	<span {$crumb_attrs}>{$crumb_title}</span>
+{END crumb_title_span}	
+	{$crumb_dropdown}
+  </li>
+{END crumb}
+</ol>
+{END breadcrumb}		</div>					</div>
+	</div>		
+{END top_block}
+						</div>
+					<div class="r-above">
+										{BEGIN above-grid_block}
+<div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="leftbar" {$form_above-grid} data-pageid="{$pageid}" >		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="above-grid_c1" data-pageid="{$pageid}"	{$cell_above-grid_c1}
+	class="			col-md-6
+	
+">
+		{BEGIN firstAboveGridCell}
+		 
+		{BEGIN export_link}
+<span data-itemtype="export_report_excel" data-itemid="export_report_excel" {$item_export_report_excel} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-default   
+	" href="gestionregistrosorigen_report_export.php?all=1&amp;format=excel" {$excellink_attrs} >
+							Exportar a Excel			</a>
+</span>
+{END export_link}
+	 
+		{BEGIN export_link}
+<span data-itemtype="export_report_word" data-itemid="export_report_word" {$item_export_report_word} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-default   
+	" href="gestionregistrosorigen_report_export.php?all=1&amp;format=word" {$wordlink_attrs} >
+							Exportar a Word 			</a>
+</span>
+{END export_link}
+	 
+		{BEGIN checkbox_column}
+<span data-itemtype="grid_checkbox" data-itemid="grid_checkbox" {$item_grid_checkbox} data-pageid="{$pageid}" >
+	<input type="checkbox" {$checkbox_attrs}>
+</span>	
+{END checkbox_column}
+	 
+		{BEGIN checkbox_column}
+<span data-itemtype="grid_checkbox_head" data-itemid="grid_checkbox_head" {$item_grid_checkbox_head} data-pageid="{$pageid}" >
+	<input type="checkbox" {$checkboxheader_attrs}>
+</span>
+{END checkbox_column}
+			{END firstAboveGridCell}	
+	</div>			 
+				<div 
+	data-cellId="above-grid_c2" data-pageid="{$pageid}"	{$cell_above-grid_c2}
+	class="r-align-right			col-md-6
+	
+">
+		 
+		<span data-itemtype="details_found" data-itemid="details_found" {$item_details_found} data-pageid="{$pageid}" data-small >
+{$details_found_labeldetails_found}
+</span>	 
+		<span data-itemtype="page_size" data-itemid="page_size" {$item_page_size} data-pageid="{$pageid}" >
+		{$grpsPerPage}
+</span>	 
+		{BEGIN print_friendly}
+<span id="printpanelblock{$id}"  data-pageid="{$pageid}" {$printpanel_hiddenattr} data-itemtype="print_panel" data-itemid="print_panel" {$item_print_panel} data-pageid="{$pageid}">
+	<button title="Página para imprimir" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					<span class="glyphicon glyphicon-print"></span>
+				<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu pull-right">
+										 
+				 
+					<li class="container-fluid 
+										">
+									<div id="print_friendly_scope{$id}">
+	<div class="row">
+		<div class="col-md-4">
+			Rango:		</div>
+
+		{BEGIN print_friendly_all}
+		<div class="col-md-8">
+			<label for="printAll{$id}">
+				<input type="radio" id="printAll{$id}" data-href="gestionregistrosorigen_report_print.php?all=1&amp;{$crosstable_attrs}" name="printScope">
+									Imprimir informe completo							</label>
+		</div>
+		{END print_friendly_all}
+	</div>
+	<div class="row">
+		<div class="col-md-4">&nbsp;</div>
+		<div class="col-md-8">
+			<label for="printPage{$id}">
+				<input name="printScope" id="printPage{$id}" type="radio" checked data-href="gestionregistrosorigen_report_print.php?{$crosstable_attrs}">
+				Imprimir esta página			</label>
+		</div>
+	</div>
+	
+	</div>				 
+					</li>
+											<li class="divider" role="separator"></li>
+																				 
+				 
+					<li class="container-fluid 
+										">
+									<div>
+	<label for="printPerPage{$id}">
+					Grupos por página							
+	</label>
+	<input type="number" id="printPerPage{$id}" value="{$print_recspp}" class="rnr-printrecspp">		
+</div>
+				 
+					</li>
+											<li class="divider" role="separator"></li>
+																				 
+				 
+					<li class="container-fluid 
+					 text-center 					">
+									<span data-itemtype="print_button" data-itemid="print_button" {$item_print_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" id="print_friendly_button{$id}" >
+							Imprimir			</a>
+</span>
+				 
+					</li>
+															</ul>
+</span>
+{END print_friendly}
+		</div>					</div>
+	</div>		
+{END above-grid_block}
+						</div>
+					<div class="r-grid">
+										{BEGIN grid_block}
+{BEGIN grid_tabs}
+  <ul class="nav nav-tabs bsgrid_tabs">
+	{$grid_tabs_content}
+  </ul>
+{END grid_tabs}
+{BEGIN message_block}
+<div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
+{END message_block}<style>
+	td.pagesummary.pagesummary.pagesummary.pagesummary.pagesummary.pagesummary.pagesummary.pagesummary {
+		background-color: #ffffbb;
+	}
+	td.globalsummary.globalsummary.globalsummary.globalsummary.globalsummary.globalsummary.globalsummary.globalsummary {background-color: #ffe0b0;
+	}
+</style>
+
+	<!-- 0 group fields -->
+
+ <!-- add to settings ? -->
+<table class="table table-striped table-bordered rnr-b-grid rnr-gridtable" cellpadding="0" data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" >
+	<thead>
+		{BEGIN grid_header}
+		<tr class="rnr-toprow table-header style1">
+					<th class="{$fieldclass_IdGesRegOrigen}"> {$label public_GestionRegistrosOrigen_Report IdGesRegOrigen }</th>
+					<th class="{$fieldclass_NombreUsuario}"> {$label public_GestionRegistrosOrigen_Report NombreUsuario }</th>
+					<th class="{$fieldclass_NombreCompleto}"> {$label public_GestionRegistrosOrigen_Report NombreCompleto }</th>
+					<th class="{$fieldclass_DescriBarrio}"> {$label public_GestionRegistrosOrigen_Report DescriBarrio }</th>
+					<th class="{$fieldclass_DirecUsuario}"> {$label public_GestionRegistrosOrigen_Report DirecUsuario }</th>
+					<th class="{$fieldclass_CantidadOrigen}"> {$label public_GestionRegistrosOrigen_Report CantidadOrigen }</th>
+					<th class="{$fieldclass_DescriMedTipOrigen}"> {$label public_GestionRegistrosOrigen_Report DescriMedTipOrigen }</th>
+					<th class="{$fieldclass_DescriResiduo}"> {$label public_GestionRegistrosOrigen_Report DescriResiduo }</th>
+					<th class="{$fieldclass_FotoOrigen}"> {$label public_GestionRegistrosOrigen_Report FotoOrigen }</th>
+					<th class="{$fieldclass_GPSMapaGoo}"> {$label public_GestionRegistrosOrigen_Report GPSMapaGoo }</th>
+				</tr>
+		{END grid_header}
+	</thead>
+	<tbody>
+{BEGIN grid_row}
+	{BEGIN row_data}
+		<tr class="rnr-row style1" {$rowattrs}>
+			
+			<td {$recordattrs} class="{$fieldclass_IdGesRegOrigen}">
+						<span data-itemtype="grid_field" data-field="IdGesRegOrigen" data-itemid="grid_field2" data-pageid={$pageid} data-record-id="{$recId}">
+{$IdGesRegOrigen_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_NombreUsuario}">
+						<span data-itemtype="grid_field" data-field="NombreUsuario" data-itemid="grid_field3" data-pageid={$pageid} data-record-id="{$recId}">
+{$NombreUsuario_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_NombreCompleto}">
+						<span data-itemtype="grid_field" data-field="NombreCompleto" data-itemid="grid_field4" data-pageid={$pageid} data-record-id="{$recId}">
+{$NombreCompleto_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_DescriBarrio}">
+						<span data-itemtype="grid_field" data-field="DescriBarrio" data-itemid="grid_field5" data-pageid={$pageid} data-record-id="{$recId}">
+{$DescriBarrio_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_DirecUsuario}">
+						<span data-itemtype="grid_field" data-field="DirecUsuario" data-itemid="grid_field6" data-pageid={$pageid} data-record-id="{$recId}">
+{$DirecUsuario_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_CantidadOrigen}">
+						<span data-itemtype="grid_field" data-field="CantidadOrigen" data-itemid="grid_field7" data-pageid={$pageid} data-record-id="{$recId}">
+{$CantidadOrigen_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_DescriMedTipOrigen}">
+						<span data-itemtype="grid_field" data-field="DescriMedTipOrigen" data-itemid="grid_field8" data-pageid={$pageid} data-record-id="{$recId}">
+{$DescriMedTipOrigen_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_DescriResiduo}">
+						<span data-itemtype="grid_field" data-field="DescriResiduo" data-itemid="grid_field9" data-pageid={$pageid} data-record-id="{$recId}">
+{$DescriResiduo_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_FotoOrigen}">
+						<span data-itemtype="grid_field" data-field="FotoOrigen" data-itemid="grid_field10" data-pageid={$pageid} data-record-id="{$recId}">
+{$FotoOrigen_value}
+</span>			</td>
+			
+			<td {$recordattrs} class="{$fieldclass_GPSMapaGoo}">
+						<span data-itemtype="grid_field" data-field="GPSMapaGoo" data-itemid="grid_field11" data-pageid={$pageid} data-record-id="{$recId}">
+{$GPSMapaGoo_value}
+</span>			</td>
+				</tr>
+	{END row_data}
+{END grid_row}
+
+	
+
+	
+
+	</tbody>
+</table>{END grid_block}						</div>
+					<div class="r-below">
+										{BEGIN below-grid_block}
+<div class="r-form" data-location="below-grid" id="form_below-grid_{$pageid}" data-makeup="leftbar" {$form_below-grid} data-pageid="{$pageid}" >		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="below-grid_c1" data-pageid="{$pageid}"	{$cell_below-grid_c1}
+	class="r-align-center r-ori-vert			col-md-12
+	
+">
+		 
+		{BEGIN pagination_block}
+<span data-itemtype="pagination" data-itemid="pagination" {$item_pagination} data-pageid="{$pageid}" >
+{$pagination}
+</span>
+{END pagination_block}
+		</div>					</div>
+	</div>		
+{END below-grid_block}
+						</div>
+					{$footer}
+				</div>	
+			</div>	
+		</div>
+	{END body}
+	</body>
+</html>

@@ -1,0 +1,22 @@
+[data-cellid="above-grid_c1"][data-page=".global_menuinicio"][data-cellid="above-grid_c1"][data-page=".global_menuinicio"][data-cellid="above-grid_c1"][data-page=".global_menuinicio"] {
+  background-color: #eeffe7;
+}
+[data-page=".global_menuinicio"][data-itemid="image"] {
+  width: 300px;
+  height: 270px;
+}
+[data-page=".global_menuinicio"][data-itemid="text1"] {
+  color: #9ee6b2;
+  font-weight: bold;
+  font-size: 28px;
+}
+[data-page=".global_menuinicio"][data-itemid="image1"] {
+  width: 300px;
+  height: 270px;
+}
+[data-page=".global_menuinicio"][data-itemid="image2"] {
+  width: 300px;
+  height: 270px;
+}
+
+

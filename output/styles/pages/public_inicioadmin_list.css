@@ -1,0 +1,13 @@
+[data-cellid="grid_footcell_field"][data-page="public_inicioadmin_list"][data-cellid="grid_footcell_field"][data-page="public_inicioadmin_list"][data-cellid="grid_footcell_field"][data-page="public_inicioadmin_list"] {
+  white-space: nowrap;
+}
+[data-page="public_inicioadmin_list"][data-itemid="text"] {
+  color: #bbf6ac;
+  font-size: 24px;
+}
+[data-page="public_inicioadmin_list"][data-itemid="image"] {
+  width: 300px;
+  height: 270px;
+}
+
+
