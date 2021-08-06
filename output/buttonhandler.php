@@ -5,25 +5,51 @@
 require_once("include/dbcommon.php");
 require_once("classes/button.php");
 
+//	CSRF protection
+if( !isPostRequest() )
+	return;
+
 $params = (array)my_json_decode(postvalue('params'));
 
 if( $params["_base64fields"] ) {
 	foreach( $params["_base64fields"] as $f ) {
-		$params[$f] = base64_decode( $params[$f] );
+		$params[$f] = base64_str2bin( $params[$f] );
 	}
 }
 
 $buttId = $params['buttId'];
 $eventId = postvalue('event');
 $table = $params['table'];
+if( !GetTableURL( $table ) ) {
+	exit;
+}
 $page = $params['page'];
+if( !Security::userCanSeePage($table, $page ) ) {
+	exit;
+}
 
-// todo security check
+$pSet = new ProjectSettings( $table, "", $page );
+if( $buttId ) {
+	$pageButtons = $pSet->customButtons();
+	if( array_search( $buttId , $pageButtons ) === false ) {
+		exit;
+	}
+}
+
+$params["masterTable"] = postValue("masterTable");;
+$params["masterKeys"] = array();
+// RunnerPage::readMasterKeysFromRequest
+$i = 1;
+while( isset( $_REQUEST["masterkey".$i] ) ) {
+	$params["masterKeys"][ $i ] = $_REQUEST["masterkey".$i];
+	$i++;
+}
+
 
 if($buttId=='Prueba')
 {
 	//  for login page users table can be turned off
-	if( $table != GLOBAL_PAGES && GetTableURL( $table ) )
+	if( $table != GLOBAL_PAGES )
 	{
 		require_once("include/". GetTableURL( $table ) ."_variables.php");
 		$cipherer = new RunnerCipherer( $table );

@@ -155,15 +155,12 @@ class ODBCConnection extends Connection
 	
 	/**
 	 * @param Mixed qHandle
-	 * @param Number pageSize
-	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
 		$i = 0;
-		$row = ($page - 1) * $pageSize;
 		
-		while( $i < $row )
+		while( $i < $n )
 		{
 			odbc_fetch_row( $qHandle );
 			$i++;

@@ -64,7 +64,8 @@ class MembersPage extends ListPage_Simple
 		}
 		
 		$this->xt->assign("search_records_block",true);
-		// The user might rewrite $_SESSION["UserName"] value with HTML code in an event, so no encoding will be performed while printing this value.
+		// The user might rewrite $_SESSION["UserName"] value with HTML code in an event, 
+		// so no encoding will be performed while printing this value.
 		$this->initLogin();
 		
 		$this->hideElement("message");
@@ -83,87 +84,125 @@ class MembersPage extends ListPage_Simple
 		$rowInfo = array();	
 		$data = $this->beforeProccessRow();
 		
-		while( $data )
-		{
-			$row = array();
+		//ext-security_id 
+		$securityIdField = GetGlobalData("SpUserIdField", "");
+		$isFBLogin = GetGlobalData("isFB", false);
+		$isGoogleLogin = GetGlobalData("isGoogleSignIn", false);
+		
+		while( $data ) {
 			$userid = $this->recNo;
+			
+			$row = array();
 			$row["grid_record"] = array();
 			$row["grid_record"]["data"] = array();
-			$username = $data["NombreUsuario"];
-			$groups_sate = array();
+			$username = $data["nombre_usuario"];
 			
-			//	create checkboxes
-			$member_indexes=array();
-			foreach($this->members as $idx=>$m)
-			{
-				if($m[1]==$username)
-					$member_indexes[]=$idx;
+			$securityId = "";
+			if( ( $isFBLogin || $isGoogleLogin ) && $securityIdField ) {
+				// ext-security_id
+				$securityId = $data[ $securityIdField ];
 			}
+		
+			$groups_sate = array();	
 			$rowgroups = array();
-			foreach($this->groups as $idx => $g)
-			{
-				$checked=0;
-				$smarty_group=array();
-				foreach($member_indexes as $i)
-				{
-					if($this->members[$i][0]==$g[0])
-					{
+			
+			$userGroups = array();
+			foreach( $this->members as $m ) {
+				if( $m["userId"] == $username || $securityId && $securityId == $m["userId"] )
+					$userGroups[] = $m["groupId"];
+			}
+			
+			foreach( $this->groups as $g ) {
+				$groupId = $g[0];
+				
+				$checked = 0;
+				foreach( $userGroups as $userGroup ) {
+					if( $userGroup == $groupId ) {
 						$checked = 1;
-						break;
+						break;		
 					}
 				}
-				if(!($_SESSION["UserID"] != $username || $g[0] != -1))
-				{
+				
+				if( $groupId == -1 && ( Security::getUserName() == $username || $securityId && $securityId == Security::getUserName() ) ) {
 					$checked = 3;
 				}
-				$smarty_group["group"] = $g[0];
-				$groups_sate[$smarty_group["group"]] = $checked;
-				$smarty_group["groupbox_attrs"] = "data-checked=\"".$checked."\" id=\"box".$smarty_group["group"].$userid."\" data-userid=\"".$userid."\" data-group=\"".$smarty_group["group"]."\"";
-				$rowgroups[] = array("usergroup_box" => array("data" => array($smarty_group)), "groupcellbox_attrs" => "id=\"cell".$smarty_group["group"].$userid."\" data-col=\"".$smarty_group["group"]."\"");
+				
+				$groups_sate[ $groupId ] = $checked;
+				
+				$smarty_group = array();
+				$smarty_group["group"] = $groupId;
+				$smarty_group["groupbox_attrs"] = "data-checked=\"".$checked."\" id=\"box"
+					.$groupId.$userid."\" data-userid=\"".$userid."\" data-group=\"".$groupId."\"";
+				
+				$rowgroups[] = array(
+					"usergroup_box" => array(
+						"data" => array( $smarty_group )
+					), 
+					"groupcellbox_attrs" => "id=\"cell".$groupId.$userid."\" data-col=\"".$groupId."\""
+				);
 			}
-			$rowgroups[count($rowgroups)-1]["rnredgeclass"] = "rnr-edge";
+			
+			$rowgroups[ count($rowgroups) - 1 ]["rnredgeclass"] = "rnr-edge";
 			$row["usergroup_boxes"] = array("data" => $rowgroups);
+			
 			$row["usernamecell_attrs"] = "data-userid=\"userid\" id=\"cellusername".runner_htmlspecialchars($userid)."\"";
 			$row["usernamerow_attrs"] = "id=\"usernamerow".runner_htmlspecialchars($userid)."\"";
-			$row["usernamebox_attrs"] = "data-userid=\"".runner_htmlspecialchars($userid)."\" data-checked=\"0\" id=\"rowbox".runner_htmlspecialchars($userid)."\"";
-			$row["username"] = runner_htmlspecialchars($username);
-				$displayUserName = $data["NombreCompleto"];
-			$row["displayusername"] = runner_htmlspecialchars($displayUserName);
-			$row["displayusername_attrs"] = "id=\"cellDisplayName".runner_htmlspecialchars($userid)."\"";
-			$this->users[$userid]["displayUserName"] = $displayUserName;
-				$emailUser = $data["email"];
-			$row["emailuser"] = runner_htmlspecialchars($emailUser);
-			$row["emailuser_attrs"] = "id=\"cellEmail".runner_htmlspecialchars($userid)."\"";
-			$this->users[$userid]["emailUser"] = $emailUser;
+			$row["usernamebox_attrs"] = "data-userid=\"".runner_htmlspecialchars($userid)."\" data-checked=\"0\" id=\"rowbox"
+				.runner_htmlspecialchars($userid)."\"";
 			
-			$this->users[$userid]["userName"] = $username;
-			$this->users[$userid]["groups"] = $groups_sate;
-			$this->users[$userid]["visible"] = true;
+			$formattedUsername = $username;
+			if( $securityId ) {
+				if( $isFBLogin && "fb" == substr( $securityId, 0, 2 ) ) {
+					$formattedUsername = "Facebook user (". $securityId .")";
+				} else if( $isGoogleLogin && "go" == substr( $securityId, 0, 2 ) ) {
+					$formattedUsername = "Google user (". $securityId .")";
+				}
+			} 
+			$row["username"] = runner_htmlspecialchars( $formattedUsername );
+			
+				$row["displayusername"] = runner_htmlspecialchars( $data["nombre_completo"] );
+			$row["displayusername_attrs"] = "id=\"cellDisplayName".runner_htmlspecialchars($userid)."\"";
+			
+			$this->users[ $userid ]["displayUserName"] = $data["nombre_completo"];
+				$row["emailuser"] = runner_htmlspecialchars( $data["email"] );
+			$row["emailuser_attrs"] = "id=\"cellEmail".runner_htmlspecialchars($userid)."\"";
+			
+			$this->users[ $userid ]["emailUser"] = $data["email"];
+			
+			if( $securityId )
+				$this->users[ $userid ]["userName"] = $securityId;
+			else
+				$this->users[ $userid ]["userName"] = $username;
+			
+			$this->users[ $userid ]["groups"] = $groups_sate;
+			$this->users[ $userid ]["visible"] = true;
 			
 			$row["recNo"] = $this->recNo; 
 			$this->recNo++;
 			
 			//	assign row spacings for vertical layout
-			$row["grid_rowspace"]=true;
-			$row["grid_recordspace"] = array("data"=>array());
-			for($i=0;$i<$this->colsOnPage*2-1;$i++)
-				$row["grid_recordspace"]["data"][]=true;
+			$row["grid_rowspace"] = true;
+			$row["grid_recordspace"] = array( "data" => array() );
 			
-			if($this->eventExists("BeforeMoveNextList"))
-				$this->eventsObject->BeforeMoveNextList($data,$row,$record, $record["recId"], $this);
-			$rowInfo[]=$row;
+			for( $i = 0; $i < $this->colsOnPage * 2 - 1; $i++ ) {
+				$row["grid_recordspace"]["data"][] = true;
+			}
 			
+			if( $this->eventExists("BeforeMoveNextList") )
+				$this->eventsObject->BeforeMoveNextList( $data, $row, $record, $record["recId"], $this );
+			
+			$rowInfo[] = $row;
 			$data = $this->beforeProccessRow();
 		}
 		
+		$smartyGroups = array();
 		// fill headers array
-		foreach($this->groups as $g)
-		{
-			$smartyGroups[]=array("groupname"=>runner_htmlspecialchars($g[1]),
-				"groupheadersort_attrs"=>"data-group=\"".$g[0]."\" id=\"colsort".$g[0]."\" href=\"#\"",
-				"groupheadertdsort_attrs"=>"id=\"tdsort".$g[0]."\"",
-				"groupheaderbox_attrs"=>"data-group=\"".$g[0]."\" data-checked=\"0\" id=\"colbox".$g[0]."\"",
-				"groupheadertdbox_attrs"=>"id=\"tdbox".$g[0]."\"",
+		foreach( $this->groups as $g ) {
+			$smartyGroups[] = array("groupname" => runner_htmlspecialchars($g[1]),
+				"groupheadersort_attrs" => "data-group=\"".$g[0]."\" id=\"colsort".$g[0]."\" href=\"#\"",
+				"groupheadertdsort_attrs" => "id=\"tdsort".$g[0]."\"",
+				"groupheaderbox_attrs" => "data-group=\"".$g[0]."\" data-checked=\"0\" id=\"colbox".$g[0]."\"",
+				"groupheadertdbox_attrs" => "id=\"tdbox".$g[0]."\"",
 			);
 		}
 		
@@ -180,9 +219,8 @@ class MembersPage extends ListPage_Simple
 		// assign grid rows		
 		$this->xt->assign_loopsection("grid_row", $rowInfo);
 		// assign grid headers
-		$smartyGroups[ count($smartyGroups)-1 ]["rnredgeclass"] = "rnr-edge";
+		$smartyGroups[ count($smartyGroups) - 1 ]["rnredgeclass"] = "rnr-edge";
 		$this->xt->assign_loopsection("usergroup_header", $smartyGroups);
-		
 		
 		if( !count( $rowInfo ) )
 			$this->noRecordsFound = true;
@@ -193,20 +231,19 @@ class MembersPage extends ListPage_Simple
 	 */
 	function fillMembers()
 	{
-		global $cman;
-		$grConnection = $cman->getForUserGroups();
-		// It's expected that $this->tName is equal to 'admin_members' so the page's db connection is used #9875
-		$sql = "select ". $grConnection->addFieldWrappers( "" )
-			.", ". $grConnection->addFieldWrappers( "" )
-			." from ". $grConnection->addTableWrappers( "public.recyclepy_ugmembers" ) 
-			." order by ". $grConnection->addFieldWrappers( "" )
-			.", ". $grConnection->addFieldWrappers( "" );
+		$dataSource = Security::getUgMembersDatasource();
+		$dc = new DsCommand();
 		
-		//	select members list	
-		$qResult = $grConnection->query( $sql );
-		while( $tdata = $qResult->fetchNumeric() )
-		{
-			$this->members[] = array($tdata[1], $tdata[0]);
+		$dc->order = array();
+		$dc->order[] = array( "column" => "" );
+		$dc->order[] = array( "column" => "" );
+		
+		// ugmembers username field may contains username or security plugin user id value
+		$qResult = $dataSource->getList( $dc );
+		while( $tdata = $qResult->fetchAssoc() ) {
+			$this->members[] = array( 
+				"userId" => $tdata[""], 
+				"groupId" => $tdata[""] );
 		}
 	}
 	
@@ -223,7 +260,7 @@ class MembersPage extends ListPage_Simple
 		
 		$sql = "select ". $grConnection->addFieldWrappers( "" ) .", "
 			. $grConnection->addFieldWrappers( "" )
-			." from ". $grConnection->addTableWrappers( "public.recyclepy_uggroups" ) 
+			." from ". $grConnection->addTableWrappers( "uggroups" ) 
 			." order by ". $grConnection->addFieldWrappers( "" );
 		
 		$qResult = $grConnection->query( $sql );
@@ -267,9 +304,16 @@ class MembersPage extends ListPage_Simple
 		$this->fillMembers();
 		$this->fillGroups();
 		
-		// build sql query
-		$this->buildSQL();
-		$this->seekPageInRecSet($this->querySQL);			
+		$this->calculateRecordCount();
+
+		// build pagination block
+		$this->buildPagination();
+
+		$this->recSet = $this->dataSource->getList( $this->queryCommand );
+
+		if( !$this->recSet ) {
+			showError( $this->dataSource->lastError() );
+		}
 
 		$this->fillGridData();
 		
@@ -329,33 +373,27 @@ class MembersPage extends ListPage_Simple
 	 * @param String user
 	 * @param Array groups
 	 */
-	function updateUserGroups($user, $groups)
+	function updateUserGroups( $user, $groups )
 	{
-		global $cman;
-		$grConnection = $cman->getForUserGroups();
-		// It's expected that $this->tName is equal to 'admin_members' so the page's db connection is used #9875		
-		$membersWTableName = $grConnection->addTableWrappers( "public.recyclepy_ugmembers" );
-		$userNameWFieldName = $grConnection->addFieldWrappers( "" );
-		$groupIdWFieldName = $grConnection->addFieldWrappers( "" );
+		$dataSource = Security::getUgMembersDatasource();
 		
-		foreach ($groups as $group => $state)
-		{		
-			if ( $state == 1 )
-			{
-				$sql = "insert into ". $membersWTableName ." (". $userNameWFieldName .", ". $groupIdWFieldName 
-					.") values (". $grConnection->prepareString($user) .",". $group.")";
+		// $user may contain username or security plugin user id
+		foreach( $groups as $group => $state ) {
+			if( $state == 1 ) {				
+				$dcInsert = new DsCommand();
+				// update
+				$dcInsert->values = array( "" => $user, "" => $group );
+				$dataSource->insertSingle( $dcInsert );
+			} else {
+				$dcDelete = new DsCommand();
+				// delete
+				$dcDelete->filter = DataCondition::_And( array( 
+					DataCondition::FieldEquals( "", $group ), 
+					DataCondition::FieldEquals( "", $user, 0, $this->pSet->isCaseInsensitiveUsername() ? dsCASE_INSENSITIVE : dsCASE_STRICT ) 
+				));
+
+				$dataSource->deleteSingle( $dcDelete, false );
 			}
-			else 
-			{
-				$usernameClause = $this->connection->comparisonSQL( 
-					$userNameWFieldName, 
-					$grConnection->prepareString($user), 
-					$this->pSet->isCaseInsensitiveUsername() );
-					
-				$sql = "delete from ". $membersWTableName ." where ". $usernameClause ." and ". $groupIdWFieldName ."=". $group;
-			}
-			
-			$grConnection->exec( $sql );	
 		}
 	}
 	

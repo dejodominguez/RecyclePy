@@ -39,7 +39,7 @@ class ReportPage extends RunnerPage
 	public $xType;
 	public $yType;
 	public $selectedAxis;
-	
+	public $requestGoto;
 	/**
 	 * @constructor
 	 * @param &Array params
@@ -47,7 +47,6 @@ class ReportPage extends RunnerPage
 	function __construct( &$params ) 
 	{
 		parent::__construct($params);
-		
 		
 		$this->crossTable = $this->pSet->isCrossTabReport();
 		
@@ -97,12 +96,15 @@ class ReportPage extends RunnerPage
 		if( !$_SESSION[ $this->sessionPrefix."_pagenumber" ] )
 			$_SESSION[ $this->sessionPrefix."_pagenumber" ] = 1;
 		
-		if( isset($_REQUEST["goto"]) )
-			$_SESSION[ $this->sessionPrefix."_pagenumber" ] = intval($_REQUEST["goto"]);
+		if( $this->requestGoto )
+			$_SESSION[ $this->sessionPrefix."_pagenumber" ] = $this->requestGoto;
 		
 		$this->myPage = $_SESSION[$this->sessionPrefix."_pagenumber"];
 		
 		$this->pagestart = ($this->myPage - 1) * $this->pageSize;
+		if( $this->pageSize < 0 ) {
+			$this->pagestart = 0;	
+		}
 	}
 
 	/**
@@ -145,6 +147,7 @@ class ReportPage extends RunnerPage
 		$extraParams = $this->getExtraReportParams();
 
 		$this->setGoogleMapsParams( $extraParams['fieldsArr'] );
+		$this->fillAdvancedMapData();
 		if( $this->googleMapCfg['isUseGoogleMap'] ) 
 			$this->initGmaps();
 
@@ -153,6 +156,8 @@ class ReportPage extends RunnerPage
 		// build tabs and set current
 		$this->processGridTabs();	
 			
+		RunnerContext::pushSearchContext( $this->searchClauseObj );
+
 		$this->setReportData( $extraParams );	
 
 		$this->addCommonJs();
@@ -237,15 +242,17 @@ class ReportPage extends RunnerPage
 		foreach( $reportFields as $field )
 		{			
 			$operation = "";
-			if( $this->pSet->getFieldData($field, 'isTotalMax') )
-				$operation = "max";
-			else if( $this->pSet->getFieldData($field, 'isTotalMin') )
-				$operation = "min";
-			else if( $this->pSet->getFieldData($field, 'isTotalAvg') )
-				$operation = "avg";
-			else if( $this->pSet->getFieldData($field, 'isTotalSum') )
-				$operation = "sum";				
-					
+			$fieldInfo = $this->pSet->reportFieldInfo( $field );
+			if( $fieldInfo ) {
+				if( $fieldInfo["max"] )
+					$operation = "max";
+				else if( $fieldInfo["min"] )
+					$operation = "min";
+				else if( $fieldInfo["avg"] )
+					$operation = "avg";
+				else if( $fieldInfo["sum"] )
+					$operation = "sum";
+			}
 			if( $operation )
 			{			
 				$dataField = $field;
@@ -286,7 +293,8 @@ class ReportPage extends RunnerPage
 	 */
 	protected function crossTableBaseRedirect() 
 	{
-		HeaderRedirect( $this->pSet->getShortTableName(), $this->getPageType(), $this->getDefaultCrossParamsString() );
+		HeaderRedirect( $this->pSet->getShortTableName(), $this->getPageType(), 
+			implode( '&', array( $this->getDefaultCrossParamsString(), $this->getStateUrlParams() ) ) );
 		exit();
 	}
 	
@@ -447,7 +455,7 @@ class ReportPage extends RunnerPage
 		if( $this->pdfJsonMode() )
 			$params["pdfJSON"] = true;		
 		
-		$this->crossTableObj = new CrossTableReport( $params, $this->getBasicCrossTableSQL(), $this );
+		$this->crossTableObj = new CrossTableReport( $params, $this );
 		
 		if( $this->crosstableRefresh )
 		{
@@ -629,9 +637,9 @@ class ReportPage extends RunnerPage
 				$this->xt->assign( "xselcell_attrs", "colspan=".$headerColspan );
 		}
 		
-		$this->xt->assign("crosstable_attrs", "&x=".$this->x."&y=".$this->y."&data=".$this->dataField."&op=".$this->operation);	//?
-		
 		$this->xt->assign( "grid_header", !$this->noRecordsFound );
+		
+		//$this->xt->assign("crosstable_attrs", "&x=".$this->x."&y=".$this->y."&data=".$this->dataField."&op=".$this->operation);
 	}	
 	
 	
@@ -643,15 +651,12 @@ class ReportPage extends RunnerPage
 	{		
 		include_once(getabspath('classes/reportlib.php'));
 		
-		$whereComponents = $this->getWhereComponents();
-		$sqlArray = $this->getReportSQLData();
 		$pageSize = $this->pageSize;
 		if ( $this->pageSize == -1 ) {
 			$pageSize = 0;
 		}
 		
-		$rb = new Report($sqlArray, $this->pSet->getOrderIndexes(), $this->connection, $pageSize, 0, $_options
-			, $whereComponents["searchWhere"], $whereComponents["searchHaving"], $this); 
+		$rb = new Report( $this->pSet->getOrderIndexes(), $this->connection, $pageSize, 0, $_options, $this ); 
 			
 		$this->arrReport = $rb->getReport( $this->pagestart );
 
@@ -668,7 +673,7 @@ class ReportPage extends RunnerPage
 	 * Get where clause for an active master-detail relationship
 	 * @return string
 	 */
-	public function getMasterTableSQLClause( $basedOnProp = false ) 
+	public function getMasterTableSQLClause() 
 	{
 		if( $this->mode == REPORT_DASHBOARD && !isset($this->dashElementData["masterTable"]) )
 			return "";		
@@ -693,7 +698,7 @@ class ReportPage extends RunnerPage
 			$this->xt->assign($key, $value);
 		}			
 		
-		if( count($this->arrReport['list']) > 0 )
+		if( !!$this->arrReport['list'] )
 			$this->xt->assign('grid_row', array('data' => $this->arrReport['list']));
 		else
 			$this->noRecordsFound = true;
@@ -711,7 +716,7 @@ class ReportPage extends RunnerPage
 			$this->xt->assign("print_friendly_all", $this->printAvailable() && $this->arrReport['countRows'] > 0);
 		}
 
-		if( $this->mode == REPORT_SIMPLE && $allow_search && count($this->arrGroupsPerPage) )
+		if( $this->mode == REPORT_SIMPLE && $allow_search && !!$this->arrGroupsPerPage )
 		{
 			$this->xt->assign("recordspp_block", true);
 			$this->createPerPage();
@@ -843,6 +848,9 @@ class ReportPage extends RunnerPage
 	{
 		if( $this->mode == REPORT_DASHBOARD )
 			return;
+		
+		//	no details in reports currently
+		return;
 			
 		// set detail links 	
 		foreach( $this->allDetailsTablesArr as $detailTableData )
@@ -870,6 +878,8 @@ class ReportPage extends RunnerPage
 			//Add the connection with containing row. It's important for vertical layout's multiple records per row mode
 			$this->controlsMap['gridRows'][$gridRowInd]['keyFields'] = array();
 			$this->controlsMap['gridRows'][$gridRowInd]['keys'] = array();
+			
+			//	???
 			for($i = 0; $i < count($tKeys); $i ++) {
 				$this->controlsMap['gridRows'][$gridRowInd]['keyFields'][$i] = $tKeys[$i];
 				$this->controlsMap['gridRows'][$gridRowInd]['keys'][$i] = $data[$tKeys[$i].'_value'];
@@ -889,68 +899,8 @@ class ReportPage extends RunnerPage
 		}		
 		// end set detail links		
 	}
-	
 
 
-	/**
-	 * Get the basic SQL query for a crosstable report
-	 * @return String
-	 */
-	protected function getBasicCrossTableSQL() 
-	{
-		$sql = $this->getSubsetSQLComponents();
-		return SQLQuery::buildSQL( $sql["sqlParts"], $sql["mandatoryWhere"], $sql["mandatoryHaving"], $sql["optionalWhere"], $sql["optionalHaving"] );
-	}
-
-	protected function getSubsetSQLComponents()
-	{
-		$sql = parent::getSubsetSQLComponents();
-
-		$sql["mandatoryWhere"][] = $this->SecuritySQL( "Search" );
-
-		
-	// hide data until search
-		if( $this->pSet->noRecordsOnFirstPage() && !$this->searchClauseObj->isSearchFunctionalityActivated() )
-			$sql["mandatoryWhere"][] = " 1=0 ";
-		return $sql;
-	}
-	
-	/**
-	 * Get SQL query data for the Report constructor
-	 * @return Array
-	 */
-	public function getReportSQLData()
-	{
-		$sql = $this->getSubsetSQLComponents();
-		//	do DB::PrepareSQL for all SQL parts
-		
-		$sql["sqlParts"]["head"] = DB::PrepareSQL( $sql["sqlParts"]["head"] );
-		$sql["sqlParts"]["from"] = DB::PrepareSQL( $sql["sqlParts"]["from"] );
-		$sql["sqlParts"]["where"] = DB::PrepareSQL( $sql["sqlParts"]["where"] );
-		$sql["sqlParts"]["groupby"] = DB::PrepareSQL( $sql["sqlParts"]["groupby"] );
-		$sql["sqlParts"]["having"] = DB::PrepareSQL( $sql["sqlParts"]["having"] );
-		
-		// combine all where clauses into a single expression
-		
-		$optWhere = SQLQuery::combineCases( $sql["optionalWhere"], "or" );
-		$optHaving = SQLQuery::combineCases( $sql["optionalHaving"], "or" );
-		
-		$allWhere = SQLQuery::combineCases( 
-				array( SQLQuery::combineCases( $sql["mandatoryWhere"], "and" ), 
-				$sql["sqlParts"]["where"], 
-				$optWhere ), 
-			"and" );
-
-		$allHaving = SQLQuery::combineCases( 
-				array( SQLQuery::combineCases( $sql["mandatoryHaving"], "and" ), 
-				$sql["sqlParts"]["having"], 
-				$optHaving ), 
-			"and" );
-		
-		return array($sql["sqlParts"]["head"], $sql["sqlParts"]["from"], $allWhere, $sql["sqlParts"]["groupby"], $allHaving);
-	}
-	
-	
 	/**
 	 * Prepare detail for edit and view
 	 */
@@ -1026,10 +976,13 @@ class ReportPage extends RunnerPage
 			$fieldArr['viewFormat'] = $this->pSet->getViewFormat( $field );
 			$fieldArr['editFormat'] = $this->pSet->getEditFormat( $field );
 		
-			$fieldArr['totalMax'] = $this->pSet->getFieldData($field, 'isTotalMax');
-			$fieldArr['totalMin'] = $this->pSet->getFieldData($field, 'isTotalMin');
-			$fieldArr['totalAvg'] = $this->pSet->getFieldData($field, 'isTotalAvg');
-			$fieldArr['totalSum'] = $this->pSet->getFieldData($field, 'isTotalSum');							
+			$fieldInfo = $this->pSet->reportFieldInfo( $field );
+			if( $fieldInfo ) {
+				$fieldArr['totalMax'] = !!$fieldInfo["max"];
+				$fieldArr['totalMin'] = !!$fieldInfo["min"];
+				$fieldArr['totalAvg'] = !!$fieldInfo["avg"];
+				$fieldArr['totalSum'] = !!$fieldInfo["sum"];
+			}
 			$paramfieldArr[] = $fieldArr;		
 		}
 		
@@ -1132,6 +1085,14 @@ class ReportPage extends RunnerPage
 			}
 			$this->showNoRecordsMessage();
 		}
+
+		foreach( $this->pSet->getPageFields() as $f )
+		{
+			$gf = GoodFieldName($f);
+			$this->xt->assign( $gf . "_class", $this->fieldClass( $f ));
+			$this->xt->assign( $gf . "_align", $this->fieldAlign( $f ));
+		}
+
 	}
 	
 	/**
@@ -1342,7 +1303,7 @@ class ReportPage extends RunnerPage
 		if( $this->isBootstrap() )
 		{
 			$returnJSON["html"] = $this->xt->fetch_loaded("grid_tabs"). 
-				$this->xt->fetch_loaded("message_block"). 
+				//$this->xt->fetch_loaded("message_block"). 
 				$this->xt->fetch_loaded("grid_block"). 
 				$this->xt->fetch_loaded("pagination_block");	
 		}
@@ -1445,31 +1406,6 @@ class ReportPage extends RunnerPage
 	}
 	
 	/**
-	 * @return Array
-	 */
-	public static function getMasterKeysFromRequest()
-	{
-		if( isset( $_REQUEST["masterKeys"] ) ) 
-			$masterKeys = my_json_decode( $_REQUEST["masterKeys"] );		
-		
-		$i = 0;
-		$masterKeysReq = array();
-		while( true )
-		{
-			$i++;
-			if( isset( $_REQUEST["masterkey".$i] ) )
-				$_masterKey = $_REQUEST["masterkey".$i];
-			elseif( isset( $masterKeys["masterkey".$i] ) )
-				$_masterKey = $masterKeys["masterkey".$i];
-			else
-				break;
-				
-			$masterKeysReq[ $i ] = $_masterKey;
-		}
-		return $masterKeysReq ;
-	}
-	
-	/**
 	 * @return String
 	 */
 	public static function readReportModeFromRequest()
@@ -1515,6 +1451,8 @@ class ReportPage extends RunnerPage
 		{
 			$goodName = GoodFieldname($field);
 			$this->xt->assign("fieldclass_".$goodName, $this->getFieldClass($field) ); 
+			$this->xt->assign($goodName . "_align", $this->fieldAlign($field));
+
 		}
 	}
 	
@@ -1522,5 +1460,17 @@ class ReportPage extends RunnerPage
 	{
 		return $this->pdfJson;
 	}	
+
+	public function getSubsetDataCommand( $ignoreFilterField = "" ) {
+
+		$dc = parent::getSubsetDataCommand();
+
+		//	no records on first page
+		if( $this->mode != REPORT_DETAILS && $this->pSet->noRecordsOnFirstPage() && !$this->isSearchFunctionalityActivated() )
+			$dc->filter = DataCondition::_False();
+
+		return $dc;
+	}
+
 }
 ?>

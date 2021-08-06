@@ -1,10 +1,10 @@
 <?php
-$dalTableVentas = array();
-$dalTableVentas["IdVenta"] = array("type"=>3,"varname"=>"IdVenta", "name" => "IdVenta");
-$dalTableVentas["FechaVenta"] = array("type"=>7,"varname"=>"FechaVenta", "name" => "FechaVenta");
-$dalTableVentas["Observación"] = array("type"=>200,"varname"=>"Observaci_n", "name" => "Observación");
-$dalTableVentas["IdEmpreRecicladora"] = array("type"=>3,"varname"=>"IdEmpreRecicladora", "name" => "IdEmpreRecicladora");
-	$dalTableVentas["IdVenta"]["key"]=true;
+$dalTableventas = array();
+$dalTableventas["id_venta"] = array("type"=>3,"varname"=>"id_venta", "name" => "id_venta");
+$dalTableventas["fecha_venta"] = array("type"=>7,"varname"=>"fecha_venta", "name" => "fecha_venta");
+$dalTableventas["observacion"] = array("type"=>200,"varname"=>"observacion", "name" => "observacion");
+$dalTableventas["id_empre_recichadora"] = array("type"=>3,"varname"=>"id_empre_recichadora", "name" => "id_empre_recichadora");
+	$dalTableventas["id_venta"]["key"]=true;
 
-$dal_info["RealEstate_at_localhost_public_Ventas"] = &$dalTableVentas;
+$dal_info["RealEstate_at_localhost_public_ventas"] = &$dalTableventas;
 ?>

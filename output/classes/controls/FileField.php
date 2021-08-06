@@ -19,20 +19,9 @@ class FileField extends EditControl
 		$this->format = EDIT_FORMAT_FILE;
 	}
 
-	function addJSFiles()
-	{
-		if($this->pageObject->pageType == PAGE_ADD
-			|| $this->pageObject->pageType == PAGE_EDIT
-			|| $this->pageObject->pageType == PAGE_REGISTER){
+	function addJSFiles() {
+		if ( $this->format = EDIT_FORMAT_FILE ) {
 			$this->pageObject->AddJSFile("include/mupload.js");
-		}
-	}
-
-	function addCSSFiles()
-	{
-		if($this->pageObject->pageType == PAGE_ADD
-			|| $this->pageObject->pageType == PAGE_EDIT
-			|| $this->pageObject->pageType == PAGE_REGISTER){
 		}
 	}
 
@@ -40,22 +29,22 @@ class FileField extends EditControl
 	{
 		parent::buildControl($value, $mode, $fieldNum, $validate, $additionalCtrlParams, $data);
 
-		if($this->pageObject->pageType == PAGE_SEARCH || $this->pageObject->pageType == PAGE_LIST)
-		{
+		if( $mode == MODE_SEARCH ) {
+			$this->format = "";
+			
 			$classString = "";
 			if( $this->pageObject->isBootstrap() )
 				$classString = " class=\"form-control\"";
+			
 			echo '<input id="'.$this->cfield.'" '.$classString.$this->inputStyle.' type="text" '
-				.($mode == MODE_SEARCH ? 'autocomplete="off" ' : '')
-				.(($mode==MODE_INLINE_EDIT || $mode==MODE_INLINE_ADD) && $this->is508==true ? 'alt="'.$this->strLabel.'" ' : '')
+				.('autocomplete="off" ')
+				.( $this->is508==true ? 'alt="'.$this->strLabel.'" ' : '')
 				.'name="'.$this->cfield.'" '.$this->pageObject->pSetEdit->getEditParams($this->field).' value="'
 				.runner_htmlspecialchars($value).'">';
+			
 			$this->buildControlEnd($validate, $mode);
 			return;
 		}
-
-		if($mode == MODE_SEARCH)
-			$this->format = "";
 
 		$this->formStamp = generatePassword(15);
 
@@ -111,7 +100,7 @@ class FileField extends EditControl
 		}
 		$jsonValue = my_json_encode($userFilesArray);
 		$multiple = "";
-		if( !isIOS() && $this->pageObject->pSetEdit->getMaxNumberOfFiles($this->field) != 1 )
+		if( $this->pageObject->pSetEdit->getMaxNumberOfFiles($this->field) != 1 )
 			$multiple = "multiple ";
 		echo '
  <!-- The file upload form used as target for the file upload widget -->
@@ -246,6 +235,7 @@ class FileField extends EditControl
 			$this->upload_handler->field = $this->field;
 			$this->upload_handler->table = $this->pageObject->tName;
 			$this->upload_handler->pageType = $this->pageObject->pageType;
+			$this->upload_handler->pageName = $this->pageObject->pageName;
 		}
 	}
 
@@ -382,70 +372,6 @@ class FileField extends EditControl
 		return $imageValue;
 	}
 
-	function SQLWhere($SearchFor, $strSearchOption, $SearchFor2, $etype, $isSuggest)
-	{
-		$baseResult = $this->baseSQLWhere($strSearchOption);
-
-		if( $baseResult === false )
-			return "";
-
-		if( $baseResult != "" )
-			return $baseResult;
-
-		if( IsCharType($this->type) )
-		{
-			$gstrField = $this->getFieldSQLDecrypt();
-
-			if( !$this->btexttype && !$this->pageObject->cipherer->isFieldPHPEncrypted($this->field) && $this->pageObject->pSetEdit->getNCSearch() )
-			{
-				// search is case-insensitive
-				$gstrField = $this->connection->upper( $gstrField );
-			}
-		}
-		elseif( $strSearchOption == "Contains" || $strSearchOption == "Starts with" )
-		{
-			$gstrField = $this->connection->field2char($this->getFieldSQLDecrypt(), $this->type);
-		}
-		else
-		{
-			$gstrField = $this->getFieldSQLDecrypt();
-		}
-
-		if( $strSearchOption == "Contains" || $strSearchOption == "Starts with" )
-			$SearchFor = $this->connection->escapeLIKEpattern( $SearchFor );
-
-		if( $strSearchOption == "Contains" )
-			$SearchFor = "%".$SearchFor."%";
-		else if( $strSearchOption == "Starts with" )
-			$SearchFor = $SearchFor."%";
-
-		if( $strSearchOption=="Contains" || $strSearchOption=="Starts with" || $strSearchOption == "Equals" )
-			return $this->buildWhere($gstrField, $SearchFor, $strSearchOption == "Equals");
-
-		return "";
-	}
-
-	function buildWhere($gstrField, $value, $equals = false)
-	{
-		$likeVal = $this->connection->prepareString('%searchStr":"'.$value.':sStrEnd"%');
-		$notLikeVal = $this->connection->prepareString($value);
-
-		if( !$this->btexttype && IsCharType($this->type) && $this->pageObject->pSetEdit->getNCSearch() )
-		{
-			// search is case-insensitive
-			$likeVal = $this->connection->upper( $likeVal );
-			$notLikeVal = $this->connection->upper( $notLikeVal);
-		}
-
-		if( $this->connection->dbType == nDATABASE_Access )
-			$testSymbols = "'_{%}_'";
-		else
-			$testSymbols = "'[{%'";
-
-		return "((".$gstrField." ".$this->like." ".$testSymbols." and ".$gstrField." ".$this->like." ".$likeVal.") or (".
-			$gstrField." not ".$this->like." ".$testSymbols." and ".$gstrField." ".($equals ? "=" : $this->like)." ".$notLikeVal."))";
-	}
-
 	/**
 	 * Form the control specified search options array and built the control's search options markup
 	 * @param String selOpt		The search option value
@@ -570,5 +496,70 @@ class FileField extends EditControl
 
 		return my_json_encode( $filesData );
 	}
+	
+	/**
+	 * 	Returns basic condition
+	 */
+	public function getBasicFieldCondition( $searchFor, $strSearchOption, $searchFor2 = "", $etype = "" ) {
+		if( $strSearchOption == EQUALS ) {			
+			return $this->getFilenameCondition( dsopEQUAL, $searchFor );
+		} else if( $strSearchOption == STARTS_WITH ) {
+			return $this->getFilenameCondition( dsopSTART, $searchFor );
+		} else if( $strSearchOption == CONTAINS ) {
+			return $this->getFilenameCondition( dsopCONTAIN, $searchFor );
+		} else if( $strSearchOption == EMPTY_SEARCH ) {
+			return DataCondition::FieldIs( $this->field, dsopEMPTY, $searchFor );
+		}
+		return null;
+	}
+	
+	/**
+	 * Get file field search condition
+	 * @param operation dsopEQUAL | dsopSTART | dsopCONTAIN
+	 * @param String searchFor
+	 * @return DsCondition
+	 */	
+	protected function getFilenameCondition( $operation, $searchFor ) {
+		$caseInsensitive = $this->pageObject->pSetEdit->getNCSearch() ? dsCASE_INSENSITIVE : dsCASE_DEFAULT;
+				
+		$startCondition = DataCondition::FieldIs( $this->field, dsopSTART, "[{", $caseInsensitive );
+					
+		// To extend like condition pattern
+		$likeWrapper = null;
+		$before = 'searchStr":"';
+		$after = ':sStrEnd"';
+		
+		// set up suitable value and like wrapper parts
+		// to get proper like pattern for Condition with dsopCONTAIN op 
+		// b $before, a $after, v $searchFor
+		if( $operation == dsopEQUAL ) {
+			// %bva%   		eg '%searchStr":"test.gif,!:sStrEnd"%'
+			// ',!' is added to the downloaded file name (ex. "test.gif,!")
+			$fileSearchFor = $before. $searchFor.',!' .$after;
+		} else if( $operation == dsopSTART ) {
+			// %bv%a% 		eg '%searchStr":"test.gif%:sStrEnd"%'
+			$fileSearchFor = $before.$searchFor;
+			$likeWrapper = array( 'after' => $after );
+		} else /* dsopCONTAIN */ {
+			// %b%v%a%		eg '%searchStr":"%test.gif%:sStrEnd"%'
+			$fileSearchFor = $searchFor;
+			$likeWrapper = array( 'before' => $before, 'after' => $after );
+		}
+						
+		return new DsCondition(
+			array(
+				new DsOperand( dsotCONDITION, DataCondition::_And( array( 
+					$startCondition,				
+					DataCondition::FieldIs( $this->field, dsopCONTAIN, $fileSearchFor, $caseInsensitive, 0, $likeWrapper )	
+				))),
+				new DsOperand( dsotCONDITION, DataCondition::_And( array( 
+					DataCondition::_Not( $startCondition ), 
+					DataCondition::FieldIs( $this->field, $operation, $searchFor, $caseInsensitive )
+				)))
+			),
+			dsopOR,
+			$caseInsensitive
+		);		
+	}	
 }
 ?>

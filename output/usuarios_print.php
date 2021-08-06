@@ -18,10 +18,6 @@ if( !Security::processPageSecurity( $strtablename, 'P' ) )
 	return;
 
 
-
-
-
-
 $xt = new Xtempl();
 
 //array of params for classes
@@ -31,13 +27,16 @@ $params["xt"] = &$xt;
 $params["pageType"] = PAGE_PRINT;
 $params["pageName"] = postvalue("page");
 $params["tName"] = $strTableName;
-$params["selection"] = postvalue("selection"); //PrintPage::readSelectedRecordsFromRequest( "public.Usuarios" );
+$params["selection"] = postvalue("selection"); //PrintPage::readSelectedRecordsFromRequest( "public.usuarios" );
 $params["allPagesMode"] = postvalue("all");
 $params["detailTables"] = postvalue("details");
 $params["splitByRecords"] = postvalue("records");
 $params["mode"] = postvalue( "pdfjson" ) ? PRINT_PDFJSON : PRINT_SIMPLE;
 $params["pdfBackgroundImage"] = postvalue("pdfBackgroundImage");
 
+$params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 
 $pageObject = new PrintPage($params);
 $pageObject->init();

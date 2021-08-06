@@ -1,16 +1,18 @@
 <?php
+
+require_once( getabspath("classes/datasource/dataresult.php") );
 /**
  * A wrapper of the Connection class methods
  * basing on an SQL querty result hanle
  */
-class QueryResult
+class QueryResult extends DataResult
 {
 	/**
 	 * The basic Connection object
 	 * @type Connection
 	 */
 	protected $connectionObj;
-	
+
 	/**
 	 * the query result handle
 	 * @type Mixed
@@ -31,13 +33,17 @@ class QueryResult
 	 *	1 - unsuccessful attempt to fetch data made. EOF
 	 */
 	protected $state = -1;
+
+
 	
 	
 	function __construct( $connectionObj, $qHandle )
 	{
+		parent::__construct();
 		$this->connectionObj = $connectionObj;
 		$this->handle = $qHandle;
 	}
+
 	
 	/**
 	 * Get the query result handle
@@ -68,6 +74,9 @@ class QueryResult
 		}
 		
 		$ret = $this->connectionObj->fetch_array( $this->handle );
+		if( $this->fieldSubs ) {
+			$ret = $this->substituteFields( $ret );
+		}
 		$this->state = $ret ? -1 : 1;
 		return $ret;
 	}
@@ -120,9 +129,9 @@ class QueryResult
 	/**
 	 * A wrapper for the Connection::seekPage method
 	 */	
-	public function seekPage( $pageSize, $pageStart )
+	public function seekRecord( $n )
 	{
-		$this->connectionObj->seekPage($this->handle, $pageSize, $pageStart);
+		$this->connectionObj->seekRecord( $this->handle, $n );
 	}
 	
 	public function eof() 
@@ -140,13 +149,6 @@ class QueryResult
 		$this->state = $this->data ? 0 : 1;
 	}
 	
-	protected function numericToAssoc( $data ) {
-		$ret = array();
-		$nFields = $this->numFields();
-		for( $i = 0; $i < $nFields; ++$i )
-			$ret[ $this->fieldNames[ $i ] ] = $data[ $i ];
-		return $ret;
-	}
 	
 	protected function fillColumnNames()
 	{
@@ -175,19 +177,6 @@ class QueryResult
 		return $this->state != 1;
 	}
 	
-	public function value( $field ) 
-	{
-		if( !$this->prepareRecord() )
-			return null;
-		if( is_int($field) )
-			return $this->data[ $field ];
-		if( isset( $this->fieldMap[ $field ] ) )
-			return $this->data[ $this->fieldMap[ $field ] ];
-		if( isset( $this->upperMap[ strtoupper( $field ) ] ) )
-			return $this->data[ $this->upperMap[ strtoupper( $field ) ] ];
-		return null;
-	}
-	
 	public function getData()
 	{
 		if( !$this->prepareRecord() )
@@ -201,5 +190,20 @@ class QueryResult
 			return null;
 		return $this->data;
 	}
+
+	public function count()
+	{
+		$cnt = 0;
+		while( $data = $this->fetchAssoc() ) {
+			++$cnt;
+		}
+		return $cnt;
+	}
+
+	public function reorder( $callback ) {
+		$arrayResult = ArrayResult::createFromResult( $this );
+		return $arrayResult->reorder( $callback );
+	}
+
 }
 ?>

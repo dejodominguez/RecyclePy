@@ -11,8 +11,8 @@ class EditControlsContainer
 	
 	public $pageObject = null;
 	
-	public $pageAddLikeInline = false;
-	public $pageEditLikeInline = false;
+	public $pageLikeInline = false;
+	
 	public $tableBasedSearchPanelAdded = false;
 	
 	public $searchPanelActivated = false;
@@ -37,9 +37,10 @@ class EditControlsContainer
 		if($pageObject != null)
 		{
 			$this->pageObject = $pageObject;
-			$this->pageAddLikeInline = $pageObject->pageType == PAGE_ADD && $pageObject->mode == ADD_INLINE;
-			$this->pageEditLikeInline = $pageObject->pageType == PAGE_EDIT && $pageObject->mode == EDIT_INLINE;
 			$this->tName = $pageObject->tName;
+			
+			$this->pageLikeInline = $pageObject->pageType == PAGE_ADD && $pageObject->mode == ADD_INLINE ||
+				$pageObject->pageType == PAGE_EDIT && $pageObject->mode == EDIT_INLINE;
 		}
 		else 
 		{
@@ -82,8 +83,16 @@ class EditControlsContainer
 	
 	function addControlsJSAndCSS()
 	{
-		$pageTypes = array();
-		switch ($this->pageType)
+		$allowedPageTypes = array( PAGE_ADD, PAGE_EDIT, PAGE_VIEW, PAGE_LIST, 
+			PAGE_SEARCH, PAGE_REGISTER, PAGE_LOGIN, PAGE_USERINFO );
+	
+		// showing if there is Search panel on the page		
+		$searchPanelActivated = $this->isSearchPanelActivated();
+		
+		if( !in_array( $this->pageType, $allowedPageTypes ) && !$searchPanelActivated ) 
+			return;
+
+		switch( $this->pageType )
 		{
 			case PAGE_ADD:
 				$pageTypeStr = "Add";
@@ -93,33 +102,26 @@ class EditControlsContainer
 				break;
 			case PAGE_VIEW:	
 			case PAGE_LIST:
-			case PAGE_SEARCH:
 				$pageTypeStr = "List";
-				break;
-			case PAGE_REGISTER:
-				$pageTypeStr = "RegisterOrSearch";
-				break;
+				break;		
 			default:
 				$pageTypeStr = "";
 		}
-		
-		// the indicator showing if there is the Search panel on the page		
-		$searchPanelActivated = $this->isSearchPanelActivated();
-		
-		if($pageTypeStr == "" && !$searchPanelActivated) 
-			return;
 
-		if($pageTypeStr != "" && $this->pageType != PAGE_SEARCH)
+		if( $pageTypeStr != "" )
 		{
-			$getEditFieldsFunc = "get".(($this->pageAddLikeInline || $this->pageEditLikeInline) ? "Inline" : "").$pageTypeStr."Fields";
-			if($this->pageAddLikeInline || $this->pageEditLikeInline)
+			$getEditFieldsFunc = "get".($this->pageLikeInline ? "Inline" : "").$pageTypeStr."Fields";
+			if( $this->pageLikeInline )
 				$appearOnPageFunc = "appearOnInline".$pageTypeStr;
 			else 
 				$appearOnPageFunc = "appearOn".$pageTypeStr."Page";
 		}
-		switch($this->pageType)
+		
+		switch( $this->pageType )
 		{
+			case PAGE_LOGIN:
 			case PAGE_REGISTER:
+			case PAGE_USERINFO:
 				$fields = $this->pSetEdit->getPageFields();
 				break;
 			case PAGE_SEARCH:
@@ -127,27 +129,34 @@ class EditControlsContainer
 				break;
 			default:
 				$fields = array();
-				if($getEditFieldsFunc)
+				if( $getEditFieldsFunc )
 					$fields = $this->pSetEdit->$getEditFieldsFunc();	
 		}
 		
 		// Addign fields that aren't appear at list page, but appear on search panel  
 		$searchFields = array();
-		if($searchPanelActivated)
+		if( $searchPanelActivated )
 		{
 			$searchFields = $this->pSetEdit->getPanelSearchFields();
 			$searchFields = array_merge($searchFields, $this->pSetEdit->getAllSearchFields());
 			$fields = array_merge($searchFields, $fields);
 			$fields = array_unique($fields);			
 		}
+		
 		foreach( $fields as $i => $f )
 		{
 			$appear = false;
-			if($this->pageType == PAGE_REGISTER || $this->pageType == PAGE_SEARCH || in_array($f, $searchFields))
+			
+			if( $this->pageType == PAGE_REGISTER || $this->pageType == PAGE_SEARCH 
+				|| $this->pageType == PAGE_LOGIN || $this->pageType == PAGE_USERINFO 
+				|| in_array($f, $searchFields) )
+			{
 				$appear = true;
-			else if($appearOnPageFunc) 
+			} 
+			else if( $appearOnPageFunc )
 				$appear = $this->pSetEdit->$appearOnPageFunc($f);
-			if($appear)
+			
+			if( $appear )
 			{
 				$editControl = $this->getControl($f);
 				$editControl->addJSFiles();
@@ -164,8 +173,8 @@ class EditControlsContainer
 	 */
 	function getControl($field, $id = "", $extraParmas = array())
 	{
-		if( count($extraParmas) && $extraParmas["getDetKeyReadOnlyCtrl"] ) 
-		{
+/*
+		if( count($extraParmas) && $extraParmas["makeReadonly"] ) {
 			include_once(getabspath("classes/controls/Control.php"));
 			$className = $this->classNamesForEdit[ EDIT_FORMAT_READONLY ];
 			
@@ -174,6 +183,7 @@ class EditControlsContainer
 			
 			return $ctrl;
 		}
+*/		
 		
 		if( count($extraParmas) && $extraParmas["getConrirmFieldCtrl"] ) 
 		{
@@ -195,11 +205,11 @@ class EditControlsContainer
 			
 			$userControl = false;
 			
-			$editFormat = $this->pSetEdit->getEditFormat($field);
+			$editFormat = $this->getEditFormat($field);
 			if($editFormat == EDIT_FORMAT_TEXT_FIELD && IsDateFieldType($this->pSetEdit->getFieldType($field)))
 				$editFormat = EDIT_FORMAT_DATE;
 			
-			if($this->pageType == PAGE_SEARCH || $this->pageType == PAGE_LIST)
+			if( ($this->pageType == PAGE_SEARCH || $this->pageType == PAGE_LIST ) && !$extraParmas["spreadsheet"] )
 			{
 				// Text field may be Lookup field on some page
 				$pageTypebyLookupFormat = $this->pSetEdit->getPageTypeByFieldEditFormat($field, EDIT_FORMAT_LOOKUP_WIZARD);
@@ -238,6 +248,8 @@ class EditControlsContainer
 					
 			$this->controls[ $field ] = createControlClass($className, $field, $this->pageObject != null ? $this->pageObject : $this, $id, $this->connection);
 			$this->controls[ $field ]->container = $this;
+			$this->controls[ $field ]->forSpreadsheetGrid = $extraParmas["spreadsheet"];
+			
 			if($userControl)
 			{
 				$this->controls[ $field ]->format = $className;
@@ -309,6 +321,13 @@ class EditControlsContainer
 		$this->classNamesForSearch[EDIT_FORMAT_FILE] = "FileField";
 		$this->classNamesForSearch[EDIT_FORMAT_LOOKUP_WIZARD] = "LookupField";
 	
+	}
+
+	protected function getEditFormat( $field ) {
+		if( $this->pageObject ) {
+			return $this->pageObject->getEditFormat( $field );
+		}
+		return $this->pSetEdit->getEditFormat( $field );
 	}
 }
 ?>

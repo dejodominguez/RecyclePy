@@ -28,7 +28,7 @@ class TimeField extends DateTimeControl
 
 	function buildControl($value, $mode, $fieldNum, $validate, $additionalCtrlParams, $data)
 	{
-		if($this->container->pageType == PAGE_LIST || $this->container->pageType == PAGE_SEARCH)
+		if( $this->container->pageType == PAGE_LIST )
 			$value = prepare_for_db($this->field, $value, "time");
 
 		parent::buildControl($value, $mode, $fieldNum, $validate, $additionalCtrlParams, $data);
@@ -110,39 +110,6 @@ class TimeField extends DateTimeControl
 	function getFirstElementId()
 	{
 		return $this->cfield;
-	}
-
-	function SQLWhere($SearchFor, $strSearchOption, $SearchFor2, $etype, $isSuggest)
-	{
-		$hasDigits = false;
-		for($i = 0; $i < strlen($SearchFor); $i++)
-		{
-			if(is_numeric($SearchFor[$i]))
-			{
-				$hasDigits = true;
-				break;
-			}
-		}
-		
-		if( !$hasDigits )
-		{
-			for($i = 0; $i < strlen($SearchFor2); $i++)
-			{
-				if(is_numeric($SearchFor2[$i]))
-				{
-					$hasDigits = true;
-					break;
-				}
-			}
-		}
-		
-		if( !$hasDigits || $SearchFor == "" )
-			return "";
-
-		$SearchFor = prepare_for_db($this->field, $SearchFor, "time");
-		$SearchFor2 = prepare_for_db($this->field, $SearchFor2, "time");
-		
-		return parent::SQLWhere($SearchFor, $strSearchOption, $SearchFor2, $etype, $isSuggest);
 	}
 
 	function addCSSFiles()

@@ -1,19 +1,17 @@
 <?php
-
-
-
 $tdatabarrios = array();
 $tdatabarrios[".searchableFields"] = array();
 $tdatabarrios[".ShortName"] = "barrios";
 $tdatabarrios[".OwnerID"] = "";
-$tdatabarrios[".OriginalTable"] = "public.Barrios";
+$tdatabarrios[".OriginalTable"] = "public.barrios";
 
-
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
 
 $tdatabarrios[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
+$tdatabarrios[".originalPagesByType"] = $tdatabarrios[".pagesByType"];
 $tdatabarrios[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdatabarrios[".defaultPages"] = $defaultPages;
+$tdatabarrios[".originalPages"] = $tdatabarrios[".pages"];
+$tdatabarrios[".defaultPages"] = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
+$tdatabarrios[".originalDefaultPages"] = $tdatabarrios[".defaultPages"];
 
 //	field labels
 $fieldLabelsbarrios = array();
@@ -27,12 +25,12 @@ if(mlang_getcurrentlang()=="Spanish")
 	$fieldToolTipsbarrios["Spanish"] = array();
 	$placeHoldersbarrios["Spanish"] = array();
 	$pageTitlesbarrios["Spanish"] = array();
-	$fieldLabelsbarrios["Spanish"]["IdBarrio"] = "Id Barrio";
-	$fieldToolTipsbarrios["Spanish"]["IdBarrio"] = "";
-	$placeHoldersbarrios["Spanish"]["IdBarrio"] = "";
-	$fieldLabelsbarrios["Spanish"]["DescriBarrio"] = "Descri Barrio";
-	$fieldToolTipsbarrios["Spanish"]["DescriBarrio"] = "";
-	$placeHoldersbarrios["Spanish"]["DescriBarrio"] = "";
+	$fieldLabelsbarrios["Spanish"]["id_barrio"] = "Código ";
+	$fieldToolTipsbarrios["Spanish"]["id_barrio"] = "";
+	$placeHoldersbarrios["Spanish"]["id_barrio"] = "";
+	$fieldLabelsbarrios["Spanish"]["descri_barrio"] = "Descripción";
+	$fieldToolTipsbarrios["Spanish"]["descri_barrio"] = "";
+	$placeHoldersbarrios["Spanish"]["descri_barrio"] = "";
 	if (count($fieldToolTipsbarrios["Spanish"]))
 		$tdatabarrios[".isUseToolTips"] = true;
 }
@@ -47,8 +45,10 @@ $tdatabarrios[".nSecOptions"] = 0;
 
 $tdatabarrios[".mainTableOwnerID"] = "";
 $tdatabarrios[".entityType"] = 0;
+$tdatabarrios[".connId"] = "RealEstate_at_localhost";
 
-$tdatabarrios[".strOriginalTableName"] = "public.Barrios";
+
+$tdatabarrios[".strOriginalTableName"] = "public.barrios";
 
 	
 
@@ -60,14 +60,9 @@ $tdatabarrios[".showEditInPopup"] = false;
 
 $tdatabarrios[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdatabarrios[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdatabarrios[".listAjax"] = false;
 //	temporary
-$tdatabarrios[".listAjax"] = false;
+//$tdatabarrios[".listAjax"] = false;
 
 	$tdatabarrios[".audit"] = false;
 
@@ -147,7 +142,7 @@ $tdatabarrios[".addPageEvents"] = false;
 $tdatabarrios[".isUseTimeForSearch"] = false;
 
 
-$tdatabarrios[".badgeColor"] = "6B8E23";
+$tdatabarrios[".badgeColor"] = "9ACD32";
 
 
 $tdatabarrios[".allSearchFields"] = array();
@@ -155,8 +150,8 @@ $tdatabarrios[".filterFields"] = array();
 $tdatabarrios[".requiredSearchFields"] = array();
 
 $tdatabarrios[".googleLikeFields"] = array();
-$tdatabarrios[".googleLikeFields"][] = "IdBarrio";
-$tdatabarrios[".googleLikeFields"][] = "DescriBarrio";
+$tdatabarrios[".googleLikeFields"][] = "id_barrio";
+$tdatabarrios[".googleLikeFields"][] = "descri_barrio";
 
 
 
@@ -185,14 +180,13 @@ $tdatabarrios[".warnLeavingPages"] = true;
 
 
 $tstrOrderBy = "";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
 $tdatabarrios[".strOrderBy"] = $tstrOrderBy;
 
 $tdatabarrios[".orderindexes"] = array();
 
-$tdatabarrios[".sqlHead"] = "SELECT \"IdBarrio\",  	\"DescriBarrio\"";
-$tdatabarrios[".sqlFrom"] = "FROM \"public\".\"Barrios\"";
+
+$tdatabarrios[".sqlHead"] = "SELECT id_barrio,  	descri_barrio";
+$tdatabarrios[".sqlFrom"] = "FROM \"public\".barrios";
 $tdatabarrios[".sqlWhereExpr"] = "";
 $tdatabarrios[".sqlTail"] = "";
 
@@ -230,7 +224,7 @@ $tdatabarrios[".arrGroupsPerPage"] = $arrGPP;
 $tdatabarrios[".highlightSearchResults"] = true;
 
 $tableKeysbarrios = array();
-$tableKeysbarrios[] = "IdBarrio";
+$tableKeysbarrios[] = "id_barrio";
 $tdatabarrios[".Keys"] = $tableKeysbarrios;
 
 
@@ -239,26 +233,27 @@ $tdatabarrios[".hideMobileList"] = array();
 
 
 
-//	IdBarrio
+//	id_barrio
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 1;
-	$fdata["strName"] = "IdBarrio";
-	$fdata["GoodName"] = "IdBarrio";
-	$fdata["ownerTable"] = "public.Barrios";
-	$fdata["Label"] = GetFieldLabel("public_Barrios","IdBarrio");
+	$fdata["strName"] = "id_barrio";
+	$fdata["GoodName"] = "id_barrio";
+	$fdata["ownerTable"] = "public.barrios";
+	$fdata["Label"] = GetFieldLabel("public_barrios","id_barrio");
 	$fdata["FieldType"] = 3;
 
-	
-		$fdata["AutoInc"] = true;
 
+	
 	
 			
 
-		$fdata["strField"] = "IdBarrio";
+		$fdata["strField"] = "id_barrio";
+
+		$fdata["sourceSingle"] = "id_barrio";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"IdBarrio\"";
+	$fdata["FullName"] = "id_barrio";
 
 	
 	
@@ -280,6 +275,7 @@ $tdatabarrios[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -375,27 +371,29 @@ $tdatabarrios[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatabarrios["IdBarrio"] = $fdata;
-		$tdatabarrios[".searchableFields"][] = "IdBarrio";
-//	DescriBarrio
+	$tdatabarrios["id_barrio"] = $fdata;
+		$tdatabarrios[".searchableFields"][] = "id_barrio";
+//	descri_barrio
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 2;
-	$fdata["strName"] = "DescriBarrio";
-	$fdata["GoodName"] = "DescriBarrio";
-	$fdata["ownerTable"] = "public.Barrios";
-	$fdata["Label"] = GetFieldLabel("public_Barrios","DescriBarrio");
+	$fdata["strName"] = "descri_barrio";
+	$fdata["GoodName"] = "descri_barrio";
+	$fdata["ownerTable"] = "public.barrios";
+	$fdata["Label"] = GetFieldLabel("public_barrios","descri_barrio");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "DescriBarrio";
+		$fdata["strField"] = "descri_barrio";
+
+		$fdata["sourceSingle"] = "descri_barrio";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"DescriBarrio\"";
+	$fdata["FullName"] = "descri_barrio";
 
 	
 	
@@ -417,6 +415,7 @@ $tdatabarrios[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -509,58 +508,65 @@ $tdatabarrios[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatabarrios["DescriBarrio"] = $fdata;
-		$tdatabarrios[".searchableFields"][] = "DescriBarrio";
+	$tdatabarrios["descri_barrio"] = $fdata;
+		$tdatabarrios[".searchableFields"][] = "descri_barrio";
 
 
-$tables_data["public.Barrios"]=&$tdatabarrios;
-$field_labels["public_Barrios"] = &$fieldLabelsbarrios;
-$fieldToolTips["public_Barrios"] = &$fieldToolTipsbarrios;
-$placeHolders["public_Barrios"] = &$placeHoldersbarrios;
-$page_titles["public_Barrios"] = &$pageTitlesbarrios;
+$tables_data["public.barrios"]=&$tdatabarrios;
+$field_labels["public_barrios"] = &$fieldLabelsbarrios;
+$fieldToolTips["public_barrios"] = &$fieldToolTipsbarrios;
+$placeHolders["public_barrios"] = &$placeHoldersbarrios;
+$page_titles["public_barrios"] = &$pageTitlesbarrios;
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
-$detailsTablesData["public.Barrios"] = array();
-//	public.Usuarios
+
+//if !@TABLE.bReportCrossTab
+
+$detailsTablesData["public.barrios"] = array();
+//	public.usuarios
 	
 	
 
 		$dIndex = 0;
 	$detailsParam = array();
-	$detailsParam["dDataSourceTable"]="public.Usuarios";
-		$detailsParam["dOriginalTable"] = "public.Usuarios";
+	$detailsParam["dDataSourceTable"]="public.usuarios";
+		$detailsParam["dOriginalTable"] = "public.usuarios";
 
 
 
-				$detailsParam["dType"]=PAGE_LIST;
+		
+		$detailsParam["dType"]=PAGE_LIST;
 	$detailsParam["dShortTable"] = "usuarios";
-	$detailsParam["dCaptionTable"] = GetTableCaption("public_Usuarios");
+	$detailsParam["dCaptionTable"] = GetTableCaption("public_usuarios");
 	$detailsParam["masterKeys"] =array();
 	$detailsParam["detailKeys"] =array();
 
 
 		
-	$detailsTablesData["public.Barrios"][$dIndex] = $detailsParam;
+	$detailsTablesData["public.barrios"][$dIndex] = $detailsParam;
 
 	
-		$detailsTablesData["public.Barrios"][$dIndex]["masterKeys"] = array();
+		$detailsTablesData["public.barrios"][$dIndex]["masterKeys"] = array();
 
-	$detailsTablesData["public.Barrios"][$dIndex]["masterKeys"][]="IdBarrio";
+	$detailsTablesData["public.barrios"][$dIndex]["masterKeys"][]="id_barrio";
 
-				$detailsTablesData["public.Barrios"][$dIndex]["detailKeys"] = array();
+				$detailsTablesData["public.barrios"][$dIndex]["detailKeys"] = array();
 
-	$detailsTablesData["public.Barrios"][$dIndex]["detailKeys"][]="IdBarrio";
+	$detailsTablesData["public.barrios"][$dIndex]["detailKeys"][]="id_barrio";
+//endif
 
 // tables which are master tables for current table (detail)
-$masterTablesData["public.Barrios"] = array();
+$masterTablesData["public.barrios"] = array();
 
 
 
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -575,8 +581,8 @@ function createSqlQuery_barrios()
 {
 $proto0=array();
 $proto0["m_strHead"] = "SELECT";
-$proto0["m_strFieldList"] = "\"IdBarrio\",  	\"DescriBarrio\"";
-$proto0["m_strFrom"] = "FROM \"public\".\"Barrios\"";
+$proto0["m_strFieldList"] = "id_barrio,  	descri_barrio";
+$proto0["m_strFrom"] = "FROM \"public\".barrios";
 $proto0["m_strWhere"] = "";
 $proto0["m_strOrderBy"] = "";
 	
@@ -617,13 +623,13 @@ $proto0["m_having"] = $obj;
 $proto0["m_fieldlist"] = array();
 						$proto6=array();
 			$obj = new SQLField(array(
-	"m_strName" => "IdBarrio",
-	"m_strTable" => "public.Barrios",
-	"m_srcTableName" => "public.Barrios"
+	"m_strName" => "id_barrio",
+	"m_strTable" => "public.barrios",
+	"m_srcTableName" => "public.barrios"
 ));
 
-$proto6["m_sql"] = "\"IdBarrio\"";
-$proto6["m_srcTableName"] = "public.Barrios";
+$proto6["m_sql"] = "id_barrio";
+$proto6["m_srcTableName"] = "public.barrios";
 $proto6["m_expr"]=$obj;
 $proto6["m_alias"] = "";
 $obj = new SQLFieldListItem($proto6);
@@ -631,13 +637,13 @@ $obj = new SQLFieldListItem($proto6);
 $proto0["m_fieldlist"][]=$obj;
 						$proto8=array();
 			$obj = new SQLField(array(
-	"m_strName" => "DescriBarrio",
-	"m_strTable" => "public.Barrios",
-	"m_srcTableName" => "public.Barrios"
+	"m_strName" => "descri_barrio",
+	"m_strTable" => "public.barrios",
+	"m_srcTableName" => "public.barrios"
 ));
 
-$proto8["m_sql"] = "\"DescriBarrio\"";
-$proto8["m_srcTableName"] = "public.Barrios";
+$proto8["m_sql"] = "descri_barrio";
+$proto8["m_srcTableName"] = "public.barrios";
 $proto8["m_expr"]=$obj;
 $proto8["m_alias"] = "";
 $obj = new SQLFieldListItem($proto8);
@@ -647,17 +653,17 @@ $proto0["m_fromlist"] = array();
 												$proto10=array();
 $proto10["m_link"] = "SQLL_MAIN";
 			$proto11=array();
-$proto11["m_strName"] = "public.Barrios";
-$proto11["m_srcTableName"] = "public.Barrios";
+$proto11["m_strName"] = "public.barrios";
+$proto11["m_srcTableName"] = "public.barrios";
 $proto11["m_columns"] = array();
-$proto11["m_columns"][] = "IdBarrio";
-$proto11["m_columns"][] = "DescriBarrio";
+$proto11["m_columns"][] = "id_barrio";
+$proto11["m_columns"][] = "descri_barrio";
 $obj = new SQLTable($proto11);
 
 $proto10["m_table"] = $obj;
-$proto10["m_sql"] = "\"public\".\"Barrios\"";
+$proto10["m_sql"] = "\"public\".barrios";
 $proto10["m_alias"] = "";
-$proto10["m_srcTableName"] = "public.Barrios";
+$proto10["m_srcTableName"] = "public.barrios";
 $proto12=array();
 $proto12["m_sql"] = "";
 $proto12["m_uniontype"] = "SQLL_UNKNOWN";
@@ -679,7 +685,7 @@ $obj = new SQLFromListItem($proto10);
 $proto0["m_fromlist"][]=$obj;
 $proto0["m_groupby"] = array();
 $proto0["m_orderby"] = array();
-$proto0["m_srcTableName"]="public.Barrios";		
+$proto0["m_srcTableName"]="public.barrios";		
 $obj = new SQLQuery($proto0);
 
 	return $obj;
@@ -694,7 +700,9 @@ $queryData_barrios = createSqlQuery_barrios();
 
 $tdatabarrios[".sqlquery"] = $queryData_barrios;
 
-$tableEvents["public.Barrios"] = new eventsBase;
+
+
+$tableEvents["public.barrios"] = new eventsBase;
 $tdatabarrios[".hasEvents"] = false;
 
 ?>

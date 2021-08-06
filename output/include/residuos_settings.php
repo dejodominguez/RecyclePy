@@ -1,19 +1,17 @@
 <?php
-
-
-
 $tdataresiduos = array();
 $tdataresiduos[".searchableFields"] = array();
 $tdataresiduos[".ShortName"] = "residuos";
 $tdataresiduos[".OwnerID"] = "";
-$tdataresiduos[".OriginalTable"] = "public.Residuos";
+$tdataresiduos[".OriginalTable"] = "public.residuos";
 
 
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
-
-$tdataresiduos[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
-$tdataresiduos[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdataresiduos[".defaultPages"] = $defaultPages;
+$tdataresiduos[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"]}" );
+$tdataresiduos[".originalPagesByType"] = $tdataresiduos[".pagesByType"];
+$tdataresiduos[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"]}" ) );
+$tdataresiduos[".originalPages"] = $tdataresiduos[".pages"];
+$tdataresiduos[".defaultPages"] = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\"}" );
+$tdataresiduos[".originalDefaultPages"] = $tdataresiduos[".defaultPages"];
 
 //	field labels
 $fieldLabelsresiduos = array();
@@ -27,12 +25,12 @@ if(mlang_getcurrentlang()=="Spanish")
 	$fieldToolTipsresiduos["Spanish"] = array();
 	$placeHoldersresiduos["Spanish"] = array();
 	$pageTitlesresiduos["Spanish"] = array();
-	$fieldLabelsresiduos["Spanish"]["IdResiduo"] = "Codigo";
-	$fieldToolTipsresiduos["Spanish"]["IdResiduo"] = "";
-	$placeHoldersresiduos["Spanish"]["IdResiduo"] = "";
-	$fieldLabelsresiduos["Spanish"]["DescriResiduo"] = "Descripción";
-	$fieldToolTipsresiduos["Spanish"]["DescriResiduo"] = "";
-	$placeHoldersresiduos["Spanish"]["DescriResiduo"] = "";
+	$fieldLabelsresiduos["Spanish"]["descri_residuo"] = "Descripción Residuo";
+	$fieldToolTipsresiduos["Spanish"]["descri_residuo"] = "";
+	$placeHoldersresiduos["Spanish"]["descri_residuo"] = "";
+	$fieldLabelsresiduos["Spanish"]["id_residuo"] = "Código";
+	$fieldToolTipsresiduos["Spanish"]["id_residuo"] = "";
+	$placeHoldersresiduos["Spanish"]["id_residuo"] = "";
 	if (count($fieldToolTipsresiduos["Spanish"]))
 		$tdataresiduos[".isUseToolTips"] = true;
 }
@@ -47,8 +45,10 @@ $tdataresiduos[".nSecOptions"] = 0;
 
 $tdataresiduos[".mainTableOwnerID"] = "";
 $tdataresiduos[".entityType"] = 0;
+$tdataresiduos[".connId"] = "RealEstate_at_localhost";
 
-$tdataresiduos[".strOriginalTableName"] = "public.Residuos";
+
+$tdataresiduos[".strOriginalTableName"] = "public.residuos";
 
 	
 
@@ -60,14 +60,9 @@ $tdataresiduos[".showEditInPopup"] = false;
 
 $tdataresiduos[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdataresiduos[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdataresiduos[".listAjax"] = false;
 //	temporary
-$tdataresiduos[".listAjax"] = false;
+//$tdataresiduos[".listAjax"] = false;
 
 	$tdataresiduos[".audit"] = false;
 
@@ -147,7 +142,7 @@ $tdataresiduos[".addPageEvents"] = false;
 $tdataresiduos[".isUseTimeForSearch"] = false;
 
 
-$tdataresiduos[".badgeColor"] = "4169E1";
+$tdataresiduos[".badgeColor"] = "9ACD32";
 
 
 $tdataresiduos[".allSearchFields"] = array();
@@ -155,8 +150,8 @@ $tdataresiduos[".filterFields"] = array();
 $tdataresiduos[".requiredSearchFields"] = array();
 
 $tdataresiduos[".googleLikeFields"] = array();
-$tdataresiduos[".googleLikeFields"][] = "IdResiduo";
-$tdataresiduos[".googleLikeFields"][] = "DescriResiduo";
+$tdataresiduos[".googleLikeFields"][] = "id_residuo";
+$tdataresiduos[".googleLikeFields"][] = "descri_residuo";
 
 
 
@@ -185,14 +180,13 @@ $tdataresiduos[".warnLeavingPages"] = true;
 
 
 $tstrOrderBy = "";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
 $tdataresiduos[".strOrderBy"] = $tstrOrderBy;
 
 $tdataresiduos[".orderindexes"] = array();
 
-$tdataresiduos[".sqlHead"] = "SELECT \"IdResiduo\",  	\"DescriResiduo\"";
-$tdataresiduos[".sqlFrom"] = "FROM \"public\".\"Residuos\"";
+
+$tdataresiduos[".sqlHead"] = "SELECT id_residuo,  	descri_residuo";
+$tdataresiduos[".sqlFrom"] = "FROM \"public\".residuos";
 $tdataresiduos[".sqlWhereExpr"] = "";
 $tdataresiduos[".sqlTail"] = "";
 
@@ -230,7 +224,7 @@ $tdataresiduos[".arrGroupsPerPage"] = $arrGPP;
 $tdataresiduos[".highlightSearchResults"] = true;
 
 $tableKeysresiduos = array();
-$tableKeysresiduos[] = "IdResiduo";
+$tableKeysresiduos[] = "id_residuo";
 $tdataresiduos[".Keys"] = $tableKeysresiduos;
 
 
@@ -239,26 +233,27 @@ $tdataresiduos[".hideMobileList"] = array();
 
 
 
-//	IdResiduo
+//	id_residuo
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 1;
-	$fdata["strName"] = "IdResiduo";
-	$fdata["GoodName"] = "IdResiduo";
-	$fdata["ownerTable"] = "public.Residuos";
-	$fdata["Label"] = GetFieldLabel("public_Residuos","IdResiduo");
+	$fdata["strName"] = "id_residuo";
+	$fdata["GoodName"] = "id_residuo";
+	$fdata["ownerTable"] = "public.residuos";
+	$fdata["Label"] = GetFieldLabel("public_residuos","id_residuo");
 	$fdata["FieldType"] = 3;
 
-	
-		$fdata["AutoInc"] = true;
 
+	
 	
 			
 
-		$fdata["strField"] = "IdResiduo";
+		$fdata["strField"] = "id_residuo";
+
+		$fdata["sourceSingle"] = "id_residuo";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"IdResiduo\"";
+	$fdata["FullName"] = "id_residuo";
 
 	
 	
@@ -280,6 +275,7 @@ $tdataresiduos[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -375,27 +371,29 @@ $tdataresiduos[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdataresiduos["IdResiduo"] = $fdata;
-		$tdataresiduos[".searchableFields"][] = "IdResiduo";
-//	DescriResiduo
+	$tdataresiduos["id_residuo"] = $fdata;
+		$tdataresiduos[".searchableFields"][] = "id_residuo";
+//	descri_residuo
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 2;
-	$fdata["strName"] = "DescriResiduo";
-	$fdata["GoodName"] = "DescriResiduo";
-	$fdata["ownerTable"] = "public.Residuos";
-	$fdata["Label"] = GetFieldLabel("public_Residuos","DescriResiduo");
+	$fdata["strName"] = "descri_residuo";
+	$fdata["GoodName"] = "descri_residuo";
+	$fdata["ownerTable"] = "public.residuos";
+	$fdata["Label"] = GetFieldLabel("public_residuos","descri_residuo");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "DescriResiduo";
+		$fdata["strField"] = "descri_residuo";
+
+		$fdata["sourceSingle"] = "descri_residuo";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"DescriResiduo\"";
+	$fdata["FullName"] = "descri_residuo";
 
 	
 	
@@ -417,6 +415,7 @@ $tdataresiduos[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -509,58 +508,155 @@ $tdataresiduos[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdataresiduos["DescriResiduo"] = $fdata;
-		$tdataresiduos[".searchableFields"][] = "DescriResiduo";
+	$tdataresiduos["descri_residuo"] = $fdata;
+		$tdataresiduos[".searchableFields"][] = "descri_residuo";
 
 
-$tables_data["public.Residuos"]=&$tdataresiduos;
-$field_labels["public_Residuos"] = &$fieldLabelsresiduos;
-$fieldToolTips["public_Residuos"] = &$fieldToolTipsresiduos;
-$placeHolders["public_Residuos"] = &$placeHoldersresiduos;
-$page_titles["public_Residuos"] = &$pageTitlesresiduos;
+$tables_data["public.residuos"]=&$tdataresiduos;
+$field_labels["public_residuos"] = &$fieldLabelsresiduos;
+$fieldToolTips["public_residuos"] = &$fieldToolTipsresiduos;
+$placeHolders["public_residuos"] = &$placeHoldersresiduos;
+$page_titles["public_residuos"] = &$pageTitlesresiduos;
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
-$detailsTablesData["public.Residuos"] = array();
-//	public.GestionPesosResiduos
+
+//if !@TABLE.bReportCrossTab
+
+$detailsTablesData["public.residuos"] = array();
+//	public.recicladores
 	
 	
 
 		$dIndex = 0;
 	$detailsParam = array();
-	$detailsParam["dDataSourceTable"]="public.GestionPesosResiduos";
-		$detailsParam["dOriginalTable"] = "public.GestionPesosResiduos";
+	$detailsParam["dDataSourceTable"]="public.recicladores";
+		$detailsParam["dOriginalTable"] = "public.recicladores";
 
 
 
-				$detailsParam["dType"]=PAGE_LIST;
-	$detailsParam["dShortTable"] = "gestionpesosresiduos";
-	$detailsParam["dCaptionTable"] = GetTableCaption("public_GestionPesosResiduos");
+		
+		$detailsParam["dType"]=PAGE_LIST;
+	$detailsParam["dShortTable"] = "recicladores";
+	$detailsParam["dCaptionTable"] = GetTableCaption("public_recicladores");
 	$detailsParam["masterKeys"] =array();
 	$detailsParam["detailKeys"] =array();
 
 
 		
-	$detailsTablesData["public.Residuos"][$dIndex] = $detailsParam;
+	$detailsTablesData["public.residuos"][$dIndex] = $detailsParam;
 
 	
-		$detailsTablesData["public.Residuos"][$dIndex]["masterKeys"] = array();
+		$detailsTablesData["public.residuos"][$dIndex]["masterKeys"] = array();
 
-	$detailsTablesData["public.Residuos"][$dIndex]["masterKeys"][]="IdResiduo";
+	$detailsTablesData["public.residuos"][$dIndex]["masterKeys"][]="id_residuo";
 
-				$detailsTablesData["public.Residuos"][$dIndex]["detailKeys"] = array();
+				$detailsTablesData["public.residuos"][$dIndex]["detailKeys"] = array();
 
-	$detailsTablesData["public.Residuos"][$dIndex]["detailKeys"][]="IdResiduo";
+	$detailsTablesData["public.residuos"][$dIndex]["detailKeys"][]="id_residuo";
+//	public.gestion_pesos_residuos
+	
+	
+
+		$dIndex = 1;
+	$detailsParam = array();
+	$detailsParam["dDataSourceTable"]="public.gestion_pesos_residuos";
+		$detailsParam["dOriginalTable"] = "public.gestion_pesos_residuos";
+
+
+
+		
+		$detailsParam["dType"]=PAGE_LIST;
+	$detailsParam["dShortTable"] = "gestion_pesos_residuos";
+	$detailsParam["dCaptionTable"] = GetTableCaption("public_gestion_pesos_residuos");
+	$detailsParam["masterKeys"] =array();
+	$detailsParam["detailKeys"] =array();
+
+
+		
+	$detailsTablesData["public.residuos"][$dIndex] = $detailsParam;
+
+	
+		$detailsTablesData["public.residuos"][$dIndex]["masterKeys"] = array();
+
+	$detailsTablesData["public.residuos"][$dIndex]["masterKeys"][]="id_residuo";
+
+				$detailsTablesData["public.residuos"][$dIndex]["detailKeys"] = array();
+
+	$detailsTablesData["public.residuos"][$dIndex]["detailKeys"][]="id_residuo";
+//	public.empresas_recicladoras
+	
+	
+
+		$dIndex = 2;
+	$detailsParam = array();
+	$detailsParam["dDataSourceTable"]="public.empresas_recicladoras";
+		$detailsParam["dOriginalTable"] = "public.empresas_recicladoras";
+
+
+
+		
+		$detailsParam["dType"]=PAGE_LIST;
+	$detailsParam["dShortTable"] = "public_empresas_recicladoras1";
+	$detailsParam["dCaptionTable"] = GetTableCaption("public_empresas_recicladoras");
+	$detailsParam["masterKeys"] =array();
+	$detailsParam["detailKeys"] =array();
+
+
+		
+	$detailsTablesData["public.residuos"][$dIndex] = $detailsParam;
+
+	
+		$detailsTablesData["public.residuos"][$dIndex]["masterKeys"] = array();
+
+	$detailsTablesData["public.residuos"][$dIndex]["masterKeys"][]="id_residuo";
+
+				$detailsTablesData["public.residuos"][$dIndex]["detailKeys"] = array();
+
+	$detailsTablesData["public.residuos"][$dIndex]["detailKeys"][]="id_residuo";
+//	public.gestion_registros_origen
+	
+	
+
+		$dIndex = 3;
+	$detailsParam = array();
+	$detailsParam["dDataSourceTable"]="public.gestion_registros_origen";
+		$detailsParam["dOriginalTable"] = "public.gestion_registros_origen";
+
+
+
+		
+		$detailsParam["dType"]=PAGE_LIST;
+	$detailsParam["dShortTable"] = "gestion_registros_origen";
+	$detailsParam["dCaptionTable"] = GetTableCaption("public_gestion_registros_origen");
+	$detailsParam["masterKeys"] =array();
+	$detailsParam["detailKeys"] =array();
+
+
+		
+	$detailsTablesData["public.residuos"][$dIndex] = $detailsParam;
+
+	
+		$detailsTablesData["public.residuos"][$dIndex]["masterKeys"] = array();
+
+	$detailsTablesData["public.residuos"][$dIndex]["masterKeys"][]="id_residuo";
+
+				$detailsTablesData["public.residuos"][$dIndex]["detailKeys"] = array();
+
+	$detailsTablesData["public.residuos"][$dIndex]["detailKeys"][]="id_residuo";
+//endif
 
 // tables which are master tables for current table (detail)
-$masterTablesData["public.Residuos"] = array();
+$masterTablesData["public.residuos"] = array();
 
 
 
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -575,8 +671,8 @@ function createSqlQuery_residuos()
 {
 $proto0=array();
 $proto0["m_strHead"] = "SELECT";
-$proto0["m_strFieldList"] = "\"IdResiduo\",  	\"DescriResiduo\"";
-$proto0["m_strFrom"] = "FROM \"public\".\"Residuos\"";
+$proto0["m_strFieldList"] = "id_residuo,  	descri_residuo";
+$proto0["m_strFrom"] = "FROM \"public\".residuos";
 $proto0["m_strWhere"] = "";
 $proto0["m_strOrderBy"] = "";
 	
@@ -617,13 +713,13 @@ $proto0["m_having"] = $obj;
 $proto0["m_fieldlist"] = array();
 						$proto6=array();
 			$obj = new SQLField(array(
-	"m_strName" => "IdResiduo",
-	"m_strTable" => "public.Residuos",
-	"m_srcTableName" => "public.Residuos"
+	"m_strName" => "id_residuo",
+	"m_strTable" => "public.residuos",
+	"m_srcTableName" => "public.residuos"
 ));
 
-$proto6["m_sql"] = "\"IdResiduo\"";
-$proto6["m_srcTableName"] = "public.Residuos";
+$proto6["m_sql"] = "id_residuo";
+$proto6["m_srcTableName"] = "public.residuos";
 $proto6["m_expr"]=$obj;
 $proto6["m_alias"] = "";
 $obj = new SQLFieldListItem($proto6);
@@ -631,13 +727,13 @@ $obj = new SQLFieldListItem($proto6);
 $proto0["m_fieldlist"][]=$obj;
 						$proto8=array();
 			$obj = new SQLField(array(
-	"m_strName" => "DescriResiduo",
-	"m_strTable" => "public.Residuos",
-	"m_srcTableName" => "public.Residuos"
+	"m_strName" => "descri_residuo",
+	"m_strTable" => "public.residuos",
+	"m_srcTableName" => "public.residuos"
 ));
 
-$proto8["m_sql"] = "\"DescriResiduo\"";
-$proto8["m_srcTableName"] = "public.Residuos";
+$proto8["m_sql"] = "descri_residuo";
+$proto8["m_srcTableName"] = "public.residuos";
 $proto8["m_expr"]=$obj;
 $proto8["m_alias"] = "";
 $obj = new SQLFieldListItem($proto8);
@@ -647,17 +743,17 @@ $proto0["m_fromlist"] = array();
 												$proto10=array();
 $proto10["m_link"] = "SQLL_MAIN";
 			$proto11=array();
-$proto11["m_strName"] = "public.Residuos";
-$proto11["m_srcTableName"] = "public.Residuos";
+$proto11["m_strName"] = "public.residuos";
+$proto11["m_srcTableName"] = "public.residuos";
 $proto11["m_columns"] = array();
-$proto11["m_columns"][] = "IdResiduo";
-$proto11["m_columns"][] = "DescriResiduo";
+$proto11["m_columns"][] = "id_residuo";
+$proto11["m_columns"][] = "descri_residuo";
 $obj = new SQLTable($proto11);
 
 $proto10["m_table"] = $obj;
-$proto10["m_sql"] = "\"public\".\"Residuos\"";
+$proto10["m_sql"] = "\"public\".residuos";
 $proto10["m_alias"] = "";
-$proto10["m_srcTableName"] = "public.Residuos";
+$proto10["m_srcTableName"] = "public.residuos";
 $proto12=array();
 $proto12["m_sql"] = "";
 $proto12["m_uniontype"] = "SQLL_UNKNOWN";
@@ -679,7 +775,7 @@ $obj = new SQLFromListItem($proto10);
 $proto0["m_fromlist"][]=$obj;
 $proto0["m_groupby"] = array();
 $proto0["m_orderby"] = array();
-$proto0["m_srcTableName"]="public.Residuos";		
+$proto0["m_srcTableName"]="public.residuos";		
 $obj = new SQLQuery($proto0);
 
 	return $obj;
@@ -694,7 +790,9 @@ $queryData_residuos = createSqlQuery_residuos();
 
 $tdataresiduos[".sqlquery"] = $queryData_residuos;
 
-$tableEvents["public.Residuos"] = new eventsBase;
+
+
+$tableEvents["public.residuos"] = new eventsBase;
 $tdataresiduos[".hasEvents"] = false;
 
 ?>

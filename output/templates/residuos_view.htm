@@ -69,7 +69,7 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -88,7 +88,7 @@
 {BEGIN IdResiduo_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdResiduo}  r-vertical-field" data-fieldname="IdResiduo" data-signal-error-for="IdResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdResiduo" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdResiduo}  r-vertical-field" data-fieldname="IdResiduo" data-signal-error-for="IdResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdResiduo" data-fieldname="IdResiduo" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdResiduo}">
@@ -104,24 +104,24 @@
 
 {END IdResiduo_fieldblock}
 											
-{BEGIN DescriResiduo_fieldblock}
+{BEGIN descri_residuo_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_DescriResiduo}  r-vertical-field" data-fieldname="DescriResiduo" data-signal-error-for="DescriResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="DescriResiduo" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_descri_residuo}  r-vertical-field" data-fieldname="descri_residuo" data-signal-error-for="descri_residuo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="descri_residuo" data-fieldname="descri_residuo" >
 
 	
-	<label class="col-md-offset-3 col-md-6" for="{$labelfor_DescriResiduo}">
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_descri_residuo}">
 		
-		{BEGIN DescriResiduo_label}{$label public_Residuos DescriResiduo }{END DescriResiduo_label}
+		{BEGIN descri_residuo_label}{$label public_Residuos descri_residuo }{END descri_residuo_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
-		{$DescriResiduo_value}	</div>
+		{$descri_residuo_value}	</div>
 
 		
 </div>
 
 
-{END DescriResiduo_fieldblock}
+{END descri_residuo_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}
@@ -166,13 +166,13 @@
 		<span data-itemtype="hamburger" data-itemid="hamburger" {$item_hamburger} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown dropup">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-menu-hamburger"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN edit_page_button}
 	<li data-itemtype="view_edit" data-itemid="view_edit" {$item_view_edit} data-pageid="{$pageid}" data-small >
-				<a  href="#" {$edit_page_button_attrs}  title="" >
+				<a  href="residuos_edit.php?{$editlink}" {$edit_page_button_attrs}  title="" >
 				
 		Editar		
 		</a>

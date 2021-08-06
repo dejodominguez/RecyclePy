@@ -115,11 +115,6 @@ class ListPage_DPList extends ListPage_DPInline
 	}
 		
 	
-	protected function assignSessionPrefix() 
-	{
-		$this->sessionPrefix = $this->tName."_preview";	
-	}
-	
 	function showNoRecordsMessage()
 	{
 		//	show nothing

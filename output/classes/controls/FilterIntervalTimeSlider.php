@@ -129,56 +129,5 @@ class FilterIntervalTimeSlider extends FilterIntervalDateSlider
 		
 		$pageObj->controlsMap["filters"]["controls"][] = $ctrlsMap;	
 	}
-	
-	/**
-	 * Get the time slider's where
-	 * @return string
-	 */
-	static function getTimeSliderWhere($fName, $pSet, $cipherer, $table, $SearchFor, $SearchFor2, $strSearchOption, $fullFieldName) 
-	{
-		$firstDelimPos = strpos($SearchFor, ":");
-		$lastDelimPos = strrpos($SearchFor, ":");
-		if($firstDelimPos === FALSE || $firstDelimPos == $lastDelimPos)
-			return "";
-		
-		$stepType = $pSet->getFilterStepType($fName);
-		
-		$value1 = $cipherer->MakeDBValue($fName, $SearchFor, "", true);
-		
-		switch($strSearchOption)
-		{
-			case "slider":	
-				$firstDelimPos = strpos($SearchFor2, ":");
-				$lastDelimPos = strrpos($SearchFor2, ":");
-				if($firstDelimPos === FALSE || $firstDelimPos == $lastDelimPos)
-					return "";
-				
-				$cleanvalue2 = prepare_for_db($fName, $SearchFor2, "");
-				$timeArr = parsenumbers($cleanvalue2);			
-
-				if($stepType == FSST_SECONDS)	
-					$timeArr = addSecondsToTime($timeArr, 1);
-				else
-					$timeArr = addMinutesToTime($timeArr, 1);
-					
-				$hours = $timeArr[0] < 10 ? '0'.$timeArr[0] : $timeArr[0];	
-				$minutes = $timeArr[1] < 10 ? '0'.$timeArr[1] : $timeArr[1];	
-				$seconds = $timeArr[2] < 10 ? '0'.$timeArr[2] : $timeArr[2];	
-					
-				$value2 = $hours.":".$minutes.":".$seconds;
-				$value2 = add_db_quotes($fName, $value2, $table);
-
-				return $fullFieldName.">=".$value1." and ".$fullFieldName."<".$value2;;
-				
-			case 'moreequal':
-				return $fullFieldName.">=".$value1;
-				
-			case 'lessequal':	
-				return $fullFieldName."<=".$value1;
-
-			default: 
-				return "";
-		}
-	}
 }
 ?>

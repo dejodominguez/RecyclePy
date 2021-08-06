@@ -61,6 +61,8 @@ if( $forDashboardSimpleSearch )
 		}		
 	}
 	
+	$result = array();
+	
 	foreach( $sfdata as $table => $fields )
 	{
 		if ( $numberOfSuggests <= count( $result ) ) 
@@ -69,7 +71,7 @@ if( $forDashboardSimpleSearch )
 		if ( !count( $result ) ) 
 			$result = array();
 	
-		$_result = getListOfSuggests( $fields, $table, $whereClauses, $numberOfSuggests - count( $result ) , $searchOpt, $searchFor );
+		$_result = getListOfSuggests( $fields, $table, $numberOfSuggests - count( $result ) , $searchOpt, $searchFor );
 		
 		// add only distinct values
 		foreach( $_result as $_data ) 
@@ -132,74 +134,50 @@ else {
 
 $pSet = new ProjectSettings( $table, PAGE_SEARCH, $page );
 $cipherer = new RunnerCipherer( $table );
-$_connection = $cman->byTable( $table );
 
+$conditions = array();
 
+//	master-details
+$masterTable = postvalue("mastertable");
 $detailKeys = array();
-if( @$_SESSION[$table."_mastertable"] != "" )
-{
-	$masterTablesInfoArr = $pSet->getMasterTablesArr($table);
-	for($i = 0; $i < count($masterTablesInfoArr); $i++) 
+if( $masterTable != "" )
+{	
+	$masterKetsReq = RunnerPage::readMasterKeysFromRequest();
+	$detailKeys = $pSet->getDetailKeysByMasterTable( $masterTable );
+
+	for($j = 0; $j < count($detailKeys); $j++)
 	{
-		if( $_SESSION[$table."_mastertable"] != $masterTablesInfoArr[$i]['mDataSourceTable'] )
-			continue;
-		
-		$detailKeys = $masterTablesInfoArr[$i]['detailKeys'];
-		for($j = 0; $j < count($detailKeys); $j++)
-		{
-			$masterWhere = "";	
-			$mastervalue = $cipherer->MakeDBValue($detailKeys[$j], @$_SESSION[$table."_masterkey".($j + 1)], "", true);
-			if($mastervalue == "null")
-				$masterWhere .= RunnerPage::_getFieldSQL($detailKeys[$j], $_connection, $pSet)." is NULL ";
-			else
-				$masterWhere .= RunnerPage::_getFieldSQLDecrypt($detailKeys[$j], $_connection, $pSet, $cipherer)."=".$mastervalue;
-			$whereClauses[] = $masterWhere;
-		}
-		break;		
+		$conditions[] = DataCondition::FieldEquals( $detailKeys[$j], $masterKetsReq[ $j + 1 ] );
 	}
 }
 
+//	suggest within filtered data 
 $searchClauseObj = SearchClause::getSearchObject( $table, "", $table, $cipherer );
-$searchClauseObj->processFiltersWhere( $_connection );
-foreach( $searchClauseObj->filteredFields as $filteredField ) 
-{
-	$whereClauses[] = $filteredField["where"];
-}
+$conditions[] = $searchClauseObj->getFilterCondition( $pSet );
 
+//	apply dependent driodown filter
 $parentCtrlsData = my_json_decode( postvalue('parentCtrlsData') );
-if( $forLookupPage && count( $parentCtrlsData ) ) 
+if( $forLookupPage && $parentCtrlsData ) 
 {
+	require_once( getabspath( "classes/controls/Control.php" ) );
+	require_once( getabspath( "classes/controls/LookupField.php" ) );
+
 	$mainField = postvalue("mainField");
 	$mainTable = postvalue("mainTable");
 	$mainPageType = postvalue("mainPageType");
 	$mainPSet = new ProjectSettings( $mainTable, $mainPageType );
-	global $cman;
-	$conn = $cman->byTable( $table );
-		
+			
 	$parentWhereParts = array();
 	foreach( $mainPSet->getParentFieldsData( $mainField ) as $cData )
 	{
 		if( !isset( $parentCtrlsData[ $cData["main"] ] ) )
 			continue;
-		
-		$parentFieldName = $cData["lookup"];
-		$parentFieldValues = splitvalues( $parentCtrlsData[ $cData["main"] ] );
-		
-		$arWhereClause = array();
-		foreach($parentFieldValues as $value)
-		{
-			$lookupValue = $cipherer->MakeDBValue($parentFieldName, $value);
-			$arWhereClause[] = RunnerPage::_getFieldSQLDecrypt( $parentFieldName, $conn, $pSet, $cipherer ) . "=" . $lookupValue;
-		}
-		
-		if( count($arWhereClause) )
-			$parentWhereParts[] = "(".implode(" OR ", $arWhereClause).")";	
+		$conditions[] = LookupField::categoryCondition( $mainPSet, $cData["main"], $cData["lookup"], $parentCtrlsData[ $cData["main"] ] );
 	}
-	
-	$whereClauses[] = "(".implode(" AND ", $parentWhereParts).")";
+
 }
 
-$result = getListOfSuggests( $allSearchFields, $table, $whereClauses, $numberOfSuggests, $searchOpt, $searchFor, $searchField, $detailKeys );
+$result = getListOfSuggests( $allSearchFields, $table, $numberOfSuggests, $searchOpt, $searchFor, $searchField, $detailKeys, $conditions );
 
 $returnJSON = array();
 $returnJSON['success'] = true;

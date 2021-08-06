@@ -48,7 +48,56 @@
 				<span data-cellId="supertop_c2" data-pageid="{$pageid}" class=" r-ori-vert navbar-collapse" data-itemtype="menu" data-itemid="menu" {$item_menu} data-pageid="{$pageid}">
 				{$menu main horizontal}			</span>
 							 
-													</nav>
+							 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c3" data-pageid="{$pageid}" data-itemid="loginform_login" {$item_loginform_login} data-topcell-item-type="loginform_login" >
+				{BEGIN guestloginbutton}
+<span data-itemtype="loginform_login" data-itemid="loginform_login" {$item_loginform_login} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" href="#" {$guestloginlink_attrs} >
+							Conectar			</a>
+</span>
+{END guestloginbutton}
+			</span>
+		 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c3" data-pageid="{$pageid}" data-itemid="username_button" {$item_username_button} data-topcell-item-type="username_button" >
+				{BEGIN loggedas_message}
+<span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
+	<span class="dropdown ">
+		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
+							{BEGIN logoutbutton}
+	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
+				<a  href="#" {$logoutlink_attrs}  title="" >
+				
+		Desconectarse		
+		</a>
+	</li>
+{END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
+					</ul>
+	</span>
+</span>
+{END loggedas_message}
+			</span>
+								</nav>
 {END supertop_block}
 					{$locking}
 			</div>	
@@ -113,7 +162,11 @@
 
  
 	 
-												<table 
+												{BEGIN mastertable_block}
+<div data-itemtype="master_info" data-itemid="master_info" {$item_master_info} data-pageid="{$pageid}">
+	{$showmasterfile}
+</div>
+{END mastertable_block}											<table 
 	data-body-align="left"
 	data-location="grid" id="form_grid_{$pageid}" data-makeup="topbar" {$form_grid} data-pageid="{$pageid}" 
 	class="r-edit-form" cellpadding="0" cellspacing="0" 
@@ -123,7 +176,7 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -142,7 +195,7 @@
 {BEGIN IdGesRegOrigen_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesRegOrigen}  r-vertical-field" data-fieldname="IdGesRegOrigen" data-signal-error-for="IdGesRegOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdGesRegOrigen" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesRegOrigen}  r-vertical-field" data-fieldname="IdGesRegOrigen" data-signal-error-for="IdGesRegOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdGesRegOrigen" data-fieldname="IdGesRegOrigen" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdGesRegOrigen}">
@@ -161,7 +214,7 @@
 {BEGIN IdResiduo_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdResiduo}  r-vertical-field" data-fieldname="IdResiduo" data-signal-error-for="IdResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="IdResiduo" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdResiduo}  r-vertical-field" data-fieldname="IdResiduo" data-signal-error-for="IdResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="IdResiduo" data-fieldname="IdResiduo" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdResiduo}">
@@ -180,7 +233,7 @@
 {BEGIN IdMedTipOrigen_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdMedTipOrigen}  r-vertical-field" data-fieldname="IdMedTipOrigen" data-signal-error-for="IdMedTipOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="IdMedTipOrigen" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdMedTipOrigen}  r-vertical-field" data-fieldname="IdMedTipOrigen" data-signal-error-for="IdMedTipOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="IdMedTipOrigen" data-fieldname="IdMedTipOrigen" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdMedTipOrigen}">
@@ -199,7 +252,7 @@
 {BEGIN IdUsuario_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdUsuario}  r-vertical-field" data-fieldname="IdUsuario" data-signal-error-for="IdUsuario{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="IdUsuario" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdUsuario}  r-vertical-field" data-fieldname="IdUsuario" data-signal-error-for="IdUsuario{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="IdUsuario" data-fieldname="IdUsuario" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdUsuario}">
@@ -218,7 +271,7 @@
 {BEGIN CantidadOrigen_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_CantidadOrigen}  r-vertical-field" data-fieldname="CantidadOrigen" data-signal-error-for="CantidadOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field4" {$item_integrated_edit_field4} data-pageid="{$pageid}" data-field="CantidadOrigen" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_CantidadOrigen}  r-vertical-field" data-fieldname="CantidadOrigen" data-signal-error-for="CantidadOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field4" {$item_integrated_edit_field4} data-pageid="{$pageid}" data-field="CantidadOrigen" data-fieldname="CantidadOrigen" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_CantidadOrigen}">
@@ -237,7 +290,7 @@
 {BEGIN FotoOrigen_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_FotoOrigen}  r-vertical-field" data-fieldname="FotoOrigen" data-signal-error-for="FotoOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field5" {$item_integrated_edit_field5} data-pageid="{$pageid}" data-field="FotoOrigen" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_FotoOrigen}  r-vertical-field" data-fieldname="FotoOrigen" data-signal-error-for="FotoOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field5" {$item_integrated_edit_field5} data-pageid="{$pageid}" data-field="FotoOrigen" data-fieldname="FotoOrigen" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_FotoOrigen}">
@@ -256,7 +309,7 @@
 {BEGIN GPSMapaGoo_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_GPSMapaGoo}  r-vertical-field" data-fieldname="GPSMapaGoo" data-signal-error-for="GPSMapaGoo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field6" {$item_integrated_edit_field6} data-pageid="{$pageid}" data-field="GPSMapaGoo" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_GPSMapaGoo}  r-vertical-field" data-fieldname="GPSMapaGoo" data-signal-error-for="GPSMapaGoo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field6" {$item_integrated_edit_field6} data-pageid="{$pageid}" data-field="GPSMapaGoo" data-fieldname="GPSMapaGoo" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_GPSMapaGoo}">
@@ -275,7 +328,7 @@
 {BEGIN Lat_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_Lat}  r-vertical-field" data-fieldname="Lat" data-signal-error-for="Lat{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field7" {$item_integrated_edit_field7} data-pageid="{$pageid}" data-field="Lat" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Lat}  r-vertical-field" data-fieldname="Lat" data-signal-error-for="Lat{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field7" {$item_integrated_edit_field7} data-pageid="{$pageid}" data-field="Lat" data-fieldname="Lat" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_Lat}">
@@ -294,7 +347,7 @@
 {BEGIN Lng_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_Lng}  r-vertical-field" data-fieldname="Lng" data-signal-error-for="Lng{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field8" {$item_integrated_edit_field8} data-pageid="{$pageid}" data-field="Lng" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Lng}  r-vertical-field" data-fieldname="Lng" data-signal-error-for="Lng{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field8" {$item_integrated_edit_field8} data-pageid="{$pageid}" data-field="Lng" data-fieldname="Lng" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_Lng}">
@@ -353,13 +406,13 @@
 		<span data-itemtype="hamburger" data-itemid="hamburger" {$item_hamburger} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown dropup">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-menu-hamburger"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN edit_page_button}
 	<li data-itemtype="view_edit" data-itemid="view_edit" {$item_view_edit} data-pageid="{$pageid}" data-small >
-				<a  href="#" {$edit_page_button_attrs}  title="" >
+				<a  href="gestionregistrosorigen_edit.php?{$editlink}" {$edit_page_button_attrs}  title="" >
 				
 		Editar		
 		</a>

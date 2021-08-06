@@ -27,7 +27,7 @@ pdfDocument = {
 		{BEGIN body}
 		{BEGIN embedded_grid}
 		{
-			text: '{$jscaption public_Ventas}',
+			text: '{$jscaption public_ventas}',
 		},
 		{END embedded_grid}
 		{ 
@@ -70,7 +70,25 @@ pdfDocument = {
 										{BEGIN col_grid_3}
 					"%",
 					{END col_grid_3}
-													],
+															],
+											heights: [ // first height for header part
+					"%",
+																		{BEGIN row_grid_0}
+							"%",
+							{END row_grid_0}
+																							 	{BEGIN grid_row}
+													{BEGIN row_grid_1}
+							"%",
+							{END row_grid_1}
+																								{BEGIN row_grid_2}
+							"%",
+							{END row_grid_2}
+													{END grid_row}
+																								{BEGIN row_grid_3}
+							"%",
+							{END row_grid_3}
+															],
+							
 				body: [
 				{BEGIN standalone_page}
 					[
@@ -91,16 +109,14 @@ pdfDocument = {
 								"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c2',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -111,24 +127,22 @@ pdfDocument = {
 			"stack": [
 		
 				
-			{"text":"{$jspagetitlelabel public_Ventas print}","hidden":"{$item_hide_print_header}","fontSize":30},
+			{"text":"{$jspagetitlelabel public_ventas print}","hidden":"{$item_hide_print_header}","fontSize":30},
 				
 				
 			{"text":"{$printtabheader_text}","hidden":"{$item_hide_print_subheader}"},
 				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
 											],
-								
-		[
-												
-{
+						[
+																{
 	cellId: 'c4',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -145,10 +159,12 @@ pdfDocument = {
 				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
 											],
-					]
+		
+		]
 	}
 }
 ,
@@ -165,16 +181,14 @@ pdfDocument = {
 								"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c1',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -187,18 +201,14 @@ pdfDocument = {
 				
 			{"text":"Página %current% / %total%","hidden":"{$item_hide_print_pages}","isHtml":true,"page_indicator":true},
 				
-				
-			{"text":"","hidden":"{$item_hide_grid_inline_cancel}"},
-				
-				
-			{"text":"","hidden":"{$item_hide_inline_add}"},
-				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
 											],
-					]
+		
+		]
 	}
 }
 ,
@@ -210,11 +220,9 @@ pdfDocument = {
 																	
 
 				
-					{BEGIN row_grid_0}
-				
-		[
-												{BEGIN cellblock_grid_headcell_field}
-
+				{BEGIN row_grid_0}
+				[
+																{BEGIN cellblock_grid_headcell_field}
 {
 	cellId: 'headcell_field',
 	col:0,
@@ -225,22 +233,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field4}","text":"{$jslabel public_Ventas IdVenta }","bold":true},
+			{"text":"{$jslabel public_ventas id_venta }","hidden":"{$item_hide_simple_grid_field4}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdVenta_align}',
+              "alignment": '{$id_venta_align}',
   },
 
 {END cellblock_grid_headcell_field}
-																			{BEGIN cellblock_grid_headcell_field1}
-
+																							{BEGIN cellblock_grid_headcell_field1}
 {
 	cellId: 'headcell_field1',
 	col:0,
@@ -251,22 +259,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field5}","text":"{$jslabel public_Ventas FechaVenta }","bold":true},
+			{"text":"{$jslabel public_ventas fecha_venta }","hidden":"{$item_hide_simple_grid_field5}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$FechaVenta_align}',
+              "alignment": '{$fecha_venta_align}',
   },
 
 {END cellblock_grid_headcell_field1}
-																			{BEGIN cellblock_grid_headcell_field2}
-
+																							{BEGIN cellblock_grid_headcell_field2}
 {
 	cellId: 'headcell_field2',
 	col:0,
@@ -277,22 +285,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field6}","text":"{$jslabel public_Ventas Observaci_n }","bold":true},
+			{"text":"{$jslabel public_ventas id_empre_recichadora }","hidden":"{$item_hide_simple_grid_field6}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$Observaci_n_align}',
+              "alignment": '{$id_empre_recichadora_align}',
   },
 
 {END cellblock_grid_headcell_field2}
-																			{BEGIN cellblock_grid_headcell_field3}
-
+																							{BEGIN cellblock_grid_headcell_field3}
 {
 	cellId: 'headcell_field3',
 	col:0,
@@ -303,31 +311,31 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field7}","text":"{$jslabel public_Ventas IdEmpreRecicladora }","bold":true},
+			{"text":"{$jslabel public_ventas observacion }","hidden":"{$item_hide_simple_grid_field7}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdEmpreRecicladora_align}',
+              "alignment": '{$observacion_align}',
   },
 
 {END cellblock_grid_headcell_field3}
 											],
 				{END row_grid_0}
-								
+		
+			
 		{BEGIN grid_row}
 	{BEGIN grid_record}
 				
-						{BEGIN row_grid_1}
-				
-		[
-												{BEGIN cellblock_grid_cell_field}
-
+				{BEGIN row_grid_1}
+				[
+																{BEGIN cellblock_grid_cell_field}
 {
 	cellId: 'cell_field',
 	col:0,
@@ -338,22 +346,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field}","text":{$IdVenta_pdfvalue}},
+			{"text":{$id_venta_pdfvalue},"hidden":"{$item_hide_simple_grid_field}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdVenta_align}',
+              "alignment": '{$id_venta_align}',
   },
 
 {END cellblock_grid_cell_field}
-																			{BEGIN cellblock_grid_cell_field1}
-
+																							{BEGIN cellblock_grid_cell_field1}
 {
 	cellId: 'cell_field1',
 	col:0,
@@ -364,22 +372,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field1}","text":{$FechaVenta_pdfvalue}},
+			{"text":{$fecha_venta_pdfvalue},"hidden":"{$item_hide_simple_grid_field1}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$FechaVenta_align}',
+              "alignment": '{$fecha_venta_align}',
   },
 
 {END cellblock_grid_cell_field1}
-																			{BEGIN cellblock_grid_cell_field2}
-
+																							{BEGIN cellblock_grid_cell_field2}
 {
 	cellId: 'cell_field2',
 	col:0,
@@ -390,22 +398,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field2}","text":{$Observaci_n_pdfvalue}},
+			{"text":{$id_empre_recichadora_pdfvalue},"hidden":"{$item_hide_simple_grid_field3}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$Observaci_n_align}',
+              "alignment": '{$id_empre_recichadora_align}',
   },
 
 {END cellblock_grid_cell_field2}
-																			{BEGIN cellblock_grid_cell_field3}
-
+																							{BEGIN cellblock_grid_cell_field3}
 {
 	cellId: 'cell_field3',
 	col:0,
@@ -416,31 +424,84 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field3}","text":{$IdEmpreRecicladora_pdfvalue}},
+			{"text":{$observacion_pdfvalue},"hidden":"{$item_hide_simple_grid_field2}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdEmpreRecicladora_align}',
+              "alignment": '{$observacion_align}',
   },
 
 {END cellblock_grid_cell_field3}
 											],
 				{END row_grid_1}
-						{END grid_record}
+						{BEGIN row_grid_2}
+				[
+																{BEGIN cellblock_grid_cell_dpreview}
+{
+	cellId: 'cell_dpreview',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+					{BEGIN colspan_grid_cell_dpreview}
+			colSpan: {$colspan_grid_cell_dpreview},
+			{END colspan_grid_cell_dpreview}
+		
+						
+	
+	
+	
+			"stack": [
+		
+				
+			 {BEGIN details_detalles_ventas}
+			{$displayDetailTable_detalles_ventas }
+		{END details_detalles_ventas},
+				
+		  ],
+  "border": [ true, true, true, true ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_cell_dpreview}
+																		{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  1,
+				text: ''
+			},
+														{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  2,
+				text: ''
+			},
+														{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  3,
+				text: ''
+			},
+							],
+				{END row_grid_2}
+		
+		{END grid_record}
 	{END grid_row}
 			
 					
-							{BEGIN row_grid_2}
-				
-		[
-												{BEGIN cellblock_grid_footcell_field}
-
+				{BEGIN row_grid_3}
+				[
+																{BEGIN cellblock_grid_footcell_field}
 {
 	cellId: 'footcell_field',
 	col:0,
@@ -451,7 +512,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -459,11 +521,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field}
-																			{BEGIN cellblock_grid_footcell_field1}
-
+																							{BEGIN cellblock_grid_footcell_field1}
 {
 	cellId: 'footcell_field1',
 	col:0,
@@ -474,7 +536,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -482,11 +545,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field1}
-																			{BEGIN cellblock_grid_footcell_field2}
-
+																							{BEGIN cellblock_grid_footcell_field2}
 {
 	cellId: 'footcell_field2',
 	col:0,
@@ -497,7 +560,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -505,11 +569,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field2}
-																			{BEGIN cellblock_grid_footcell_field3}
-
+																							{BEGIN cellblock_grid_footcell_field3}
 {
 	cellId: 'footcell_field3',
 	col:0,
@@ -520,7 +584,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -528,12 +593,14 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field3}
 											],
-				{END row_grid_2}
-							
+				{END row_grid_3}
+		
+				
 									]
 			
 			}

@@ -23,25 +23,6 @@
 		<div class="panel-body">
 							{BEGIN above-grid_block}
 <div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="panel-only" {$form_above-grid} data-pageid="{$pageid}" >		
-	 
-		<div class="row">
-			 
-				<div 
-	data-cellId="above-grid_c1" data-pageid="{$pageid}"	{$cell_above-grid_c1}
-	class=" r-ori-vert			col-md-12
-	
-">
-		{BEGIN firstAboveGridCell}
-		 
-		{BEGIN inlineadd_link}
-<span data-itemtype="inline_add" data-itemid="inline_add" {$item_inline_add} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-primary   
-	" {$inlineaddlink_attrs} >
-							Añadir nuevo			</a>
-</span>
-{END inlineadd_link}
-			{END firstAboveGridCell}	
-	</div>					</div>
 	</div>		
 {END above-grid_block}
 								{BEGIN grid_block}
@@ -52,7 +33,7 @@
 {END grid_tabs}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -65,23 +46,6 @@
 									
 								r-gridrow
 							">
-				 
-					{BEGIN cellblock_grid_headcell_icons}
-	<th
-	
-	{$cell_grid_headcell_icons}
-	{$recordattrs}
-	class="
-		 r-ori-vert			"
-
-	
-	data-cellId="grid_headcell_icons" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_masterlist"		data-control-cell
-	
-	>
-
-	
-	</th>
-	{END cellblock_grid_headcell_icons}
 				 
 					{BEGIN cellblock_grid_headcell_field}
 	<th
@@ -100,7 +64,7 @@
 	 
 		{BEGIN ID_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="ID">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="ID" data-fieldname="ID">
 	{$label public_DetalleVentas ID }	</span>
 {END ID_fieldheadercolumn}
 
@@ -125,7 +89,7 @@
 	 
 		{BEGIN Cantidad_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Cantidad">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Cantidad" data-fieldname="Cantidad">
 	{$label public_DetalleVentas Cantidad }	</span>
 {END Cantidad_fieldheadercolumn}
 
@@ -150,7 +114,7 @@
 	 
 		{BEGIN Precio_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio" data-fieldname="Precio">
 	{$label public_DetalleVentas Precio }	</span>
 {END Precio_fieldheadercolumn}
 
@@ -164,20 +128,20 @@
 	{$cell_grid_headcell_field3}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IDVenta_class}
+		 r-ori-vert				{$IdVenta_class}
 			"
 
-			data-field="IDVenta"
+			data-field="IdVenta"
 	
 	data-cellId="grid_headcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IDVenta_fieldheadercolumn}
+		{BEGIN IdVenta_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IDVenta">
-	{$label public_DetalleVentas IDVenta }	</span>
-{END IDVenta_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdVenta" data-fieldname="IdVenta">
+	{$label public_DetalleVentas IdVenta }	</span>
+{END IdVenta_fieldheadercolumn}
 
 	
 	</th>
@@ -189,20 +153,20 @@
 	{$cell_grid_headcell_field4}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdFGesPesResiduo_class}
+		 r-ori-vert				{$IdGesPesResiduo_class}
 			"
 
-			data-field="IdFGesPesResiduo"
+			data-field="IdGesPesResiduo"
 	
 	data-cellId="grid_headcell_field4" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdFGesPesResiduo_fieldheadercolumn}
+		{BEGIN IdGesPesResiduo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdFGesPesResiduo">
-	{$label public_DetalleVentas IdFGesPesResiduo }	</span>
-{END IdFGesPesResiduo_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo">
+	{$label public_DetalleVentas IdGesPesResiduo }	</span>
+{END IdGesPesResiduo_fieldheadercolumn}
 
 	
 	</th>
@@ -223,32 +187,6 @@
 								r-gridrow
 							">
 				 
-					{BEGIN cellblock_grid_cell_icons}
-	<td
-	
-	{$cell_grid_cell_icons}
-	{$recordattrs}
-	class="
-		 r-ori-vert			"
-
-	
-	data-cellId="grid_cell_icons" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_masterlist"		data-control-cell
-	
-	>
-
-	 
-		{BEGIN inline_cancel}
-<span data-itemtype="grid_inline_cancel" data-itemid="grid_inline_cancel" {$item_grid_inline_cancel} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
-	<a type="button" title="Cancelar" class="btn-link   
-	 glyphicon glyphicon-remove" {$inlinerevertlink_attrs} title="Cancelar" >		
-				
-								</a>
-</span>
-{END inline_cancel}
-	
-	</td>
-	{END cellblock_grid_cell_icons}
-				 
 					{BEGIN cellblock_grid_cell_field}
 	<td
 	
@@ -265,7 +203,7 @@
 
 	 
 		{BEGIN ID_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="ID" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="ID" data-fieldname="ID" data-default-width >
 {$ID_value}
 </span>
 {END ID_fieldcolumn}	
@@ -288,7 +226,7 @@
 
 	 
 		{BEGIN Cantidad_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Cantidad" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Cantidad" data-fieldname="Cantidad" data-default-width >
 {$Cantidad_value}
 </span>
 {END Cantidad_fieldcolumn}	
@@ -311,7 +249,7 @@
 
 	 
 		{BEGIN Precio_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio" data-fieldname="Precio" data-default-width >
 {$Precio_value}
 </span>
 {END Precio_fieldcolumn}	
@@ -324,20 +262,20 @@
 	{$cell_grid_cell_field3}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IDVenta_class}
+		 r-ori-vert				{$IdVenta_class}
 			"
 
-			data-field="IDVenta"
+			data-field="IdVenta"
 	
 	data-cellId="grid_cell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IDVenta_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IDVenta" data-default-width >
-{$IDVenta_value}
+		{BEGIN IdVenta_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdVenta" data-fieldname="IdVenta" data-default-width >
+{$IdVenta_value}
 </span>
-{END IDVenta_fieldcolumn}	
+{END IdVenta_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field3}
 				 
@@ -347,20 +285,20 @@
 	{$cell_grid_cell_field4}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdFGesPesResiduo_class}
+		 r-ori-vert				{$IdGesPesResiduo_class}
 			"
 
-			data-field="IdFGesPesResiduo"
+			data-field="IdGesPesResiduo"
 	
 	data-cellId="grid_cell_field4" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdFGesPesResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdFGesPesResiduo" data-default-width >
-{$IdFGesPesResiduo_value}
+		{BEGIN IdGesPesResiduo_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" data-default-width >
+{$IdGesPesResiduo_value}
 </span>
-{END IdFGesPesResiduo_fieldcolumn}	
+{END IdGesPesResiduo_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field4}
 							</tr>
@@ -378,22 +316,6 @@
 									
 								r-gridrow
 							">
-				 
-					{BEGIN cellblock_grid_footcell_icons}
-	<td
-	
-	{$cell_grid_footcell_icons}
-	{$recordattrs}
-	class="
-		 r-ori-vert			"
-
-	
-	data-cellId="grid_footcell_icons" data-pageid="{$pageid}" data-record-id="{$recId}"	
-	>
-
-	
-	</td>
-	{END cellblock_grid_footcell_icons}
 				 
 					{BEGIN cellblock_grid_footcell_field}
 	<td

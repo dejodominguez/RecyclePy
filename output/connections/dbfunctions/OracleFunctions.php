@@ -55,20 +55,6 @@ class OracleFunctions extends DBFunctions
 
 
 	/**
-	 * adds wrappers to field name if required
-	 * @param String strName
-	 * @return String	 
-	 */
-	public function addFieldWrappers( $strName )
-	{
-		if( substr($strName, 0, 1) == $this->strLeftWrapper )
-			return $strName;
-			
-		return $this->strLeftWrapper.$strName.$this->strRightWrapper;
-	}
-	
-
-	/**
 	 * @param String dbval
 	 * @param String
 	 */
@@ -85,7 +71,7 @@ class OracleFunctions extends DBFunctions
 	 */
 	public function field2char($value, $type = 3)
 	{
-		return $value;
+		return "TO_CHAR(" . $value . ")";
 	}
 	
 	/**
@@ -122,12 +108,12 @@ class OracleFunctions extends DBFunctions
 		return false;
 	}
 	
-	public function queryPage( $connection, $strSQL, $pageStart, $pageSize, $applyLimit ) 
+	public function limitedQuery( $connection, $strSQL, $skip, $total, $applyLimit ) 
 	{
-		if( $applyLimit ) 
-			$strSQL = AddRowNumber($strSQL, $pageStart * $pageSize);
+		if( $applyLimit && $total >= 0 ) 
+			$strSQL = AddRowNumber($strSQL, $skip + $total );
 		$qResult =  $connection->query( $strSQL );
-		$qResult->seekPage( $pageSize, $pageStart );
+		$qResult->seekRecord( $skip );
 	
 		return $qResult;
 	}

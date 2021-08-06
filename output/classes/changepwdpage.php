@@ -2,39 +2,39 @@
 class ChangePasswordPage extends RunnerPage
 {
 	protected $pwdStrong = false;
-	
+
 	public $token = "";
-	
-	public $action;	
+
+	public $action;
 
 	protected $passwordField;
 	protected $usernameField;
-	
-	protected $auditObj = null;	
-	
+
+	protected $auditObj = null;
+
 	protected $changePwdFields;
-	
+
 	protected $changedSuccess = false;
-	
+
 	/**
 	 *
 	 */
 	function __construct(&$params = "")
 	{
 		parent::__construct($params);
-		
+
 		if( !$this->action && !$this->checkToken() )
 		{
 			Security::saveRedirectURL();
-			HeaderRedirect("login"); 
-			return;			
+			HeaderRedirect("login");
+			return;
 		}
-	
+
 		$this->passwordField = GetPasswordField();
-		$this->usernameField = GetUserNameField();	
-		
+		$this->usernameField = GetUserNameField();
+
 		$this->auditObj = GetAuditObject();
-		
+
 		if( $this->token )
 		{
 			$this->changePwdFields = array("newpass", "confirm");
@@ -43,33 +43,33 @@ class ChangePasswordPage extends RunnerPage
 		}
 		else
 			$this->changePwdFields = array("oldpass", "newpass", "confirm");
-		
+
 		// fill global password settings
 		$this->pwdStrong = GetGlobalData("pwdStrong", false);
-		
+
 		if( $this->pwdStrong )
 		{
-			$this->settingsMap["globalSettings"]["pwdStrong"] = true;	
+			$this->settingsMap["globalSettings"]["pwdStrong"] = true;
 			$this->settingsMap["globalSettings"]["pwdLen"] = GetGlobalData("pwdLen", 0);
 			$this->settingsMap["globalSettings"]["pwdUnique"] = GetGlobalData("pwdUnique", 0);
 			$this->settingsMap["globalSettings"]["pwdDigits"] = GetGlobalData("pwdDigits", 0);
 			$this->settingsMap["globalSettings"]["pwdUpperLower"] = GetGlobalData("pwdUpperLower", false);
 		}
-		
-		$this->formBricks["header"] = "changeheader";
-		$this->formBricks["footer"] = "changebuttons";
-		$this->assignFormFooterAndHeaderBricks( true );		
+
+		$this->headerForms = array( "top" );
+		$this->footerForms = array( "footer" );
+		$this->bodyForms = array( "above-grid", "grid" );
 	}
-	
+
 	/**
 	 * Set the connection property
 	 */
 	protected function setTableConnection()
 	{
 		global $cman;
-		$this->connection = $cman->getForLogin();		
+		$this->connection = $cman->getForLogin();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -83,81 +83,63 @@ class ChangePasswordPage extends RunnerPage
 	 */
 	protected function setReferer()
 	{
-		$referer = @$_SERVER["HTTP_REFERER"] != "" 
+		$referer = @$_SERVER["HTTP_REFERER"] != ""
 				&& strpos($_SERVER["HTTP_REFERER"], GetTableLink("changepwd")) != strlen($_SERVER["HTTP_REFERER"]) - strlen(GetTableLink("changepwd"))
-				? $_SERVER["HTTP_REFERER"] : ""; 
+				? $_SERVER["HTTP_REFERER"] : "";
 
 		if( !isset($_SESSION["changepwd_referer"]) )
 			$_SESSION["changepwd_referer"] = $referer != "" ? $referer : GetTableLink("menu");
 		else if( $referer != "" )
-			$_SESSION["changepwd_referer"] = $referer;	
+			$_SESSION["changepwd_referer"] = $referer;
 	}
-	
-	/**
-	 * @return String
-	 */
-	protected function getSQLWhere()
-	{
-		global $cUserNameFieldType;
-		
-		if( $this->token )
-			return " where".$this->connection->addFieldWrappers( "" )."=". $this->connection->prepareString( $this->token );
-				
-		$value = $this->getSqlPreparedLoginTableValue( @$_SESSION["UserID"], $this->usernameField, $cUserNameFieldType );
-		if( $this->pSet->usersTableInProject() ) {
-			$sWhere = " where ". $this->connection->comparisonSQL( 
-				$this->getFieldSQLDecrypt( $this->usernameField ), 
-				$value, 
-				$this->pSet->isCaseInsensitiveUsername() );	
-		} else {
-			$sWhere = " where ". $this->connection->comparisonSQL( 
-				$this->connection->addFieldWrappers( $this->usernameField ), 
-				$value, 
-				$this->pSet->isCaseInsensitiveUsername() 
-			);	
-		}
-		return $sWhere;
-	}
-	
-	/**
-	 * @param String
-	 * @return String
-	 */
-	protected function getSelectSQL( $where )
-	{
-		global $cLoginTable;
-		
-		if( $this->pSet->usersTableInProject() )
-			$strSQL = "select ".$this->getFieldSQLDecrypt( $this->passwordField );
-		else
-			$strSQL = "select ".$this->connection->addFieldWrappers( $this->passwordField );	
 
-		return $strSQL ." from ".$this->connection->addTableWrappers( $cLoginTable ) . $where;
+	/**
+	 * @return DsCondition
+	 */
+	protected function getTokenCondition() {
+		return DataCondition::FieldEquals( "", $this->token );
 	}
-	
+
+	/**
+	 * @return DsCondition
+	 */
+	protected function getUsernameCondition() {
+		if( $this->token ) {
+			return $this->getTokenCondition();
+		}
+
+		$caseInsensitive = $this->pSet->isCaseInsensitiveUsername() ? dsCASE_INSENSITIVE : dsCASE_STRICT;
+		return DataCondition::FieldEquals( $this->usernameField, Security::getUserName(), 0, $caseInsensitive );
+	}
+
 	/**
 	 * @param String newpass
-	 * @param String where
-	 * @return String
+	 * @return 
 	 */
-	protected function getUpdateSQL( $newpass, $where )
-	{
-		global $cLoginTable, $cPasswordFieldType;
-		
-		
-		$passvalue = $this->cipherer->AddDBQuotes( $this->passwordField, $newpass );
-		
-		$setPart = " set ".$this->connection->addFieldWrappers( $this->passwordField )."=".$passvalue;
-		if( $this->token )
-		{
-			$setPart.= ", ".$this->connection->addFieldWrappers( "" )."=". $this->connection->prepareString( "" ).", "
-				.$this->connection->addFieldWrappers( "" )."=". $this->connection->addDateQuotes( NULL );
-				
+	protected function getUpdateCommand( $newpass ) {
+		$dc = new DsCommand();
+
+		if( GetGlobalData( "bEncryptPasswords" ) ) {
+			if( !$this->cipherer->isFieldEncrypted( $this->passwordField ) )
+				$newpass = $this->getPasswordHash( $newpass );
 		}
-		
-		return "update ".$this->connection->addTableWrappers( $cLoginTable ). $setPart .' '. $where;	
+
+		$values = array();
+		$values[ $this->passwordField ] = $newpass;
+		if( $this->token ) {
+			$values[ "" ] = "";
+			$values[ "" ] = NULL;
+			if( GetGlobalData( "userRequireActivation" ) ) {
+				$values[  GetGlobalData( "userActivationField" ) ] = "1";
+			}
+		}
+
+		$dc->values = $values;
+		$dc->filter = $this->getUsernameCondition();
+		return $dc;
 	}
-	
+
+
 	/**
 	 * @return Array
 	 */
@@ -165,97 +147,83 @@ class ChangePasswordPage extends RunnerPage
 	{
 		$filename_values = array();
 		$blobfields = array();
-		$values = array();		
+		$values = array();
 		foreach( $this->changePwdFields as $fName )
 		{
 			$fControl = $this->getControl( $fName, $this->id );
 			$fControl->readWebValue( $values, $blobfields, NULL, NULL, $filename_values );
 		}
-		
+
 		return $values;
 	}
-	
-	/**
-	 * @param String oldPass
-	 * @param Array row
-	 * @param Boolean bcrypted
-	 * @return Boolean
-	 */
-	protected function checkOldPasswordValue( $oldPass, $row, $bcrypted )
-	{
-		if( !$row )
-			return false;
-		
-		if( $this->token )
-			return true;
-		
-		if( $bcrypted )
-			return passwordVerify( $oldPass, $row[ 0 ] );
 
-		return $oldPass == $row[ 0 ];		
-	}
-	
+
 	/**
 	 * @return Boolean
 	 */
-	protected function changePassword()
-	{
-		global $globalEvents, $cLoginTable, $cPasswordField;
-		
-		$values = $this->getControlValues();			
-		$oldPass = $values["oldpass"];
-		
-		$bcrypted = false;		
-		
-		$sqlWhere = $this->getSQLWhere();
-		$qResult = $this->connection->query( $this->getSelectSQL( $sqlWhere ) );	
-		
-		$nData = $qResult->fetchNumeric();
-		// DecryptFetchedArray requires fieldname to decrypt code-based encryptied field value
-		$data = array( $cPasswordField => $nData[0] );
-		$row = $this->cipherer->DecryptFetchedArray( $data ); 
-		
-		$_row = array();
-		if ( $row ) 
-			$_row = array( $row[ $cPasswordField ] );
-		
-		if( !$this->checkOldPasswordValue( $oldPass, $_row, $bcrypted ) )
-		{
+	protected function changePassword() {
+		//	CSRF protection
+		if( !isPostRequest() )
+			return;
+
+		global $globalEvents;
+
+		$values = $this->getControlValues();
+
+		$dc = new DsCommand();
+		$dc->filter = $this->getUsernameCondition();
+		$qResult = $this->dataSource->getList( $dc );
+
+		$data = $qResult->fetchAssoc();
+		$row = $this->cipherer->DecryptFetchedArray( $data );
+
+		$dbOldPass = "";
+		if( !$row ) {
 			$this->message = "Cambiar contraseña";
-			return false;		
+			return false;
 		}
-		
-		$oldPass = $_row[ 0 ];
-			
-		if( $this->pwdStrong && !checkpassword( $values["newpass"] ) )
-		{	
+
+		$dbOldPass = $row[ $this->passwordField ];
+		$username = $row[ $this->usernameField ];
+
+		if( !$this->token ) {
+			if( !Security::verifyPassword( $values["oldpass"], $dbOldPass ) ) {
+				$this->message = "Cambiar contraseña";
+				return false;
+			}
+		}
+
+		$oldPass = $dbOldPass;
+
+		$newPass = $values["newpass"];
+		if( $this->pwdStrong && !checkpassword( $newPass ) ) {
 			$this->message = $this->getPwdStrongFailedMessage();
-			$this->jsSettings["tableSettings"][ $cLoginTable ]["msg_passwordError"] = $this->message;
+			$this->jsSettings["tableSettings"][ $this->tName ]["msg_passwordError"] = $this->message;
 			return false;
 		}
 
 		$retval = true;
 		if( $globalEvents->exists("BeforeChangePassword") )
-			$retval = $globalEvents->BeforeChangePassword( $oldPass, $values["newpass"], $this );
-		
-		if( $retval )
-		{				
-			$strSQL = $this->getUpdateSQL( $values["newpass"], $sqlWhere );		
-			$this->connection->exec( $strSQL );
+			$retval = $globalEvents->BeforeChangePassword( $oldPass, $newPass, $this );
+
+		$values["newpass"] = $newPass;
+		if( $retval ) {
+			$dc = $this->getUpdateCommand( $values["newpass"] );
+			$this->dataSource->updateSingle( $dc, false );
 
 			if( $this->auditObj )
-				$this->auditObj->LogChPassword();
-				
+				$this->auditObj->LogChPassword( $username );
+
 			if( $globalEvents->exists("AfterChangePassword") )
 				$globalEvents->AfterChangePassword( $oldPass, $values["newpass"], $this );
 		}
-		
-		return $retval;		
+
+		return $retval;
 	}
 
 	/**
 	 * @return String
-	 */	
+	 */
 	protected function getPwdStrongFailedMessage()
 	{
 		$msg = "";
@@ -285,13 +253,13 @@ class ChangePasswordPage extends RunnerPage
 			$fmt = "La contraseña debe contener letras en mayúscula y minúscula";
 			$msg.= "<br>".$fmt;
 		}
-		
+
 		if($msg)
 			$msg = substr($msg, 4);
-			
+
 		return $msg;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -305,31 +273,57 @@ class ChangePasswordPage extends RunnerPage
 		if( $globalEvents->exists("BeforeProcessChangePwd") )
 			$globalEvents->BeforeProcessChangePwd( $this );
 
-		if( $this->action == "Change" )	
+		if( $this->action == "Change" ) {
 			$this->changedSuccess = $this->changePassword();
-			
-		if( !$this->changedSuccess )
-		{
+		
+			if( !$this->changedSuccess && $this->mode == CHANGEPASS_POPUP ) {
+				$returnJSON = array();
+				$returnJSON['success'] = false;
+					
+				if( strlen( $this->message ) )
+					$returnJSON['message'] = $this->message;
+				
+				if( !$this->isCaptchaOk )
+					$returnJSON['wrongCaptchaFieldName'] = $this->getCaptchaFieldName();
+					
+				echo printJSON( $returnJSON );
+				exit();
+			}
+		}
+
+		if( !$this->changedSuccess ) {
 			$this->prepareEditControls();
-		} 
-		else
-		{			
-			$this->pageName = $this->pSet->getDefaultPage( $this->successPageType() );				
+		} else {
+			$this->pageName = $this->pSet->getDefaultPage( $this->successPageType() );
 			$this->pSet = new ProjectSettings( $this->tName, $this->successPageType(), $this->pageName, $this->pageTable );
-			
+
 			$this->pageData["buttons"] = array_merge( $this->pageData["buttons"], $this->pSet->buttons() );
 			foreach( $this->pSet->buttons() as $b ) {
 				$this->AddJSFile( "include/button_".$b.".js" );
 			}
 		}
-		
+
 		$this->addCommonJs();
 		$this->fillSetCntrlMaps();
 		$this->addButtonHandlers();
 		$this->doCommonAssignments();
-		
+
 		$this->showPage();
 	}
+
+	/**
+	 * @param Boolean logged
+	 */
+	protected function reportChangeStatus( $changed )
+	{
+		$returnJSON = array();
+
+		$returnJSON["message"] = $this->message;
+		$returnJSON["success"] = true;
+
+		echo printJSON( $returnJSON );
+		exit();
+	}	
 	
 	/**
 	 *
@@ -345,35 +339,35 @@ class ChangePasswordPage extends RunnerPage
 			$parameters["format"] = "Password";
 			$parameters["pageObj"] = $this;
 			$parameters["suggest"] = true;
-			$parameters["validate"] = array('basicValidate' => array('IsRequired')); 
-			
+			$parameters["validate"] = array('basicValidate' => array('IsRequired'));
+
 			$parameters["extraParams"] = array();
 			$parameters["extraParams"]["getConrirmFieldCtrl"] = true;
-							
-			$controls = array('controls' => array());	
+
+			$controls = array('controls' => array());
 			$controls["controls"]['id'] = $this->id;
 			$controls["controls"]['mode'] = "add";
 			$controls["controls"]['ctrlInd'] = 0;
 			$controls["controls"]['fieldName'] = $fName;
 			$controls["controls"]['suggest'] = $parameters["suggest"];
-			
+
 			$this->xt->assign_function( $fName."_editcontrol", "xt_buildeditcontrol", $parameters );
 			$this->xt->assign($fName."_label", true);
-			
+
 			if ( $this->isBootstrap() )
 			{
 				$this->xt->assign("labelfor_" . goodFieldName($fName), "value_".$fName."_".$this->id);
-			}		
-			
+			}
+
 			if( $this->is508 )
 				$this->xt->assign_section($fName."_label", "<label for=\"value_".$fName."_".$this->id."\">", "</label>");
-			
+
 			$this->xt->assign($fName."_block", true);
-					
+
 			$this->fillControlsMap($controls);
-		}	
+		}
 	}
-	
+
 	/**
 	 *
 	 */
@@ -383,63 +377,73 @@ class ChangePasswordPage extends RunnerPage
 		$this->body["end"] = XTempl::create_method_assignment( "assignBodyEnd", $this );
 
 		$this->xt->assignbyref("body", $this->body);
-	}	
-	
+	}
+
 	/**
 	 *
 	 */
 	protected function doCommonAssignments()
 	{
-		$this->xt->assign("id", $this->id);	
+		$this->xt->assign("id", $this->id);
 		$this->xt->assign("submit_attrs", "id=\"saveButton".$this->id."\"");
-		$this->xt->assign("backlink_attrs", "href=\"". runner_htmlspecialchars( $_SESSION["changepwd_referer"] )."\"");
-
-		if( $this->message )
-		{
-			if( $this->isBootstrap() )
-			{
-				$this->xt->assign("message_class", "alert-danger" );
-				$this->xt->assign("message", $this->message);
-			}
-			else
-			{
-				$this->xt->assign("message", "<div class='message rnr-error'>".$this->message."</div>");
-			}
-			
-			$this->xt->assign("message_block", true);
-		}
 		
+		if( $this->mode == CHANGEPASS_POPUP ) {
+			$this->hideItemType("changepwd_back");
+			if( $this->changedSuccess )
+				$this->xt->assign("backlink_attrs", "id=\"backButton".$this->id."\"");
+		} else {
+			$this->xt->assign("backlink_attrs", "href=\"". runner_htmlspecialchars( $_SESSION["changepwd_referer"] )."\"");
+		}
+			
+		$this->xt->assign("message_block", true);
+		if( $this->message ) {
+			$this->xt->assign("message_class", "alert-danger" );
+			$this->xt->assign("message", $this->message);
+		} else {
+			$this->hideElement("message");
+		}
+
 		$this->assignBody();
 	}
-	
+
 	/**
 	 *
 	 */
-	protected function showPage()
-	{
+	protected function showPage() {
 		global $globalEvents;
-
 
 		if( $this->changedSuccess )
 			$this->switchToSuccessPage();
-	
-		if( $globalEvents->exists("BeforeShowChangePwd") )
-			$globalEvents->BeforeShowChangePwd( $this->xt, $this->templatefile, $this );
 
-		$this->display( $this->templatefile );		
+		$templatefile = $this->templatefile;
+		
+		if( $globalEvents->exists("BeforeShowChangePwd") )
+			$globalEvents->BeforeShowChangePwd( $this->xt, $templatefile, $this );
+
+		if( $this->mode == CHANGEPASS_POPUP )
+		{
+			$this->xt->assign("footer", false);
+			$this->xt->assign("header", false);
+			$this->xt->assign("body", $this->body);
+
+			$this->displayAJAX( $templatefile, $this->id + 1 );
+			exit();
+		}		
+		
+		$this->display( $templatefile );
 	}
-	
+
 	/**
 	 * @return String
 	 */
 	public static function readActionFromRequest()
-	{				
+	{
 		if( @$_POST["btnSubmit"] )
 			return @$_POST["btnSubmit"];
-			
+
 		return "";
 	}
-	
+
 	/**
 	 * @return Boolean
 	 */
@@ -447,15 +451,34 @@ class ChangePasswordPage extends RunnerPage
 	{
 		if( !$this->token )
 			return true;
-			
-		$sqlSelect = "select ".$this->connection->addFieldWrappers( "" )." from".$this->connection->addTableWrappers("public.Usuarios")
-			." where".$this->connection->addFieldWrappers( "" )."=". $this->connection->prepareString( $this->token );
-			
-		$data = $this->cipherer->DecryptFetchedArray( $this->connection->query( $sqlSelect )->fetchAssoc() );
+
+		$dc = new DsCommand();
+		$dc->filter = $this->getTokenCondition();
+		$qResult = $this->dataSource->getList( $dc );
+		
+		$data = $this->cipherer->DecryptFetchedArray( $qResult->fetchAssoc() );
 		if( $data )
 			return secondsPassedFrom( $data[""] ) < 86400;
-		
+
 		return false;
 	}
+	
+	/**
+	 * @return Number
+	 */
+	public static function readModeFromRequest()
+	{
+		if( postvalue("mode") == "popup" )
+			return CHANGEPASS_POPUP;
+
+		return CHANGEPASS_SIMPLE;
+	}
+
+	function element2Item( $name ) {
+		if( $name == "message" ) {
+			return array( "changepwd_message" );
+		}
+		return parent::element2Item( $name );
+	}	
 }
 ?>

@@ -695,17 +695,7 @@
 		user-select: none;
 	}
 
-	.filter-btn-apply {
-		margin-top: 10px;
-	}
-	
-	.show-more-hidden.show-more-hidden,
-	.filter-hidden.filter-hidden,
-	.filter-collapsed.filter-collapsed,
-	.filter-collapsed.filter-collapsed > *,
-	.filter-item-hidden.filter-item-hidden {
-		display: none;
-	}
+/*	
 
 	.filter-show-more.filter-show-more.filter-show-more.filter-show-more.filter-show-more {
 		padding-top: 5px;
@@ -714,6 +704,7 @@
 		font-weight: bold;
 		text-decoration: none;
 	}
+*/	
 	/* Slider-filter style*/
 	.filter-slider {
 		width: 85%;
@@ -724,32 +715,38 @@
 		margin: auto;
 		direction: ltr;
 	}
-
+/*
 	.filter-values .delete-button {
 		margin-right: 5px;
 		visibility: hidden;
 	}
+*/	
 	/*dependent filters styles begin*/
+/*	
 	.filter-values .filter-values,
 	.filter-values .filter-show-more {
 		margin-left: 15px;
 	}
-
+*/
 	/*dependent filters styles end*/
 
 	.filter-values:hover .delete-button {
 		visibility: visible;
 	}
+/*
 	.filter-values {
 		outline: dotted 1px transparent;
 	}
+	
 	.filter-values:hover  {
 		outline-color: #C0C0C0;
 	}
-	
+*/	
+/*	
 	.filter-link {
 		cursor: pointer;
 	}
+*/	
 	/*end of filters styles*/
 
 

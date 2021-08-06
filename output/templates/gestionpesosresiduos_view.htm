@@ -59,7 +59,11 @@
 
  
 	 
-												<table 
+												{BEGIN mastertable_block}
+<div data-itemtype="master_info" data-itemid="master_info" {$item_master_info} data-pageid="{$pageid}">
+	{$showmasterfile}
+</div>
+{END mastertable_block}											<table 
 	data-body-align="center"
 	data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" 
 	class="r-edit-form" cellpadding="0" cellspacing="0" 
@@ -69,7 +73,7 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -88,7 +92,7 @@
 {BEGIN IdGesPesResiduo_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-vertical-field" data-fieldname="IdGesPesResiduo" data-signal-error-for="IdGesPesResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdGesPesResiduo" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-vertical-field" data-fieldname="IdGesPesResiduo" data-signal-error-for="IdGesPesResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdGesPesResiduo}">
@@ -104,48 +108,10 @@
 
 {END IdGesPesResiduo_fieldblock}
 											
-{BEGIN IdReciclador_fieldblock}
-
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdReciclador}  r-vertical-field" data-fieldname="IdReciclador" data-signal-error-for="IdReciclador{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="IdReciclador" >
-
-	
-	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdReciclador}">
-		
-		{BEGIN IdReciclador_label}{$label public_GestionPesosResiduos IdReciclador }{END IdReciclador_label}
-	</label>
-	<div class="col-md-offset-3 col-md-6" >
-		{$IdReciclador_value}	</div>
-
-		
-</div>
-
-
-{END IdReciclador_fieldblock}
-											
-{BEGIN IdResiduo_fieldblock}
-
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdResiduo}  r-vertical-field" data-fieldname="IdResiduo" data-signal-error-for="IdResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="IdResiduo" >
-
-	
-	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdResiduo}">
-		
-		{BEGIN IdResiduo_label}{$label public_GestionPesosResiduos IdResiduo }{END IdResiduo_label}
-	</label>
-	<div class="col-md-offset-3 col-md-6" >
-		{$IdResiduo_value}	</div>
-
-		
-</div>
-
-
-{END IdResiduo_fieldblock}
-											
 {BEGIN FechaGestion_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_FechaGestion}  r-vertical-field" data-fieldname="FechaGestion" data-signal-error-for="FechaGestion{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="FechaGestion" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_FechaGestion}  r-vertical-field" data-fieldname="FechaGestion" data-signal-error-for="FechaGestion{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="FechaGestion" data-fieldname="FechaGestion" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_FechaGestion}">
@@ -164,7 +130,7 @@
 {BEGIN KilosResiduos_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_KilosResiduos}  r-vertical-field" data-fieldname="KilosResiduos" data-signal-error-for="KilosResiduos{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field4" {$item_integrated_edit_field4} data-pageid="{$pageid}" data-field="KilosResiduos" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_KilosResiduos}  r-vertical-field" data-fieldname="KilosResiduos" data-signal-error-for="KilosResiduos{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field4" {$item_integrated_edit_field4} data-pageid="{$pageid}" data-field="KilosResiduos" data-fieldname="KilosResiduos" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_KilosResiduos}">
@@ -179,6 +145,110 @@
 
 
 {END KilosResiduos_fieldblock}
+											
+{BEGIN Estado_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Estado}  r-vertical-field" data-fieldname="Estado" data-signal-error-for="Estado{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field5" {$item_integrated_edit_field5} data-pageid="{$pageid}" data-field="Estado" data-fieldname="Estado" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_Estado}">
+		
+		{BEGIN Estado_label}{$label public_GestionPesosResiduos Estado }{END Estado_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$Estado_value}	</div>
+
+		
+</div>
+
+
+{END Estado_fieldblock}
+										</td>
+			{END cellblock_grid_c3}
+										</tr>
+										</tbody></table>
+				
+{BEGIN details_detalleventas}
+<div data-itemtype="details_preview" data-itemid="details_preview" {$item_details_preview} data-pageid="{$pageid}" class="bs-details"> 
+	<div class="panel panel-info details-grid">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+							{$caption public_DetalleVentas }				
+							<span>
+					{$detailslButtons_detalleventas}
+																				</span>
+			</h4>
+		</div>
+		<div class="panel-body">
+			{$displayDetailTable_detalleventas}
+		</div>
+	</div>
+</div>
+{END details_detalleventas}
+											<table 
+	data-body-align="center"
+	data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" 
+	class="r-edit-form" cellpadding="0" cellspacing="0" 
+	{$grid_hiddenattr} 
+		data-form-width="1"
+		
+		data-v-width="4"
+	>
+	<tbody>
+										<tr {$row_grid_0} >
+										
+
+{BEGIN cellblock_grid_c3}
+<td
+	{$cell_grid_c3}
+	class=" r-ori-vert"
+	
+				data-fullwidth
+		
+			data-cellId="grid_c3" data-pageid="{$pageid}"
+		data-v-cell="4"
+		
+>
+	<div edit-form-cell class="clearfix">
+				
+{BEGIN id_residuo_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_residuo}  r-vertical-field" data-fieldname="id_residuo" data-signal-error-for="id_residuo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="id_residuo" data-fieldname="id_residuo" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_id_residuo}">
+		
+		{BEGIN id_residuo_label}{$label public_GestionPesosResiduos id_residuo }{END id_residuo_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$id_residuo_value}	</div>
+
+		
+</div>
+
+
+{END id_residuo_fieldblock}
+											
+{BEGIN id_reciclador_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_reciclador}  r-vertical-field" data-fieldname="id_reciclador" data-signal-error-for="id_reciclador{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="id_reciclador" data-fieldname="id_reciclador" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_id_reciclador}">
+		
+		{BEGIN id_reciclador_label}{$label public_GestionPesosResiduos id_reciclador }{END id_reciclador_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$id_reciclador_value}	</div>
+
+		
+</div>
+
+
+{END id_reciclador_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}
@@ -223,13 +293,13 @@
 		<span data-itemtype="hamburger" data-itemid="hamburger" {$item_hamburger} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown dropup">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-menu-hamburger"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN edit_page_button}
 	<li data-itemtype="view_edit" data-itemid="view_edit" {$item_view_edit} data-pageid="{$pageid}" data-small >
-				<a  href="#" {$edit_page_button_attrs}  title="" >
+				<a  href="gestionpesosresiduos_edit.php?{$editlink}" {$edit_page_button_attrs}  title="" >
 				
 		Editar		
 		</a>

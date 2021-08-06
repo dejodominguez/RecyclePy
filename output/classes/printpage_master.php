@@ -92,8 +92,11 @@ class PrintPage_Master extends PrintPage
 		if( $this->pageLayout )
 			$this->xt->assign("pageattrs", 'class="'.$this->pageLayout->style." page-".$this->pageLayout->name.'"');
 		
+		/*if( !$this->pdfJsonMode() ) 
+			$this->xt->load_template( GetTemplateName($this->shortTableName, $this->pageType) );*/
+		
 		if( !$this->pdfJsonMode() ) 
-			$this->xt->load_template( GetTemplateName($this->shortTableName, $this->pageType) );
+			$this->xt->load_template( $this->templatefile );		
 	}
 
 	public function showMaster( $params ) 

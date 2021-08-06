@@ -63,8 +63,6 @@ class MySQLiInfo extends DBInfo
 			
 			$res[] = array("fieldname" => $finfo->name, "type" => $stype, "not_null" => 0);
 		}
-		$rs->close();
-		
 		return $res;
 	}
 	

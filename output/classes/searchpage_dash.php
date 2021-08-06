@@ -31,8 +31,12 @@ class SearchPageDash extends SearchPage
 
 	protected function prepareFields()
 	{	
+		$pageFields = $this->pSet->getPageFields();
 		foreach( $this->pSet->getDashboardSearchFields() as $f => $fdata )
 		{
+			if( array_search( $f, $pageFields ) === false ) {
+				continue;
+			}
 			$field = $fdata[0]["field"];
 			$table = $fdata[0]["table"];
 			$fSet = $this->getTableSettings( $table );
@@ -102,7 +106,7 @@ class SearchPageDash extends SearchPage
 	function fillFieldSettings()
 	{		
 		$arrFields = $this->pSet->getAllSearchFields();
-		$this->addFieldsSettings($arrFields, null, true, $this->pageType);
+		$this->addFieldsSettings($arrFields, null, $this->pageType);
 	}
     
 	function locateDashFieldByOriginal( $table, $field )
@@ -120,7 +124,7 @@ class SearchPageDash extends SearchPage
 	}
 	
 	
-	function addFieldsSettings($arrFields, $pSet, $pageBased, $pageType)
+	function addFieldsSettings($arrFields, $pSet, $pageType)
 	{
 		$dashSearchFields = $this->pSet->getDashboardSearchFields();
 		$tableSettingsFilled = array();

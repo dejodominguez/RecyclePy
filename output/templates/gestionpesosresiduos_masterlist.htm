@@ -52,7 +52,7 @@
 {END grid_tabs}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -100,7 +100,7 @@
 	 
 		{BEGIN IdGesPesResiduo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo">
 	{$label public_GestionPesosResiduos IdGesPesResiduo }	</span>
 {END IdGesPesResiduo_fieldheadercolumn}
 
@@ -114,20 +114,20 @@
 	{$cell_grid_headcell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdReciclador_class}
+		 r-ori-vert				{$FechaGestion_class}
 			"
 
-			data-field="IdReciclador"
+			data-field="FechaGestion"
 	
 	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdReciclador_fieldheadercolumn}
+		{BEGIN FechaGestion_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdReciclador">
-	{$label public_GestionPesosResiduos IdReciclador }	</span>
-{END IdReciclador_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FechaGestion" data-fieldname="FechaGestion">
+	{$label public_GestionPesosResiduos FechaGestion }	</span>
+{END FechaGestion_fieldheadercolumn}
 
 	
 	</th>
@@ -139,20 +139,20 @@
 	{$cell_grid_headcell_field2}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdResiduo_class}
+		 r-ori-vert				{$KilosResiduos_class}
 			"
 
-			data-field="IdResiduo"
+			data-field="KilosResiduos"
 	
 	data-cellId="grid_headcell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdResiduo_fieldheadercolumn}
+		{BEGIN KilosResiduos_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdResiduo">
-	{$label public_GestionPesosResiduos IdResiduo }	</span>
-{END IdResiduo_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-fieldname="KilosResiduos">
+	{$label public_GestionPesosResiduos KilosResiduos }	</span>
+{END KilosResiduos_fieldheadercolumn}
 
 	
 	</th>
@@ -164,20 +164,20 @@
 	{$cell_grid_headcell_field3}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$FechaGestion_class}
+		 r-ori-vert				{$Estado_class}
 			"
 
-			data-field="FechaGestion"
+			data-field="Estado"
 	
 	data-cellId="grid_headcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN FechaGestion_fieldheadercolumn}
+		{BEGIN Estado_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FechaGestion">
-	{$label public_GestionPesosResiduos FechaGestion }	</span>
-{END FechaGestion_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Estado" data-fieldname="Estado">
+	{$label public_GestionPesosResiduos Estado }	</span>
+{END Estado_fieldheadercolumn}
 
 	
 	</th>
@@ -189,24 +189,49 @@
 	{$cell_grid_headcell_field4}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$KilosResiduos_class}
+		 r-ori-vert				{$id_residuo_class}
 			"
 
-			data-field="KilosResiduos"
+			data-field="id_residuo"
 	
 	data-cellId="grid_headcell_field4" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN KilosResiduos_fieldheadercolumn}
+		{BEGIN id_residuo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos">
-	{$label public_GestionPesosResiduos KilosResiduos }	</span>
-{END KilosResiduos_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field10" {$item_simple_grid_field10} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_residuo" data-fieldname="id_residuo">
+	{$label public_GestionPesosResiduos id_residuo }	</span>
+{END id_residuo_fieldheadercolumn}
 
 	
 	</th>
 	{END cellblock_grid_headcell_field4}
+				 
+					{BEGIN cellblock_grid_headcell_field5}
+	<th
+	
+	{$cell_grid_headcell_field5}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$id_reciclador_class}
+			"
+
+			data-field="id_reciclador"
+	
+	data-cellId="grid_headcell_field5" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN id_reciclador_fieldheadercolumn}
+ 
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field11" {$item_simple_grid_field11} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_reciclador" data-fieldname="id_reciclador">
+	{$label public_GestionPesosResiduos id_reciclador }	</span>
+{END id_reciclador_fieldheadercolumn}
+
+	
+	</th>
+	{END cellblock_grid_headcell_field5}
 							</tr>
 					 
 					 
@@ -265,7 +290,7 @@
 
 	 
 		{BEGIN IdGesPesResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" data-default-width >
 {$IdGesPesResiduo_value}
 </span>
 {END IdGesPesResiduo_fieldcolumn}	
@@ -278,20 +303,20 @@
 	{$cell_grid_cell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdReciclador_class}
+		 r-ori-vert				{$FechaGestion_class}
 			"
 
-			data-field="IdReciclador"
+			data-field="FechaGestion"
 	
 	data-cellId="grid_cell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdReciclador_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdReciclador" data-default-width >
-{$IdReciclador_value}
+		{BEGIN FechaGestion_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FechaGestion" data-fieldname="FechaGestion" data-default-width >
+{$FechaGestion_value}
 </span>
-{END IdReciclador_fieldcolumn}	
+{END FechaGestion_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field1}
 				 
@@ -301,20 +326,20 @@
 	{$cell_grid_cell_field2}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdResiduo_class}
+		 r-ori-vert				{$KilosResiduos_class}
 			"
 
-			data-field="IdResiduo"
+			data-field="KilosResiduos"
 	
 	data-cellId="grid_cell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdResiduo" data-default-width >
-{$IdResiduo_value}
+		{BEGIN KilosResiduos_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-fieldname="KilosResiduos" data-default-width >
+{$KilosResiduos_value}
 </span>
-{END IdResiduo_fieldcolumn}	
+{END KilosResiduos_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field2}
 				 
@@ -324,20 +349,20 @@
 	{$cell_grid_cell_field3}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$FechaGestion_class}
+		 r-ori-vert				{$Estado_class}
 			"
 
-			data-field="FechaGestion"
+			data-field="Estado"
 	
 	data-cellId="grid_cell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN FechaGestion_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FechaGestion" data-default-width >
-{$FechaGestion_value}
+		{BEGIN Estado_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Estado" data-fieldname="Estado" data-default-width >
+{$Estado_value}
 </span>
-{END FechaGestion_fieldcolumn}	
+{END Estado_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field3}
 				 
@@ -347,22 +372,45 @@
 	{$cell_grid_cell_field4}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$KilosResiduos_class}
+		 r-ori-vert				{$id_residuo_class}
 			"
 
-			data-field="KilosResiduos"
+			data-field="id_residuo"
 	
 	data-cellId="grid_cell_field4" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN KilosResiduos_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-default-width >
-{$KilosResiduos_value}
+		{BEGIN id_residuo_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_residuo" data-fieldname="id_residuo" data-default-width >
+{$id_residuo_value}
 </span>
-{END KilosResiduos_fieldcolumn}	
+{END id_residuo_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field4}
+				 
+					{BEGIN cellblock_grid_cell_field5}
+	<td
+	
+	{$cell_grid_cell_field5}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$id_reciclador_class}
+			"
+
+			data-field="id_reciclador"
+	
+	data-cellId="grid_cell_field5" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN id_reciclador_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_reciclador" data-fieldname="id_reciclador" data-default-width >
+{$id_reciclador_value}
+</span>
+{END id_reciclador_fieldcolumn}	
+	</td>
+	{END cellblock_grid_cell_field5}
 							</tr>
 					 
 					
@@ -474,6 +522,22 @@
 	
 	</td>
 	{END cellblock_grid_footcell_field4}
+				 
+					{BEGIN cellblock_grid_footcell_field5}
+	<td
+	
+	{$cell_grid_footcell_field5}
+	{$recordattrs}
+	class="
+		 r-ori-vert			"
+
+	
+	data-cellId="grid_footcell_field5" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="gestionpesosresiduos_masterlist"	
+	>
+
+	
+	</td>
+	{END cellblock_grid_footcell_field5}
 							</tr>
 					
 					</tfoot>

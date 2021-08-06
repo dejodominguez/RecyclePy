@@ -72,16 +72,25 @@ class DB2Functions extends DBFunctions
 		return "SELECT IDENTITY_VAL_LOCAL() FROM SYSIBM.SYSDUMMY1";
 	}
 
-	public function queryPage( $connection, $strSQL, $pageStart, $pageSize, $applyLimit ) 
+	public function limitedQuery( $connection, $strSQL, $skip, $total, $applyLimit ) 
 	{
-		if( $applyLimit && $connection->dbType == nDATABASE_DB2 ) 
-		{
-			$strSQL = "with DB2_QUERY as (".$strSQL.") select * from DB2_QUERY where DB2_ROW_NUMBER between "
-				.(($pageStart - 1) * $pageSize + 1)." and ".($pageStart * $pageSize);
+		if( $applyLimit && $total >= 0  ) {
+			$strSQL .= " FETCH FIRST " . ( $total + $skip ) . " ROWS ONLY";
 		}
+		/*
+		if( $applyLimit && $connection->dbType == nDATABASE_DB2 && ( $skip || $total >= 0 ) ) 
+		{
+			$limits = array();
+			if( $skip )
+				$limits []= "DB2_ROW_NUMBER > " . $skip;
+			if( $total )
+				$limits []= "DB2_ROW_NUMBER <= " . ( $skip + $total );
+			$strSQL = "with DB2_QUERY as (".$strSQL.") select * from DB2_QUERY where " . implode( " and ", $limits );
+		}
+		*/
 		$qResult = $connection->query( $strSQL );
-		if( $applyLimit && $connection->dbType != nDATABASE_DB2 ) {
-			$qResult->seekPage( $pageSize, $pageStart );
+		if( $applyLimit ) {
+			$qResult->seekRecord( $skip );
 		}
 		
 		return $qResult;

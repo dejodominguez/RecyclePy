@@ -1,7 +1,4 @@
 <?php
-
-
-
 $tdatamedtipoorigen = array();
 $tdatamedtipoorigen[".searchableFields"] = array();
 $tdatamedtipoorigen[".ShortName"] = "medtipoorigen";
@@ -9,11 +6,12 @@ $tdatamedtipoorigen[".OwnerID"] = "";
 $tdatamedtipoorigen[".OriginalTable"] = "public.MedTipoOrigen";
 
 
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
-
 $tdatamedtipoorigen[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
+$tdatamedtipoorigen[".originalPagesByType"] = $tdatamedtipoorigen[".pagesByType"];
 $tdatamedtipoorigen[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdatamedtipoorigen[".defaultPages"] = $defaultPages;
+$tdatamedtipoorigen[".originalPages"] = $tdatamedtipoorigen[".pages"];
+$tdatamedtipoorigen[".defaultPages"] = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
+$tdatamedtipoorigen[".originalDefaultPages"] = $tdatamedtipoorigen[".defaultPages"];
 
 //	field labels
 $fieldLabelsmedtipoorigen = array();
@@ -47,6 +45,8 @@ $tdatamedtipoorigen[".nSecOptions"] = 0;
 
 $tdatamedtipoorigen[".mainTableOwnerID"] = "";
 $tdatamedtipoorigen[".entityType"] = 0;
+$tdatamedtipoorigen[".connId"] = "RealEstate_at_localhost";
+
 
 $tdatamedtipoorigen[".strOriginalTableName"] = "public.MedTipoOrigen";
 
@@ -60,14 +60,9 @@ $tdatamedtipoorigen[".showEditInPopup"] = false;
 
 $tdatamedtipoorigen[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdatamedtipoorigen[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdatamedtipoorigen[".listAjax"] = false;
 //	temporary
-$tdatamedtipoorigen[".listAjax"] = false;
+//$tdatamedtipoorigen[".listAjax"] = false;
 
 	$tdatamedtipoorigen[".audit"] = false;
 
@@ -78,7 +73,7 @@ $pages = $tdatamedtipoorigen[".defaultPages"];
 
 if( $pages[PAGE_EDIT] ) {
 	$tdatamedtipoorigen[".edit"] = true;
-	$tdatamedtipoorigen[".afterEditAction"] = 1;
+	$tdatamedtipoorigen[".afterEditAction"] = 0;
 	$tdatamedtipoorigen[".closePopupAfterEdit"] = 1;
 	$tdatamedtipoorigen[".afterEditActionDetTable"] = "";
 }
@@ -185,11 +180,10 @@ $tdatamedtipoorigen[".warnLeavingPages"] = true;
 
 
 $tstrOrderBy = "";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
 $tdatamedtipoorigen[".strOrderBy"] = $tstrOrderBy;
 
 $tdatamedtipoorigen[".orderindexes"] = array();
+
 
 $tdatamedtipoorigen[".sqlHead"] = "SELECT \"IdMedTipOrigen\",  	\"DescriMedTipOrigen\"";
 $tdatamedtipoorigen[".sqlFrom"] = "FROM \"public\".\"MedTipoOrigen\"";
@@ -249,7 +243,7 @@ $tdatamedtipoorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_MedTipoOrigen","IdMedTipOrigen");
 	$fdata["FieldType"] = 3;
 
-	
+
 		$fdata["AutoInc"] = true;
 
 	
@@ -257,6 +251,7 @@ $tdatamedtipoorigen[".hideMobileList"] = array();
 
 		$fdata["strField"] = "IdMedTipOrigen";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"IdMedTipOrigen\"";
 
@@ -280,6 +275,7 @@ $tdatamedtipoorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -387,13 +383,14 @@ $tdatamedtipoorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_MedTipoOrigen","DescriMedTipOrigen");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "DescriMedTipOrigen";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"DescriMedTipOrigen\"";
 
@@ -417,6 +414,7 @@ $tdatamedtipoorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -521,6 +519,9 @@ $page_titles["public_MedTipoOrigen"] = &$pageTitlesmedtipoorigen;
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
+
+//if !@TABLE.bReportCrossTab
+
 $detailsTablesData["public.MedTipoOrigen"] = array();
 //	public.GestionRegistrosOrigen
 	
@@ -533,7 +534,8 @@ $detailsTablesData["public.MedTipoOrigen"] = array();
 
 
 
-				$detailsParam["dType"]=PAGE_LIST;
+		
+		$detailsParam["dType"]=PAGE_LIST;
 	$detailsParam["dShortTable"] = "gestionregistrosorigen";
 	$detailsParam["dCaptionTable"] = GetTableCaption("public_GestionRegistrosOrigen");
 	$detailsParam["masterKeys"] =array();
@@ -551,6 +553,7 @@ $detailsTablesData["public.MedTipoOrigen"] = array();
 				$detailsTablesData["public.MedTipoOrigen"][$dIndex]["detailKeys"] = array();
 
 	$detailsTablesData["public.MedTipoOrigen"][$dIndex]["detailKeys"][]="IdMedTipOrigen";
+//endif
 
 // tables which are master tables for current table (detail)
 $masterTablesData["public.MedTipoOrigen"] = array();
@@ -560,7 +563,9 @@ $masterTablesData["public.MedTipoOrigen"] = array();
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -693,6 +698,8 @@ $queryData_medtipoorigen = createSqlQuery_medtipoorigen();
 		
 
 $tdatamedtipoorigen[".sqlquery"] = $queryData_medtipoorigen;
+
+
 
 $tableEvents["public.MedTipoOrigen"] = new eventsBase;
 $tdatamedtipoorigen[".hasEvents"] = false;

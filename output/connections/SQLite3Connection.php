@@ -143,10 +143,9 @@ class SQLite3Connection extends Connection
 	 * @param Number pageSize
 	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
-		$row = ($page - 1) * $pageSize;
-		for($i = 0; $i < $row; $i++)
+		for($i = 0; $i < $n; $i++)
 		{
 			$qHandle->fetchArray();		
 		}

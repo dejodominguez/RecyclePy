@@ -39,11 +39,13 @@
 'changepwd_back' => array( 'changepwd_back' ),
 'changepwd_header' => array( 'changepwd_header' ) ),
 'cellMaps' => array(  ) ),
-'page' => array( 'labeledButtons' => array( 'update_records' => array(  ),
+'page' => array( 'verticalBar' => false,
+'labeledButtons' => array( 'update_records' => array(  ),
 'print_pages' => array(  ),
 'register_activate_message' => array(  ),
 'details_found' => array(  ) ),
-'hasCustomButtons' => false ),
+'hasCustomButtons' => false,
+'customButtons' => array(  ) ),
 'events' => array( 'maps' => array(  ),
 'mapsData' => array(  ),
 'buttons' => array(  ) ) );
@@ -79,7 +81,8 @@
 'items' => array( 'changepwd_message' ),
 '_t' => 'Map',
 '_i' => array(  ),
-'_s' => 0 ) ),
+'_s' => 0,
+'background' => '#e0ffe3' ) ),
 'deferredItems' => array(  ),
 'recsPerRow' => 1 ),
 'grid' => array( 'modelId' => 'changepwd-grid',
@@ -146,5 +149,5 @@ array( 'cell' => 'c6' ) ),
 'changepwd_back' => array( 'type' => 'changepwd_back' ),
 'changepwd_header' => array( 'type' => 'changepwd_header' ) ),
 'dbProps' => array(  ),
-'version' => 4 );
+'version' => 7 );
 		?>

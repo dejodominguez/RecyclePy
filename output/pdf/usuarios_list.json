@@ -27,7 +27,7 @@ pdfDocument = {
 		{BEGIN body}
 		{BEGIN embedded_grid}
 		{
-			text: '{$jscaption public_Usuarios}',
+			text: '{$jscaption public_usuarios}',
 		},
 		{END embedded_grid}
 		{ 
@@ -85,7 +85,25 @@ pdfDocument = {
 										{BEGIN col_grid_8}
 					"%",
 					{END col_grid_8}
-													],
+										{BEGIN col_grid_9}
+					"%",
+					{END col_grid_9}
+															],
+											heights: [ // first height for header part
+					"%",
+																		{BEGIN row_grid_0}
+							"%",
+							{END row_grid_0}
+																							 	{BEGIN grid_row}
+													{BEGIN row_grid_1}
+							"%",
+							{END row_grid_1}
+													{END grid_row}
+																								{BEGIN row_grid_2}
+							"%",
+							{END row_grid_2}
+															],
+							
 				body: [
 				{BEGIN standalone_page}
 					[
@@ -106,16 +124,14 @@ pdfDocument = {
 								"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c2',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -132,10 +148,12 @@ pdfDocument = {
 				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
 											],
-					]
+		
+		]
 	}
 }
 ,
@@ -153,16 +171,14 @@ pdfDocument = {
 											"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c1',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -178,16 +194,24 @@ pdfDocument = {
 				
 			{"text":"","hidden":"{$item_hide_inline_add}"},
 				
+				
+			{"text":"","hidden":"{$item_hide_inline_save_all}"},
+				
+				
+			{"text":"","hidden":"{$item_hide_inline_cancel_all}"},
+				
+				
+			{"text":"","hidden":"{$item_hide_delete}"},
+				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
-																			
-{
+																							{
 	cellId: 'c2',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -198,7 +222,7 @@ pdfDocument = {
 			"text": [
 		
 				
-			{"text":"Viendo %first% - %last% de %total%","hidden":"{$item_hide_details_found}","isHtml":true,"page_indicator":true},
+			{"text":"Mostrando %first% - %last% de %total%","hidden":"{$item_hide_details_found}","isHtml":true,"page_indicator":true},
 				
 				
 			{"text":"","hidden":"{$item_hide_page_size}"},
@@ -208,18 +232,15 @@ pdfDocument = {
 				
 		  ],
   "border": [ false, false, false, false ],
-          "alignment": 'right',
-    },
+              "alignment": 'right',
+  },
 
 											],
-								
-		[
-												
-{
-	cellId: 'c3',
+						[
+																{
+	cellId: 'c',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -234,15 +255,13 @@ pdfDocument = {
 				
 		  ],
   "border": [ false, false, false, false ],
-          "alignment": 'right',
-    },
+              "alignment": 'right',
+  },
 
-																			
-{
-	cellId: 'c4',
+																							{
+	cellId: 'c3',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -255,11 +274,12 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ false, false, false, false ],
-          "alignment": 'right',
-    },
+              "alignment": 'right',
+  },
 
 											],
-					]
+		
+		]
 	}
 }
 ,
@@ -271,11 +291,9 @@ pdfDocument = {
 																	
 
 				
-					{BEGIN row_grid_0}
-				
-		[
-												{BEGIN cellblock_grid_headcell_icons}
-
+				{BEGIN row_grid_0}
+				[
+																{BEGIN cellblock_grid_headcell_icons}
 {
 	cellId: 'headcell_icons',
 	col:0,
@@ -286,7 +304,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -294,13 +313,13 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',        },
+      fillColor: '#9ee6b2',        "alignment": 'left',
+  },
 
 {END cellblock_grid_headcell_icons}
-																			{BEGIN cellblock_grid_headcell_details}
-
+																							{BEGIN cellblock_grid_headcell_checkbox}
 {
-	cellId: 'headcell_details',
+	cellId: 'headcell_checkbox',
 	col:0,
 	row:0,
 			style: 'headcell',
@@ -309,45 +328,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
 	
-	
-			"text": [
-		
-				'',
-	  ],
-  "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',        },
-
-{END cellblock_grid_headcell_details}
-																			{BEGIN cellblock_grid_headcell_field}
-
-{
-	cellId: 'headcell_field',
-	col:0,
-	row:0,
-			style: 'headcell',
-		
-		
-	//	dynamic colspan/rowspan
-
-		
-			
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field11}","text":"{$jslabel public_Usuarios NombreUsuario }","bold":true},
+			{"text":"","hidden":"{$item_hide_grid_checkbox_head}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',          "alignment": '{$NombreUsuario_align}',
+      fillColor: '#9ee6b2',        "alignment": 'left',
   },
 
-{END cellblock_grid_headcell_field}
-																			{BEGIN cellblock_grid_headcell_field1}
-
+{END cellblock_grid_headcell_checkbox}
+																							{BEGIN cellblock_grid_headcell_field1}
 {
 	cellId: 'headcell_field1',
 	col:0,
@@ -358,22 +354,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field_label}","text":"{$jslabel public_Usuarios NombreCompleto }","bold":true},
+			{"text":"{$jslabel public_usuarios nombre_usuario }","hidden":"{$item_hide_simple_grid_field15}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',          "alignment": '{$NombreCompleto_align}',
+      fillColor: '#9ee6b2',        "alignment": 'center',
   },
 
 {END cellblock_grid_headcell_field1}
-																			{BEGIN cellblock_grid_headcell_field2}
-
+																							{BEGIN cellblock_grid_headcell_field2}
 {
 	cellId: 'headcell_field2',
 	col:0,
@@ -384,22 +380,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field_label1}","text":"{$jslabel public_Usuarios Password }","bold":true},
+			{"text":"{$jslabel public_usuarios password }","hidden":"{$item_hide_simple_grid_field16}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',          "alignment": '{$Password_align}',
+      fillColor: '#9ee6b2',        "alignment": 'center',
   },
 
 {END cellblock_grid_headcell_field2}
-																			{BEGIN cellblock_grid_headcell_field3}
-
+																							{BEGIN cellblock_grid_headcell_field3}
 {
 	cellId: 'headcell_field3',
 	col:0,
@@ -410,22 +406,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field_label2}","text":"{$jslabel public_Usuarios Email }","bold":true},
+			{"text":"{$jslabel public_usuarios nombre_completo }","hidden":"{$item_hide_simple_grid_field18}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',          "alignment": '{$Email_align}',
+      fillColor: '#9ee6b2',        "alignment": 'center',
   },
 
 {END cellblock_grid_headcell_field3}
-																			{BEGIN cellblock_grid_headcell_field4}
-
+																							{BEGIN cellblock_grid_headcell_field4}
 {
 	cellId: 'headcell_field4',
 	col:0,
@@ -436,22 +432,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field12}","text":"{$jslabel public_Usuarios DirecUsuario }","bold":true},
+			{"text":"{$jslabel public_usuarios id_tipo_usu }","hidden":"{$item_hide_simple_grid_field19}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',          "alignment": '{$DirecUsuario_align}',
+      fillColor: '#9ee6b2',        "alignment": 'center',
   },
 
 {END cellblock_grid_headcell_field4}
-																			{BEGIN cellblock_grid_headcell_field5}
-
+																							{BEGIN cellblock_grid_headcell_field5}
 {
 	cellId: 'headcell_field5',
 	col:0,
@@ -462,24 +458,24 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field_label3}","text":"{$jslabel public_Usuarios TelUsuario }","bold":true},
+			{"text":"{$jslabel public_usuarios direc_usuario }","hidden":"{$item_hide_simple_grid_field22}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',          "alignment": '{$TelUsuario_align}',
+      fillColor: '#9ee6b2',        "alignment": 'center',
   },
 
 {END cellblock_grid_headcell_field5}
-																			{BEGIN cellblock_grid_headcell_field6}
-
+																							{BEGIN cellblock_grid_headcell_field8}
 {
-	cellId: 'headcell_field6',
+	cellId: 'headcell_field8',
 	col:0,
 	row:0,
 			style: 'headcell',
@@ -488,31 +484,83 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field_label4}","text":"{$jslabel public_Usuarios Groupid }","bold":true},
+			{"text":"{$jslabel public_usuarios id_barrio }","hidden":"{$item_hide_simple_grid_field23}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',          "alignment": '{$Groupid_align}',
+      fillColor: '#9ee6b2',        "alignment": 'center',
   },
 
-{END cellblock_grid_headcell_field6}
+{END cellblock_grid_headcell_field8}
+																							{BEGIN cellblock_grid_headcell_field9}
+{
+	cellId: 'headcell_field9',
+	col:0,
+	row:0,
+			style: 'headcell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_usuarios email }","hidden":"{$item_hide_simple_grid_field17}","bold":true},
+				
+		  ],
+  "border": [ true, true, true, true ],
+      fillColor: '#9ee6b2',        "alignment": 'center',
+  },
+
+{END cellblock_grid_headcell_field9}
+																							{BEGIN cellblock_grid_headcell_field10}
+{
+	cellId: 'headcell_field10',
+	col:0,
+	row:0,
+			style: 'headcell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_usuarios tel_usuario }","hidden":"{$item_hide_simple_grid_field24}","bold":true},
+				
+		  ],
+  "border": [ true, true, true, true ],
+      fillColor: '#9ee6b2',        "alignment": 'center',
+  },
+
+{END cellblock_grid_headcell_field10}
 											],
 				{END row_grid_0}
-									
+		
+			
 		{BEGIN grid_row}
 	{BEGIN grid_record}
 				
-						{BEGIN row_grid_1}
-				
-		[
-												{BEGIN cellblock_grid_cell_icons}
-
+				{BEGIN row_grid_1}
+				[
+																{BEGIN cellblock_grid_cell_icons}
 {
 	cellId: 'cell_icons',
 	col:0,
@@ -523,7 +571,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -532,69 +581,50 @@ pdfDocument = {
 			{"text":"","hidden":"{$item_hide_grid_edit}"},
 				
 				
+			{"text":"","hidden":"{$item_hide_grid_inline_edit}"},
+				
+				
+			{"text":"","hidden":"{$item_hide_grid_inline_save}"},
+				
+				
 			{"text":"","hidden":"{$item_hide_grid_inline_cancel}"},
 				
-		  ],
-  "border": [ true, true, true, true ],
-          },
-
-{END cellblock_grid_cell_icons}
-																			{BEGIN cellblock_grid_cell_details}
-
-{
-	cellId: 'cell_details',
-	col:0,
-	row:0,
-			style: 'bodycell',
-		
-		
-	//	dynamic colspan/rowspan
-
-		
-			
-	
-	
-			"text": [
-		
 				
-			{"text":"","hidden":"{$item_hide_grid_alldetails_link}"},
-				
-				
-			{"text":"","hidden":"{$item_hide_grid_details_link}"},
+			{"text":"","hidden":"{$item_hide_grid_view}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-          },
-
-{END cellblock_grid_cell_details}
-																			{BEGIN cellblock_grid_cell_field}
-
-{
-	cellId: 'cell_field',
-	col:0,
-	row:0,
-			style: 'bodycell',
-		
-		
-	//	dynamic colspan/rowspan
-
-		
-			
-	
-	
-			"text": [
-		
-				
-			{"hidden":"{$item_hide_simple_grid_field1}","text":{$NombreUsuario_pdfvalue}},
-				
-		  ],
-  "border": [ true, true, true, true ],
-            "alignment": '{$NombreUsuario_align}',
+              "alignment": 'left',
   },
 
-{END cellblock_grid_cell_field}
-																			{BEGIN cellblock_grid_cell_field1}
+{END cellblock_grid_cell_icons}
+																							{BEGIN cellblock_grid_cell_checkbox}
+{
+	cellId: 'cell_checkbox',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
 
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"","hidden":"{$item_hide_grid_checkbox}"},
+				
+		  ],
+  "border": [ true, true, true, true ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_cell_checkbox}
+																							{BEGIN cellblock_grid_cell_field1}
 {
 	cellId: 'cell_field1',
 	col:0,
@@ -605,22 +635,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field}","text":{$NombreCompleto_pdfvalue}},
+			{"text":{$nombre_usuario_pdfvalue},"hidden":"{$item_hide_simple_grid_field1}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$NombreCompleto_align}',
+              "alignment": '{$nombre_usuario_align}',
   },
 
 {END cellblock_grid_cell_field1}
-																			{BEGIN cellblock_grid_cell_field2}
-
+																							{BEGIN cellblock_grid_cell_field2}
 {
 	cellId: 'cell_field2',
 	col:0,
@@ -631,22 +661,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field1}","text":{$Password_pdfvalue}},
+			{"text":{$password_pdfvalue},"hidden":"{$item_hide_simple_grid_field2}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$Password_align}',
+              "alignment": '{$password_align}',
   },
 
 {END cellblock_grid_cell_field2}
-																			{BEGIN cellblock_grid_cell_field3}
-
+																							{BEGIN cellblock_grid_cell_field3}
 {
 	cellId: 'cell_field3',
 	col:0,
@@ -657,22 +687,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field2}","text":{$Email_pdfvalue}},
+			{"text":{$nombre_completo_pdfvalue},"hidden":"{$item_hide_simple_grid_field4}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$Email_align}',
+              "alignment": '{$nombre_completo_align}',
   },
 
 {END cellblock_grid_cell_field3}
-																			{BEGIN cellblock_grid_cell_field4}
-
+																							{BEGIN cellblock_grid_cell_field4}
 {
 	cellId: 'cell_field4',
 	col:0,
@@ -683,22 +713,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field8}","text":{$DirecUsuario_pdfvalue}},
+			{"text":{$id_tipo_usu_pdfvalue},"hidden":"{$item_hide_simple_grid_field5}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$DirecUsuario_align}',
+              "alignment": '{$id_tipo_usu_align}',
   },
 
 {END cellblock_grid_cell_field4}
-																			{BEGIN cellblock_grid_cell_field5}
-
+																							{BEGIN cellblock_grid_cell_field5}
 {
 	cellId: 'cell_field5',
 	col:0,
@@ -709,24 +739,24 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field3}","text":{$TelUsuario_pdfvalue}},
+			{"text":{$direc_usuario_pdfvalue},"hidden":"{$item_hide_simple_grid_field8}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$TelUsuario_align}',
+              "alignment": '{$direc_usuario_align}',
   },
 
 {END cellblock_grid_cell_field5}
-																			{BEGIN cellblock_grid_cell_field6}
-
+																							{BEGIN cellblock_grid_cell_field8}
 {
-	cellId: 'cell_field6',
+	cellId: 'cell_field8',
 	col:0,
 	row:0,
 			style: 'bodycell',
@@ -735,32 +765,24 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_grid_field4}","text":{$Groupid_pdfvalue}},
-				
-				
-			{"text":"   1 = Administrador / a y 2 = Separador / a","color":"#b6b3b3","hidden":"{$item_hide_text}","isHtml":true},
+			{"text":{$id_barrio_pdfvalue},"hidden":"{$item_hide_simple_grid_field9}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$Groupid_align}',
+              "alignment": '{$id_barrio_align}',
   },
 
-{END cellblock_grid_cell_field6}
-											],
-				{END row_grid_1}
-								{BEGIN row_grid_2}
-				
-		[
-												{BEGIN cellblock_grid_cell_dpreview}
-
+{END cellblock_grid_cell_field8}
+																							{BEGIN cellblock_grid_cell_field9}
 {
-	cellId: 'cell_dpreview',
+	cellId: 'cell_field9',
 	col:0,
 	row:0,
 			style: 'bodycell',
@@ -768,84 +790,58 @@ pdfDocument = {
 		
 	//	dynamic colspan/rowspan
 
-					{BEGIN colspan_grid_cell_dpreview}
-			colSpan: {$colspan_grid_cell_dpreview},
-			{END colspan_grid_cell_dpreview}
 		
-			
+						
 	
 	
-			"stack": [
+	
+			"text": [
 		
 				
-			 {BEGIN details_gestionregistrosorigen}
-			{$displayDetailTable_gestionregistrosorigen }
-		{END details_gestionregistrosorigen},
+			{"text":{$email_pdfvalue},"hidden":"{$item_hide_simple_grid_field3}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": '{$email_align}',
+  },
 
-{END cellblock_grid_cell_dpreview}
-																			{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  1,
-					text: ''
-				},
-															{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  2,
-					text: ''
-				},
-															{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  3,
-					text: ''
-				},
-															{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  4,
-					text: ''
-				},
-															{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  5,
-					text: ''
-				},
-															{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  6,
-					text: ''
-				},
-															{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  7,
-					text: ''
-				},
-															{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  8,
-					text: ''
-				},
-							],
-				{END row_grid_2}
-						{END grid_record}
+{END cellblock_grid_cell_field9}
+																							{BEGIN cellblock_grid_cell_field10}
+{
+	cellId: 'cell_field10',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$tel_usuario_pdfvalue},"hidden":"{$item_hide_simple_grid_field10}"},
+				
+		  ],
+  "border": [ true, true, true, true ],
+              "alignment": '{$tel_usuario_align}',
+  },
+
+{END cellblock_grid_cell_field10}
+											],
+				{END row_grid_1}
+		
+		{END grid_record}
 	{END grid_row}
 			
 					
-								{BEGIN row_grid_3}
-				
-		[
-												{BEGIN cellblock_grid_footcell_icons}
-
+				{BEGIN row_grid_2}
+				[
+																{BEGIN cellblock_grid_footcell_icons}
 {
 	cellId: 'footcell_icons',
 	col:0,
@@ -856,7 +852,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -864,13 +861,13 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_icons}
-																			{BEGIN cellblock_grid_footcell_details}
-
+																							{BEGIN cellblock_grid_footcell_checkbox}
 {
-	cellId: 'footcell_details',
+	cellId: 'footcell_checkbox',
 	col:0,
 	row:0,
 			style: 'footcell',
@@ -879,30 +876,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
 	
-	
-			"text": [
-		
-				'',
-	  ],
-  "border": [ true, true, true, true ],
-          },
-
-{END cellblock_grid_footcell_details}
-																			{BEGIN cellblock_grid_footcell_field}
-
-{
-	cellId: 'footcell_field',
-	col:0,
-	row:0,
-			style: 'footcell',
-		
-		
-	//	dynamic colspan/rowspan
-
-		
-			
 	
 	
 			"text": [
@@ -910,11 +885,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
-{END cellblock_grid_footcell_field}
-																			{BEGIN cellblock_grid_footcell_field1}
-
+{END cellblock_grid_footcell_checkbox}
+																							{BEGIN cellblock_grid_footcell_field1}
 {
 	cellId: 'footcell_field1',
 	col:0,
@@ -925,7 +900,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -933,11 +909,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field1}
-																			{BEGIN cellblock_grid_footcell_field2}
-
+																							{BEGIN cellblock_grid_footcell_field2}
 {
 	cellId: 'footcell_field2',
 	col:0,
@@ -948,7 +924,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -956,11 +933,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field2}
-																			{BEGIN cellblock_grid_footcell_field3}
-
+																							{BEGIN cellblock_grid_footcell_field3}
 {
 	cellId: 'footcell_field3',
 	col:0,
@@ -971,7 +948,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -979,11 +957,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field3}
-																			{BEGIN cellblock_grid_footcell_field4}
-
+																							{BEGIN cellblock_grid_footcell_field4}
 {
 	cellId: 'footcell_field4',
 	col:0,
@@ -994,7 +972,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -1002,11 +981,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field4}
-																			{BEGIN cellblock_grid_footcell_field5}
-
+																							{BEGIN cellblock_grid_footcell_field5}
 {
 	cellId: 'footcell_field5',
 	col:0,
@@ -1017,7 +996,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -1025,13 +1005,13 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field5}
-																			{BEGIN cellblock_grid_footcell_field6}
-
+																							{BEGIN cellblock_grid_footcell_field8}
 {
-	cellId: 'footcell_field6',
+	cellId: 'footcell_field8',
 	col:0,
 	row:0,
 			style: 'footcell',
@@ -1040,7 +1020,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -1048,12 +1029,62 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
-{END cellblock_grid_footcell_field6}
+{END cellblock_grid_footcell_field8}
+																							{BEGIN cellblock_grid_footcell_field9}
+{
+	cellId: 'footcell_field9',
+	col:0,
+	row:0,
+			style: 'footcell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				'',
+	  ],
+  "border": [ true, true, true, true ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_footcell_field9}
+																							{BEGIN cellblock_grid_footcell_field10}
+{
+	cellId: 'footcell_field10',
+	col:0,
+	row:0,
+			style: 'footcell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				'',
+	  ],
+  "border": [ true, true, true, true ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_footcell_field10}
 											],
-				{END row_grid_3}
-							
+				{END row_grid_2}
+		
+				
 									]
 			
 			}

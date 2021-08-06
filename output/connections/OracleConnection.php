@@ -203,10 +203,9 @@ class OracleConnection extends Connection
 	 * @param Number pageSize
 	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
-		$row = ($page - 1) * $pageSize;
-		for($i = 0; $i < $row; $i++)
+		for($i = 0; $i < $n; $i++)
 		{
 			$this->myoci_fetch_array($qHandle, OCI_NUM + OCI_RETURN_NULLS);
 		}

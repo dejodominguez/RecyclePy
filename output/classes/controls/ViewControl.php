@@ -148,9 +148,9 @@ class ViewControl
 	 * @prarm String keylink
 	 * @return String
 	 */
-	public function getExportValue(&$data, $keylink = "")
+	public function getExportValue(&$data, $keylink = "", $html = false )
 	{
-		return $this->showDBValue($data, $keylink);
+		return $this->showDBValue($data, $keylink, $html );
 	}
 
 
@@ -366,7 +366,7 @@ class ViewControl
 		if( !$this->needLookupValueProcessing )
 			return $value;
 
-		return implode(",", splitvalues($value));
+		return implode(",", splitLookupValues($value));
 	}
 
 	/**
@@ -391,6 +391,23 @@ class ViewControl
 		}
 		return $this->getValueHighlighted($value, $highlightData);
 	}
+	
+	/**
+	 * Highlight a search word for number-like fields
+	 * @param String value
+	 * @param Boolean encoded
+	 * @param String dbValue
+	 * @return string
+	 */
+	public function highlightSearchWordForNumber( $value, $encoded, $dbValue )
+	{
+		$lookupParams = $this->getLookupParams();
+		$highlightData = $this->searchClauseObj->getSearchHighlightingData( $this->field, $dbValue, $encoded, $lookupParams, true );
+		if( $highlightData )
+			return $this->getValueHighlighted( $value, $highlightData );
+
+		return $value;
+	}		
 
 	/**
 	 * Form the the string with the search word highlighted

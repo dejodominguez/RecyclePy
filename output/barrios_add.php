@@ -19,19 +19,12 @@ if( !AddPage::processAddPageSecurity( $strTableName ) )
 AddPage::handleBrokenRequest();
 
 
-
-
-
-
-
-
-
 $pageMode = AddPage::readAddModeFromRequest();
 
 $xt = new Xtempl();
 
 $id = postvalue_number("id");
-$id = intval($id) == 0 ? 1 : $id;
+$id = $id ? $id : 1;
 	 	
 //an array of AddPage constructor's params 
 $params = array();
@@ -44,18 +37,14 @@ $params["pageName"] = postvalue("page");
 $params["action"] = postvalue("a");
 $params["needSearchClauseObj"] = false;
 $params["afterAdd_id"] = postvalue("afteradd");
+
+$params["hostPageName"] = postvalue("hostPageName");
+$params["newRowId"] = postvalue("newRowId");
+
 $params["masterTable"] = postvalue("mastertable");
 if( $params["masterTable"] )
-{
-	$i = 1;
-	$params["masterKeysReq"] = array();
-		
-	while( isset( $_REQUEST["masterkey".$i] ) ) 
-	{
-		$params["masterKeysReq"][ $i ] = $_REQUEST["masterkey".$i];
-		$i++;
-	}	
-}
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
+
 
 		
 ;
@@ -64,6 +53,8 @@ $params["captchaValue"] = postvalue("value_captcha_1209xre_" . $id);
 $params["dashElementName"] = postvalue("dashelement");
 $params["fromDashboard"] = postvalue("fromDashboard");
 $params["dashTName"] = $params["fromDashboard"] ? $params["fromDashboard"] : postvalue("dashTName");
+
+$params["forSpreadsheetGrid"] = postvalue("spreadsheetGrid");
 
 if( $pageMode == ADD_INLINE )
 {

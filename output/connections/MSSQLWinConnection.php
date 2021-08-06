@@ -158,10 +158,11 @@ class MSSQLWinConnection extends Connection
 	{
 		if( $this->conn->Errors->Count )
 		{
-			$description = $this->errExeprionMess;
-			$this->errExeprionMess = "";
-				
-			return $description." ".$this->conn->Errors[ $this->conn->Errors->Count - 1 ]->Description;
+			$errors = array();
+			for( $i=0; $i < $this->conn->Errors->Count; ++$i ) {
+				$errors[] = $this->conn->Errors[ $i ]->Description;
+			}
+			return implode( ' ', $errors );
 		}
 		
 		return '';
@@ -287,15 +288,15 @@ class MSSQLWinConnection extends Connection
 	 * @param Number pageSize
 	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
-		if( $page == 1 )
+		if( !$n )
 			return;
 			
 		if( $qHandle->EOF() )
 			return;
 			
-	   $qHandle->Move($pageSize * ($page - 1));
+	   $qHandle->Move( $n );
 	}
 	
 	/**

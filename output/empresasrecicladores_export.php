@@ -13,9 +13,6 @@ if( !Security::processPageSecurity( $strtablename, 'P' ) )
 	return;
 
 
-
-
-
 require_once("include/export_functions.php");
 require_once("classes/exportpage.php");
 require_once("include/xtempl.php");
@@ -30,13 +27,11 @@ $params["tName"] = $strTableName;
 $params["pageType"] = PAGE_EXPORT;
 $params["pageName"] = postvalue("page");
 
-if( !$eventObj->exists("ListGetRowCount") && !$eventObj->exists("ListQuery") )
-	$params["needSearchClauseObj"] = false;
-
 $params["selectedFields"] = postvalue("exportFields");
 $params["exportType"] = postvalue("type");
-$params["action"] = postvalue("a");	
-$params["records"] = postvalue("records");	
+
+$params["allPagesMode"] = postvalue("records") == "all";
+$params["currentPageMode"] = postvalue("records") == "page";
 $params["selection"] = postvalue("selection"); 
 $params["csvDelimiter"] = postvalue("delimiter"); 
 
@@ -44,6 +39,10 @@ if( postvalue("txtformatting") == "raw" )
 	$params["useRawValues"] = true;
 
 $params["mode"] = ExportPage::readModeFromRequest();
+
+$params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 	
 $pageObject = new ExportPage( $params );
 $pageObject->init();

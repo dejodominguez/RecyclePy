@@ -64,7 +64,22 @@ pdfDocument = {
 										{BEGIN col_grid_1}
 					"%",
 					{END col_grid_1}
-													],
+															],
+											heights: [ // first height for header part
+					"%",
+																		{BEGIN row_grid_0}
+							"%",
+							{END row_grid_0}
+																							 	{BEGIN grid_row}
+													{BEGIN row_grid_1}
+							"%",
+							{END row_grid_1}
+													{END grid_row}
+																								{BEGIN row_grid_2}
+							"%",
+							{END row_grid_2}
+															],
+							
 				body: [
 				{BEGIN standalone_page}
 					[
@@ -85,16 +100,14 @@ pdfDocument = {
 								"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c1',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -109,10 +122,12 @@ pdfDocument = {
 				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
 											],
-					]
+		
+		]
 	}
 }
 ,
@@ -128,11 +143,9 @@ pdfDocument = {
 																	
 
 				
-					{BEGIN row_grid_0}
-				
-		[
-												{BEGIN cellblock_grid_headcell_field}
-
+				{BEGIN row_grid_0}
+				[
+																{BEGIN cellblock_grid_headcell_field}
 {
 	cellId: 'headcell_field',
 	col:0,
@@ -143,22 +156,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field2}","text":"{$jslabel public_MedTipoOrigen IdMedTipOrigen }","bold":true},
+			{"text":"{$jslabel public_MedTipoOrigen IdMedTipOrigen }","hidden":"{$item_hide_simple_grid_field2}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdMedTipOrigen_align}',
+              "alignment": '{$IdMedTipOrigen_align}',
   },
 
 {END cellblock_grid_headcell_field}
-																			{BEGIN cellblock_grid_headcell_field1}
-
+																							{BEGIN cellblock_grid_headcell_field1}
 {
 	cellId: 'headcell_field1',
 	col:0,
@@ -169,31 +182,31 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field3}","text":"{$jslabel public_MedTipoOrigen DescriMedTipOrigen }","bold":true},
+			{"text":"{$jslabel public_MedTipoOrigen DescriMedTipOrigen }","hidden":"{$item_hide_simple_grid_field3}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$DescriMedTipOrigen_align}',
+              "alignment": '{$DescriMedTipOrigen_align}',
   },
 
 {END cellblock_grid_headcell_field1}
 											],
 				{END row_grid_0}
-								
+		
+			
 		{BEGIN grid_row}
 	{BEGIN grid_record}
 				
-						{BEGIN row_grid_1}
-				
-		[
-												{BEGIN cellblock_grid_cell_field}
-
+				{BEGIN row_grid_1}
+				[
+																{BEGIN cellblock_grid_cell_field}
 {
 	cellId: 'cell_field',
 	col:0,
@@ -204,22 +217,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field}","text":{$IdMedTipOrigen_pdfvalue}},
+			{"text":{$IdMedTipOrigen_pdfvalue},"hidden":"{$item_hide_simple_grid_field}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdMedTipOrigen_align}',
+              "alignment": '{$IdMedTipOrigen_align}',
   },
 
 {END cellblock_grid_cell_field}
-																			{BEGIN cellblock_grid_cell_field1}
-
+																							{BEGIN cellblock_grid_cell_field1}
 {
 	cellId: 'cell_field1',
 	col:0,
@@ -230,31 +243,31 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field1}","text":{$DescriMedTipOrigen_pdfvalue}},
+			{"text":{$DescriMedTipOrigen_pdfvalue},"hidden":"{$item_hide_simple_grid_field1}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$DescriMedTipOrigen_align}',
+              "alignment": '{$DescriMedTipOrigen_align}',
   },
 
 {END cellblock_grid_cell_field1}
 											],
 				{END row_grid_1}
-						{END grid_record}
+		
+		{END grid_record}
 	{END grid_row}
 			
 					
-							{BEGIN row_grid_2}
-				
-		[
-												{BEGIN cellblock_grid_footcell_field}
-
+				{BEGIN row_grid_2}
+				[
+																{BEGIN cellblock_grid_footcell_field}
 {
 	cellId: 'footcell_field',
 	col:0,
@@ -265,7 +278,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -273,11 +287,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field}
-																			{BEGIN cellblock_grid_footcell_field1}
-
+																							{BEGIN cellblock_grid_footcell_field1}
 {
 	cellId: 'footcell_field1',
 	col:0,
@@ -288,7 +302,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -296,12 +311,14 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field1}
 											],
 				{END row_grid_2}
-							
+		
+				
 									]
 			
 			}

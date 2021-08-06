@@ -42,7 +42,7 @@ class ViewDatabaseVideoField extends ViewControl
 				else
 					$type = getContentTypeByExtension(substr($fileName, strrpos($fileName, '.')));
 			}
-			$href = GetTableLink("mfhandler", "", "filename=".$fileName."&table=".rawurlencode($this->getContainer()->pSet->_table)
+			$href = projectURL() . GetTableLink("mfhandler", "", "filename=".$fileName."&table=".rawurlencode($this->getContainer()->pSet->_table)
 				."&field=".rawurlencode($this->field)
 				."&pageType=".$this->getContainer()->pageType.$keylink);
 
@@ -95,7 +95,7 @@ class ViewDatabaseVideoField extends ViewControl
 	 * @prarm String keylink
 	 * @return String
 	 */
-	public function getExportValue(&$data, $keylink = "")
+	public function getExportValue(&$data, $keylink = "", $html = false )
 	{
 		return "código binario demasiado grande – no puede ser desplegado";
 	}	

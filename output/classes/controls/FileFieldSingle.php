@@ -1,11 +1,29 @@
 <?php
 class FileFieldSingle extends EditControl
 {
+	var $upload_handler = null;
+
 	function __construct($field, $pageObject, $id, $connection)
 	{
 		parent::__construct($field, $pageObject, $id, $connection);
 		$this->format = EDIT_FORMAT_FILE;
+
 	}
+
+	function initUploadHandler()
+	{
+		if(is_null($this->upload_handler))
+		{
+			require_once getabspath("classes/uploadhandler.php");
+			$this->upload_handler = new UploadHandler(getOptionsForMultiUpload($this->pageObject->pSet, $this->field));
+			$this->upload_handler->pSet = $this->pageObject->pSetEdit;
+			$this->upload_handler->field = $this->field;
+			$this->upload_handler->table = $this->pageObject->tName;
+			$this->upload_handler->pageType = $this->pageObject->pageType;
+			$this->upload_handler->pageName = $this->pageObject->pageName;
+		}
+	}
+
 
 	/**
 	 * addJSFiles
@@ -27,23 +45,31 @@ class FileFieldSingle extends EditControl
 	{
 		parent::buildControl($value, $mode, $fieldNum, $validate, $additionalCtrlParams, $data);
 
-		if( $this->pageObject->pageType == PAGE_SEARCH || $this->pageObject->pageType == PAGE_LIST )
+		$this->initUploadHandler();
+		$keyParams = array();
+		foreach( $this->pageObject->pSetEdit->getTableKeys() as $i => $kf )
 		{
+			$keyParams[] = "key".($i + 1). "=".runner_htmlspecialchars(rawurlencode( @$data[ $kf ] ));
+		}
+		$this->upload_handler->tkeys = "&" . implode("&", $keyParams);
+
+		if( $mode == MODE_SEARCH  )
+		{
+			$this->format = "";
+			
 			$classString = "";
 			if( $this->pageObject->isBootstrap() )
 				$classString = " class=\"form-control\"";
+			
 			echo '<input id="'.$this->cfield.'" '.$classString.$this->inputStyle.' type="text" '
-				.($mode == MODE_SEARCH ? 'autocomplete="off" ' : '')
-				.(($mode==MODE_INLINE_EDIT || $mode==MODE_INLINE_ADD) && $this->is508==true ? 'alt="'.$this->strLabel.'" ' : '')
+				.('autocomplete="off" ')
+				.( $this->is508 == true ? 'alt="'.$this->strLabel.'" ' : '' )
 				.'name="'.$this->cfield.'" '.$this->pageObject->pSetEdit->getEditParams($this->field).' value="'
 				.runner_htmlspecialchars($value).'">';
 
 			$this->buildControlEnd($validate, $mode);
 			return;
 		}
-
-		if( $mode == MODE_SEARCH )
-			$this->format = "";
 
 		$disp = "";
 		$strfilename = "";
@@ -119,8 +145,11 @@ class FileFieldSingle extends EditControl
 	{
 		$cachedValue = $value;
 
-		if( $newUploaderWasUsed )
+
+		if( $newUploaderWasUsed ) {
 			$finalFilePath = $filePath = $fileData["name"];
+			$usrFile = $this->upload_handler->buildUserFile( $fileData );
+		}
 		else
 		{
 			$uploadFolder = $this->pageObject->pSetEdit->getUploadFolder( $this->field );
@@ -128,11 +157,26 @@ class FileFieldSingle extends EditControl
 
 			$finalUploadFolder = $this->pageObject->pSetEdit->getFinalUploadFolder( $this->field );
 			$finalFilePath = $finalUploadFolder.$value;
+			$sourceFile = array( 
+				"usrName" => $fileName
+			);
+			if( $this->pageObject->pSetEdit->showThumbnail( $this->field ) )
+			{
+				$thumbprefix = $this->pageObject->pSetEdit->getStrThumbnail( $this->field );
+				$thumbPath = $uploadFolder.$thumbprefix.$fileName;
+				$finalThumbPath = $finalUploadFolder.$thumbprefix.$fileName;
+				if( substr($thumbPath, 0, 7) != "http://" )
+				{
+					if( myfile_exists(getabspath( $finalThumbPath )) )
+						$sourceFile["thumbnail"] = 1;
+				}
+			}
+			$usrFile = $this->upload_handler->buildUserFile( $sourceFile );
 		}
 
 		if( !CheckImageExtension($fileName) )
 		{
-			return "<a target=\"_blank\" href=\"".GetRootPathForResources(runner_htmlspecialchars( $filePath ))."\">"
+			return "<a target=\"_blank\" href=\"". runner_htmlspecialchars( $usrFile["url"] )."\">"
 				.runner_htmlspecialchars($fileName)."</a>";
 		}
 
@@ -141,29 +185,14 @@ class FileFieldSingle extends EditControl
 		if( !myfile_exists(getabspath( $finalFilePath ) ) )
 			$filePath = "images/no_image.gif";
 
-		if( $this->pageObject->pSetEdit->showThumbnail( $this->field ) )
+		if( $usrFile["thumbnail_url"] )
 		{
-			if( $newUploaderWasUsed )
-				$finalThumbPath = $thumbPath = $fileData["thumbnail"];
-			else
-			{
-				$thumbprefix = $this->pageObject->pSetEdit->getStrThumbnail( $this->field );
-				$thumbPath = $uploadFolder.$thumbprefix.$fileName;
-				$finalThumbPath = $finalUploadFolder.$thumbprefix.$fileName;
-			}
-
-			if( substr($thumbPath, 0, 7) != "http://" )
-			{
-				if( !myfile_exists(getabspath( $finalThumbPath )) )
-					$thumbPath = $filePath;
-			}
-
 			// show thumbnail
-			return "<a target=\"_blank\" href=\"".GetRootPathForResources(runner_htmlspecialchars( $filePath ))."\" >"
-				."<img". $altAttr ." border=0 src=\"".GetRootPathForResources(runner_htmlspecialchars( $thumbPath ))."\"></a>";
+			return "<a target=\"_blank\" href=\"". runner_htmlspecialchars( $usrFile["url"] ) . "\" >"
+				."<img". $altAttr ." border=0 src=\"". runner_htmlspecialchars( $usrFile["thumbnail_url"] ) . "\"></a>";
 		}
 
-		$imageValue = $filePath;
+		$imageValue = $usrFile["url"];
 		if( $filePath != "images/no_image.gif" && !$newUploaderWasUsed )
 		{
 			if( filesize($finalUploadFolder.$fileName) > 51200 )
@@ -172,7 +201,7 @@ class FileFieldSingle extends EditControl
 
 		$disp = '<img '.$altAttr.'src="'.GetRootPathForResources(runner_htmlspecialchars( $imageValue )).'" border=0>';
 		if( $imageValue != "images/no_image.gif" )
-			$disp = "<a target=\"_blank\" href=\"".GetRootPathForResources(runner_htmlspecialchars( $filePath ))."\">".$disp."</a>";
+			$disp = "<a target=\"_blank\" href=\"".runner_htmlspecialchars( $usrFile["url"] )."\">".$disp."</a>";
 
 		return $disp;
 	}
@@ -228,10 +257,11 @@ class FileFieldSingle extends EditControl
 			{
 				$contents = GetUploadedFileContents("value_".$this->goodFieldName."_".$this->id);
 				$ext = CheckImageExtension( GetUploadedFileName("value_".$this->goodFieldName."_".$this->id) );
-				$thumb = CreateThumbnail($contents, $this->pageObject->pSetEdit->getThumbnailSize($this->field), $ext);
-
-				$this->pageObject->filesToSave[] = new SaveFile($thumb, $this->pageObject->pSetEdit->GetStrThumbnail($this->field)
-					.$this->webValue, $this->pageObject->pSetEdit->getUploadFolder($this->field), $this->pageObject->pSetEdit->isAbsolute($this->field));
+				if( $ext ) {
+					$thumb = CreateThumbnail($contents, $this->pageObject->pSetEdit->getThumbnailSize($this->field), $ext);
+					$this->pageObject->filesToSave[] = new SaveFile($thumb, $this->pageObject->pSetEdit->GetStrThumbnail($this->field)
+						.$this->webValue, $this->pageObject->pSetEdit->getUploadFolder($this->field), $this->pageObject->pSetEdit->isAbsolute($this->field));
+				}
 			}
 
 			$avalues[ $this->field ] = $this->webValue;

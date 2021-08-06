@@ -50,9 +50,8 @@ class InformixFunctions extends DBFunctions
 	 */
 	public function field2char($value, $type = 3)
 	{
-		return $value;
-	}
-	
+		return 'TO_CHAR(' . $value . ')';
+	}	
 	/**
 	 * @param Mixed value
 	 * @param Number type
@@ -63,13 +62,13 @@ class InformixFunctions extends DBFunctions
 		return $value;
 	}	
 
-	public function queryPage( $connection, $strSQL, $pageStart, $pageSize, $applyLimit ) 
+	public function limitedQuery( $connection, $strSQL, $skip, $total, $applyLimit ) 
 	{
-		if( $applyLimit ) 
-			$strSQL = AddTopIfx($strSQL, $pageStart * $pageSize);
+		if( $applyLimit && $total >= 0 ) 
+			$strSQL = AddTopIfx($strSQL, $skip + $total);
 	
 		$qResult =  $connection->query( $strSQL );
-		$qResult->seekPage( $pageSize, $pageStart );
+		$qResult->seekRecord( $skip );
 		
 		return $qResult;
 	}

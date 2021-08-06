@@ -39,14 +39,12 @@
 [data-cellid="grid_cell_details"][data-page="ventas_list"][data-cellid="grid_cell_details"][data-page="ventas_list"][data-cellid="grid_cell_details"][data-page="ventas_list"] {
   white-space: nowrap;
 }
-[data-page="ventas_list"][data-itemid="details_preview"] {
-  background-color: #ade3ab;
-}
-[data-page="ventas_list"][data-itemid="text"] {
-  color: #80f087;
-  font-style: italic;
+[data-page="ventas_list"][data-itemid="logo"] {
   font-weight: bold;
-  font-size: 24px;
+}
+[data-page="ventas_list"][data-itemid="image"] {
+  width: 270px;
+  height: 170px;
 }
 
 

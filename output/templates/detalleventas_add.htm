@@ -21,7 +21,7 @@
 		{$containerCss}
 		</style>
 		<div class="r-vbar-page">
-			<div data-width="" data-fixed class="r-left clearfix {$leftbar_class}" >
+			<div data-width="300px"  class="r-left clearfix {$leftbar_class}" >
 								<div data-location="left" id="form_left_{$pageid}" data-makeup="leftbar" {$form_left} data-pageid="{$pageid}">
 {BEGIN left_block}
  
@@ -44,7 +44,7 @@
 
 			<div class="clearfix " data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
 				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Expand" class="btn btn-link   
+	<a type="button" title="Expandir" class="btn btn-link   
 	" href="#" >
 					<span class="glyphicon glyphicon-triangle-right"></span>
 										</a>
@@ -59,7 +59,7 @@
 				{$menu main}			</div>
 		
     {END left_block}
-</div>				</div>	
+</div>				</div>
 			<div class="r-content-col" data-resize-left="leftbar">
 				<div  class="r-topheader" data-resize-name="topbar">
 									{BEGIN supertop_block}
@@ -67,9 +67,18 @@
 	data-location="supertop" id="form_supertop_{$pageid}" data-makeup="leftbar" {$form_supertop} data-pageid="{$pageid}" >
 			 
 							 
-				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
+				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="expand_menu_button" {$item_expand_menu_button} data-topcell-item-type="expand_menu_button" >
+				<span data-itemtype="expand_menu_button" data-itemid="expand_menu_button" {$item_expand_menu_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Encubrir" class="btn-link   
+	 glyphicon glyphicon-menu-hamburger" href="#" >		
+				
+								</a>
+</span>
+			</span>
+		 
+				<span class="navbar-form  navbar-collapse" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
 				<span data-itemtype="collapse_button" data-itemid="collapse_button" {$item_collapse_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Collapse" class="btn-link   
+	<a type="button" title="Muestrame el menu" class="btn-link   
 	 glyphicon glyphicon-triangle-left" href="#" >		
 				
 								</a>
@@ -100,10 +109,18 @@
 <span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-user"></span>
-						{$username}			<span class="caret"></span>
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
 							{BEGIN logoutbutton}
 	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
 				<a  href="#" {$logoutlink_attrs}  title="" >
@@ -112,6 +129,14 @@
 		</a>
 	</li>
 {END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
 					</ul>
 	</span>
 </span>
@@ -203,10 +228,7 @@
 <div data-itemtype="master_info" data-itemid="master_info" {$item_master_info} data-pageid="{$pageid}">
 	{$showmasterfile}
 </div>
-{END mastertable_block}	
-				 
-	 
-												<table 
+{END mastertable_block}											<table 
 	data-body-align="left"
 	data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" 
 	class="r-edit-form" cellpadding="0" cellspacing="0" 
@@ -216,46 +238,49 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
-{BEGIN cellblock_grid_c4}
+{BEGIN cellblock_grid_c3}
 <td
-	{$cell_grid_c4}
-	class="r-align-left r-ori-vert"
+	{$cell_grid_c3}
+	class=" r-ori-vert"
 	
 				data-fullwidth
 		
-			data-cellId="grid_c4" data-pageid="{$pageid}"
+			data-cellId="grid_c3" data-pageid="{$pageid}"
 		data-v-cell="4"
 		
 >
 	<div edit-form-cell class="clearfix">
-				{BEGIN IdFGesPesResiduo_fieldblock}
-	<div class="r-edit-label" data-signal-error-for="IdFGesPesResiduo{$id}" data-itemtype="edit_field_label" data-itemid="edit_field_label" {$item_edit_field_label} data-pageid="{$pageid}" data-field="IdFGesPesResiduo" data-before-same-field>
-		<label class="r-edit-label control-label" for="{$labelfor_IdFGesPesResiduo}">
-			{BEGIN IdFGesPesResiduo_label}{$label public_DetalleVentas IdFGesPesResiduo }{END IdFGesPesResiduo_label}
-		</label>
+				
+{BEGIN IdGesPesResiduo_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-vertical-field" 
+	data-signal-error-for="IdGesPesResiduo{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" >
+
+	<label class="r-edit-label control-label" for="{$labelfor_IdGesPesResiduo}">
+		{BEGIN IdGesPesResiduo_label}{$label public_DetalleVentas IdGesPesResiduo }{END IdGesPesResiduo_label}
+	</label>
+	<div class="r-edit-field">
+		{$IdGesPesResiduo_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="IdGesPesResiduo">
+		<div class="text-muted" >
+		{$tooltip public_DetalleVentas IdGesPesResiduo }		</div>
 	</div>
-{END IdFGesPesResiduo_fieldblock}
-											{BEGIN IdFGesPesResiduo_fieldblock}
-	<div class="r-edit-field" data-signal-error-for="IdFGesPesResiduo{$id}" data-itemtype="edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="IdFGesPesResiduo" data-before-same-field >
-		{$IdFGesPesResiduo_editcontrol}	</div>
-{END IdFGesPesResiduo_fieldblock}
-											{BEGIN IdFGesPesResiduo_fieldblock}
-	<div class="r-edit-tooltip" data-signal-error-for="IdFGesPesResiduo{$id}" data-itemtype="edit_field_tooltip" data-itemid="edit_field_tooltip" {$item_edit_field_tooltip} data-pageid="{$pageid}" data-field="IdFGesPesResiduo" >
-		<div data-helpfor="IdFGesPesResiduo">
-			<div class="text-muted"></div>
-		</div>
-	</div>
-{END IdFGesPesResiduo_fieldblock}
+</div>
+
+
+{END IdGesPesResiduo_fieldblock}
 	
 								</td>
-			{END cellblock_grid_c4}
+			{END cellblock_grid_c3}
 								</tr>
 	 
 	 
-														<tr>
+														<tr {$row_grid_1} >
 										
 
 {BEGIN cellblock_grid_c}
@@ -275,10 +300,8 @@
 
 
 <div class="r-integrated-field form-group clearfix {$fielddispclass_Cantidad}  r-vertical-field" 
-	data-fieldname="Cantidad" 
 	data-signal-error-for="Cantidad{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="Cantidad" >
-
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="Cantidad" data-fieldname="Cantidad" >
 
 	<label class="r-edit-label control-label" for="{$labelfor_Cantidad}">
 		{BEGIN Cantidad_label}{$label public_DetalleVentas Cantidad }{END Cantidad_label}
@@ -287,7 +310,7 @@
 		{$Cantidad_editcontrol}	</div>
 	<div class="r-edit-tooltip" data-helpfor="Cantidad">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_DetalleVentas Cantidad }		</div>
 	</div>
 </div>
 
@@ -298,10 +321,8 @@
 
 
 <div class="r-integrated-field form-group clearfix {$fielddispclass_Precio}  r-vertical-field" 
-	data-fieldname="Precio" 
 	data-signal-error-for="Precio{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="Precio" >
-
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="Precio" data-fieldname="Precio" >
 
 	<label class="r-edit-label control-label" for="{$labelfor_Precio}">
 		{BEGIN Precio_label}{$label public_DetalleVentas Precio }{END Precio_label}
@@ -310,35 +331,33 @@
 		{$Precio_editcontrol}	</div>
 	<div class="r-edit-tooltip" data-helpfor="Precio">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_DetalleVentas Precio }		</div>
 	</div>
 </div>
 
 
 {END Precio_fieldblock}
 											
-{BEGIN IDVenta_fieldblock}
+{BEGIN IdVenta_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IDVenta}  r-vertical-field" 
-	data-fieldname="IDVenta" 
-	data-signal-error-for="IDVenta{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="IDVenta" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdVenta}  r-vertical-field" 
+	data-signal-error-for="IdVenta{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="IdVenta" data-fieldname="IdVenta" >
 
-
-	<label class="r-edit-label control-label" for="{$labelfor_IDVenta}">
-		{BEGIN IDVenta_label}{$label public_DetalleVentas IDVenta }{END IDVenta_label}
+	<label class="r-edit-label control-label" for="{$labelfor_IdVenta}">
+		{BEGIN IdVenta_label}{$label public_DetalleVentas IdVenta }{END IdVenta_label}
 	</label>
 	<div class="r-edit-field">
-		{$IDVenta_editcontrol}	</div>
-	<div class="r-edit-tooltip" data-helpfor="IDVenta">
+		{$IdVenta_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="IdVenta">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_DetalleVentas IdVenta }		</div>
 	</div>
 </div>
 
 
-{END IDVenta_fieldblock}
+{END IdVenta_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c}
@@ -386,6 +405,8 @@
 					{$footer}
 				</div>	
 			</div>	
+			<div class="r-body-shadow">
+			</div>
 		</div>
 	{END body}
 	</body>

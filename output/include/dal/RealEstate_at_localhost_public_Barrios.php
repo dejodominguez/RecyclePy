@@ -1,8 +1,8 @@
 <?php
-$dalTableBarrios = array();
-$dalTableBarrios["IdBarrio"] = array("type"=>3,"varname"=>"IdBarrio", "name" => "IdBarrio");
-$dalTableBarrios["DescriBarrio"] = array("type"=>200,"varname"=>"DescriBarrio", "name" => "DescriBarrio");
-	$dalTableBarrios["IdBarrio"]["key"]=true;
+$dalTablebarrios = array();
+$dalTablebarrios["id_barrio"] = array("type"=>3,"varname"=>"id_barrio", "name" => "id_barrio");
+$dalTablebarrios["descri_barrio"] = array("type"=>200,"varname"=>"descri_barrio", "name" => "descri_barrio");
+	$dalTablebarrios["id_barrio"]["key"]=true;
 
-$dal_info["RealEstate_at_localhost_public_Barrios"] = &$dalTableBarrios;
+$dal_info["RealEstate_at_localhost_public_barrios"] = &$dalTablebarrios;
 ?>

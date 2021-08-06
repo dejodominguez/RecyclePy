@@ -10,13 +10,24 @@
 	
 ">
 		 
-		<h3 class="panel-title" data-itemtype="masterprint_header" data-itemid="masterprint_header" {$item_masterprint_header} data-pageid="{$pageid}" >{$pagetitlelabel public_Barrios masterprint}</h3>
+		<h3 class="panel-title" data-itemtype="masterprint_header" data-itemid="masterprint_header" {$item_masterprint_header} data-pageid="{$pageid}" >{$pagetitlelabel public_barrios masterprint}</h3>
 		</div>			</div>		
 {END top_block}
 			</div>
 		<div class="panel-body">
 							{BEGIN above-grid_block}
 <div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="panel-only" {$form_above-grid} data-pageid="{$pageid}" >		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="above-grid_c1" data-pageid="{$pageid}"	{$cell_above-grid_c1}
+	class=" r-ori-vert			col-md-12
+	
+">
+		{BEGIN firstAboveGridCell}
+				{END firstAboveGridCell}	
+	</div>					</div>
 	</div>		
 {END above-grid_block}
 								{BEGIN grid_block}
@@ -27,7 +38,7 @@
 {END grid_tabs}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -47,20 +58,20 @@
 	{$cell_grid_headcell_field}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdBarrio_class}
+		 r-ori-vert				{$id_barrio_class}
 			"
 
-			data-field="IdBarrio"
+			data-field="id_barrio"
 	
 	data-cellId="grid_headcell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdBarrio_fieldheadercolumn}
+		{BEGIN id_barrio_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdBarrio">
-	{$label public_Barrios IdBarrio }	</span>
-{END IdBarrio_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_barrio" data-fieldname="id_barrio">
+	{$label public_barrios id_barrio }	</span>
+{END id_barrio_fieldheadercolumn}
 
 	
 	</th>
@@ -72,20 +83,20 @@
 	{$cell_grid_headcell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$DescriBarrio_class}
+		 r-ori-vert				{$descri_barrio_class}
 			"
 
-			data-field="DescriBarrio"
+			data-field="descri_barrio"
 	
 	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN DescriBarrio_fieldheadercolumn}
+		{BEGIN descri_barrio_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriBarrio">
-	{$label public_Barrios DescriBarrio }	</span>
-{END DescriBarrio_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="descri_barrio" data-fieldname="descri_barrio">
+	{$label public_barrios descri_barrio }	</span>
+{END descri_barrio_fieldheadercolumn}
 
 	
 	</th>
@@ -112,20 +123,20 @@
 	{$cell_grid_cell_field}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdBarrio_class}
+		 r-ori-vert				{$id_barrio_class}
 			"
 
-			data-field="IdBarrio"
+			data-field="id_barrio"
 	
 	data-cellId="grid_cell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdBarrio_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdBarrio" data-default-width >
-{$IdBarrio_value}
+		{BEGIN id_barrio_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_barrio" data-fieldname="id_barrio" data-default-width >
+{$id_barrio_value}
 </span>
-{END IdBarrio_fieldcolumn}	
+{END id_barrio_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field}
 				 
@@ -135,20 +146,20 @@
 	{$cell_grid_cell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$DescriBarrio_class}
+		 r-ori-vert				{$descri_barrio_class}
 			"
 
-			data-field="DescriBarrio"
+			data-field="descri_barrio"
 	
 	data-cellId="grid_cell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN DescriBarrio_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriBarrio" data-default-width >
-{$DescriBarrio_value}
+		{BEGIN descri_barrio_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="descri_barrio" data-fieldname="descri_barrio" data-default-width >
+{$descri_barrio_value}
 </span>
-{END DescriBarrio_fieldcolumn}	
+{END descri_barrio_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field1}
 							</tr>

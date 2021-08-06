@@ -27,7 +27,7 @@ pdfDocument = {
 		{BEGIN body}
 		{BEGIN embedded_grid}
 		{
-			text: '{$jscaption public_Residuos}',
+			text: '{$jscaption public_residuos}',
 		},
 		{END embedded_grid}
 		{ 
@@ -64,7 +64,25 @@ pdfDocument = {
 										{BEGIN col_grid_1}
 					"%",
 					{END col_grid_1}
-													],
+															],
+											heights: [ // first height for header part
+					"%",
+																		{BEGIN row_grid_0}
+							"%",
+							{END row_grid_0}
+																							 	{BEGIN grid_row}
+													{BEGIN row_grid_1}
+							"%",
+							{END row_grid_1}
+																								{BEGIN row_grid_2}
+							"%",
+							{END row_grid_2}
+													{END grid_row}
+																								{BEGIN row_grid_3}
+							"%",
+							{END row_grid_3}
+															],
+							
 				body: [
 				{BEGIN standalone_page}
 					[
@@ -85,16 +103,14 @@ pdfDocument = {
 								"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c2',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -105,44 +121,19 @@ pdfDocument = {
 			"stack": [
 		
 				
-			{"text":"{$jspagetitlelabel public_Residuos print}","hidden":"{$item_hide_print_header}","fontSize":30},
+			{"text":"{$jspagetitlelabel public_residuos print}","hidden":"{$item_hide_print_header}","fontSize":30},
 				
 				
 			{"text":"{$printtabheader_text}","hidden":"{$item_hide_print_subheader}"},
 				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
 											],
-								
-		[
-												
-{
-	cellId: 'c4',
-	col:0,
-	row:0,
-			style: 'undefinedcell',
 		
-		
-	//	static colspan/rowspan
-		
-			
-	
-	
-			"stack": [
-		
-				
-			{BEGIN mastertable_block}
-			{$showmasterfile}
-		{END mastertable_block},
-				
-		  ],
-  "border": [ false, false, false, false ],
-          },
-
-											],
-					]
+		]
 	}
 }
 ,
@@ -159,16 +150,14 @@ pdfDocument = {
 								"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c1',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -181,18 +170,14 @@ pdfDocument = {
 				
 			{"text":"Página %current% / %total%","hidden":"{$item_hide_print_pages}","isHtml":true,"page_indicator":true},
 				
-				
-			{"text":"","hidden":"{$item_hide_grid_inline_cancel}"},
-				
-				
-			{"text":"","hidden":"{$item_hide_inline_add}"},
-				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
 											],
-					]
+		
+		]
 	}
 }
 ,
@@ -204,11 +189,9 @@ pdfDocument = {
 																	
 
 				
-					{BEGIN row_grid_0}
-				
-		[
-												{BEGIN cellblock_grid_headcell_field}
-
+				{BEGIN row_grid_0}
+				[
+																{BEGIN cellblock_grid_headcell_field}
 {
 	cellId: 'headcell_field',
 	col:0,
@@ -219,22 +202,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field2}","text":"{$jslabel public_Residuos IdResiduo }","bold":true},
+			{"text":"{$jslabel public_residuos descri_residuo }","hidden":"{$item_hide_simple_grid_field2}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdResiduo_align}',
+              "alignment": '{$descri_residuo_align}',
   },
 
 {END cellblock_grid_headcell_field}
-																			{BEGIN cellblock_grid_headcell_field1}
-
+																							{BEGIN cellblock_grid_headcell_field1}
 {
 	cellId: 'headcell_field1',
 	col:0,
@@ -245,31 +228,31 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field3}","text":"{$jslabel public_Residuos DescriResiduo }","bold":true},
+			{"text":"{$jslabel public_residuos id_residuo }","hidden":"{$item_hide_simple_grid_field3}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$DescriResiduo_align}',
+              "alignment": '{$id_residuo_align}',
   },
 
 {END cellblock_grid_headcell_field1}
 											],
 				{END row_grid_0}
-									
+		
+			
 		{BEGIN grid_row}
 	{BEGIN grid_record}
 				
-						{BEGIN row_grid_1}
-				
-		[
-												{BEGIN cellblock_grid_cell_field}
-
+				{BEGIN row_grid_1}
+				[
+																{BEGIN cellblock_grid_cell_field}
 {
 	cellId: 'cell_field',
 	col:0,
@@ -280,22 +263,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field}","text":{$IdResiduo_pdfvalue}},
+			{"text":{$descri_residuo_pdfvalue},"hidden":"{$item_hide_simple_grid_field1}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdResiduo_align}',
+              "alignment": '{$descri_residuo_align}',
   },
 
 {END cellblock_grid_cell_field}
-																			{BEGIN cellblock_grid_cell_field1}
-
+																							{BEGIN cellblock_grid_cell_field1}
 {
 	cellId: 'cell_field1',
 	col:0,
@@ -306,27 +289,26 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field1}","text":{$DescriResiduo_pdfvalue}},
+			{"text":{$id_residuo_pdfvalue},"hidden":"{$item_hide_simple_grid_field}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$DescriResiduo_align}',
+              "alignment": '{$id_residuo_align}',
   },
 
 {END cellblock_grid_cell_field1}
 											],
 				{END row_grid_1}
-								{BEGIN row_grid_2}
-				
-		[
-												{BEGIN cellblock_grid_cell_dpreview}
-
+						{BEGIN row_grid_2}
+				[
+																{BEGIN cellblock_grid_cell_dpreview}
 {
 	cellId: 'cell_dpreview',
 	col:0,
@@ -340,38 +322,54 @@ pdfDocument = {
 			colSpan: {$colspan_grid_cell_dpreview},
 			{END colspan_grid_cell_dpreview}
 		
-			
+						
+	
 	
 	
 			"stack": [
 		
 				
-			 {BEGIN details_gestionpesosresiduos}
-			{$displayDetailTable_gestionpesosresiduos }
-		{END details_gestionpesosresiduos},
+			 {BEGIN details_recicladores}
+			{$displayDetailTable_recicladores }
+		{END details_recicladores},
+				
+				
+			 {BEGIN details_gestion_pesos_residuos}
+			{$displayDetailTable_gestion_pesos_residuos }
+		{END details_gestion_pesos_residuos},
+				
+				
+			 {BEGIN details_public_empresas_recicladoras1}
+			{$displayDetailTable_public_empresas_recicladoras1 }
+		{END details_public_empresas_recicladoras1},
+				
+				
+			 {BEGIN details_gestion_registros_origen}
+			{$displayDetailTable_gestion_registros_origen }
+		{END details_gestion_registros_origen},
 				
 		  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_cell_dpreview}
-																			{ 
-					cellId: 'cell_dpreview',
-					row:  0,
-					col:  1,
-					text: ''
-				},
+																		{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  1,
+				text: ''
+			},
 							],
 				{END row_grid_2}
-						{END grid_record}
+		
+		{END grid_record}
 	{END grid_row}
 			
 					
-								{BEGIN row_grid_3}
-				
-		[
-												{BEGIN cellblock_grid_footcell_field}
-
+				{BEGIN row_grid_3}
+				[
+																{BEGIN cellblock_grid_footcell_field}
 {
 	cellId: 'footcell_field',
 	col:0,
@@ -382,7 +380,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -390,11 +389,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field}
-																			{BEGIN cellblock_grid_footcell_field1}
-
+																							{BEGIN cellblock_grid_footcell_field1}
 {
 	cellId: 'footcell_field1',
 	col:0,
@@ -405,7 +404,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -413,12 +413,14 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field1}
 											],
 				{END row_grid_3}
-							
+		
+				
 									]
 			
 			}

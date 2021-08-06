@@ -28,7 +28,7 @@ class WhereTabs
             return false;
 
         foreach ($gridTabs as &$tab) {
-            if ($tab["tabId"] === $id)
+            if ($tab["tabId"] == $id)
                 return $tab;
         }
         return false;
@@ -41,7 +41,7 @@ class WhereTabs
             return false;
 
         foreach ($gridTabs as $tab) {
-            if ($tab["tabId"] === $id)
+            if ($tab["tabId"] == $id)
                 return false;
         }
 
@@ -64,7 +64,7 @@ class WhereTabs
             return false;
 
         foreach ($gridTabs as $key => $tab) {
-            if ($tab["tabId"] === $id) {
+            if ($tab["tabId"] == $id) {
                 unset($gridTabs[$key]);
                 break;
             }
@@ -94,4 +94,37 @@ class WhereTabs
         }
         return false;
     }
+
+	/**
+	 * @param String table
+	 * @param String id
+	 * @param Boolean showIdCount
+	 */
+	public static function setTabShowCount($table, $id, $showCount)
+    {
+        $tab = &WhereTabs::getGridTab($table, $id);
+
+        if ($tab) {
+            $tab['showRowCount'] = $showCount ? 1 : 0;
+            return true;
+        }
+        return false;
+    }
+
+	/**
+	 * @param String table
+	 * @param String id
+	 * @param Boolean hideEmpty
+	 */
+	public static function setTabHideEmpty($table, $id, $hideEmpty)
+    {
+        $tab = &WhereTabs::getGridTab($table, $id);
+
+        if ($tab) {
+            $tab['hideEmpty'] = $hideEmpty ? 1 : 0;
+            return true;
+        }
+        return false;
+    }
+
 }

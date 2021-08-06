@@ -107,12 +107,15 @@ function db2time($str)
 		  	$pattern="/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/";
 			break;
 		  case 12:
-		  	$pattern="/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/";
+		  	$pattern="/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})/";
 			break;
 		  case 10:
-		  	$pattern="/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/";
+		  	$pattern="/(\d{4})(\d{2})(\d{2})(\d{2})/";
 			break;
 		  case 18:
+		  	$pattern="/(\d{4})(\d{2})(\d{2})/";
+			break;
+		  case 8:
 		  	$pattern="/(\d{4})(\d{2})(\d{2})/";
 			break;
 		  case 6:

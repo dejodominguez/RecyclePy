@@ -21,16 +21,35 @@
 		{$containerCss}
 		</style>
 		<div class="r-vbar-page">
-			<div data-width="" data-fixed class="r-left clearfix {$leftbar_class}" >
+			<div data-width="300px"  class="r-left clearfix {$leftbar_class}" >
 								<div data-location="left" id="form_left_{$pageid}" data-makeup="leftbar" {$form_left} data-pageid="{$pageid}">
 {BEGIN left_block}
  
      
          
 
-			<div data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell class="clearfix " data-itemid="logo1" {$item_logo1}>
+			<div class="clearfix  r-ori-vert" data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
+				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Expandir" class="btn btn-link   
+	" href="#" >
+					<span class="glyphicon glyphicon-triangle-right"></span>
+										</a>
+</span>
+			</div>
+		
+     
+     
+         
+
+			<div class="clearfix  r-ori-vert" data-cellId="left_c1" data-pageid="{$pageid}" data-itemid="image" {$item_image} data-topcell-item-type="image" >
+				<img src="{$file_url images/mapa-zoom-asuncion.png}" data-itemtype="image" data-itemid="image" {$item_image} data-pageid="{$pageid}" data-page="recicladores_list" />
+			</div>
+		
+ 
+
+			<div data-cellId="left_c1" data-pageid="{$pageid}" class="clearfix  r-ori-vert" data-itemid="logo" {$item_logo}>
 				{BEGIN logo_block}
-	<A data-itemtype="logo" data-itemid="logo1" {$item_logo1} data-pageid="{$pageid}" class="navbar-brand" href="{$home_link}" data-pageid="{$pageid}" {$logo_hiddenattr}>
+	<A data-itemtype="logo" data-itemid="logo" {$item_logo} data-pageid="{$pageid}" data-page="recicladores_list" class="navbar-brand" href="{$home_link}" data-pageid="{$pageid}" {$logo_hiddenattr}>
 		{$logo}
 	</A>
 {END logo_block}
@@ -41,19 +60,6 @@
 			</div>
 		
  
-
-			<div class="clearfix " data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
-				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Expand" class="btn btn-link   
-	" href="#" >
-					<span class="glyphicon glyphicon-triangle-right"></span>
-										</a>
-</span>
-			</div>
-		
-     
-     
-         
 
 			<div data-cellId="left_c1" data-pageid="{$pageid}" class="clearfix  r-ori-vert " data-itemtype="menu" data-itemid="menu" {$item_menu} data-pageid="{$pageid}">
 				{$menu main}			</div>
@@ -66,14 +72,14 @@
 
 	<div class="panel-heading">
 		<div class="btn-group" id="addSearchFieldButton{$id}">
-			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle btn-sm )" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Búsqueda			<span class="caret"></span>
 			</button>
 		</div>
 
 
 		<div class="btn-group searchpanel-options" id="searchPanelOptions{$id}">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="glyphicon glyphicon glyphicon-option-vertical"></span>
 			</button>
 			<ul class="dropdown-menu dropdown-left">
@@ -100,124 +106,138 @@
 				<span class="rnr-searchcontrol">{$searchcontrol1}</span>
 		</div>
 		{END searchCtrlBlock}
-																		{BEGIN searchCtrlBlock_ApeReciclador}
+																		{BEGIN searchCtrlBlock_apellido_reciclador}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_ApeReciclador}" {$filterRow_attrs_ApeReciclador}>
-			<label>{$label public_Recicladores ApeReciclador }</label>
-
-							{$delCtrlButt}
-			
-								<span class="rnr-searchtype">{$searchtype_ApeReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_ApeReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_ApeReciclador}</span>
-						</div>
-		{END searchCtrlBlock_ApeReciclador}
-																{BEGIN searchCtrlBlock_LogoASO}
-
-
-		<div class="form-group srchPanelRow {$filterRow_class_LogoASO}" {$filterRow_attrs_LogoASO}>
-			<label>{$label public_Recicladores LogoASO }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_apellido_reciclador}" {$filterRow_attrs_apellido_reciclador}>
+			<label>{$label public_recicladores apellido_reciclador }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_LogoASO}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_LogoASO}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_LogoASO}</span>
+								<span class="rnr-searchtype">{$searchtype_apellido_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_apellido_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_apellido_reciclador}</span>
 						</div>
-		{END searchCtrlBlock_LogoASO}
-																{BEGIN searchCtrlBlock_TelReciclador}
+		{END searchCtrlBlock_apellido_reciclador}
+																{BEGIN searchCtrlBlock_tel_reciclador}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_TelReciclador}" {$filterRow_attrs_TelReciclador}>
-			<label>{$label public_Recicladores TelReciclador }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_tel_reciclador}" {$filterRow_attrs_tel_reciclador}>
+			<label>{$label public_recicladores tel_reciclador }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_TelReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_TelReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_TelReciclador}</span>
+								<span class="rnr-searchtype">{$searchtype_tel_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_tel_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_tel_reciclador}</span>
 						</div>
-		{END searchCtrlBlock_TelReciclador}
-																{BEGIN searchCtrlBlock_NomReciclador}
+		{END searchCtrlBlock_tel_reciclador}
+																{BEGIN searchCtrlBlock_nombre_reciclador}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_NomReciclador}" {$filterRow_attrs_NomReciclador}>
-			<label>{$label public_Recicladores NomReciclador }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_nombre_reciclador}" {$filterRow_attrs_nombre_reciclador}>
+			<label>{$label public_recicladores nombre_reciclador }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_NomReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_NomReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_NomReciclador}</span>
+								<span class="rnr-searchtype">{$searchtype_nombre_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_nombre_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_nombre_reciclador}</span>
 						</div>
-		{END searchCtrlBlock_NomReciclador}
-																{BEGIN searchCtrlBlock_IdReciclador}
+		{END searchCtrlBlock_nombre_reciclador}
+																{BEGIN searchCtrlBlock_logo_aso}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_IdReciclador}" {$filterRow_attrs_IdReciclador}>
-			<label>{$label public_Recicladores IdReciclador }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_logo_aso}" {$filterRow_attrs_logo_aso}>
+			<label>{$label public_recicladores logo_aso }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_IdReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_IdReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_IdReciclador}</span>
+								<span class="rnr-searchtype">{$searchtype_logo_aso}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_logo_aso}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_logo_aso}</span>
 						</div>
-		{END searchCtrlBlock_IdReciclador}
-																{BEGIN searchCtrlBlock_FotoReciclador}
+		{END searchCtrlBlock_logo_aso}
+																{BEGIN searchCtrlBlock_id_residuo}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_FotoReciclador}" {$filterRow_attrs_FotoReciclador}>
-			<label>{$label public_Recicladores FotoReciclador }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_id_residuo}" {$filterRow_attrs_id_residuo}>
+			<label>{$label public_recicladores id_residuo }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_FotoReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_FotoReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_FotoReciclador}</span>
+								<span class="rnr-searchtype">{$searchtype_id_residuo}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_id_residuo}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_id_residuo}</span>
 						</div>
-		{END searchCtrlBlock_FotoReciclador}
-																{BEGIN searchCtrlBlock_DirReciclador}
+		{END searchCtrlBlock_id_residuo}
+																{BEGIN searchCtrlBlock_id_reciclador}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_DirReciclador}" {$filterRow_attrs_DirReciclador}>
-			<label>{$label public_Recicladores DirReciclador }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_id_reciclador}" {$filterRow_attrs_id_reciclador}>
+			<label>{$label public_recicladores id_reciclador }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_DirReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_DirReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_DirReciclador}</span>
+								<span class="rnr-searchtype">{$searchtype_id_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_id_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_id_reciclador}</span>
 						</div>
-		{END searchCtrlBlock_DirReciclador}
-																{BEGIN searchCtrlBlock_CIReciclador}
+		{END searchCtrlBlock_id_reciclador}
+																{BEGIN searchCtrlBlock_foto_reciclador}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_CIReciclador}" {$filterRow_attrs_CIReciclador}>
-			<label>{$label public_Recicladores CIReciclador }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_foto_reciclador}" {$filterRow_attrs_foto_reciclador}>
+			<label>{$label public_recicladores foto_reciclador }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_CIReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_CIReciclador}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_CIReciclador}</span>
+								<span class="rnr-searchtype">{$searchtype_foto_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_foto_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_foto_reciclador}</span>
 						</div>
-		{END searchCtrlBlock_CIReciclador}
+		{END searchCtrlBlock_foto_reciclador}
+																{BEGIN searchCtrlBlock_direc_reciclador}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_direc_reciclador}" {$filterRow_attrs_direc_reciclador}>
+			<label>{$label public_recicladores direc_reciclador }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_direc_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_direc_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_direc_reciclador}</span>
+						</div>
+		{END searchCtrlBlock_direc_reciclador}
+																{BEGIN searchCtrlBlock_ci_reciclador}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_ci_reciclador}" {$filterRow_attrs_ci_reciclador}>
+			<label>{$label public_recicladores ci_reciclador }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_ci_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_ci_reciclador}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_ci_reciclador}</span>
+						</div>
+		{END searchCtrlBlock_ci_reciclador}
 		
 
 	</div>
 
 	<div class="panel-footer bottomSearchButt" {$bottomSearchButt_attrs}>
-		<button class="btn btn-primary" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
-		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
+		<button class="btn btn-primary btn-sm" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
+
+				<button class="btn btn-default btn-sm" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
 	</div>
 </div>
 <!-- End Search panel content -->
 			</div>
 		
     {END left_block}
-</div>				</div>	
+</div>				</div>
 			<div class="r-content-col" data-resize-left="leftbar">
 				<div  class="r-topheader" data-resize-name="topbar">
 									{BEGIN supertop_block}
@@ -225,9 +245,18 @@
 	data-location="supertop" id="form_supertop_{$pageid}" data-makeup="leftbar" {$form_supertop} data-pageid="{$pageid}" >
 			 
 							 
-				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
+				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="expand_menu_button" {$item_expand_menu_button} data-topcell-item-type="expand_menu_button" >
+				<span data-itemtype="expand_menu_button" data-itemid="expand_menu_button" {$item_expand_menu_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Encubrir" class="btn-link   
+	 glyphicon glyphicon-menu-hamburger" href="#" >		
+				
+								</a>
+</span>
+			</span>
+		 
+				<span class="navbar-form  navbar-collapse" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
 				<span data-itemtype="collapse_button" data-itemid="collapse_button" {$item_collapse_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Collapse" class="btn-link   
+	<a type="button" title="Muestrame el menu" class="btn-link   
 	 glyphicon glyphicon-triangle-left" href="#" >		
 				
 								</a>
@@ -262,10 +291,11 @@
 {END searchform_text}
 	<span class="input-group-btn">
 	{BEGIN searchform_showall}
-		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
+				<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
 			<span class="glyphicon glyphicon-remove"></span>
 		</button>
 	{END searchform_showall}
+
 	{BEGIN searchform_search}
 	<button {$searchbutton_attrs} class="btn btn-primary" >
 		<span class="glyphicon glyphicon-search"></span>
@@ -280,8 +310,8 @@
 				<span data-itemtype="list_options" data-itemid="list_options" {$item_list_options} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-cog"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-cog"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN exportselected_link}
@@ -300,8 +330,8 @@
 		</a>
 	</li>
 {END deleteselected_link}
-							<li role="separator" class="divider"></li>							<li role="separator" class="divider"></li>								<li data-itemtype="advsearch_link" data-itemid="advsearch_link" {$item_advsearch_link} data-pageid="{$pageid}" data-small >
-				<a   href="recicladores_search.php" {$advsearchlink_attrs}  title="" >
+							<li role="separator" class="divider"></li>								<li data-itemtype="advsearch_link" data-itemid="advsearch_link" {$item_advsearch_link} data-pageid="{$pageid}" data-small >
+				<a   href="recicladores_search.php{$stateLink_full}" {$advsearchlink_attrs}  title="" >
 				
 		Búsqueda avanzada		
 		</a>
@@ -332,7 +362,7 @@
 {END export_link}
 							<li role="separator" class="divider"></li>							{BEGIN import_link}
 	<li data-itemtype="import" data-itemid="import" {$item_import} data-pageid="{$pageid}" data-small >
-				<a  {$importlink_attrs} href="recicladores_import.php?{$crosstable_attrs}"  title="" >
+				<a  {$importlink_attrs} href="recicladores_import.php{$stateLink_full}"  title="" >
 				
 		Importar		
 		</a>
@@ -357,11 +387,19 @@
 				{BEGIN loggedas_message}
 <span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
-		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-user"></span>
-						{$username}			<span class="caret"></span>
+		<button type="button" title="" class="btn btn-default  btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
 							{BEGIN logoutbutton}
 	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
 				<a  href="#" {$logoutlink_attrs}  title="" >
@@ -370,6 +408,14 @@
 		</a>
 	</li>
 {END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
 					</ul>
 	</span>
 </span>
@@ -416,17 +462,27 @@
 		 
 		{BEGIN add_link}
 <span data-itemtype="add" data-itemid="add" {$item_add} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-primary   
-	" {$addlink_attrs} href="recicladores_add.php" >
-							Añadir nuevo			</a>
+	<a type="button" title="" class="btn btn-success  btn-lg 
+	" {$addlink_attrs} href="recicladores_add.php?page=add{$stateLink}" data-page="add" >
+					<span class="glyphicon glyphicon-plus"></span>
+							Añadir nuevo reciclador			</a>
 </span>
 {END add_link}
 	 
+		{BEGIN inlineadd_link}
+<span data-itemtype="inline_add" data-itemid="inline_add" {$item_inline_add} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" {$inlineaddlink_attrs} >
+							Añadir nuevo			</a>
+</span>
+{END inlineadd_link}
+	 
 		{BEGIN deleteselected_link}
 <span data-itemtype="delete" data-itemid="delete" {$item_delete} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-default   
+	<a type="button" title="" class="btn btn-default  btn-lg 
 	" {$deleteselectedlink_attrs} {$deleteselectedlink_span} disabled >
-							Borrar artículos seleccionados			</a>
+					<span class="glyphicon glyphicon-trash"></span>
+							Borrar reciclador seleccionados			</a>
 </span>
 {END deleteselected_link}
 			{END firstAboveGridCell}	
@@ -459,15 +515,16 @@
 		<div class="col-md-4">
 			Rango:		</div>
 
+			 
 		{BEGIN print_friendly_all}
 		<div class="col-md-8">
 			<label for="printAll{$id}">
-				<input type="radio" id="printAll{$id}" data-href="recicladores_print.php?all=1&amp;{$crosstable_attrs}" name="printScope">
+				<input type="radio" id="printAll{$id}" data-href="recicladores_print.php?all=1&amp;{$crosstable_attrs}" name="printScope" >
 									Imprimir todas las páginas							</label>
 		</div>
 		{END print_friendly_all}
-	</div>
-	<div class="row">
+		</div>
+		<div class="row">
 		<div class="col-md-4">&nbsp;</div>
 		<div class="col-md-8">
 			<label for="printPage{$id}">
@@ -475,18 +532,20 @@
 				Imprimir esta página			</label>
 		</div>
 	</div>
-	
-		<div class="row">
+		
+		 
+	<div class="row">
 		<div class="col-md-4">
 			&nbsp;
 		</div>
 		<div class="col-md-8">
 			<label style="color: gray;" for="printSelection{$id}">
-			<input name="printScope" disabled="disabled" id="printSelection{$id}" type="radio">
+			<input name="printScope" disabled="disabled" id="printSelection{$id}" type="radio" >
 			Imprimir la selección			</label>
 		</div>
 	</div>
-	</div>				 
+	</div>
+				 
 					</li>
 											<li class="divider" role="separator"></li>
 																				 
@@ -499,13 +558,13 @@
 		<input type="checkbox" id="printDetailsToggler{$id}">
 		Detalles de impresión	</label>
 	<div  id="printdetailstables{$id}" style="display:none;">
-											{BEGIN print_details_gestionpesosresiduos}
+											{BEGIN print_details_gestion_pesos_residuos}
 			<div>
-				<label for="printDetailsgestionpesosresiduos{$id}">
-					<input type="checkbox" value="gestionpesosresiduos" id="printDetailsgestionpesosresiduos{$id}" checked>
+				<label for="printDetailsgestion_pesos_residuos{$id}">
+					<input type="checkbox" value="gestion_pesos_residuos" id="printDetailsgestion_pesos_residuos{$id}" checked>
 					Gestion Pesos Residuos				</label>
 			</div>
-			{END print_details_gestionpesosresiduos}
+			{END print_details_gestion_pesos_residuos}
 						</div>
 </div>
 {END print_details}
@@ -557,77 +616,116 @@
 {BEGIN grid_row}
 	{BEGIN grid_record}
 	{BEGIN grid_vrecord}
-	<div class="r-record-body {$rowclass}" {$rowattrs} {$rowstyle}>
+	<div class="r-record-body {$rowclass}" {$rowattrs} {$rowstyle} data-record-id="{$recId}">
 		<div class="panel panel-default" {$recordattrs}>
 											{BEGIN grid_recordheader}
 			<div class="panel-heading">
 					
 	
-				<table data-width="3" class="header-table">
+				<table data-width="4" class="header-table">
 				 
 										<tr>
 						 
 							<td 
-	class="				{$IdReciclador_class}
+	class="				{$id_reciclador_class}
 			"
-	colspan="3"		 
+			 
+		data-field=""
+	 
 	data-cellId="grid_cell_top" data-pageid="{$pageid}" data-record-id="{$recId}">
  
-{BEGIN checkbox_column}
-<span data-itemtype="grid_checkbox" data-itemid="grid_checkbox" {$item_grid_checkbox} data-pageid="{$pageid}" data-record-id="{$recId}" >
-	<input type="checkbox" {$checkbox_attrs}>
-</span>	
-{END checkbox_column}
+{BEGIN id_reciclador_fieldheadercolumn}
  
-{BEGIN edit_column}
-{BEGIN edit_link}
-<span data-itemtype="grid_edit" data-itemid="grid_edit" {$item_grid_edit} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
-	<a type="button" title="Editar" class="btn-link   
-	 glyphicon glyphicon-pencil" href="recicladores_edit.php?{$editlink}" {$editlink_attrs} title="Editar" >		
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="id_reciclador" data-fieldname="id_reciclador">
+	{$label public_recicladores id_reciclador }	</span>
+{END id_reciclador_fieldheadercolumn}
+
+ 
+{BEGIN id_reciclador_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="id_reciclador" data-fieldname="id_reciclador" data-default-width >
+{$id_reciclador_value}
+</span>
+{END id_reciclador_fieldcolumn} 
+{BEGIN inline_cancel}
+<span data-itemtype="grid_inline_cancel" data-itemid="grid_inline_cancel" {$item_grid_inline_cancel} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
+	<a type="button" title="Cancelar" class="btn-link   
+	 glyphicon glyphicon-remove" {$inlinerevertlink_attrs} title="Cancelar" >		
 				
 								</a>
 </span>
-{END edit_link}
-{END edit_column}
- 
-{BEGIN view_column}
-{BEGIN view_link}
-<span data-itemtype="grid_view" data-itemid="grid_view" {$item_grid_view} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
-	<a type="button" title="Ver registro" class="btn-link   
-	 glyphicon glyphicon-search" href="recicladores_view.php?{$editlink}" {$viewlink_attrs} title="Ver" >		
-				
-								</a>
-</span>
-{END view_link}
-{END view_column}
+{END inline_cancel}
  
  
 
 	{BEGIN dtables_link}
 				<span data-itemtype="grid_details_link" data-itemid="grid_details_link" {$item_grid_details_link} data-pageid="{$pageid}" data-record-id="{$recId}">
 		<a 
-			{$gestionpesosresiduos_link_attrs} 
-			class="{$dtables_link_class} details-badge badge gestionpesosresiduos_badge" 
+			{$gestion_pesos_residuos_link_attrs} 
+			class="{$dtables_link_class} details-badge badge gestion_pesos_residuos_badge" 
 			title="Mostrar detalles"
+						
 		>
 							<span class="glyphicon glyphicon-th-list"></span>
-									<span class="{$gestionpesosresiduos_cntspan_class}" {$gestionpesosresiduos_childnumber_attr}>
-				{$gestionpesosresiduos_childnumber}				
+									<span class="{$gestion_pesos_residuos_cntspan_class}" {$gestion_pesos_residuos_childnumber_attr}>
+				{$gestion_pesos_residuos_childnumber}				
 			</span>
 		</a>
 		</span>
 	{END dtables_link}
 
+</td>
+						 
+							<td 
+	class="			"
+	colspan="2"		 
+	data-cellId="grid_cell_top1" data-pageid="{$pageid}" data-record-id="{$recId}">
+ 
+<span data-itemtype="text" data-itemid="text2" {$item_text2} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-small > 
+	Seleccionar Registro</span>
+ 
+{BEGIN checkbox_column}
+<span data-itemtype="grid_checkbox" data-itemid="grid_checkbox" {$item_grid_checkbox} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" >
+	<input type="checkbox" {$checkbox_attrs}
+		>
+</span>	
+{END checkbox_column}
  
 <span data-itemtype="text" data-itemid="text" {$item_text} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-small > 
-	Perfil Reciclador Nº:</span>
+	Ver Registro</span>
  
-{BEGIN IdReciclador_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="grid_field1" {$item_grid_field1} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="IdReciclador" data-default-width >
-{$IdReciclador_value}
+{BEGIN view_column}
+{BEGIN view_link}
+<span data-itemtype="grid_view" data-itemid="grid_view" {$item_grid_view} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
+	<a type="button" title="Ver registro" class="btn btn-success  btn-lg 
+	" href="recicladores_view.php?page=view&{$editlink}" {$viewlink_attrs} title="Ver" data-page="view" >
+					<span class="glyphicon glyphicon-search"></span>
+										</a>
 </span>
-{END IdReciclador_fieldcolumn}</td>
+{END view_link}
+{END view_column}
+ 
+<span data-itemtype="text" data-itemid="text1" {$item_text1} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-small > 
+	Editar Registro</span>
+ 
+{BEGIN edit_column}
+{BEGIN edit_link}
+<span data-itemtype="grid_edit" data-itemid="grid_edit" {$item_grid_edit} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
+	<a type="button" title="Editar" class="btn btn-success  btn-lg 
+	" href="recicladores_edit.php?page=edit&{$editlink}" {$editlink_attrs} title="Editar" data-page="edit" >
+					<span class="glyphicon glyphicon-pencil"></span>
+										</a>
+</span>
+{END edit_link}
+{END edit_column}
+</td>
+						 
+							<td 
+	class=" r-ori-vert			"
+			 
+	data-cellId="grid_cell_top3" data-pageid="{$pageid}" data-record-id="{$recId}">
+</td>
 											</tr>
+									 
 									 
 									 
 									 
@@ -642,155 +740,233 @@
 			<div class="panel-body">					
 					
 	
-				<table data-width="3" >
+				<table data-width="4" >
 				 
 									 
 										<tr>
 						 
 							<td 
-	class="r-align-left r-ori-vert				{$FotoReciclador_class}
+	class="r-align-right r-ori-vert				{$foto_reciclador_class}
 			"
 		rowspan="5"	 
 		data-field=""
 	 
-	data-cellId="grid_cell_label" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="recicladores_list">
+	data-cellId="grid_cell_label4" data-pageid="{$pageid}" data-record-id="{$recId}">
  
-{BEGIN FotoReciclador_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FotoReciclador" data-default-width >
-{$FotoReciclador_value}
+{BEGIN foto_reciclador_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="foto_reciclador" data-fieldname="foto_reciclador" data-default-width >
+{$foto_reciclador_value}
 </span>
-{END FotoReciclador_fieldcolumn}</td>
+{END foto_reciclador_fieldcolumn}</td>
 						 
 							<td 
-	class="				{$CIReciclador_class}
+	class="r-align-left r-ori-vert				{$ci_reciclador_class}
+			"
+			 
+		data-field=""
+	 
+	data-cellId="grid_cell_field8" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="recicladores_list">
+ 
+{BEGIN ci_reciclador_fieldheadercolumn}
+ 
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field11" {$item_simple_grid_field11} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="ci_reciclador" data-fieldname="ci_reciclador">
+	{$label public_recicladores ci_reciclador }	</span>
+{END ci_reciclador_fieldheadercolumn}
+
+</td>
+						 
+							<td 
+	class="r-align-left r-ori-vert				{$ci_reciclador_class}
+			"
+			 
+		data-field=""
+	 
+	data-cellId="grid_cell_field18" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="recicladores_list">
+ 
+{BEGIN ci_reciclador_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="ci_reciclador" data-fieldname="ci_reciclador" data-default-width >
+{$ci_reciclador_value}
+</span>
+{END ci_reciclador_fieldcolumn}</td>
+						 
+							<td 
+	class=" r-ori-vert				{$logo_aso_class}
+			"
+		rowspan="5"	 
+		data-field=""
+	 
+	data-cellId="grid_cell_field10" data-pageid="{$pageid}" data-record-id="{$recId}">
+ 
+{BEGIN logo_aso_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="logo_aso" data-fieldname="logo_aso" data-default-width >
+{$logo_aso_value}
+</span>
+{END logo_aso_fieldcolumn}</td>
+											</tr>
+									 
+										<tr>
+						 
+							<td 
+	class=" r-ori-vert				{$nombre_reciclador_class}
+			"
+			 
+		data-field=""
+	 
+	data-cellId="grid_cell_field9" data-pageid="{$pageid}" data-record-id="{$recId}">
+ 
+{BEGIN nombre_reciclador_fieldheadercolumn}
+ 
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field12" {$item_simple_grid_field12} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="nombre_reciclador" data-fieldname="nombre_reciclador">
+	{$label public_recicladores nombre_reciclador }	</span>
+{END nombre_reciclador_fieldheadercolumn}
+
+</td>
+						 
+							<td 
+	class=" r-ori-vert				{$nombre_reciclador_class}
+			"
+			 
+		data-field=""
+	 
+	data-cellId="grid_cell_field17" data-pageid="{$pageid}" data-record-id="{$recId}">
+ 
+{BEGIN nombre_reciclador_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="nombre_reciclador" data-fieldname="nombre_reciclador" data-default-width >
+{$nombre_reciclador_value}
+</span>
+{END nombre_reciclador_fieldcolumn}</td>
+											</tr>
+									 
+										<tr>
+						 
+							<td 
+	class=" r-ori-vert				{$apellido_reciclador_class}
+			"
+			 
+		data-field=""
+	 
+	data-cellId="grid_cell_field12" data-pageid="{$pageid}" data-record-id="{$recId}">
+ 
+{BEGIN apellido_reciclador_fieldheadercolumn}
+ 
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field13" {$item_simple_grid_field13} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="apellido_reciclador" data-fieldname="apellido_reciclador">
+	{$label public_recicladores apellido_reciclador }	</span>
+{END apellido_reciclador_fieldheadercolumn}
+
+</td>
+						 
+							<td 
+	class=" r-ori-vert				{$apellido_reciclador_class}
+			"
+			 
+		data-field=""
+	 
+	data-cellId="grid_cell_field14" data-pageid="{$pageid}" data-record-id="{$recId}">
+ 
+{BEGIN apellido_reciclador_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="apellido_reciclador" data-fieldname="apellido_reciclador" data-default-width >
+{$apellido_reciclador_value}
+</span>
+{END apellido_reciclador_fieldcolumn}</td>
+											</tr>
+									 
+										<tr>
+						 
+							<td 
+	class=" r-ori-vert				{$direc_reciclador_class}
+			"
+			 
+		data-field=""
+	 
+	data-cellId="grid_cell_field15" data-pageid="{$pageid}" data-record-id="{$recId}">
+ 
+{BEGIN direc_reciclador_fieldheadercolumn}
+ 
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field14" {$item_simple_grid_field14} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="direc_reciclador" data-fieldname="direc_reciclador">
+	{$label public_recicladores direc_reciclador }	</span>
+{END direc_reciclador_fieldheadercolumn}
+
+</td>
+						 
+							<td 
+	class=" r-ori-vert				{$direc_reciclador_class}
+			"
+			 
+		data-field=""
+	 
+	data-cellId="grid_cell_field16" data-pageid="{$pageid}" data-record-id="{$recId}">
+ 
+{BEGIN direc_reciclador_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="direc_reciclador" data-fieldname="direc_reciclador" data-default-width >
+{$direc_reciclador_value}
+</span>
+{END direc_reciclador_fieldcolumn}</td>
+											</tr>
+									 
+										<tr>
+						 
+							<td 
+	class=" r-ori-vert				{$tel_reciclador_class}
 			"
 			 
 		data-field=""
 	 
 	data-cellId="grid_cell_field" data-pageid="{$pageid}" data-record-id="{$recId}">
  
-{BEGIN CIReciclador_fieldheadercolumn}
+{BEGIN tel_reciclador_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="CIReciclador">
-	{$label public_Recicladores CIReciclador }	</span>
-{END CIReciclador_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field15" {$item_simple_grid_field15} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="tel_reciclador" data-fieldname="tel_reciclador">
+	{$label public_recicladores tel_reciclador }	</span>
+{END tel_reciclador_fieldheadercolumn}
 
- 
-{BEGIN CIReciclador_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="CIReciclador" data-default-width >
-{$CIReciclador_value}
-</span>
-{END CIReciclador_fieldcolumn}</td>
+</td>
 						 
 							<td 
-	class=" r-ori-vert				{$LogoASO_class}
-			"
-		rowspan="5"	 
-		data-field=""
-	 
-	data-cellId="grid_cell_field7" data-pageid="{$pageid}" data-record-id="{$recId}">
- 
-{BEGIN LogoASO_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="grid_field" {$item_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="LogoASO" data-default-width >
-{$LogoASO_value}
-</span>
-{END LogoASO_fieldcolumn}</td>
-											</tr>
-									 
-										<tr>
-						 
-							<td 
-	class="				{$NomReciclador_class}
+	class=" r-ori-vert				{$tel_reciclador_class}
 			"
 			 
 		data-field=""
 	 
 	data-cellId="grid_cell_field1" data-pageid="{$pageid}" data-record-id="{$recId}">
  
-{BEGIN NomReciclador_fieldheadercolumn}
- 
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="NomReciclador">
-	{$label public_Recicladores NomReciclador }	</span>
-{END NomReciclador_fieldheadercolumn}
-
- 
-{BEGIN NomReciclador_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="NomReciclador" data-default-width >
-{$NomReciclador_value}
+{BEGIN tel_reciclador_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="tel_reciclador" data-fieldname="tel_reciclador" data-default-width >
+{$tel_reciclador_value}
 </span>
-{END NomReciclador_fieldcolumn}</td>
+{END tel_reciclador_fieldcolumn}</td>
 											</tr>
 									 
 										<tr>
 						 
 							<td 
-	class="				{$ApeReciclador_class}
+	class="r-align-right r-ori-vert				{$id_residuo_class}
 			"
 			 
 		data-field=""
 	 
-	data-cellId="grid_cell_field2" data-pageid="{$pageid}" data-record-id="{$recId}">
+	data-cellId="grid_cell_field11" data-pageid="{$pageid}" data-record-id="{$recId}">
  
-{BEGIN ApeReciclador_fieldheadercolumn}
+{BEGIN id_residuo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="ApeReciclador">
-	{$label public_Recicladores ApeReciclador }	</span>
-{END ApeReciclador_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field17" {$item_simple_grid_field17} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="id_residuo" data-fieldname="id_residuo">
+	{$label public_recicladores id_residuo }	</span>
+{END id_residuo_fieldheadercolumn}
 
- 
-{BEGIN ApeReciclador_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="ApeReciclador" data-default-width >
-{$ApeReciclador_value}
-</span>
-{END ApeReciclador_fieldcolumn}</td>
-											</tr>
-									 
-										<tr>
+</td>
 						 
 							<td 
-	class="				{$DirReciclador_class}
+	class=" r-ori-vert				{$id_residuo_class}
 			"
-			 
+	colspan="3"		 
 		data-field=""
 	 
-	data-cellId="grid_cell_field3" data-pageid="{$pageid}" data-record-id="{$recId}">
+	data-cellId="grid_cell_field13" data-pageid="{$pageid}" data-record-id="{$recId}">
  
-{BEGIN DirReciclador_fieldheadercolumn}
- 
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field10" {$item_simple_grid_field10} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="DirReciclador">
-	{$label public_Recicladores DirReciclador }	</span>
-{END DirReciclador_fieldheadercolumn}
-
- 
-{BEGIN DirReciclador_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="DirReciclador" data-default-width >
-{$DirReciclador_value}
+{BEGIN id_residuo_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="id_residuo" data-fieldname="id_residuo" data-default-width >
+{$id_residuo_value}
 </span>
-{END DirReciclador_fieldcolumn}</td>
-											</tr>
-									 
-										<tr>
-						 
-							<td 
-	class="				{$TelReciclador_class}
-			"
-			 
-		data-field=""
-	 
-	data-cellId="grid_cell_field5" data-pageid="{$pageid}" data-record-id="{$recId}">
- 
-{BEGIN TelReciclador_fieldheadercolumn}
- 
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field11" {$item_simple_grid_field11} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="TelReciclador">
-	{$label public_Recicladores TelReciclador }	</span>
-{END TelReciclador_fieldheadercolumn}
-
- 
-{BEGIN TelReciclador_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-page="recicladores_list" data-record-id="{$recId}" data-field="TelReciclador" data-default-width >
-{$TelReciclador_value}
-</span>
-{END TelReciclador_fieldcolumn}</td>
+{END id_residuo_fieldcolumn}</td>
 											</tr>
 									 
 													</table>
@@ -803,7 +979,16 @@
 		
 
  
-			{END grid_vrecord}
+		 
+	<div data-itemtype="details_preview" data-itemid="details_preview" {$item_details_preview} data-pageid="{$pageid}" data-record-id="{$recId}" 
+	data-orders="gestion_pesos_residuos"
+			data-details-gestion_pesos_residuos	>
+		<span data-details-inside data-short-table="gestion_pesos_residuos">
+			</span>
+		<div data-details-preview>
+	</div>
+</div>
+	{END grid_vrecord}
 	{END grid_record}
 {END grid_row}
 </div>
@@ -833,6 +1018,8 @@
 					{$footer}
 				</div>	
 			</div>	
+			<div class="r-body-shadow">
+			</div>
 		</div>
 	{END body}
 	</body>

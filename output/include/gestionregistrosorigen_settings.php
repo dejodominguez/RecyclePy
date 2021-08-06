@@ -1,7 +1,4 @@
 <?php
-
-
-
 $tdatagestionregistrosorigen = array();
 $tdatagestionregistrosorigen[".searchableFields"] = array();
 $tdatagestionregistrosorigen[".ShortName"] = "gestionregistrosorigen";
@@ -9,11 +6,12 @@ $tdatagestionregistrosorigen[".OwnerID"] = "IdUsuario";
 $tdatagestionregistrosorigen[".OriginalTable"] = "public.GestionRegistrosOrigen";
 
 
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
-
 $tdatagestionregistrosorigen[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
+$tdatagestionregistrosorigen[".originalPagesByType"] = $tdatagestionregistrosorigen[".pagesByType"];
 $tdatagestionregistrosorigen[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdatagestionregistrosorigen[".defaultPages"] = $defaultPages;
+$tdatagestionregistrosorigen[".originalPages"] = $tdatagestionregistrosorigen[".pages"];
+$tdatagestionregistrosorigen[".defaultPages"] = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
+$tdatagestionregistrosorigen[".originalDefaultPages"] = $tdatagestionregistrosorigen[".defaultPages"];
 
 //	field labels
 $fieldLabelsgestionregistrosorigen = array();
@@ -68,6 +66,8 @@ $tdatagestionregistrosorigen[".nSecOptions"] = 1;
 
 $tdatagestionregistrosorigen[".mainTableOwnerID"] = "IdUsuario";
 $tdatagestionregistrosorigen[".entityType"] = 0;
+$tdatagestionregistrosorigen[".connId"] = "RealEstate_at_localhost";
+
 
 $tdatagestionregistrosorigen[".strOriginalTableName"] = "public.GestionRegistrosOrigen";
 
@@ -81,14 +81,9 @@ $tdatagestionregistrosorigen[".showEditInPopup"] = false;
 
 $tdatagestionregistrosorigen[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdatagestionregistrosorigen[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdatagestionregistrosorigen[".listAjax"] = false;
 //	temporary
-$tdatagestionregistrosorigen[".listAjax"] = false;
+//$tdatagestionregistrosorigen[".listAjax"] = false;
 
 	$tdatagestionregistrosorigen[".audit"] = false;
 
@@ -99,7 +94,7 @@ $pages = $tdatagestionregistrosorigen[".defaultPages"];
 
 if( $pages[PAGE_EDIT] ) {
 	$tdatagestionregistrosorigen[".edit"] = true;
-	$tdatagestionregistrosorigen[".afterEditAction"] = 1;
+	$tdatagestionregistrosorigen[".afterEditAction"] = 0;
 	$tdatagestionregistrosorigen[".closePopupAfterEdit"] = 1;
 	$tdatagestionregistrosorigen[".afterEditActionDetTable"] = "";
 }
@@ -156,7 +151,7 @@ $tdatagestionregistrosorigen[".rowHighlite"] = true;
 
 
 
-									
+						
 
 $tdatagestionregistrosorigen[".ajaxCodeSnippetAdded"] = false;
 
@@ -219,11 +214,10 @@ $tdatagestionregistrosorigen[".warnLeavingPages"] = true;
 
 
 $tstrOrderBy = "";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
 $tdatagestionregistrosorigen[".strOrderBy"] = $tstrOrderBy;
 
 $tdatagestionregistrosorigen[".orderindexes"] = array();
+
 
 $tdatagestionregistrosorigen[".sqlHead"] = "SELECT \"IdGesRegOrigen\",  	\"IdResiduo\",  	\"IdMedTipOrigen\",  	\"IdUsuario\",  	\"CantidadOrigen\",  	\"FotoOrigen\",  	\"GPSMapaGoo\",  	\"Lat\",  	\"Lng\"";
 $tdatagestionregistrosorigen[".sqlFrom"] = "FROM \"public\".\"GestionRegistrosOrigen\"";
@@ -283,7 +277,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","IdGesRegOrigen");
 	$fdata["FieldType"] = 3;
 
-	
+
 		$fdata["AutoInc"] = true;
 
 	
@@ -291,6 +285,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 
 		$fdata["strField"] = "IdGesRegOrigen";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"IdGesRegOrigen\"";
 
@@ -314,6 +309,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -335,6 +331,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -356,6 +353,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -377,6 +375,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -580,13 +579,14 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","IdResiduo");
 	$fdata["FieldType"] = 3;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "IdResiduo";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"IdResiduo\"";
 
@@ -610,6 +610,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -631,6 +632,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -652,6 +654,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -673,6 +676,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -743,8 +747,9 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 
 // Begin Lookup settings
-				$edata["LookupType"] = 2;
-	$edata["LookupTable"] = "public.Residuos";
+				$edata["LookupType"] = 1;
+	$edata["LookupTable"] = "public.residuos1";
+	$edata["LookupConnId"] = "";
 			$edata["autoCompleteFieldsOnEdit"] = 0;
 	$edata["autoCompleteFields"] = array();
 		$edata["LCType"] = 0;
@@ -753,7 +758,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 		
 	$edata["LinkField"] = "IdResiduo";
 	$edata["LinkFieldType"] = 0;
-	$edata["DisplayField"] = "DescriResiduo";
+	$edata["DisplayField"] = "IdResiduo";
 
 	
 
@@ -763,7 +768,8 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
-	
+		$edata["SimpleAdd"] = true;
+
 
 	
 	
@@ -897,13 +903,14 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","IdMedTipOrigen");
 	$fdata["FieldType"] = 3;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "IdMedTipOrigen";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"IdMedTipOrigen\"";
 
@@ -927,6 +934,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -948,6 +956,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -969,6 +978,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -990,6 +1000,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1214,13 +1225,14 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","IdUsuario");
 	$fdata["FieldType"] = 3;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "IdUsuario";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"IdUsuario\"";
 
@@ -1244,6 +1256,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1265,6 +1278,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1286,6 +1300,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1307,6 +1322,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1366,7 +1382,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	$fdata["EditFormats"]["edit"] = $edata;
-	$edata = array("EditFormat" => "Lookup wizard");
+	$edata = array("EditFormat" => "Text field");
 
 	
 		$edata["weekdayMessage"] = array("message" => "", "messageType" => "Text");
@@ -1376,34 +1392,6 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 
-// Begin Lookup settings
-				$edata["LookupType"] = 2;
-	$edata["LookupTable"] = "public.Usuarios";
-			$edata["autoCompleteFieldsOnEdit"] = 0;
-	$edata["autoCompleteFields"] = array();
-		$edata["LCType"] = 0;
-
-	
-		
-	$edata["LinkField"] = "IdUsuario";
-	$edata["LinkFieldType"] = 0;
-	$edata["DisplayField"] = "NombreCompleto";
-
-	
-
-	
-	$edata["LookupOrderBy"] = "";
-
-	
-	
-	
-	
-
-	
-	
-		$edata["SelectSize"] = 1;
-
-// End Lookup Settings
 
 
 		$edata["IsRequired"] = true;
@@ -1420,14 +1408,17 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
-	
-	
+			$edata["HTML5InuptType"] = "text";
+
+		$edata["EditParams"] = "";
+		
 		$edata["controlWidth"] = 200;
 
 //	Begin validation
 	$edata["validateAs"] = array();
 	$edata["validateAs"]["basicValidate"] = array();
 	$edata["validateAs"]["customMessages"] = array();
+				$edata["validateAs"]["basicValidate"][] = getJsValidatorName("Number");
 						$edata["validateAs"]["basicValidate"][] = "IsRequired";
 		
 	
@@ -1531,13 +1522,14 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","CantidadOrigen");
 	$fdata["FieldType"] = 14;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "CantidadOrigen";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"CantidadOrigen\"";
 
@@ -1562,6 +1554,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1584,6 +1577,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1606,6 +1600,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1628,6 +1623,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1827,13 +1823,14 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","FotoOrigen");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "FotoOrigen";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"FotoOrigen\"";
 
@@ -1871,6 +1868,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 	
 	
@@ -1972,13 +1970,14 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","GPSMapaGoo");
 	$fdata["FieldType"] = 201;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "GPSMapaGoo";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"GPSMapaGoo\"";
 
@@ -2007,6 +2006,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 	
 	
@@ -2032,6 +2032,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 	
 	
@@ -2057,6 +2058,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 	
 	
@@ -2082,6 +2084,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 	
 	
@@ -2286,13 +2289,14 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","Lat");
 	$fdata["FieldType"] = 14;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "Lat";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"Lat\"";
 
@@ -2317,6 +2321,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -2422,13 +2427,14 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionRegistrosOrigen","Lng");
 	$fdata["FieldType"] = 14;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "Lng";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"Lng\"";
 
@@ -2453,6 +2459,7 @@ $tdatagestionregistrosorigen[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -2558,7 +2565,11 @@ $page_titles["public_GestionRegistrosOrigen"] = &$pageTitlesgestionregistrosorig
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
+
+//if !@TABLE.bReportCrossTab
+
 $detailsTablesData["public.GestionRegistrosOrigen"] = array();
+//endif
 
 // tables which are master tables for current table (detail)
 $masterTablesData["public.GestionRegistrosOrigen"] = array();
@@ -2566,23 +2577,8 @@ $masterTablesData["public.GestionRegistrosOrigen"] = array();
 
 
 	
-				$strOriginalDetailsTable="public.Usuarios";
-	$masterParams = array();
-	$masterParams["mDataSourceTable"]="public.Usuarios";
-	$masterParams["mOriginalTable"]= $strOriginalDetailsTable;
-	$masterParams["mShortTable"]= "usuarios";
-	$masterParams["masterKeys"]= array();
-	$masterParams["detailKeys"]= array();
-
-	$masterParams["type"] = PAGE_LIST;
-					$masterTablesData["public.GestionRegistrosOrigen"][0] = $masterParams;
-				$masterTablesData["public.GestionRegistrosOrigen"][0]["masterKeys"] = array();
-	$masterTablesData["public.GestionRegistrosOrigen"][0]["masterKeys"][]="IdUsuario";
-				$masterTablesData["public.GestionRegistrosOrigen"][0]["detailKeys"] = array();
-	$masterTablesData["public.GestionRegistrosOrigen"][0]["detailKeys"][]="IdUsuario";
-		
-	
-				$strOriginalDetailsTable="public.MedTipoOrigen";
+	//if !@t.bReportCrossTab
+			$strOriginalDetailsTable="public.MedTipoOrigen";
 	$masterParams = array();
 	$masterParams["mDataSourceTable"]="public.MedTipoOrigen";
 	$masterParams["mOriginalTable"]= $strOriginalDetailsTable;
@@ -2591,16 +2587,19 @@ $masterTablesData["public.GestionRegistrosOrigen"] = array();
 	$masterParams["detailKeys"]= array();
 
 	$masterParams["type"] = PAGE_LIST;
-					$masterTablesData["public.GestionRegistrosOrigen"][1] = $masterParams;
-				$masterTablesData["public.GestionRegistrosOrigen"][1]["masterKeys"] = array();
-	$masterTablesData["public.GestionRegistrosOrigen"][1]["masterKeys"][]="IdMedTipOrigen";
-				$masterTablesData["public.GestionRegistrosOrigen"][1]["detailKeys"] = array();
-	$masterTablesData["public.GestionRegistrosOrigen"][1]["detailKeys"][]="IdMedTipOrigen";
+					$masterTablesData["public.GestionRegistrosOrigen"][0] = $masterParams;
+				$masterTablesData["public.GestionRegistrosOrigen"][0]["masterKeys"] = array();
+	$masterTablesData["public.GestionRegistrosOrigen"][0]["masterKeys"][]="IdMedTipOrigen";
+				$masterTablesData["public.GestionRegistrosOrigen"][0]["detailKeys"] = array();
+	$masterTablesData["public.GestionRegistrosOrigen"][0]["detailKeys"][]="IdMedTipOrigen";
 		
+	//endif
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -2838,6 +2837,8 @@ $queryData_gestionregistrosorigen = createSqlQuery_gestionregistrosorigen();
 									
 
 $tdatagestionregistrosorigen[".sqlquery"] = $queryData_gestionregistrosorigen;
+
+
 
 include_once(getabspath("include/gestionregistrosorigen_events.php"));
 $tableEvents["public.GestionRegistrosOrigen"] = new eventclass_gestionregistrosorigen;

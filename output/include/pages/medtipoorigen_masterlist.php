@@ -81,12 +81,14 @@
 'width' => 2,
 'height' => 3 ) ) ),
 'loginForm' => array( 'loginForm' => 3 ),
-'page' => array( 'labeledButtons' => array( 'update_records' => array(  ),
+'page' => array( 'verticalBar' => false,
+'labeledButtons' => array( 'update_records' => array(  ),
 'print_pages' => array(  ),
 'register_activate_message' => array(  ),
 'details_found' => array(  ) ),
 'gridType' => 0,
-'hasCustomButtons' => false ),
+'hasCustomButtons' => false,
+'customButtons' => array(  ) ),
 'misc' => array( 'type' => 'masterlist',
 'breadcrumb' => false ),
 'events' => array( 'maps' => array(  ),
@@ -161,5 +163,5 @@ array( 'cell' => 'footcell_field1' ) ) ) ),
 'simple_grid_field3' => array( 'type' => 'grid_field_label',
 'field' => 'DescriMedTipOrigen' ) ),
 'dbProps' => array(  ),
-'version' => 4 );
+'version' => 7 );
 		?>

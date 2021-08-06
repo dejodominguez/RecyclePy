@@ -8,7 +8,7 @@ require_once('classes/menupage.php');
 
 
 Security::processLogoutRequest();
-if( !isLogged() || isLoggedAsGuest() ) 
+if( !isLogged() || Security::isGuest() ) 
 {
 	Security::tryRelogin();
 }
@@ -20,19 +20,18 @@ if( !isLogged() )
 }
 
 
-if (($_SESSION["MyURL"] == "") || (!isLoggedAsGuest())) {
+if (($_SESSION["MyURL"] == "") || (!Security::isGuest())) {
 	Security::saveRedirectURL();
 }
-
-
-
 
 
 require_once('include/xtempl.php');
 require_once(getabspath("classes/cipherer.php"));
 
-include_once(getabspath("include/gestionregistrosorigen_events.php"));
-$tableEvents["public.GestionRegistrosOrigen"] = new eventclass_gestionregistrosorigen;
+include_once(getabspath("include/detalles_ventas_events.php"));
+$tableEvents["public.detalles_ventas"] = new eventclass_detalles_ventas;
+include_once(getabspath("include/gestion_registros_origen_events.php"));
+$tableEvents["public.gestion_registros_origen"] = new eventclass_gestion_registros_origen;
 
 $xt = new Xtempl();
 

@@ -56,9 +56,14 @@ class DatabaseFileField extends EditControl
 					if( $imgHeight )
 						$style.= 'max-height:'.$imgHeight.'px;';
 
-					$style = $style ? ' style="'.$style.'"' : '';
+					$imageId = generatePassword( 10 );
+					if( $style != "" ) {
+						//	don't use id attribute since this it should be possible to override this size in other CSS
+						$style = '<style> @media screen and (min-width: 768px) { [data-imageid="'. $imageId . '"] { ' 
+							. $style . '} } </style>';
+					}
 
-					$disp = '<img class="mupload-preview-img" '.$style.' id="image_'.GoodFieldName( $this->field ).'_'.$this->id.'" name="'.$this->cfield.'"';
+					$disp = $style.'<img class="" data-imageid="'.$imageId.'" id="image_'.GoodFieldName( $this->field ).'_'.$this->id.'" name="'.$this->cfield.'"';
 					if( $this->is508 )
 						$disp.= ' alt="Image from DB"';
 					$disp.= ' border=0 src="'.$src.'">';
@@ -198,7 +203,7 @@ class DatabaseFileField extends EditControl
 		if (FieldSubmitted($this->goodFieldName."_".$this->id))
 		{
 			$fileNameForPrepareFunc = securityCheckFileName(postvalue("filename_".$this->goodFieldName."_".$this->id));
-			if($this->pageObject->pageType != PAGE_EDIT)
+			if( $this->pageObject->pageType != PAGE_EDIT && $this->pageObject->pageType != PAGE_USERINFO )
 			{
 				$prepearedFile = prepare_file($this->webValue, $this->field, "file2", $fileNameForPrepareFunc, $this->id);
 				if($prepearedFile !== false)
@@ -246,14 +251,22 @@ class DatabaseFileField extends EditControl
 				if($this->pageObject->pSetEdit->getCreateThumbnail($this->field))
 				{
 					$ext = CheckImageExtension(GetUploadedFileName("value_".$this->goodFieldName."_".$this->id));
-					$thumb = CreateThumbnail($this->webValue, $this->pageObject->pSetEdit->getThumbnailSize($this->field), $ext);
-					$blobfields[] = $this->pageObject->pSetEdit->getStrThumbnail($this->field);
-					$avalues[$blobfields[count($blobfields) - 1]] = $thumb;
+					if( $ext ) {
+						$thumb = CreateThumbnail($this->webValue, $this->pageObject->pSetEdit->getThumbnailSize($this->field), $ext);
+						$blobfields[] = $this->pageObject->pSetEdit->getStrThumbnail($this->field);
+						$avalues[$blobfields[count($blobfields) - 1]] = $thumb;
+					}
 				}
-				if($this->pageObject->pSetEdit->getResizeOnUpload($this->field))
-				{
-					$ext = CheckImageExtension(GetUploadedFileName("value_".$this->goodFieldName."_".$this->id));
-					$this->webValue = CreateThumbnail($this->webValue, $this->pageObject->pSetEdit->getNewImageSize($this->field), $ext);
+				//	resize on upload
+				$resizeImageSize = 0;
+				if( $this->pageObject->pSetEdit->getResizeOnUpload($this->field) ) {
+					$resizeImageSize = $this->pageObject->pSetEdit->getNewImageSize($this->field);
+				} else if( $this->fieldIsUserpic() ) {
+					$resizeImageSize = 400;
+				}
+				if( $resizeImageSize ) {
+					$ext = CheckImageExtension( GetUploadedFileName("value_".$this->goodFieldName."_".$this->id) );
+					$this->webValue = CreateThumbnail($this->webValue, $resizeImageSize, $ext);
 				}
 			}
 			else if($this->pageObject->pageType == PAGE_EDIT && $this->pageObject->pSetEdit->getCreateThumbnail($this->field))
@@ -267,5 +280,11 @@ class DatabaseFileField extends EditControl
 		if($filename && $this->pageObject->pSetEdit->getStrFilename($this->field))
 			$filename_values[$this->pageObject->pSetEdit->getStrFilename($this->field)] = $filename;
 	}
+	 protected function fieldIsUserpic() {
+		global $cUserpicField, $cLoginTable;
+		return Security::loginMethod() == SECURITY_TABLE 
+			&& $this->field === $cUserpicField
+			&& $this->container->tName === $cLoginTable;
+	 }
 }
 ?>

@@ -61,7 +61,7 @@ class ViewFileDownloadField extends ViewFileField
 			
 			if($this->container->pSet->showCustomExpr($this->field))
 			{
-				$value .= fileCustomExpression($file, $data, $this->field, $this->container->pageType);
+				$value .= fileCustomExpression($file, $data, $this->field, $this->container->pageType, $this->container->tName );
 			}
 			else
 			{

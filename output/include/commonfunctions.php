@@ -17,49 +17,42 @@ function RunnerApply (&$obj, &$argsArr)
 }
 
 /**
+ * Replaces dot with locale delimiter for $numberStr
+ * @param String $numberStr
  * @intellisense
  */
-function GetImageFromDB( $gQuery, $params )
+function formatNumberForEdit( $numberStr )
+{
+	global $locale_info;
+	return str_replace( ".", $locale_info["LOCALE_SDECIMAL"], $numberStr );
+}
+
+/**
+ * @intellisense
+ */
+function GetImageFromDB( $params )
 {
 	global $cman;
 
 	$table = $params["table"];
-	$pSet = new ProjectSettings( $table );
+	$pSet = new ProjectSettings( $table, $params["pageType"], $params["page"] );
 
 	@ini_set("display_errors", "1");
 	@ini_set("display_startup_errors", "1");
 
-
 	$field = $params["field"];
-
-	//	construct sql
-	if( !$gQuery->HasGroupBy() )
-	{
-		// Do not select any fields except current (image) field.
-		// If query has 'group by' clause then other fields are used in it and we may not simply cut 'em off.
-		// Just don't do anything in that case.
-		$gQuery->RemoveAllFieldsExcept( $pSet->getFieldIndex( $field ) );
-	}
-
-	$where = KeyWhere( $params["keys"], $table );
-	if( Security::loginMethod() == SECURITY_TABLE ) {
-		if ( $pSet->getAdvancedSecurityType() == ADVSECURITY_VIEW_OWN )
-			$where = whereAdd( $where, SecuritySQL("Search") );
-	}
-
 	$connection = $cman->byTable( $table );
-	$sql = $gQuery->gSQLWhere( $where );
-	$data = $connection->query( $sql )->fetchAssoc();
+
+	$dc = new DsCommand();
+	$dc->keys = $params["keys"];
+	$dc->filter = Security::SelectCondition( "S", $pSet );
+	$dataSource = getDataSource( $table, $pSet, $connection );
+	$data = $dataSource->getSingle( $dc )->fetchAssoc();
 
 	if( !$data )
 		return DisplayNoImage();
 
 	$value = $connection->stripSlashesBinary( $data[ $field ] );
-
-
-	// !Security violation. There was no check for the $params["alt"] field
-//	if( !$value && $params["alt"] )
-//		$value = $connection->stripSlashesBinary( $data[ $params["alt"] ] );
 
 	if( !$value )
 		return DisplayNoImage();
@@ -198,34 +191,34 @@ function DisplayMap($params)
 /**
  * @intellisense
  */
-function checkTableName($shortTName, $type=false)
+function checkTableName($shortTName )
 {
 	if (!$shortTName)
 		return false;
 
-	if ("recicladores" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("barrios" == $shortTName )
 		return true;
-	if ("gestionpesosresiduos" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("tipos_usuarios" == $shortTName )
 		return true;
-	if ("residuos" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("residuos" == $shortTName )
 		return true;
-	if ("usuarios" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("recicladores" == $shortTName )
 		return true;
-	if ("medtipoorigen" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("usuarios" == $shortTName )
 		return true;
-	if ("empresasrecicladores" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("public_empresas_recicladoras1" == $shortTName )
 		return true;
-	if ("detalleventas" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("gestion_pesos_residuos" == $shortTName )
 		return true;
-	if ("ventas" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("ventas" == $shortTName )
 		return true;
-	if ("public_gestionpesosresiduosdetven" == $shortTName && ($type===false || ($type!==false && $type == 1)))
+	if ("detalles_ventas" == $shortTName )
 		return true;
-	if ("barrios" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("public_gestion_pesos_residuos_ven" == $shortTName )
 		return true;
-	if ("gestionregistrosorigen" == $shortTName && ($type===false || ($type!==false && $type == 0)))
+	if ("gestion_registros_origen" == $shortTName )
 		return true;
-	if ("gestionregistrosorigen_report" == $shortTName && ($type===false || ($type!==false && $type == 2)))
+	if ("med_tipo_origen" == $shortTName )
 		return true;
 	return false;
 }
@@ -279,111 +272,111 @@ function GetTablesList($pdfMode = false)
 	$checkPermissions = Security::permissionsAvailable();
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.Recicladores");
+		$strPerm = GetUserPermissions("public.barrios");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.Recicladores";
+		$arr[]="public.barrios";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.GestionPesosResiduos");
+		$strPerm = GetUserPermissions("public.tipos_usuarios");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.GestionPesosResiduos";
+		$arr[]="public.tipos_usuarios";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.Residuos");
+		$strPerm = GetUserPermissions("public.residuos");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.Residuos";
+		$arr[]="public.residuos";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.Usuarios");
+		$strPerm = GetUserPermissions("public.recicladores");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.Usuarios";
+		$arr[]="public.recicladores";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.MedTipoOrigen");
+		$strPerm = GetUserPermissions("public.usuarios");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.MedTipoOrigen";
+		$arr[]="public.usuarios";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.EmpresasRecicladores");
+		$strPerm = GetUserPermissions("public.empresas_recicladoras");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.EmpresasRecicladores";
+		$arr[]="public.empresas_recicladoras";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.DetalleVentas");
+		$strPerm = GetUserPermissions("public.gestion_pesos_residuos");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.DetalleVentas";
+		$arr[]="public.gestion_pesos_residuos";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.Ventas");
+		$strPerm = GetUserPermissions("public.ventas");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.Ventas";
+		$arr[]="public.ventas";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.GestionPesosResiduosDetVen");
+		$strPerm = GetUserPermissions("public.detalles_ventas");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.GestionPesosResiduosDetVen";
+		$arr[]="public.detalles_ventas";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.Barrios");
+		$strPerm = GetUserPermissions("public.gestion_pesos_residuos_ven");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.Barrios";
+		$arr[]="public.gestion_pesos_residuos_ven";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.GestionRegistrosOrigen");
+		$strPerm = GetUserPermissions("public.gestion_registros_origen");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.GestionRegistrosOrigen";
+		$arr[]="public.gestion_registros_origen";
 	}
 	$tableAvailable = true;
 	if( $checkPermissions ) {
-		$strPerm = GetUserPermissions("public.GestionRegistrosOrigen Report");
+		$strPerm = GetUserPermissions("public.med_tipo_origen");
 		$tableAvailable = ( strpos($strPerm, "P") !== false
 			|| $pdfMode && strpos($strPerm, "S") !== false );
 	}
 	if( $tableAvailable ) {
-		$arr[]="public.GestionRegistrosOrigen Report";
+		$arr[]="public.med_tipo_origen";
 	}
 	return $arr;
 }
@@ -394,18 +387,18 @@ function GetTablesList($pdfMode = false)
 function GetTablesListWithoutSecurity()
 {
 	$arr = array();
-	$arr[]="public.Recicladores";
-	$arr[]="public.GestionPesosResiduos";
-	$arr[]="public.Residuos";
-	$arr[]="public.Usuarios";
-	$arr[]="public.MedTipoOrigen";
-	$arr[]="public.EmpresasRecicladores";
-	$arr[]="public.DetalleVentas";
-	$arr[]="public.Ventas";
-	$arr[]="public.GestionPesosResiduosDetVen";
-	$arr[]="public.Barrios";
-	$arr[]="public.GestionRegistrosOrigen";
-	$arr[]="public.GestionRegistrosOrigen Report";
+	$arr[]="public.barrios";
+	$arr[]="public.tipos_usuarios";
+	$arr[]="public.residuos";
+	$arr[]="public.recicladores";
+	$arr[]="public.usuarios";
+	$arr[]="public.empresas_recicladoras";
+	$arr[]="public.gestion_pesos_residuos";
+	$arr[]="public.ventas";
+	$arr[]="public.detalles_ventas";
+	$arr[]="public.gestion_pesos_residuos_ven";
+	$arr[]="public.gestion_registros_origen";
+	$arr[]="public.med_tipo_origen";
 	return $arr;
 }
 
@@ -495,53 +488,38 @@ function GetTotalsForTime($value)
  */
 function GetTotals( $field, $value, $stype, $iNumberOfRows, $sFormat, $ptype, $pSet, $useRawValue , $pageObject )
 {
-	$days = 0;
-	if($stype == "AVERAGE")
+	if( $stype == "AVERAGE" )
 	{
-		if($iNumberOfRows)
-		{
-			if($sFormat == FORMAT_TIME)
-			{
-				if($value)
-				{
-					$value = round($value/$iNumberOfRows,0);
-					$s = $value % 60;
-					$value -= $s;
-					$value /= 60;
-					$m = $value % 60;
-					$value -= $m;
-					$value /= 60;
-					$h = $value % 24;
-					$value -= $h;
-					$value /= 24;
-					$d = $value;
-
-					$value = ($d!=0 ? $d.'d ' : ''). mysprintf("%02d:%02d:%02d",array($h,$m,$s));
-				}
-			}
-			else $value = round($value/$iNumberOfRows,2);
-		}
-		else
+		if( !$iNumberOfRows )
 			return "";
-	}
-	if($stype == "TOTAL" || $stype == "SUM")
-	{
-		if($sFormat == FORMAT_TIME)
-		{
-			if($value)
-			{
-				$s = $value % 60;
-				$value -= $s;
-				$value /= 60;
-				$m = $value % 60;
-				$value -= $m;
-				$value /= 60;
-				$h = $value % 24;
-				$value -= $h;
-				$value /= 24;
-				$d = $value;
-				$value = ($d!=0 ? $d.'d ' : ''). mysprintf("%02d:%02d:%02d",array($h,$m,$s));
+
+		if( $sFormat == FORMAT_TIME ) {
+			if( $value ) {
+				include_once getabspath('classes/controls/ViewTimeField.php');
+				$value = ViewTimeField::getFormattedTotals( 
+					$field, 
+					round($value/$iNumberOfRows, 0), 
+					$pSet, 
+					$pageObject->pdfJsonMode(), 
+					false 
+				);
 			}
+		} else {
+			$value = round($value/$iNumberOfRows, 2);
+		}
+	}
+
+	if( $stype == "TOTAL" || $stype == "SUM" )
+	{
+		if( $sFormat == FORMAT_TIME ) {
+			include_once getabspath('classes/controls/ViewTimeField.php');
+			$value = ViewTimeField::getFormattedTotals( 
+				$field, 
+				$value, 
+				$pSet, 
+				$pageObject->pdfJsonMode(), 
+				true 
+			);
 		}
 	}
 
@@ -549,7 +527,7 @@ function GetTotals( $field, $value, $stype, $iNumberOfRows, $sFormat, $ptype, $p
 		return $value;
 
 	$sValue = $value;
-	if ( $sFormat == FORMAT_CURRENCY || $sFormat == FORMAT_PERCENT || $sFormat == FORMAT_NUMBER || $sFormat == FORMAT_CUSTOM )
+	if( $sFormat == FORMAT_CURRENCY || $sFormat == FORMAT_PERCENT || $sFormat == FORMAT_NUMBER || $sFormat == FORMAT_CUSTOM )
 	{
 		// get formatted value
 		$data = array( $field => $value );
@@ -561,25 +539,6 @@ function GetTotals( $field, $value, $stype, $iNumberOfRows, $sFormat, $ptype, $p
 		}
 		$sValue = $viewControls->showDBValue( $field, $data );
 	}
-
-	/*$sValue = "";
-
-	if($sFormat == FORMAT_CURRENCY)
-	 	$sValue = str_format_currency($value);
-	else if($sFormat == FORMAT_PERCENT)
-		$sValue = str_format_number($value*100)."%";
-	else if($sFormat == FORMAT_NUMBER)
- 		$sValue = str_format_number($value, $pSet->isDecimalDigits($field));
-	else if( $sFormat == FORMAT_CUSTOM )
-	{
-		include_once getabspath('classes/controls/ViewControlsContainer.php');
-		$data = array($field => $value);
-		$viewControls = new ViewControlsContainer($pSet, $ptype);
-		$sValue = $viewControls->showDBValue($field, $data);
-	}
-	else
- 		$sValue = $value;
-	*/
 
 	if( $stype == "TOTAL" || $stype == "SUM" || $stype == "AVERAGE" )
 		return $sValue;
@@ -781,6 +740,9 @@ function KeyWhere(&$keys, $table )
 	$pSet = new ProjectSettings($table);
 	$cipherer = new RunnerCipherer($table);
 	$connection = $cman->byTable( $table );
+	if( !$connection->dbBased() ) {
+		return "";
+	}
 
 	$keyFields = $pSet->getTableKeys();
 	foreach($keyFields as $kf)
@@ -1030,124 +992,20 @@ function IsBigInt($type)
 	return false;
 }
 
-function ReadUserPermissions($userID = "")
-{
-	global $gPermissionsRead, $gPermissionsRefreshTime, $caseInsensitiveUsername, $cman;
-
-	if (!strlen($userID))
-		$userID = $_SESSION["UserID"];
-
-	$needreload = false;
-	if( !isset( $_SESSION["UserRights"] ) )
-		$needreload = true;
-	elseif( !isset( $_SESSION["UserRights"][ $userID ] ) )
-		$needreload = true;
-
-	if(!$needreload && ($gPermissionsRead || time()-@$_SESSION["LastReadRights"]<=$gPermissionsRefreshTime))
-		return;
-
-	$groups = array();
-	$bIsAdmin = false;
-	$gConn = $cman->getForUserGroups();
-	$userGroups = array();
-
-	if($userID != "Guest")
-	{
-
-		$usernameClause = $gConn->comparisonSQL( $gConn->addFieldWrappers( "" ), $gConn->prepareString($userID), $caseInsensitiveUsername );
-		$sql = "select ".$gConn->addFieldWrappers( "" )
-			.", ".$gConn->addFieldWrappers( "" )
-			." from ". $gConn->addTableWrappers( "public.recyclepy_ugmembers" )
-			." where " . $usernameClause;
-
-		$qResult = $gConn->query( $sql );
-		while( $data = $qResult->fetchNumeric() )
-		{
-			if ( $caseInsensitiveUsername || strcmp($data[1],$userID) == 0 )
-				$groups[] = $data[0];
-		}
-
-		if( !count($groups) )
-			$groups[] = -2;
-	}
-	else
-		$groups[] = -3;
-
-
-	$groupstr = "";
-	foreach($groups as $g)
-	{
-		if($groupstr != "")
-			$groupstr.= ",";
-		$groupstr.= $g;
-		if($g == -1)
-			$bIsAdmin = true;
-	}
-	$rights = array();
-
-	$sql = "select ". $gConn->addFieldWrappers( "" )
-		.", ". $gConn->addFieldWrappers( "" )
-		.", ". $gConn->addFieldWrappers( "" )
-		." from ". $gConn->addTableWrappers( "public.recyclepy_ugrights" )
-		." where ". $gConn->addFieldWrappers( "" ) ." in (".$groupstr.")";
-
-	$qResult = $gConn->query( $sql );
-	while( $data = $qResult->fetchNumeric() )
-	{
-		$table = $data[0];
-		$mask = $data[1];
-		$restrictedPages = my_json_decode( $data[2] );
-		if( !is_array( $restrictedPages )) {
-			$restrictedPages = array();
-		}
-		if(!array_key_exists( $table, $rights))
-		{
-			$rights[ $table ] = array( "mask" => $mask, "pages" => $restrictedPages );
-			continue;
-		}
-		$currentMask = $rights[ $table ]["mask"];
-		$currentPages = &$rights[ $table ]["pages"];
-		for($i = 0; $i < strlen($mask); $i++)
-		{
-			$perm = substr($mask, $i, 1);
-			if( strpos($currentMask, $perm ) === false )
-				$rights[ $table ]["mask"] .= $perm;
-		}
-		foreach( $restrictedPages as $page => $dummy ) {
-			$currentPages[$page] = true;
-		}
-	}
-
-	if(!array_key_exists("UserRights", $_SESSION))
-		$_SESSION["UserRights"] = array();
-
-	if($bIsAdmin)
-		$rights[".IsAdmin"] = true;
-	$rights[".Groups"] = $groups;
-	$_SESSION["UserRights"][ $userID ] = &$rights;
-	$_SESSION["LastReadRights"] = time();
-
-	$gPermissionsRead = true;
-}
-
-
 /**
  * @intellisense
  */
-function GetUserPermissionsDynamic($table="")
+function GetUserPermissionsDynamic( $table )
 {
 	if( !isLogged() )
 		return "";
-	global $strTableName,$gPermissionsRefreshTime,$gPermissionsRead;
-	if(!$table)
-		$table=$strTableName;
-
-	ReadUserPermissions();
-	if(IsAdmin())
+	global $gPermissionsRefreshTime,$gPermissionsRead;
+	if( Security::isAdmin() )
 	{
 	}
 
-	return @$_SESSION["UserRights"][$_SESSION["UserID"]][$table]["mask"];
+	$userRights = &Security::dynamicUserRights();
+	return $userRights[ $table ][ "mask" ];
 }
 
 
@@ -1159,181 +1017,189 @@ function GetUserPermissionsStatic( $table )
 	if( !isLogged() )
 		return "";
 
-	$extraPerm = $_SESSION["AccessLevel"] == ACCESS_LEVEL_ADMINGROUP ? 'M' : '';
-	$sUserGroup = @$_SESSION["GroupID"];
-	if( $table=="public.Recicladores" )
+	$sUserGroup = storageGet( "GroupID" );
+	$extraPerm = "";
+	if( $table=="public.barrios" )
 	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
 		if( $sUserGroup=="2" )
 		{
-			return "SPI".$extraPerm;
+						return "AEDSPI".$extraPerm;
 		}
-//	default permissions
-		return "AEDSPI".$extraPerm;
-	}
-	if( $table=="public.GestionPesosResiduos" )
-	{
 		if( $sUserGroup=="1" )
 		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "AEDSPI".$extraPerm;
-	}
-	if( $table=="public.Residuos" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "AEDSPI".$extraPerm;
-	}
-	if( $table=="public.Usuarios" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "AEDSPI".$extraPerm;
-	}
-	if( $table=="public.MedTipoOrigen" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "AEDSPI".$extraPerm;
-	}
-	if( $table=="public.EmpresasRecicladores" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "AEDSPI".$extraPerm;
-	}
-	if( $table=="public.DetalleVentas" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "".$extraPerm;
-	}
-	if( $table=="public.Ventas" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "".$extraPerm;
-	}
-	if( $table=="public.GestionPesosResiduosDetVen" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "AEDSPI".$extraPerm;
-	}
-	if( $table=="public.Barrios" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
-			return "".$extraPerm;
-		}
-//	default permissions
-		return "AEDSPI".$extraPerm;
-	}
-	if( $table=="public.GestionRegistrosOrigen" )
-	{
-		if( $sUserGroup=="1" )
-		{
-			return "AEDSPI".$extraPerm;
-		}
-		if( $sUserGroup=="2" )
-		{
+						$extraPerm = 'M';
 			return "AEDSPI".$extraPerm;
 		}
 //	default permissions
 		return "AEDSPI".$extraPerm;
 	}
-	if( $table=="public.GestionRegistrosOrigen Report" )
+	if( $table=="public.tipos_usuarios" )
 	{
-		if( $sUserGroup=="1" )
-		{
-			return "SP".$extraPerm;
-		}
 		if( $sUserGroup=="2" )
 		{
-			return "".$extraPerm;
+						return "AEDSPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
 		}
 //	default permissions
-		return "SP".$extraPerm;
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.residuos" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
+		}
+//	default permissions
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.recicladores" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
+		}
+//	default permissions
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.usuarios" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
+		}
+//	default permissions
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.empresas_recicladoras" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
+		}
+//	default permissions
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.gestion_pesos_residuos" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
+		}
+//	default permissions
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.ventas" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
+		}
+//	default permissions
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.detalles_ventas" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
+		}
+//	default permissions
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.gestion_pesos_residuos_ven" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "AEDSPI".$extraPerm;
+		}
+//	default permissions
+		return "AEDSPI".$extraPerm;
+	}
+	if( $table=="public.gestion_registros_origen" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "ADESPI".$extraPerm;
+		}
+//	default permissions
+		return "ADESPI".$extraPerm;
+	}
+	if( $table=="public.med_tipo_origen" )
+	{
+		if( $sUserGroup=="2" )
+		{
+						return "ADESPI".$extraPerm;
+		}
+		if( $sUserGroup=="1" )
+		{
+						$extraPerm = 'M';
+			return "ADESPI".$extraPerm;
+		}
+//	default permissions
+		return "ADESPI".$extraPerm;
 	}
 	// grant nothing by default
 	return "";
 }
 
 /**
- * Check if the current user is admin user
+ * DEPRECATED
+ *	Check if the current user is Dynamic Permissions admin user
  * @return Boolean
  * @intellisense
  */
 function IsAdmin()
 {
-	if( !Security::dynamicPermissions() ) {
-		return false;
-	}
-	global $gPermissionsRefreshTime, $gPermissionsRead, $caseInsensitiveUsername;
-	ReadUserPermissions();
-	return array_key_exists(".IsAdmin", @$_SESSION["UserRights"][ $_SESSION["UserID"] ]);
+	return Security::isAdmin();
 }
 
 /**
@@ -1347,7 +1213,7 @@ function IsAdmin()
  * @return String
  * @intellisense
  */
-function GetUserPermissions($table="")
+function GetUserPermissions( $table = "" )
 {
 	global $strTableName, $globalEvents;
 	if(!$table)
@@ -1360,8 +1226,11 @@ function GetUserPermissions($table="")
 
 	if( is_array( $_SESSION["securityOverrides"] ) )
 	{
-		if( isset( $_SESSION["securityOverrides"][ $table ] ) )
-			return $_SESSION["securityOverrides"][ $table ];
+		if( isset( $_SESSION["securityOverrides"][ $table ] ) ) {
+			if( isset( $_SESSION["securityOverrides"][ $table ][ "mask" ] ) ) {
+				return $_SESSION["securityOverrides"][ $table ][ "mask" ];
+			}
+		}
 	}
 
 	if( Security::permissionsAvailable() ) {
@@ -1371,7 +1240,7 @@ function GetUserPermissions($table="")
 			$permissions =  GetUserPermissionsStatic($table);
 		}
 	} else {
-		$permissions =  "ADESPIM";
+		$permissions =  "ADESPI";
 	}
 
 	if($globalEvents->exists("GetTablePermissions", $table))
@@ -1390,10 +1259,11 @@ function isLogged()
 		return true;
 	}
 
-	if( @$_SESSION["UserID"] )
-		return true;
+	if( !Security::verifySafeCSRF() ) {
+		return false;
+	}
 
-	return false;
+	return !!Security::getUserName();
 }
 
 
@@ -1402,19 +1272,19 @@ function isLogged()
  */
 function guestHasPermissions()
 {
-	$tables = GetTablesListWithoutSecurity();
-	if( Security::dynamicPermissions() ) {
-		ReadUserPermissions("Guest");
-		if(!count($_SESSION["UserRights"]["Guest"]))
-			return false;
-		foreach($tables as $t) {
-			if(array_key_exists( $t ,$_SESSION["UserRights"]["Guest"]))
-				return true;
+	global $gGuestHasPermissions;
+	if( $gGuestHasPermissions === -1 ) {
+		if( Security::dynamicPermissions() ) {
+			$gGuestHasPermissions = Security::guestHasDynamicPermissions()
+				? 1
+				: 0;
+		} else {
+			$gGuestHasPermissions = Security::guestHasStaticPermissions()
+				? 1
+				: 0;
 		}
-		return false;
-	} else {
-		return false;
 	}
+	return $gGuestHasPermissions === 1;
 }
 
 /**
@@ -1427,16 +1297,11 @@ function SetAuthSessionData($pUsername, &$data, $password, &$pageObject = null, 
 	global $globalEvents, $cUserGroupField;
 	if( Security::permissionsAvailable() ) {
 		$_SESSION["GroupID"] = $data[ $cUserGroupField ];
-		if($_SESSION["GroupID"] == "1" )
-			$_SESSION["AccessLevel"] = ACCESS_LEVEL_ADMINGROUP;
 	} else {
 		$_SESSION["GroupID"] = "";
 	}
 
-
-		$_SESSION["OwnerID"] = $data["active"];
-	$_SESSION["_public.Usuarios_OwnerID"] = $data["active"];
-		$_SESSION["_public.GestionRegistrosOrigen_OwnerID"] = $data["IdUsuario"];
+	Security::fillTablesOwnerId( $data );
 
 	$_SESSION["UserData"] = $data;
 
@@ -1449,19 +1314,22 @@ function SetAuthSessionData($pUsername, &$data, $password, &$pageObject = null, 
 /**
  * @intellisense
  */
-function DoLogin($callAfterLoginEvent = false, $userID = "Guest", $userName = "", $groupID = "<Guest>", $accessLevel = ACCESS_LEVEL_GUEST, $password = "", &$pageObject = null)
+function DoLogin($callAfterLoginEvent = false, $userID = "Guest", $userName = "", $groupID = "<Guest>", $accessLevel = ACCESS_LEVEL_GUEST, $password = "", $pageObject = null)
 {
 	global $globalEvents;
 
 	if($userID == "Guest" && $userName == "")
 		$userName = "Invitado";
 
-	if( !GetGlobalData("bTwoFactorAuth", false) || $userID == "Guest" )
+	if( !GetGlobalData("bTwoFactorAuth", false) || inRestApi() || $userID == "Guest" )
 	{
 		$_SESSION["UserID"] = $userID;
 		$_SESSION["UserName"] = runner_htmlspecialchars( $userName );
 		$_SESSION["GroupID"] = $groupID;
 		$_SESSION["AccessLevel"] = $accessLevel;
+		//	cookie to prevent CSRF attack
+		$_SESSION["runnerSession"] = generatePassword(20);
+		setProjectCookie( "runnerSession", $_SESSION["runnerSession"], 0, true, true );
 	}
 
 	$auditObj = GetAuditObject();
@@ -1476,53 +1344,6 @@ function DoLogin($callAfterLoginEvent = false, $userID = "Guest", $userName = ""
 		$dummy = array();
 		$globalEvents->AfterSuccessfulLogin($userID != "Guest" ? $userID : "", $password, $dummy, $pageObject);
 	}
-}
-
-/**
- * @intellisense
- */
-function CheckSecurity($strValue, $strAction, $table = "")
-{
-	if( !Security::hasLogin() ) {
-		return true;
-	}
-
-	global $cAdvSecurityMethod, $strTableName;
-	if( $table == "" )
-		$table = $strTableName;
-	$pSet = new ProjectSettings($table);
-
-	if($_SESSION["AccessLevel"]==ACCESS_LEVEL_ADMIN)
-		return true;
-
-	$strPerm = GetUserPermissions();
-	if( strpos($strPerm, "M") === false )
-	{
-		if($table=="public.Usuarios")
-		{
-
-				if(( $strAction=="Edit" || $strAction=="Delete") && !($pSet->getCaseSensitiveUsername((string)$_SESSION["_".$table."_OwnerID"])===$pSet->getCaseSensitiveUsername((string)$strValue)))
-				return false;
-		}
-		if($table=="public.GestionRegistrosOrigen")
-		{
-
-				if(!($pSet->getCaseSensitiveUsername((string)$_SESSION["_".$table."_OwnerID"])===$pSet->getCaseSensitiveUsername((string)$strValue)))
-				return false;
-		}
-	}
-	if( Security::permissionsAvailable() )
-	{
-//	 check user group permissions
-		$localAction = strtolower($strAction);
-		return ( $localAction == "add" && strpos($strPerm, "A") !== false ||
-			$localAction == "edit" && strpos($strPerm, "E") !== false ||
-			$localAction == "delete" && strpos($strPerm, "D") !== false ||
-			$localAction == "search" && strpos($strPerm, "S") !== false ||
-			$localAction == "import" && strpos($strPerm, "I") !== false ||
-			$localAction == "export" && strpos($strPerm, "P") !== false );
-	}
-	return true;
 }
 
 /**
@@ -1557,10 +1378,11 @@ function pagetypeToPermissions($pageType)
 }
 
 /**
- * Add security WHERE clause to SELECT SQL command
+ * DEPRECATED
+ * Used in webreports obnly!
  * @intellisense
  */
-function SecuritySQL($strAction, $table="", $strPerm="")
+function SecuritySQL($strAction, $table, $strPerm="")
 {
 	global $cAdvSecurityMethod,$strTableName;
 
@@ -1571,8 +1393,6 @@ function SecuritySQL($strAction, $table="", $strPerm="")
 
    	$ownerid = @$_SESSION["_".$table."_OwnerID"];
 	$ret="";
-	if(@$_SESSION["AccessLevel"]==ACCESS_LEVEL_ADMIN)
-		return "";
 
 	$ret="";
 	if(!strlen($strPerm))
@@ -1580,12 +1400,12 @@ function SecuritySQL($strAction, $table="", $strPerm="")
 
 	if( strpos($strPerm, "M") === false )
 	{
-		if($table=="public.Usuarios")
+		if($table=="public.detalles_ventas")
 		{
 				if($strAction == "Edit" || $strAction == "Delete")
 				$ret = GetFullFieldName($pSet->getTableOwnerID(), $table, false)."=".make_db_value($pSet->getTableOwnerID(), $ownerid, "", "", $table);
 		}
-		if($table=="public.GestionRegistrosOrigen")
+		if($table=="public.gestion_registros_origen")
 		{
 				$ret = GetFullFieldName($pSet->getTableOwnerID(), $table, false)."=".make_db_value($pSet->getTableOwnerID(), $ownerid, "", "", $table);
 		}
@@ -1600,6 +1420,9 @@ function SecuritySQL($strAction, $table="", $strPerm="")
 		return "1=0";
 	return "";
 }
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // editing functions
@@ -1705,7 +1528,7 @@ function prepare_for_db($field, $value, $controltype = "", $postfilename = "", $
 	if((!$controltype || $controltype == "multiselect") && !IsTimeType($type))
 	{
 		if(is_array($value))
-			$value = combinevalues($value);
+			$value = combineLookupValues($value);
 		if(($value === "" || $value === FALSE) && !IsCharType($type))
 			return "";
 		if(IsGuid($type))
@@ -1832,6 +1655,23 @@ function DeleteUploadedFiles($pSet, $deleted_values)
 }
 
 /**
+ * combine values omiting empty and duplicate ones
+*/
+function combineLookupValues( $arr )
+{
+	$added = array();
+	$data = array();
+	foreach( $arr as $v ) {
+		if( $v != "" && !$added[$v] ) {
+			$data[] = $v;
+			$added[$v] = true;
+		}
+	}
+	return combinevalues( $data );
+}
+
+
+/**
  * 	combine checked values from multi-select list box
  * @intellisense
  */
@@ -1850,6 +1690,23 @@ function combinevalues($arr)
 			$val=str_replace('"','""',$val);
 			$ret.='"'.$val.'"';
 		}
+	}
+	return $ret;
+}
+
+/**
+ * split values ignore empty and repeating
+ */
+function splitLookupValues( $str ) {
+	$values = splitvalues( $str );
+	$ret = array();
+	$added = array();
+	foreach( $values as $v ) {
+		if( $added[$v] || $v === "" ) {
+			continue;
+		}
+		$added[$v] = true;
+		$ret[] = $v;
 	}
 	return $ret;
 }
@@ -1894,6 +1751,7 @@ function splitvalues($str)
 /**
  *
  */
+/*
 function GetLookupFieldsIndexes($pSet, $field)
 {
 	$lookupTable = $pSet->getLookupTable($field);
@@ -1922,7 +1780,7 @@ function GetLookupFieldsIndexes($pSet, $field)
 	}
 	return array("linkFieldIndex" => $linkFieldIndex, "displayFieldIndex" => $displayFieldIndex);
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////////
 /**
  * Get locale, am, pm for field edit as time
@@ -2129,6 +1987,7 @@ function GetSiteUrl()
 }
 
 /**
+ * DEPRECATED! Use projectUrl() instead
  * Returns site address with path
  * Examples:
  * http://server.com:88/Calendar
@@ -2258,9 +2117,6 @@ function getJsValidatorName($name)
 function SetLangVars($xt, $prefix, $pageName = "", $extraparams = "")
 {
 	$xt->assign("lang_label", true);
-
-	if( @$_REQUEST["language"] )
-		$_SESSION["language"] = @$_REQUEST["language"];
 
 	$currentLang = mlang_getcurrentlang();
 
@@ -2395,8 +2251,10 @@ function GetCustomLabel($custom)
 function mlang_getcurrentlang()
 {
 	global $_currentLanguage, $mlang_messages,$mlang_defaultlang;
-	if(@$_REQUEST["language"])
-		$_SESSION["language"]=@$_REQUEST["language"];
+	if(@$_POST["language"])
+		$_SESSION["language"]=@$_POST["language"];
+	if(@$_GET["language"])
+		$_SESSION["language"]=@$_GET["language"];
 	if(@$_SESSION["language"])
 		return $_SESSION["language"];
 	return $mlang_defaultlang;
@@ -2456,57 +2314,6 @@ function showDetailTable($params)
 	$strTableName = $oldTableName;
 }
 
-
-/**
- * update record on Edit page
- * @intellisense
- */
-function DoUpdateRecordSQL( $pageObject )
-{
-	$table = $pageObject->pSet->getOriginalTableName();
-	$strWhereClause = $pageObject->getKeysWhereClause( true );
-	$evalues = $pageObject->getNewRecordData();
-	$blobfields = $pageObject->getBlobFields();
-
-	if(!count($evalues))
-		return true;
-
-	$strSQL = "update ".$pageObject->connection->addTableWrappers($table)." set ";
-	$blobs = PrepareBlobs($evalues, $blobfields, $pageObject);
-	//	construct SQL string
-	foreach($evalues as $ekey=>$value)
-	{
-		if ( $pageObject->pSet->insertNull($ekey) && trim($value) === "" )
-		{
-			$strValue = "NULL";
-		}
-		else if(in_array($ekey,$blobfields))
-			$strValue = $value;
-		else
-		{
-			if( is_null( $pageObject->cipherer ) )
-				$strValue = add_db_quotes( $ekey, $value );
-			else
-				$strValue = $pageObject->cipherer->AddDBQuotes( $ekey, $value );
-		}
-		$strSQL .= $pageObject->getTableField($ekey)."=".$strValue.", ";
-	}
-	$strSQL = substr( $strSQL, 0, strlen($strSQL) - 2 );
-	if($strWhereClause === "")
-	{
-		$strWhereClause = " (1=1) ";
-	}
-	$strSQL.=" where ".$strWhereClause;
-
-	if(SecuritySQL("Edit", $pageObject->tName))
-		$strSQL .= " and (".SecuritySQL("Edit", $pageObject->tName).")";
-
-	if( !ExecuteUpdate($pageObject, $strSQL, $blobs) )
-		return false;
-
-	return true;
-}
-
 /**
  * insert record on Add & Register pages
  * @intellisense
@@ -2551,59 +2358,7 @@ function DoInsertRecordSQL($table, &$avalues, &$blobfields, &$pageObject)
 	return true;
 }
 
-/**
- * insert record on Add page
- * @param RunnerPage &pageObject
- * @intellisense
- */
-function DoInsertRecordSQLOnAdd( &$pageObject )
-{
-	$table = $pageObject->pSet->getOriginalTableName();
-	$avalues = $pageObject->getNewRecordData();
-	$blobfields = $pageObject->getBlobFields();
-
-	//	make SQL string
-	$strSQL = "insert into ".$pageObject->connection->addTableWrappers($table)." ";
-
-	$strFields="(";
-	$strValues="(";
-	$blobs = PrepareBlobs( $avalues, $blobfields, $pageObject );
-
-	foreach($avalues as $akey => $value)
-	{
-		$strFields.= $pageObject->getTableField($akey).", ";
-
-		if ( $pageObject->pSet->insertNull($akey) && trim($value) === "" )
-		{
-			$strValues .= "NULL, ";
-		}
-		else if( in_array($akey, $blobfields) )
-			$strValues.= $value.", ";
-		else
-		{
-			if( is_null( $pageObject->cipherer ) )
-				$strValues.= add_db_quotes($akey, $value).", ";
-			else
-				$strValues.= $pageObject->cipherer->AddDBQuotes($akey, $value).", ";
-		}
-	}
-
-	if( substr($strFields, -2) == ", ")
-		$strFields = substr($strFields, 0, strlen($strFields) - 2);
-
-	if( substr($strValues, -2) == ", ")
-		$strValues = substr($strValues, 0, strlen($strValues) - 2);
-
-	$strSQL.= $strFields.") values ".$strValues.")";
-
-	if( !ExecuteUpdate($pageObject, $strSQL, $blobs) )
-		return false;
-
-	return true;
-}
-
-
-function &getEventObject($table)
+function getEventObject($table)
 {
 	global $tableEvents;
 	$ret = null;
@@ -2837,7 +2592,7 @@ function & GetPageLayout($table, $page, $suffixName = '')
 	// try open old layout first
 	$layoutName = ($shortTableName != '' ? $shortTableName.'_' : '').$page.($suffixName != '' ? '_'.$suffixName : '');
 	$oldLayoutName = $layoutName;
-	if( $shortTableName == ".global" )
+	if( $shortTableName == GLOBAL_PAGES_SHORT )
 		$oldLayoutName = $page;
 	if( $arrCustomPages[ $oldLayoutName . ".htm" ] /*||  isAdminPage( $shortTableName ) */) {
 		$layout = $page_layouts[ $oldLayoutName ];
@@ -2863,13 +2618,18 @@ function & GetPageLayout($table, $page, $suffixName = '')
 
 	global $bsProjectTheme, $bsProjectSize, $styleOverrides;
 
+	$stylepath = "";
 	$theme = $bsProjectTheme;
 	$size = $bsProjectSize;
 	$customSettings = false;
 	$override = $styleOverrides[ $table . "_" . $page ];
+	if( !$override && $table == GLOBAL_PAGES ) {
+		$override = $styleOverrides[ "_" . $page ];
+	}
 	if( $override ) {
 		$theme = $override["theme"];
 		$size = $override["size"];
+		$stylepath = $override["path"];
 		$customSettings = true;
 	}
 	$layout  = new PDLayout(
@@ -2877,6 +2637,7 @@ function & GetPageLayout($table, $page, $suffixName = '')
 			$pd_pages[ $table ][ $page ],
 			$theme,
 			$size,
+			$stylepath,
 			$customSettings );
 	$all_page_layouts[ $shortTableName."_".$page ] = $layout;
 	return $layout;
@@ -2982,6 +2743,27 @@ function generatePassword($length)
 			$password.= chr(ord('0')-26+$j);
 	}
 	return $password;
+}
+
+function generateHex( $length ) {
+	$password="";
+	for($i=0;$i<$length;$i++)
+	{
+		$j = rand(0,15);
+		if($j<10)
+			$password.= chr( ord('0') + $j );
+		else
+			$password.= chr( ord('a') - 10 + $j );
+	}
+	return $password;
+}
+
+/**
+ * Generate 'unique' database column or query alias
+ * can't start with number
+ */
+function generateAlias() {
+	return 'a' . generatePassword(9);
 }
 
 /**
@@ -3094,67 +2876,88 @@ function getLatLngByAddr($addr)
 	$apiKey = $globalSettings["apiGoogleMapsCode"];
 
 	switch( getMapProvider() ){
-		case GOOGLE_MAPS:	$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($addr).'&sensor=false&key=' . $apiKey;
-				$result = my_json_decode(myurl_get_contents($url));
-				if($result['status'] == 'OK')
-				{
-					return $result['results'][0]['geometry']['location'];
-				}
-				break;
-		case OPEN_STREET_MAPS: $url = 'https://nominatim.openstreetmap.org/search/'.rawurlencode($addr).'?format=json&addressdetails=1&limit=1';
-				$result = my_json_decode(myurl_get_contents($url));
-				if($result)
-				{
-					$lat = $result[0]['lat'];
-					if( !$lat )
-						$lat = 0;
-					$lng = $result[0]['lon'];
-					if( !$lng )
-						$lng = 0;
-					return array("lat"=>$lat,"lng"=>$lng);
-				}
-				break;
-		case BING_MAPS:
-				if( !$apiKey || !$addr )
-					return false;
+		case GOOGLE_MAPS:
+			$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($addr).'&sensor=false&key=' . $apiKey;
+			$result = my_json_decode(myurl_get_contents($url));
+			if( $result['status'] == 'OK' ) {
+				return $result['results'][0]['geometry']['location'];
+			}
+			break;
 
-				$url = 'https://dev.virtualearth.net/REST/v1/Locations?query='.rawurlencode( $addr ).'&output=json&key='.$apiKey;
-				$result = my_json_decode(myurl_get_contents($url));
-				if($result)
-				{
-					$lat = $result["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][0];
-					if( !$lat )
-						$lat = 0;
-					$lng = $result["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][1];
-					if( !$lng )
-						$lng = 0;
-					return array("lat"=>$lat,"lng"=>$lng);
-				}
-				break;
+		case OPEN_STREET_MAPS:
+			$url = 'https://nominatim.openstreetmap.org/search/'.rawurlencode($addr).'?format=json&addressdetails=1&limit=1';
+			$result = my_json_decode(myurl_get_contents($url));
+			if( $result ) {
+				$lat = $result[0]['lat'];
+				if( !$lat )
+					$lat = 0;
+				$lng = $result[0]['lon'];
+				if( !$lng )
+					$lng = 0;
+				return array("lat"=>$lat,"lng"=>$lng);
+			}
+			break;
+
+		case BING_MAPS:
+			if( !$apiKey || !$addr )
+				return false;
+
+			$url = 'https://dev.virtualearth.net/REST/v1/Locations?query='.rawurlencode( $addr ).'&output=json&key='.$apiKey;
+			$result = my_json_decode(myurl_get_contents($url));
+			if( $result ) {
+				$lat = $result["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][0];
+				if( !$lat )
+					$lat = 0;
+				$lng = $result["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][1];
+				if( !$lng )
+					$lng = 0;
+				return array("lat"=>$lat,"lng"=>$lng);
+			}
+			break;
+
+		case HERE_MAPS:
+			$request = new HttpRequest(
+				"https://geocode.search.hereapi.com/v1/geocode?apiKey=".$apiKey."&q=".rawurlencode( $addr ),
+				"GET"
+			);
+
+			$ret = $request->run();
+			if( !$ret["erorr"] && $ret["content"] ) {
+				$data = my_json_decode( $ret["content"] );
+				return array(
+					"lat" => $data["items"][0]["position"]["lat"],
+					"lng" => $data["items"][0]["position"]["lng"]
+				);
+			}
+			break;
+
+		case MAPQUEST_MAPS:
+			$request = new HttpRequest(
+				"http://www.mapquestapi.com/geocoding/v1/address?key=".$apiKey."&location=".rawurlencode( $addr ),
+				"GET"
+			);
+
+			$ret = $request->run();
+			if( !$ret["erorr"] && $ret["content"] ) {
+				$data = my_json_decode( $ret["content"] );
+				return array(
+					"lat" => $data["results"][0]["locations"][0]["latLng"]["lat"],
+					"lng" => $data["results"][0]["locations"][0]["latLng"]["lng"]
+				);
+			}
+			break;
 	}
 	return false;
 }
 
 /**
- * @intellisense
+ * deprecated. Used in some business templates only
  */
 function isLoggedAsGuest()
 {
 	return Security::isGuest();
 }
 
-/**
- * Check if the "Login as Guest" option is turned on
- * @return Boolean
- */
-function isGuestLoginAvailable()
-{
-	if( Security::dynamicPermissions() ) {
-		return guestHasPermissions();
-	}
-
-	return false;
-}
 
 /**
  * @intellisense
@@ -3289,6 +3092,7 @@ function getIconByFileType($fileType, $sourceFileName)
 			break;
 		default:
 			$fileName = "text.png";
+			$sourceFileName = strtolower( $sourceFileName );
 			$dotPosition = strrpos($sourceFileName, '.');
 			if($dotPosition !== false && $dotPosition < strlen($sourceFileName) - 1)
 			{
@@ -3364,6 +3168,7 @@ function initArray(&$array, $key)
  * @param {array} $arr array of inserting values
  * @param {bool} $searchId - find last inserted id or not
  * @return {array} array of keys and their values
+ * @deprecated
  */
 function GetKeysArray($arr, $pageObject, $searchId = false)
 {
@@ -3388,14 +3193,49 @@ function GetKeysArray($arr, $pageObject, $searchId = false)
 
 function GetBaseScriptsForPage($isDisplayLoading, $additionalScripts = "", $customText = "")
 {
+	global $projectBuildKey;
 	$result = "";
-	$result .= "<script type=\"text/javascript\" src=\"".GetRootPathForResources("include/loadfirst.js?33793")."\"></script>";
+	$result .= "<script type=\"text/javascript\" src=\"".GetRootPathForResources("include/loadfirst.js?37251")."\"></script>";
+
+
 	$result .= $additionalScripts;
-	$result .= "<script type=\"text/javascript\" src=\"".GetRootPathForResources("include/lang/".getLangFileName(mlang_getcurrentlang()).".js?33793")."\"></script>";
+	$result .= "<script type=\"text/javascript\" src=\"".GetRootPathForResources("include/lang/".getLangFileName(mlang_getcurrentlang()).".js?37251")."\"></script>";
+
+	$result .= "<script type=\"text/javascript\" src=\"".GetRootPathForResources("plugins/innovaeditor/scripts/innovaeditor.js")."\"></script>";
+
 
 	if( getMapProvider() == BING_MAPS )
 	{
 		$result .= "<script type=\"text/javascript\" src=\"https://www.bing.com/api/maps/mapcontrol?&setMkt=".getBingMapsLang()."\"></script>";
+	}
+
+	if( getMapProvider() == HERE_MAPS ) {
+		// ui infoBubble styles
+		$result .= '<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />';
+		$result .= '<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>';
+		$result .= '<script src="https://js.api.here.com/v3/3.1/mapsjs-core-legacy.js" type="text/javascript" charset="utf-8"></script>';
+		$result .= '<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>';
+		$result .= '<script src="https://js.api.here.com/v3/3.1/mapsjs-service-legacy.js" type="text/javascript" charset="utf-8"></script>';
+		$result .= '<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>';
+		// ui infoBubble
+		$result .= '<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>';
+		// clustered map
+		$result .= '<script src="https://js.api.here.com/v3/3.1/mapsjs-clustering.js" type="text/javascript" charset="utf-8"></script>';
+		// heat map
+		$result .= '<script src="https://js.api.here.com/v3/3.1/mapsjs-data.js" type="text/javascript" charset="utf-8"></script>';
+	}
+
+	if( getMapProvider() == MAPQUEST_MAPS ) {
+		$result .= '<link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>';
+		$result .= '<script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>';
+
+		// clustered map
+		$result .= '<script src="https://unpkg.com/leaflet.markercluster@1.0.6/dist/leaflet.markercluster.js"></script>';
+		$result .= '<link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.css"/>';
+		$result .= '<link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.Default.css"/>';
+
+		//heat map
+		$result .= '<script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>';
 	}
 
 	if($isDisplayLoading)
@@ -3432,6 +3272,9 @@ function getIntervalLimitsExprs($table, $field, $idx, $isLowerBound)
 
 }
 
+/**
+ * @deprecated
+ */
 function import_error_handler($errno, $errstr, $errfile, $errline)
 {
 	/*global $error_happened;
@@ -3493,6 +3336,21 @@ function getFileExtension($fileName)
 }
 
 /**
+ * Get the filename without extension
+ * @param String fileName
+ * @return String
+ */
+function getFileWoExtension($fileName)
+{
+	$pos = strrpos($fileName, ".");
+	if( $pos === FALSE )
+		return $fileName;
+
+	return substr($fileName, 0, $pos );
+}
+
+
+/**
  * Get the default db connection object
  * @return Connection
  */
@@ -3543,7 +3401,7 @@ function getBingMapsLang()
 
 function getDefaultLanguage()
 {
-	if( strlen($_SESSION["language"]) == 0 && $_SERVER['HTTP_ACCEPT_LANGUAGE'] )
+	if( strlen(@$_SESSION["language"]) == 0 && $_SERVER['HTTP_ACCEPT_LANGUAGE'] )
 	{
 		$arrWizardLang = array();
 		$arrWizardLang[] = "Spanish";
@@ -3628,7 +3486,8 @@ function xt_showchart($params)
 	$chartParams['refreshTime'] = $refresh;
 	$chartParams['xmlFile'] = GetTableLink("dchartdata") . '?chartname=' . $params["chartName"] . $chartPreview .
 		'&ctype=' . $params["ctype"] .
-		'&showDetails=' . $showDetails;
+		'&showDetails=' . $showDetails .
+		'&' . $params["stateLink"];
 
 	if( isset( $params["dash"] ) && $params["dash"] )
 	{
@@ -3666,7 +3525,7 @@ function xt_showchart($params)
 	echo '<div class="bs-chart" id="' . $chartParams['containerId'] . '"></div>';
 	if( true || !$params["singlePage"] )
 	{
-		$chartParams["webRootPath"] = GetWebRootPath();
+		$chartParams["webRootPath"] = projectPath();
 
 		echo '<div data-runner-chart-params="' . runner_htmlspecialchars( my_json_encode( $chartParams ) ) . '"></div>';
 	}
@@ -3680,24 +3539,12 @@ function getFileUrl( $params )
 function getPdfImageObject( $params )
 {
 	$imagePath = GetRootPathForResources( $params["custom1"] );
-	$imagePath = getabspath( $imagePath );
-
 	$width = $params["custom2"];
 	$height = $params["custom3"];
-
-	$content = myfile_get_contents_binary( urldecode( $imagePath ) );
-	$imageType = SupposeImageType( $content );
-
-	if( $imageType != "image/jpeg" && $imageType != "image/png" )
-	{
-		echo '""';
-		return;
-	}
-
 	echo '{
-		image: "'.jsreplace( 'data:'. $imageType. ';base64,' . base64_bin2str( $content ) ) . '",
-		width: '. $width .',
-		height: '. $height .'
+		image: "'.jsreplace( GetRootPathForResources( $params["custom1"] ) ) . '",
+		width: '. ( $width ? $width : 'null' ).',
+		height: '. ( $height ? $height : 'null' ).'
 	}';
 }
 
@@ -3859,15 +3706,15 @@ function xt_buildeditcontrol(&$params)
 		$id = $params["id"];
 
 	$validate = array();
-	if(count(@$params["validate"]))
+	if( $params["validate"] )
 		$validate = @$params["validate"];
 
 	$additionalCtrlParams = array();
-	if(count(@$params["additionalCtrlParams"]))
+	if( $params["additionalCtrlParams"] )
 		$additionalCtrlParams = @$params["additionalCtrlParams"];
 
 	$extraParams = array();
-	if( count(@$params["extraParams"]) )
+	if( $params["extraParams"] )
 		$extraParams = @$params["extraParams"];
 
 	$pageObj->getControl($field, $id, $extraParams)->buildControl(@$params["value"], $mode, $fieldNum, $validate, $additionalCtrlParams, $data);
@@ -4062,17 +3909,11 @@ function getMediaType() {
 /**
  * @param String searchField - GoodFieldName ( field )
  */
-function getListOfSuggests( $sfields, $table, $whereClauses, $numberOfSuggests, $searchOpt, $searchFor, $searchField = '', $detailKeys = array() )
+function getListOfSuggests( $sfields, $table, $numberOfSuggests, $searchOpt, $searchFor, $searchField = '', $detailKeys = array(), $conditions = array() )
 {
-	global $cman;
 
-	if( !count( $whereClauses ) )
-		$whereClauses = array();
-	$whereClauses[] = SecuritySQL( "Search", $table );
-
-	$conn = $cman->byTable( $table );
 	$pSet = new ProjectSettings( $table, PAGE_SEARCH );
-	$query = $pSet->getSQLQuery();
+	$dataSource = getDataSource( $table, $pSet );
 	$cipherer = new RunnerCipherer( $table );
 	$controls = new EditControlsContainer( null, $pSet, PAGE_LIST, $cipherer );
 
@@ -4084,50 +3925,20 @@ function getListOfSuggests( $sfields, $table, $whereClauses, $numberOfSuggests, 
 	{
 		// filter fields by type
 		$fType = $pSet->getFieldType( $f );
-		if( !IsCharType( $fType ) && !IsNumberType( $fType ) && !IsGuid( $fType )	|| in_array( $f, $detailKeys ) )
-			continue;
 
-		if( $conn->dbType == nDATABASE_Oracle && IsTextType( $fType ) )
+		//	Dates???
+		if( !IsCharType( $fType ) && !IsNumberType( $fType ) && !IsGuid( $fType )	|| in_array( $f, $detailKeys ) )
 			continue;
 
 		if( $searchField != '' && $searchField != GoodFieldName( $f ) )
 			continue;
 
-		$fieldControl = $controls->getControl( $f );
-
-		$isAggregateField = $pSet->isAggregateField( $f );
-		$where = $fieldControl->getSuggestWhere( $searchOpt, $searchFor, $isAggregateField );
-		$having = $fieldControl->getSuggestHaving( $searchOpt, $searchFor, $isAggregateField );
-
-		if( !strlen( $where ) && !strlen( $having ) )
-			continue;
-
-		$distinct = "DISTINCT";
-		if( $conn->dbType == nDATABASE_MSSQLServer || $conn->dbType == nDATABASE_Access )
-		{
-			if( IsTextType( $fType ) )
-				$distinct = "";
-		}
-
-		$sql = $query->getSQLComponents();
-		$clausesData = $fieldControl->getSelectColumnsAndJoinFromPart( $searchFor, $searchOpt, true );
-		if( 0 == strlen( $clausesData["joinFromPart"] ) )
-		{
-			//	no hassle, just make a subquery
-
-			$subQuery = SQLQuery::buildSQL( $sql, $whereClauses, array(), array( $where ), array( $having ) );
-			$strSQL = "SELECT " . $distinct . " st.".$conn->addFieldWrappers($f)." from (" . $subQuery . ") st";
-		}
-		else
-		{
-			//	special case, with lookup wizards and joins
-			$sql['from'] .= $clausesData["joinFromPart"];
-			$sql['head'] = "SELECT " . $distinct . " " . $clausesData["selectColumns"] . " as " . $conn->addFieldWrappers("_srchfld_");
-			$subQuery = SQLQuery::buildSQL( $sql, $whereClauses, array(), array( $where ), array( $having ) );
-			$strSQL = "SELECT " . $conn->addFieldWrappers("_srchfld_") . " from (" . $subQuery . ") st";
-		}
-
-		$qResult = $conn->queryPage( $strSQL, 1,  $numberOfSuggests, true );
+		$fieldControl = $controls->getControl( $f, 1 );
+		$dc = $fieldControl->getSuggestCommand( $searchFor, $searchOpt, $numberOfSuggests );
+		$allConditions = $conditions;
+		$allConditions[] = $dc->filter;
+		$dc->filter = DataCondition::_And( $allConditions );
+		$qResult = $dataSource->getTotals( $dc );
 
 		// fill $response array with the field's suggest value
 		while( ( $row = $qResult->fetchNumeric() ) && count($response) < $numberOfSuggests )
@@ -4169,14 +3980,29 @@ function getListOfSuggests( $sfields, $table, $whereClauses, $numberOfSuggests, 
 	return $result;
 }
 
-function IsEmptyRequest() {
-	$allowedKeys = array( "menuItemId", "page" );
-	$allowedKeysCount = 0;
-	foreach( $allowedKeys as $k ) {
-		if( isset( $_GET[ $k ] ) )
-			++$allowedKeysCount;
+function IsEmptyRequest( $allowedKeys = array() ) {
+	if( 0 != count( $_POST ) ) {
+		return false;
 	}
-	return !count($_POST) && (count($_GET) <= $allowedKeysCount);
+	$allowedKeys[ "menuItemId" ] = true;
+	$allowedKeys[ "page" ] = true;
+	$allowedKeys[ "mastertable" ] = true;
+	$hasExtraKeys = false;
+	$mkeyLength = 9;
+	foreach( $_GET as $key => $value ) {
+		if( $allowedKeys[ $key ] ) {
+			continue;
+		}
+		if( substr( $key, 0, $mkeyLength ) == "masterkey" && (int)substr( $key,$mkeyLength ) > 0 ) {
+			continue;
+		}
+		$hasExtraKeys = true;
+		break;
+	}
+
+	if( $hasExtraKeys )
+		return false;
+	return true;
 }
 
 function xt_process_template(&$xt,$str)
@@ -4332,15 +4158,14 @@ function addToAssocArray( $assocArray, $arr ) {
 }
 
 function postvalue_number( $key ) {
-	return 0 + postvalue($key);
+	return (int)postvalue($key);
 }
 
 /**
  * Basic View Format doesn't need other field values. So passing of the record data can be omitted for performance reasons.
  */
 function basicViewFormat( $format ) {
-	return $format === FORMAT_NONE
-		|| $format === FORMAT_DATE_SHORT
+	return $format === FORMAT_DATE_SHORT
 		|| $format === FORMAT_DATE_LONG
 		|| $format === FORMAT_DATE_TIME
 		|| $format === FORMAT_TIME
@@ -4349,7 +4174,6 @@ function basicViewFormat( $format ) {
 		|| $format === FORMAT_LOOKUP_WIZARD
 		|| $format === FORMAT_PHONE_NUMBER
 		|| $format === FORMAT_NUMBER
-		|| $format === FORMAT_HTML
 		|| $format === FORMAT_CHECKBOX;
 }
 
@@ -4415,38 +4239,6 @@ function formatDateIntervalValue( $value, $intervalType )
 	}
 }
 
-
-function getDatesByWeek( $week, $year )
-{
-	global $locale_info;
-	$startweekday = 0;
-	if($locale_info["LOCALE_IFIRSTDAYOFWEEK"]>0)
-		$startweekday = 7 - $locale_info["LOCALE_IFIRSTDAYOFWEEK"];
-
-	$L = isleapyear($year) ? 1 : 0;
-	$months = array(31, 28 + $L, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-	$total_days = ($week - 1) * 7;
-	$i = 0;
-	$sum = 0;
-	while($sum <= $total_days)
-	{
-		$sum += $months[$i++];
-	}
-	$sum -= $months[$i-1];
-	$month = $i;
-	$day = $total_days - $sum;
-	$day_of_week = getdayofweek(array($year, $month, $day));
-	if ($day_of_week == 0)
-		$day_of_week = 7;
-
-	$day = $day - ($day_of_week - 1) - $startweekday;
-	$dates = array();
-	$dates[0] = getYMDdate(mktime(0,0,0, $month, $day, $year));
-	$dates[1] = getYMDdate(mktime(1,1,1, $month, $day+6, $year));
-
-	return $dates;
-}
-
 /**
  * @return Boolean
  */
@@ -4460,7 +4252,8 @@ function pageTypeShowsData( $pageType ) {
 	  || $pageType == "print"
 	  || $pageType == "rprint"
 	  || $pageType == "masterlist"
-	  || $pageType == "masterprint";
+	  || $pageType == "masterprint"
+	  || $pageType == "userinfo";
 }
 
 /**
@@ -4471,7 +4264,8 @@ function pageTypeInputsData( $pageType ) {
 	  || $pageType == "edit"
 	  || $pageType == "search"
 	  || $pageType == "register"
-	  || $pageType == "login";
+	  || $pageType == "login"
+	  || $pageType == "userinfo";
 }
 
 function base64_encode_url( $str ) {
@@ -4522,8 +4316,15 @@ function jwt_verify_decode( $jwt ) {
 	$ret = my_json_decode( base64_decode_url( $parts[1] ) );
 	if( !is_array( $ret ) )
 		return false;
+
+	//	verify expiration
 	if( !$ret[ "exp" ] || $ret[ "exp" ] <= time() )
 		return false;
+
+	// verify target host
+	if( !$ret[ "host" ] || strtoupper( $ret[ "host" ] ) !== strtoupper( projectHost() ) )
+		return false;
+
 	return $ret;
 }
 
@@ -4543,11 +4344,32 @@ function request_protocol() {
  * @return string
  */
 function projectURL() {
-	return request_protocol() . "://" . $_SERVER['HTTP_HOST'] . projectPath();
+	return request_protocol() . "://" . projectHost() . projectPath();
 }
 
-function setProjectCookie( $name, $value, $expires = 0, $httpOnly = false) {
-	setcookie( $name, $value, $expires, projectPath(), "", false, $httpOnly );
+function projectHost() {
+	$host = $_SERVER['HTTP_X_FORWARDED_HOST'];
+	if( !$host )
+		$host = $_SERVER['HTTP_HOST'];
+	return $host;
+}
+
+function hostFromUrl( $url ) {
+	$hostStart = strpos( $url, '://' );
+	if( $hostStart === false ) {
+		return '';
+	}
+	$hostStart += 3;
+	$hostEnd = strpos( $url, '/', $hostStart );
+	if( $hostEnd === false ) {
+		return substr( $url, $hostStart );
+	}
+	return substr( $url, $hostStart, $hostEnd - $hostStart );
+}
+
+function setProjectCookie( $name, $value, $expires = 0, $httpOnly = false, $sameSiteStrict = false) {
+	
+	runner_setcookie( $name, $value, $expires, projectPath(), "", isSecureProtocol(), $httpOnly, $sameSiteStrict );
 }
 
 /**
@@ -4577,6 +4399,19 @@ function ldap_getServer( $address ) {
 	}
 	return $address;
 }
+
+/**
+ * @return String "server:port"
+ */
+function ldap_getServerPort( $address ) {
+	$server = ldap_getServer( $address );
+	$portPos = strpos( $server, ':' );
+	if( $portPos === false && strtolower( substr( $address, 0, 8 ) ) == "ldaps://" ) {
+		$server .= ":636";
+	}
+	return $server;
+}
+
 
 /**
  * Convert domain name test.xlinesoft.com
@@ -4610,13 +4445,486 @@ function ldap_DN2Domain($dn)
 }
 
 function ldap_factory() {
-	return new RunnerLdap( 
-		GetGlobalData( "ADDomain", "" ), 
-		GetGlobalData( "ADServer", null ), 
-		GetGlobalData( "customLDAP", false ), 
+	return new RunnerLdap(
+		GetGlobalData( "ADDomain", "" ),
+		GetGlobalData( "ADServer", null ),
+		GetGlobalData( "customLDAP", false ),
 		GetGlobalData( "ADBaseDN", "" ),
-		GetGlobalData( "ADFollowRefs",false ) 
+		GetGlobalData( "ADFollowRefs",false )
 	);
 }
-	
+
+
+/**
+ * @param String field - name of field set up as Lookup Wizard
+ * @param ProjectSettings - object for the main table, where $field is, not the lookup table!
+ * @return DataSource
+ */
+function getLookupDataSource( $field, $pSet )
+{
+	global $cman;
+
+	$lookupTable = $pSet->getLookupTable($field);
+	$lookupType = $pSet->getLookupType($field);
+	if( !$lookupTable ) {
+		return NULL;
+	}
+
+	if( $lookupType == LT_QUERY )
+	{
+		global $cman;
+		$connId = $cman->byTable( $lookupTable )->connId;
+	} else {
+		$connId = $pSet->getNotProjectLookupTableConnId( $field );
+	}
+	return getTableDataSource( $lookupTable, $connId );
+}
+
+/**
+ * Get DataSource for a users table
+ * @return DataSource
+ */
+function getLoginDataSource()
+{
+	global $cman, $cLoginTable;
+	return getTableDataSource( $cLoginTable, $cman->getLoginConnId() );
+}
+
+/**
+ * @table
+ * @return DataSource
+ * returns datasource for a database table or project entity
+ */
+function getTableDataSource( $table, $connId ) {
+	global $cman;
+	$connection = $cman->byId( $connId );
+
+	require_once( getabspath( 'classes/datasource/datasource.php') );
+	if( GetTableURL( $table ) && $cman->getTableConnId( $table ) == $connId ) {
+		$pSet = new ProjectSettings( $table );
+		return getDataSource( $table, $pSet, $connection );
+	}
+	return getDbTableDataSource( $table, $connId );
+}
+
+/**
+ * @table
+ * @return DataSource
+ * returns datasource for a database table
+ */
+function getDbTableDataSource( $table, $connId ) {
+	$dbTableInfo = DB::_getTableInfo( $table, $connId );
+	global $cman;
+	if( $dbTableInfo ) {
+		return new DataSourceDbTable( $table, $cman->byId( $connId ), $dbTableInfo );
+	}
+	return null;
+}
+
+function getWebDataSource( &$report ) {
+	require_once( getabspath( 'classes/datasource/datasource.php') );
+
+	$table_type = $report["table_type"];
+	$table = $report['tables'][0];
+	global $cman;
+	$connId = $cman->getDefaultConnId();
+	$connection = $cman->getDefault();
+	if( $report["table_type"] == "db" ) {
+		$dbTableInfo = DB::_getTableInfo( $table, $connId );
+		if( $dbTableInfo ) {
+			return new DataSourceWebTable( $table, $connection, $report, $dbTableInfo );
+		}
+	} else if( $report["table_type"] == "custom" ) {
+		return new DataSourceWebSQL( $connection, $report );
+	}
+	return null;
+}
+
+
+/**
+ * Returns datasource for a project entity
+ */
+function getDataSource( $table, $pSet = null, $connection = null ) {
+
+	require_once( getabspath( 'classes/datasource/datasource.php') );
+
+	if( !$pSet ) {
+		$pSet = new ProjectSettings( $table );
+	}
+	if( !$connection ) {
+		global $cman;
+		$connection = $cman->byId( $pSet->getConnId() );
+	}
+
+	$type = $pSet->getEntityType();
+	if( $type == titTABLE || $type == titVIEW || $type == titCHART || $type == titREPORT ) {
+		return new DataSourceProjectTable( $table, $pSet, $connection  );
+	}
+	if( $type == titSQL || $type == titSQL_CHART || $type == titSQL_REPORT ) {
+		return new DataSourceSQL( $table, $pSet, $connection  );
+	}
+	if( $type == titREST || $type == titREST_REPORT || $type == titREST_CHART ) {
+		global $restApis;
+		return new DataSourceREST( $table, $pSet,  $restApis->getConnection( $pSet->getConnId() ) );
+	}
+	return null;
+}
+
+function getRestConnection( $pSet ) {
+	$type = $pSet->getEntityType();
+	if( $type == titREST || $type == titREST_REPORT || $type == titREST_CHART ) {
+		global $restApis;
+		return $restApis->getConnection( $pSet->getConnId() );
+	}
+	return null;
+
+}
+
+/**
+ * Tells whether the request is REST API call
+ * For use within events
+ * @return Boolean
+ */
+function inRestApi() {
+	global $restApiCall;
+	return isset( $restApiCall );
+}
+
+/**
+ * @param Integer one of the tit... constants
+ * @return Boolean
+ */
+function isReport( $entityType ) {
+	return $entityType == titREPORT || $entityType == titSQL_REPORT || $entityType == titREST_REPORT;
+}
+
+/**
+ * @param Integer one of the tit... constants
+ * @return Boolean
+ */
+function isChart( $entityType ) {
+	return $entityType == titCHART || $entityType == titSQL_CHART || $entityType == titREST_CHART;
+}
+
+function prepareUrl( $url, $params ) {
+	if( !$url ) {
+		return "";
+	}
+	if( !$params ) {
+		return $url;
+	}
+	$body = prepareUrlQuery( $params );
+	$glue = strpos( $url, "?" ) !== false
+		? '&'
+		: '?';
+	$lastSymbol = substr( $url, strlen( $url ) - 1, 1 );
+	if( $lastSymbol == '&' || $lastSymbol == '?' ) {
+		$glue = "";
+	}
+	return $url . $glue . $body;
+}
+
+function prepareUrlQuery( $params ) {
+	$data = array();
+	foreach ($params as $key => $value)
+    {
+        if ( is_array($value) )
+        {
+            foreach ($value as $item)
+            {
+                $data[] = rawurlencode( $key ) . '=' . rawurlencode($item);
+            }
+        }
+        else
+        {
+            $data[] = rawurlencode( $key ) . '=' . rawurlencode($value);
+        }
+    }
+	return implode('&', $data);
+}
+
+function runner_json_decode( $str ) {
+	return my_json_decode( $str );
+}
+
+function runner_json_encode( $str ) {
+	return my_json_encode( $str );
+}
+
+function getRESTConn( $name = "" ) {
+	global $restApis;
+	$id = $restApis->idByName( $name );
+	return $restApis->getConnection( $id );
+}
+
+
+/**
+ * return a value from storage
+ */
+function storageGet( $key ) {
+	if( !inRestApi() ) {
+		return $_SESSION[ $key ];
+	} else {
+		global $restStorage;
+		return $restStorage[ $key ];
+	}
+}
+
+/**
+ * save value in the storage
+ */
+function storageSet( $key, $value ) {
+	if( !inRestApi() ) {
+		$_SESSION[ $key ] = $value;
+	} else {
+		global $restStorage;
+		$restStorage[ $key ] = $value;
+	}
+}
+
+function storageDelete( $key ) {
+	if( !inRestApi() ) {
+		unset( $_SESSION[ $key ] );
+	} else {
+		global $restStorage;
+		unset( $restStorage[ $key ] );
+	}
+}
+
+
+function storageExists( $key ) {
+	if( !inRestApi() ) {
+		return isset( $_SESSION[ $key ] );
+	} else {
+		global $restStorage;
+		return isset( $restStorage[ $key ] );
+	}
+}
+
+function & storageFindOrCreate( $key, $defaultValue = array() ) {
+	if( !inRestApi() ) {
+		if( !isset( $_SESSION[ $key ] ) ) {
+			$_SESSION[ $key ] = $defaultValue;
+		}
+		return $_SESSION[ $key ];
+	} else {
+		global $restStorage;
+		if( !isset( $restStorage[ $key ] ) ) {
+			$restStorage[ $key ] = $defaultValue;
+		}
+		return $restStorage[ $key ];
+	}
+}
+
+
+function requestMethod() {
+	return $_SERVER['REQUEST_METHOD'];
+}
+
+function isPostRequest() {
+	return requestMethod() === "POST";
+}
+
+function runner_setcookie( $name, $value = "", $expires = 0, $path = "", $domain = "", $secure = false, $httpOnly = false, $sameSiteStrict = false ) {
+
+	//	setcookie( $name, $value, $expires, $path, $domain, $secure, $httpOnly );
+
+	$options = array();
+	$options[] = $name . "=" . rawurlencode( $value ) . ";";
+	$options[] = "Path=" . $path. ";";
+	if( $expires ) {
+		$options[] =  "Expires=" . httpDateString( $expires ). ";";
+	}
+	if( $httpOnly ) {
+		$options[] =  "HttpOnly;";
+	}
+	if( $secure ) {
+		$options[] =  "Secure;";
+	}
+	if( $sameSiteStrict ) {
+		$options[] =  "SameSite=Strict;";
+	}
+	addHeader( "Set-Cookie: " . implode( " ", $options ) );
+
+}
+
+function sendEmailTemplate($toEmail, $templateFile, $data )
+{
+	global $cCharset;
+	$data["url"] = projectURL() ;
+
+	if ( !isset($data["loginUrl"]) )
+		$data["loginUrl"] = projectURL() . GetTableLink( "login" ) ;
+
+	if ( !file_exists(getabspath($templateFile)) )
+		return false;
+
+	$body = myfile_get_contents(getabspath($templateFile), "r");
+
+	$matches = findMatches( "/%[^%\W]+%/i", $body );
+	for( $i = 0; $i < count( $matches ); ++$i ) {
+		$m = $matches[ $i ];
+		$key = substr( $m["match"], 1, strlen($m["match"]) - 2);
+		$value = ''. getArrayElementNC( $data, $key );
+		// update the string
+		$body = substr( $body, 0, $m["offset"]) . $value . substr( $body, $m["offset"] + strlen( $m["match"] ));
+		// update the rest of matches
+		$offsetDelta = strlen( $value ) - strlen( $m["match"] );
+		for( $j = $i+1; $j < count( $matches ); ++$j ) {
+			$matches[ $j ]["offset"] = $matches[ $j ]["offset"] + $offsetDelta;
+		}
+	}
+
+	$subject = "";
+	if ( $firstRowEndPos = strpos($body,"\r") )
+	{
+		$subject = substr($body, 0, $firstRowEndPos);
+		$body = substr($body, ($firstRowEndPos+1));
+	}
+
+	return runner_mail( array('to' => $toEmail, 'subject' => $subject, 'body' => $body, "charset" => $cCharset) );
+}
+
+function base32symbols() {
+	return array(
+		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+		'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+		'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+		'Y', 'Z', '2', '3', '4', '5', '6', '7');
+}
+
+function generateTotpSecret() {
+	$table =& base32symbols();
+	$ret = "";
+	for( $i=0; $i < 16; ++$i ) {
+		$ret .= $table[ rand(0,31) ];
+	}
+	return $ret;
+}
+
+/**
+ * Tells whether the string is a valid TOTP secret
+ * @return Boolean
+ */
+function validateTotpSecret( $str ) {
+	if( strlen( $str ) != 16 ) {
+		return false;
+	}
+	$table =& base32symbols();
+	for( $i=0; $i < 16; ++$i ) {
+		if( array_search( $str[$i], $table ) === false ) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
+ * Considers 'a@b' the shortest valid email address.
+ * Not technically true, but will work for most real life applications
+ * @return Boolean
+ */
+function validateEmail( $address ) {
+	return strlen( $address ) >= 3 && strpos( $address, '@' ) !== false;
+}
+
+function normalizePhoneNumber( $number ) {
+	$number = preg_replace("/[^\+\d]/", "", $number);
+
+	if( $number[0] == "+" && strlen( $number ) > 10 )
+		return $number;
+	return GetGlobalData("strCounryCode", "") . $number;
+}
+
+function maskPhoneNumber( $number )
+{
+	$smsMaskLength = GetGlobalData("smsMaskLength", 4);
+
+	$astrixStringLength = strlen( $number ) - $smsMaskLength;
+	$number = preg_replace( "/[^+]/", "*", substr($number, 0, $astrixStringLength) ).substr($number, $astrixStringLength);
+
+	return $number;
+}
+
+function maskEmailAddress( $address )
+{
+	return $address;
+}
+
+function runner_show_error($errinfo)
+{
+	// show error htm
+	require_once(getabspath("include/xtempl.php"));
+
+	$xt = new Xtempl();
+
+	if(isset($errinfo['debugRows']))
+	{
+		$xt->assign_loopsection('debugRow', $errinfo['debugRows']);
+		unset($errinfo['debugRows']);
+	}
+	$xt->bulk_assign($errinfo);
+
+	$xt->displayPartial( GetTemplateName("", "error") );
+	exit(0);
+}
+
+/**
+ * Return assoc array made from $values where $keys are new array keys
+ * [ "id", "name" ], [ 10, "Homer" ] => array( "id" => 10, "name" => "Homer" )
+ * @param Array keys
+ * @param Array values
+ */
+function numericToAssoc( $keys, $values ) {
+	$ret = array();
+	foreach( $keys as $i => $k ) {
+		$ret[ $k ] = $values[ $i ];
+	}
+	return $ret;
+}
+
+/**
+ * find element in array where value is an array itself
+  */
+function findArrayInArray( $arr, $valueArr ) {
+	foreach( $arr as $key => $value ) {
+		if( count( $value ) != count( $valueArr ) ) {
+			continue;
+		}
+
+		//	find out if $valueArr == $value
+		$equal = true;
+		foreach( $value as $k => $v ) {
+			if( $valueArr[ $k ] != $v ) {
+				$equal = false;
+				break;
+			}
+		}
+
+		if( $equal ) {
+			return $key;
+		}
+	}
+	return false;
+}
+
+/**
+ * LEGACY
+ * Tells if the field comes from the original main table
+ * This function helps automatically exclude joined and calculated fields from Update/Insert queries.
+ * We don't do that anymore, it only supports legacy logic.
+ * Should return true in all dubious cases
+ * @return Boolean
+ */
+function originalTableField( $field, $pSet ) {
+	$entityType = $pSet->getEntityType();
+	if( $entityType != titTABLE && $entityType != titVIEW ) {
+		return true;
+	}
+	$fieldTable = $pSet->getOwnerTable( $field );
+	return $fieldTable == $pSet->getStrOriginalTableName();
+	//	the alternative could involve reading table info with DB::_getTableInfo and checking against field list.
+	//	However that will not work well with aliases & small/large letters in the field names
+}
+
 ?>

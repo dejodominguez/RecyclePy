@@ -1,19 +1,17 @@
 <?php
-
-
-
 $tdataventas = array();
 $tdataventas[".searchableFields"] = array();
 $tdataventas[".ShortName"] = "ventas";
 $tdataventas[".OwnerID"] = "";
-$tdataventas[".OriginalTable"] = "public.Ventas";
+$tdataventas[".OriginalTable"] = "public.ventas";
 
-
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
 
 $tdataventas[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
+$tdataventas[".originalPagesByType"] = $tdataventas[".pagesByType"];
 $tdataventas[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdataventas[".defaultPages"] = $defaultPages;
+$tdataventas[".originalPages"] = $tdataventas[".pages"];
+$tdataventas[".defaultPages"] = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
+$tdataventas[".originalDefaultPages"] = $tdataventas[".defaultPages"];
 
 //	field labels
 $fieldLabelsventas = array();
@@ -27,18 +25,19 @@ if(mlang_getcurrentlang()=="Spanish")
 	$fieldToolTipsventas["Spanish"] = array();
 	$placeHoldersventas["Spanish"] = array();
 	$pageTitlesventas["Spanish"] = array();
-	$fieldLabelsventas["Spanish"]["IdVenta"] = "Cod. Ventas";
-	$fieldToolTipsventas["Spanish"]["IdVenta"] = "";
-	$placeHoldersventas["Spanish"]["IdVenta"] = "";
-	$fieldLabelsventas["Spanish"]["FechaVenta"] = "Fecha Venta";
-	$fieldToolTipsventas["Spanish"]["FechaVenta"] = "";
-	$placeHoldersventas["Spanish"]["FechaVenta"] = "";
-	$fieldLabelsventas["Spanish"]["Observaci_n"] = "Observación";
-	$fieldToolTipsventas["Spanish"]["Observaci_n"] = "";
-	$placeHoldersventas["Spanish"]["Observaci_n"] = "Cargue aquí observaciones";
-	$fieldLabelsventas["Spanish"]["IdEmpreRecicladora"] = "Venta Empresa Recicladora";
-	$fieldToolTipsventas["Spanish"]["IdEmpreRecicladora"] = "";
-	$placeHoldersventas["Spanish"]["IdEmpreRecicladora"] = "";
+	$fieldLabelsventas["Spanish"]["id_venta"] = "Código";
+	$fieldToolTipsventas["Spanish"]["id_venta"] = "";
+	$placeHoldersventas["Spanish"]["id_venta"] = "";
+	$fieldLabelsventas["Spanish"]["fecha_venta"] = "Fecha Venta";
+	$fieldToolTipsventas["Spanish"]["fecha_venta"] = "";
+	$placeHoldersventas["Spanish"]["fecha_venta"] = "";
+	$fieldLabelsventas["Spanish"]["observacion"] = "Observacion";
+	$fieldToolTipsventas["Spanish"]["observacion"] = "";
+	$placeHoldersventas["Spanish"]["observacion"] = "";
+	$fieldLabelsventas["Spanish"]["id_empre_recichadora"] = "Venta Empresa Recicladora";
+	$fieldToolTipsventas["Spanish"]["id_empre_recichadora"] = "";
+	$placeHoldersventas["Spanish"]["id_empre_recichadora"] = "";
+	$pageTitlesventas["Spanish"]["masterlist"] = "Vistas de Venta {%id_venta}";
 	if (count($fieldToolTipsventas["Spanish"]))
 		$tdataventas[".isUseToolTips"] = true;
 }
@@ -53,8 +52,10 @@ $tdataventas[".nSecOptions"] = 0;
 
 $tdataventas[".mainTableOwnerID"] = "";
 $tdataventas[".entityType"] = 0;
+$tdataventas[".connId"] = "RealEstate_at_localhost";
 
-$tdataventas[".strOriginalTableName"] = "public.Ventas";
+
+$tdataventas[".strOriginalTableName"] = "public.ventas";
 
 	
 
@@ -66,14 +67,9 @@ $tdataventas[".showEditInPopup"] = false;
 
 $tdataventas[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdataventas[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdataventas[".listAjax"] = false;
 //	temporary
-$tdataventas[".listAjax"] = false;
+//$tdataventas[".listAjax"] = false;
 
 	$tdataventas[".audit"] = false;
 
@@ -93,7 +89,7 @@ if( $pages[PAGE_ADD] ) {
 $tdataventas[".add"] = true;
 $tdataventas[".afterAddAction"] = 1;
 $tdataventas[".closePopupAfterAdd"] = 1;
-$tdataventas[".afterAddActionDetTable"] = "";
+$tdataventas[".afterAddActionDetTable"] = "public.detalles_ventas";
 }
 
 if( $pages[PAGE_LIST] ) {
@@ -141,7 +137,7 @@ $tdataventas[".rowHighlite"] = true;
 
 
 
-						
+			
 
 $tdataventas[".ajaxCodeSnippetAdded"] = false;
 
@@ -153,7 +149,7 @@ $tdataventas[".addPageEvents"] = false;
 $tdataventas[".isUseTimeForSearch"] = false;
 
 
-$tdataventas[".badgeColor"] = "db7093";
+$tdataventas[".badgeColor"] = "008b8b";
 
 
 $tdataventas[".allSearchFields"] = array();
@@ -161,10 +157,10 @@ $tdataventas[".filterFields"] = array();
 $tdataventas[".requiredSearchFields"] = array();
 
 $tdataventas[".googleLikeFields"] = array();
-$tdataventas[".googleLikeFields"][] = "IdVenta";
-$tdataventas[".googleLikeFields"][] = "FechaVenta";
-$tdataventas[".googleLikeFields"][] = "Observación";
-$tdataventas[".googleLikeFields"][] = "IdEmpreRecicladora";
+$tdataventas[".googleLikeFields"][] = "id_venta";
+$tdataventas[".googleLikeFields"][] = "fecha_venta";
+$tdataventas[".googleLikeFields"][] = "observacion";
+$tdataventas[".googleLikeFields"][] = "id_empre_recichadora";
 
 
 
@@ -193,14 +189,13 @@ $tdataventas[".warnLeavingPages"] = true;
 
 
 $tstrOrderBy = "";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
 $tdataventas[".strOrderBy"] = $tstrOrderBy;
 
 $tdataventas[".orderindexes"] = array();
 
-$tdataventas[".sqlHead"] = "SELECT \"IdVenta\",  	\"FechaVenta\",  	\"Observación\",  	\"IdEmpreRecicladora\"";
-$tdataventas[".sqlFrom"] = "FROM \"public\".\"Ventas\"";
+
+$tdataventas[".sqlHead"] = "SELECT id_venta,  	fecha_venta,  	observacion,  	id_empre_recichadora";
+$tdataventas[".sqlFrom"] = "FROM \"public\".ventas";
 $tdataventas[".sqlWhereExpr"] = "";
 $tdataventas[".sqlTail"] = "";
 
@@ -238,7 +233,7 @@ $tdataventas[".arrGroupsPerPage"] = $arrGPP;
 $tdataventas[".highlightSearchResults"] = true;
 
 $tableKeysventas = array();
-$tableKeysventas[] = "IdVenta";
+$tableKeysventas[] = "id_venta";
 $tdataventas[".Keys"] = $tableKeysventas;
 
 
@@ -247,26 +242,28 @@ $tdataventas[".hideMobileList"] = array();
 
 
 
-//	IdVenta
+//	id_venta
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 1;
-	$fdata["strName"] = "IdVenta";
-	$fdata["GoodName"] = "IdVenta";
-	$fdata["ownerTable"] = "public.Ventas";
-	$fdata["Label"] = GetFieldLabel("public_Ventas","IdVenta");
+	$fdata["strName"] = "id_venta";
+	$fdata["GoodName"] = "id_venta";
+	$fdata["ownerTable"] = "public.ventas";
+	$fdata["Label"] = GetFieldLabel("public_ventas","id_venta");
 	$fdata["FieldType"] = 3;
 
-	
+
 		$fdata["AutoInc"] = true;
 
 	
 			
 
-		$fdata["strField"] = "IdVenta";
+		$fdata["strField"] = "id_venta";
+
+		$fdata["sourceSingle"] = "id_venta";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"IdVenta\"";
+	$fdata["FullName"] = "id_venta";
 
 	
 	
@@ -288,6 +285,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -383,27 +381,29 @@ $tdataventas[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdataventas["IdVenta"] = $fdata;
-		$tdataventas[".searchableFields"][] = "IdVenta";
-//	FechaVenta
+	$tdataventas["id_venta"] = $fdata;
+		$tdataventas[".searchableFields"][] = "id_venta";
+//	fecha_venta
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 2;
-	$fdata["strName"] = "FechaVenta";
-	$fdata["GoodName"] = "FechaVenta";
-	$fdata["ownerTable"] = "public.Ventas";
-	$fdata["Label"] = GetFieldLabel("public_Ventas","FechaVenta");
+	$fdata["strName"] = "fecha_venta";
+	$fdata["GoodName"] = "fecha_venta";
+	$fdata["ownerTable"] = "public.ventas";
+	$fdata["Label"] = GetFieldLabel("public_ventas","fecha_venta");
 	$fdata["FieldType"] = 7;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "FechaVenta";
+		$fdata["strField"] = "fecha_venta";
+
+		$fdata["sourceSingle"] = "fecha_venta";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"FechaVenta\"";
+	$fdata["FullName"] = "fecha_venta";
 
 	
 	
@@ -425,6 +425,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -446,6 +447,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -467,6 +469,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -488,6 +491,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -509,6 +513,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -530,6 +535,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -717,27 +723,29 @@ $tdataventas[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdataventas["FechaVenta"] = $fdata;
-		$tdataventas[".searchableFields"][] = "FechaVenta";
-//	Observación
+	$tdataventas["fecha_venta"] = $fdata;
+		$tdataventas[".searchableFields"][] = "fecha_venta";
+//	observacion
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 3;
-	$fdata["strName"] = "Observación";
-	$fdata["GoodName"] = "Observaci_n";
-	$fdata["ownerTable"] = "public.Ventas";
-	$fdata["Label"] = GetFieldLabel("public_Ventas","Observaci_n");
+	$fdata["strName"] = "observacion";
+	$fdata["GoodName"] = "observacion";
+	$fdata["ownerTable"] = "public.ventas";
+	$fdata["Label"] = GetFieldLabel("public_ventas","observacion");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "Observación";
+		$fdata["strField"] = "observacion";
+
+		$fdata["sourceSingle"] = "observacion";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"Observación\"";
+	$fdata["FullName"] = "observacion";
 
 	
 	
@@ -759,6 +767,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -851,27 +860,29 @@ $tdataventas[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdataventas["Observación"] = $fdata;
-		$tdataventas[".searchableFields"][] = "Observación";
-//	IdEmpreRecicladora
+	$tdataventas["observacion"] = $fdata;
+		$tdataventas[".searchableFields"][] = "observacion";
+//	id_empre_recichadora
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 4;
-	$fdata["strName"] = "IdEmpreRecicladora";
-	$fdata["GoodName"] = "IdEmpreRecicladora";
-	$fdata["ownerTable"] = "public.Ventas";
-	$fdata["Label"] = GetFieldLabel("public_Ventas","IdEmpreRecicladora");
+	$fdata["strName"] = "id_empre_recichadora";
+	$fdata["GoodName"] = "id_empre_recichadora";
+	$fdata["ownerTable"] = "public.ventas";
+	$fdata["Label"] = GetFieldLabel("public_ventas","id_empre_recichadora");
 	$fdata["FieldType"] = 3;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "IdEmpreRecicladora";
+		$fdata["strField"] = "id_empre_recichadora";
+
+		$fdata["sourceSingle"] = "id_empre_recichadora";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"IdEmpreRecicladora\"";
+	$fdata["FullName"] = "id_empre_recichadora";
 
 	
 	
@@ -893,6 +904,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -914,6 +926,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -935,6 +948,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -956,6 +970,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -977,6 +992,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -998,6 +1014,7 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1011,7 +1028,7 @@ $tdataventas[".hideMobileList"] = array();
 //	Begin Edit Formats
 	$fdata["EditFormats"] = array();
 
-	$edata = array("EditFormat" => "Text field");
+	$edata = array("EditFormat" => "Lookup wizard");
 
 	
 		$edata["weekdayMessage"] = array("message" => "", "messageType" => "Text");
@@ -1021,6 +1038,34 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 
+// Begin Lookup settings
+				$edata["LookupType"] = 2;
+	$edata["LookupTable"] = "public.empresas_recicladoras";
+			$edata["autoCompleteFieldsOnEdit"] = 0;
+	$edata["autoCompleteFields"] = array();
+		$edata["LCType"] = 0;
+
+	
+		
+	$edata["LinkField"] = "id_empre_recicladora";
+	$edata["LinkFieldType"] = 0;
+	$edata["DisplayField"] = "nombre_empre_recicladora";
+
+	
+
+	
+	$edata["LookupOrderBy"] = "";
+
+	
+	
+	
+	
+
+	
+	
+		$edata["SelectSize"] = 1;
+
+// End Lookup Settings
 
 
 	
@@ -1036,17 +1081,14 @@ $tdataventas[".hideMobileList"] = array();
 	
 	
 	
-			$edata["HTML5InuptType"] = "text";
-
-		$edata["EditParams"] = "";
-		
+	
+	
 		$edata["controlWidth"] = 200;
 
 //	Begin validation
 	$edata["validateAs"] = array();
 	$edata["validateAs"]["basicValidate"] = array();
 	$edata["validateAs"]["customMessages"] = array();
-				$edata["validateAs"]["basicValidate"][] = getJsValidatorName("Number");
 							
 	
 	//	End validation
@@ -1069,16 +1111,16 @@ $tdataventas[".hideMobileList"] = array();
 
 // Begin Lookup settings
 				$edata["LookupType"] = 2;
-	$edata["LookupTable"] = "public.EmpresasRecicladores";
+	$edata["LookupTable"] = "public.empresas_recicladoras";
 			$edata["autoCompleteFieldsOnEdit"] = 0;
 	$edata["autoCompleteFields"] = array();
 		$edata["LCType"] = 0;
 
 	
 		
-	$edata["LinkField"] = "IdEmpreRecicladora";
+	$edata["LinkField"] = "id_empre_recicladora";
 	$edata["LinkFieldType"] = 0;
-	$edata["DisplayField"] = "NombreEmpre";
+	$edata["DisplayField"] = "nombre_empre_recicladora";
 
 	
 
@@ -1087,9 +1129,7 @@ $tdataventas[".hideMobileList"] = array();
 
 	
 	
-		$edata["AllowToAdd"] = true;
-			$edata["addPageId"] = "add";
-
+	
 	
 
 	
@@ -1212,74 +1252,65 @@ $tdataventas[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdataventas["IdEmpreRecicladora"] = $fdata;
-		$tdataventas[".searchableFields"][] = "IdEmpreRecicladora";
+	$tdataventas["id_empre_recichadora"] = $fdata;
+		$tdataventas[".searchableFields"][] = "id_empre_recichadora";
 
 
-$tables_data["public.Ventas"]=&$tdataventas;
-$field_labels["public_Ventas"] = &$fieldLabelsventas;
-$fieldToolTips["public_Ventas"] = &$fieldToolTipsventas;
-$placeHolders["public_Ventas"] = &$placeHoldersventas;
-$page_titles["public_Ventas"] = &$pageTitlesventas;
+$tables_data["public.ventas"]=&$tdataventas;
+$field_labels["public_ventas"] = &$fieldLabelsventas;
+$fieldToolTips["public_ventas"] = &$fieldToolTipsventas;
+$placeHolders["public_ventas"] = &$placeHoldersventas;
+$page_titles["public_ventas"] = &$pageTitlesventas;
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
-$detailsTablesData["public.Ventas"] = array();
-//	public.DetalleVentas
+
+//if !@TABLE.bReportCrossTab
+
+$detailsTablesData["public.ventas"] = array();
+//	public.detalles_ventas
 	
 	
 
 		$dIndex = 0;
 	$detailsParam = array();
-	$detailsParam["dDataSourceTable"]="public.DetalleVentas";
-		$detailsParam["dOriginalTable"] = "public.DetalleVentas";
+	$detailsParam["dDataSourceTable"]="public.detalles_ventas";
+		$detailsParam["dOriginalTable"] = "public.detalles_ventas";
 
 
 
-				$detailsParam["dType"]=PAGE_LIST;
-	$detailsParam["dShortTable"] = "detalleventas";
-	$detailsParam["dCaptionTable"] = GetTableCaption("public_DetalleVentas");
+		
+		$detailsParam["dType"]=PAGE_LIST;
+	$detailsParam["dShortTable"] = "detalles_ventas";
+	$detailsParam["dCaptionTable"] = GetTableCaption("public_detalles_ventas");
 	$detailsParam["masterKeys"] =array();
 	$detailsParam["detailKeys"] =array();
 
 
 		
-	$detailsTablesData["public.Ventas"][$dIndex] = $detailsParam;
+	$detailsTablesData["public.ventas"][$dIndex] = $detailsParam;
 
 	
-		$detailsTablesData["public.Ventas"][$dIndex]["masterKeys"] = array();
+		$detailsTablesData["public.ventas"][$dIndex]["masterKeys"] = array();
 
-	$detailsTablesData["public.Ventas"][$dIndex]["masterKeys"][]="IdVenta";
+	$detailsTablesData["public.ventas"][$dIndex]["masterKeys"][]="id_venta";
 
-				$detailsTablesData["public.Ventas"][$dIndex]["detailKeys"] = array();
+				$detailsTablesData["public.ventas"][$dIndex]["detailKeys"] = array();
 
-	$detailsTablesData["public.Ventas"][$dIndex]["detailKeys"][]="IDVenta";
+	$detailsTablesData["public.ventas"][$dIndex]["detailKeys"][]="id_venta";
+//endif
 
 // tables which are master tables for current table (detail)
-$masterTablesData["public.Ventas"] = array();
+$masterTablesData["public.ventas"] = array();
 
 
 
-	
-				$strOriginalDetailsTable="public.EmpresasRecicladores";
-	$masterParams = array();
-	$masterParams["mDataSourceTable"]="public.EmpresasRecicladores";
-	$masterParams["mOriginalTable"]= $strOriginalDetailsTable;
-	$masterParams["mShortTable"]= "empresasrecicladores";
-	$masterParams["masterKeys"]= array();
-	$masterParams["detailKeys"]= array();
-
-	$masterParams["type"] = PAGE_LIST;
-					$masterTablesData["public.Ventas"][0] = $masterParams;
-				$masterTablesData["public.Ventas"][0]["masterKeys"] = array();
-	$masterTablesData["public.Ventas"][0]["masterKeys"][]="IdEmpreRecicladora";
-				$masterTablesData["public.Ventas"][0]["detailKeys"] = array();
-	$masterTablesData["public.Ventas"][0]["detailKeys"][]="IdEmpreRecicladora";
-		
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -1294,8 +1325,8 @@ function createSqlQuery_ventas()
 {
 $proto0=array();
 $proto0["m_strHead"] = "SELECT";
-$proto0["m_strFieldList"] = "\"IdVenta\",  	\"FechaVenta\",  	\"Observación\",  	\"IdEmpreRecicladora\"";
-$proto0["m_strFrom"] = "FROM \"public\".\"Ventas\"";
+$proto0["m_strFieldList"] = "id_venta,  	fecha_venta,  	observacion,  	id_empre_recichadora";
+$proto0["m_strFrom"] = "FROM \"public\".ventas";
 $proto0["m_strWhere"] = "";
 $proto0["m_strOrderBy"] = "";
 	
@@ -1336,13 +1367,13 @@ $proto0["m_having"] = $obj;
 $proto0["m_fieldlist"] = array();
 						$proto6=array();
 			$obj = new SQLField(array(
-	"m_strName" => "IdVenta",
-	"m_strTable" => "public.Ventas",
-	"m_srcTableName" => "public.Ventas"
+	"m_strName" => "id_venta",
+	"m_strTable" => "public.ventas",
+	"m_srcTableName" => "public.ventas"
 ));
 
-$proto6["m_sql"] = "\"IdVenta\"";
-$proto6["m_srcTableName"] = "public.Ventas";
+$proto6["m_sql"] = "id_venta";
+$proto6["m_srcTableName"] = "public.ventas";
 $proto6["m_expr"]=$obj;
 $proto6["m_alias"] = "";
 $obj = new SQLFieldListItem($proto6);
@@ -1350,13 +1381,13 @@ $obj = new SQLFieldListItem($proto6);
 $proto0["m_fieldlist"][]=$obj;
 						$proto8=array();
 			$obj = new SQLField(array(
-	"m_strName" => "FechaVenta",
-	"m_strTable" => "public.Ventas",
-	"m_srcTableName" => "public.Ventas"
+	"m_strName" => "fecha_venta",
+	"m_strTable" => "public.ventas",
+	"m_srcTableName" => "public.ventas"
 ));
 
-$proto8["m_sql"] = "\"FechaVenta\"";
-$proto8["m_srcTableName"] = "public.Ventas";
+$proto8["m_sql"] = "fecha_venta";
+$proto8["m_srcTableName"] = "public.ventas";
 $proto8["m_expr"]=$obj;
 $proto8["m_alias"] = "";
 $obj = new SQLFieldListItem($proto8);
@@ -1364,13 +1395,13 @@ $obj = new SQLFieldListItem($proto8);
 $proto0["m_fieldlist"][]=$obj;
 						$proto10=array();
 			$obj = new SQLField(array(
-	"m_strName" => "Observación",
-	"m_strTable" => "public.Ventas",
-	"m_srcTableName" => "public.Ventas"
+	"m_strName" => "observacion",
+	"m_strTable" => "public.ventas",
+	"m_srcTableName" => "public.ventas"
 ));
 
-$proto10["m_sql"] = "\"Observación\"";
-$proto10["m_srcTableName"] = "public.Ventas";
+$proto10["m_sql"] = "observacion";
+$proto10["m_srcTableName"] = "public.ventas";
 $proto10["m_expr"]=$obj;
 $proto10["m_alias"] = "";
 $obj = new SQLFieldListItem($proto10);
@@ -1378,13 +1409,13 @@ $obj = new SQLFieldListItem($proto10);
 $proto0["m_fieldlist"][]=$obj;
 						$proto12=array();
 			$obj = new SQLField(array(
-	"m_strName" => "IdEmpreRecicladora",
-	"m_strTable" => "public.Ventas",
-	"m_srcTableName" => "public.Ventas"
+	"m_strName" => "id_empre_recichadora",
+	"m_strTable" => "public.ventas",
+	"m_srcTableName" => "public.ventas"
 ));
 
-$proto12["m_sql"] = "\"IdEmpreRecicladora\"";
-$proto12["m_srcTableName"] = "public.Ventas";
+$proto12["m_sql"] = "id_empre_recichadora";
+$proto12["m_srcTableName"] = "public.ventas";
 $proto12["m_expr"]=$obj;
 $proto12["m_alias"] = "";
 $obj = new SQLFieldListItem($proto12);
@@ -1394,19 +1425,19 @@ $proto0["m_fromlist"] = array();
 												$proto14=array();
 $proto14["m_link"] = "SQLL_MAIN";
 			$proto15=array();
-$proto15["m_strName"] = "public.Ventas";
-$proto15["m_srcTableName"] = "public.Ventas";
+$proto15["m_strName"] = "public.ventas";
+$proto15["m_srcTableName"] = "public.ventas";
 $proto15["m_columns"] = array();
-$proto15["m_columns"][] = "IdVenta";
-$proto15["m_columns"][] = "FechaVenta";
-$proto15["m_columns"][] = "Observación";
-$proto15["m_columns"][] = "IdEmpreRecicladora";
+$proto15["m_columns"][] = "id_venta";
+$proto15["m_columns"][] = "fecha_venta";
+$proto15["m_columns"][] = "observacion";
+$proto15["m_columns"][] = "id_empre_recichadora";
 $obj = new SQLTable($proto15);
 
 $proto14["m_table"] = $obj;
-$proto14["m_sql"] = "\"public\".\"Ventas\"";
+$proto14["m_sql"] = "\"public\".ventas";
 $proto14["m_alias"] = "";
-$proto14["m_srcTableName"] = "public.Ventas";
+$proto14["m_srcTableName"] = "public.ventas";
 $proto16=array();
 $proto16["m_sql"] = "";
 $proto16["m_uniontype"] = "SQLL_UNKNOWN";
@@ -1428,7 +1459,7 @@ $obj = new SQLFromListItem($proto14);
 $proto0["m_fromlist"][]=$obj;
 $proto0["m_groupby"] = array();
 $proto0["m_orderby"] = array();
-$proto0["m_srcTableName"]="public.Ventas";		
+$proto0["m_srcTableName"]="public.ventas";		
 $obj = new SQLQuery($proto0);
 
 	return $obj;
@@ -1443,7 +1474,9 @@ $queryData_ventas = createSqlQuery_ventas();
 
 $tdataventas[".sqlquery"] = $queryData_ventas;
 
-$tableEvents["public.Ventas"] = new eventsBase;
+
+
+$tableEvents["public.ventas"] = new eventsBase;
 $tdataventas[".hasEvents"] = false;
 
 ?>

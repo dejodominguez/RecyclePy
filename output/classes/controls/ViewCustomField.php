@@ -9,7 +9,8 @@ class ViewCustomField extends ViewControl
 			$fieldData = $this->displayField;
 		}
 		
-		$pageType = $this->container->pageType;
+		$pageType = $this->container->pSet->getViewPageType();
+		/*
 		if( $this->pageObject )
 		{
 			if( $this->pageObject->mode == EDIT_INLINE && $this->pageObject->pageType != PAGE_VIEW ) 
@@ -17,6 +18,7 @@ class ViewCustomField extends ViewControl
 				$pageType = PAGE_LIST;
 			}
 		}
+		*/
 		
 		$result = CustomExpression( $fieldData, $data, $this->field, $pageType, $this->container->tName );
 		

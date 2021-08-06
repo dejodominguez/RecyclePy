@@ -22,8 +22,7 @@ class FilterIntervalSlider extends FilterControl
 		$this->knobsType = $this->pSet->getFilterKnobsType($fName);
 
 		$this->stepValue = $this->pSet->getFilterStepValue($fName);
-		
-		$this->buildSQL();
+
 		$this->addJS_CSSfiles($pageObject);
 		
 		if( $this->filtered )
@@ -39,7 +38,12 @@ class FilterIntervalSlider extends FilterControl
 	 */		
 	protected function assignKnobsValues() 
 	{
-		$filterValues = $this->filteredFields[ $this->fName ]['values'];
+		$filterData = $this->filteredFields[ $this->fName ];
+		
+		$filterValues = array();
+		$filterValues[] = $filterData['values'][0];
+		$filterValues[] = $filterData['sValues'][0];
+		
 		
 		if($this->knobsType == FS_MIN_ONLY) 
 		{
@@ -63,51 +67,59 @@ class FilterIntervalSlider extends FilterControl
 	 */
 	protected function getSeparator()
 	{
-		if($this->knobsType == FS_MIN_ONLY)
+		if( $this->knobsType == FS_MIN_ONLY )
 			return '~moreequal~';
 			
-		if($this->knobsType == FS_MAX_ONLY)
+		if( $this->knobsType == FS_MAX_ONLY )
 			return '~lessequal~';
 
 		return '~slider~';
 	}
-		
-	/**
-	 * Form the SQL query string to get then the filter's data 
-	 */
 	
-	protected function buildSQL()
-	{
+	/**
+	 * Form totals of the following type:
+		SELECT MIN(field) AS sliderMin, MAX(field) AS sliderMax
+		FROM ( ... ) WHERE <field is not null>
+	 */
+	protected function getDataCommand() {
+		
+		$dc = new DsCommand;
+		$dc->filter = $this->pageObject->getDataSourceFilterCriteria( $this->fName );
+			
+		$dc->totals[] =	array(
+			"field" => $this->fName,
+			"alias" => "sliderMin",
+			"skipEmpty" => true,
+			"total" => "min"
+		);		
+		
+		$dc->totals[] =	array(
+			"field" => $this->fName,
+			"alias" => "sliderMax",
+			"total" => "max"
+		);	
 
-		//	build query of the following form:
-		//  select min(field) as sliderMin, max(field) as sliderMax from ( <original query with search, security and filters> )
-
-		$wName = $this->connection->addFieldWrappers( $this->fName );
-
-		$this->strSQL = "select min(".$wName.") as " .$this->connection->addFieldWrappers("sliderMin"). ", max(".$wName.") as " .$this->connection->addFieldWrappers("sliderMax");	
-		$this->strSQL .= " from ( " . $this->buildBasicSQL() . " ) a";
-
-//	NOT NULL clause
-		$this->strSQL .= " where " . implode( ' and ', $this->getNotNullWhere() );
+		return $dc;
 	}
 	
-
 	/**
 	 * Get the filter blocks data using the database query
 	 * and add it the the existing blocks
 	 * @param &Array
 	 */
-	protected function addFilterBlocksFromDB(&$filterCtrlBlocks)
+	protected function addFilterBlocksFromDB( &$filterCtrlBlocks )
 	{
-		//query to database with current where settings
-		$data = $this->connection->query( $this->strSQL )->fetchAssoc(); 
-		$this->decryptDataRow($data);
+		//query to database		
+		$qResult = $this->dataSource->getTotals( $this->getDataCommand() );
+		$data = $qResult->fetchAssoc();
 		
-		if( $this->fieldHasNoRange($data) ) 
+		$this->decryptDataRow( $data );
+		
+		if( $this->fieldHasNoRange( $data ) ) 
 			return $filterCtrlBlocks;
 			
-		$filterControl = $this->buildControl($data);
-		$filterCtrlBlocks[] = $this->getFilterBlockStructure($filterControl);
+		$filterControl = $this->buildControl( $data );
+		$filterCtrlBlocks[] = $this->getFilterBlockStructure( $filterControl );
 	}
 	
 	/**
@@ -118,7 +130,7 @@ class FilterIntervalSlider extends FilterControl
 	 */	
 	protected function fieldHasNoRange($data)
 	{
-		if (is_null( $data['sliderMin'] ) && is_null( $data['sliderMax'] ) || $data['sliderMax'] == $data['sliderMin']) 
+		if( is_null( $data['sliderMin'] ) && is_null( $data['sliderMax'] ) || $data['sliderMax'] == $data['sliderMin'] ) 
 			return true;
 			
 		return false;
@@ -144,10 +156,10 @@ class FilterIntervalSlider extends FilterControl
 		} 
 		else 
 		{
-			if($this->knobsType == FS_MAX_ONLY)
+			if( $this->knobsType == FS_MAX_ONLY )
 				$this->minKnobValue = $data['sliderMin'];	
 				
-			if($this->knobsType == FS_MIN_ONLY)
+			if( $this->knobsType == FS_MIN_ONLY )
 				$this->maxKnobValue = $data['sliderMax'];	
 		}
 
@@ -192,11 +204,11 @@ class FilterIntervalSlider extends FilterControl
 	protected function getMinSpanValue() 
 	{
 		$minSpanValue = $this->minKnobValue;
-		if($minSpanValue < $this->minValue)
+		if( $minSpanValue < $this->minValue )
 			$minSpanValue = $this->minValue;
 		
 		$viewFormat = $this->viewControl->viewFormat;
-		if($viewFormat == FORMAT_CURRENCY || $viewFormat == FORMAT_NUMBER)
+		if( $viewFormat == FORMAT_CURRENCY || $viewFormat == FORMAT_NUMBER )
 		{
 			$data = array($this->fName => $minSpanValue);
 			$minSpanValue = $this->viewControl->showDBValue($data, "");			
@@ -211,11 +223,11 @@ class FilterIntervalSlider extends FilterControl
 	protected function getMaxSpanValue() 
 	{
 		$maxSpanValue = $this->maxKnobValue;
-		if($maxSpanValue > $this->maxValue)
+		if( $maxSpanValue > $this->maxValue )
 			$maxSpanValue = $this->maxValue;
 		
 		$viewFormat = $this->viewControl->viewFormat;
-		if($viewFormat == FORMAT_CURRENCY || $viewFormat == FORMAT_NUMBER)
+		if(  $viewFormat == FORMAT_CURRENCY || $viewFormat == FORMAT_NUMBER )
 		{
 			$data = array($this->fName => $maxSpanValue);
 			$maxSpanValue = $this->viewControl->showDBValue($data, "");			
@@ -231,6 +243,7 @@ class FilterIntervalSlider extends FilterControl
 	{
 		if( !$this->viewControl )
 			return;
+		
 		$ctrlsMap = $this->getBaseContolsMapParams();
 		
 		$ctrlsMap['minValue'] = $this->minValue;
@@ -240,9 +253,8 @@ class FilterIntervalSlider extends FilterControl
 
 		$ctrlsMap['roundedMinKnobValue'] = $this->round( $this->minKnobValue, true );
 		$ctrlsMap['roundedMaxKnobValue'] = $this->round( $this->maxKnobValue, false );
-		if($this->filtered)
-		{
-			$ctrlsMap['defaultValuesArray'] = $this->filteredFields[ $this->fName ]["values"];
+		
+		if( $this->filtered ) {
 			$ctrlsMap['minKnobValue'] = $this->minKnobValue;
 			$ctrlsMap['maxKnobValue'] = $this->maxKnobValue;
 		}
@@ -251,7 +263,7 @@ class FilterIntervalSlider extends FilterControl
 		$ctrlsMap['viewAsNumber'] = $viewFomat == FORMAT_NUMBER;
 		$ctrlsMap['viewAsCurrency'] = $viewFomat == FORMAT_CURRENCY;
 		
-		if($viewFomat === FORMAT_CURRENCY)	
+		if( $viewFomat === FORMAT_CURRENCY )	
 			$ctrlsMap['formatSettings'] = $this->getCurrencySettings(); 
 		else if ($viewFomat == FORMAT_NUMBER) 
 			$ctrlsMap['formatSettings'] = $this->getNumberSettings();
@@ -302,15 +314,15 @@ class FilterIntervalSlider extends FilterControl
 	{
 		global $locale_info;
 		$formatSettings = array();
-		if($viewFomat === FORMAT_CURRENCY)
-		{
+		
+		if( $viewFomat === FORMAT_CURRENCY ) {
 			$formatSettings['decimalDigits'] = $locale_info["LOCALE_ICURRDIGITS"];
 			$formatSettings['grouping'] = explode(";", $locale_info['LOCALE_SMONGROUPING']);
 			$formatSettings['thousandSep'] = $locale_info["LOCALE_SMONTHOUSANDSEP"];
 			$formatSettings['decimalSep'] = $locale_info["LOCALE_SMONDECIMALSEP"];
 		}
-		if ($viewFomat == FORMAT_NUMBER)
-		{		
+		
+		if( $viewFomat == FORMAT_NUMBER ) {		
 			$formatSettings['decimalDigits'] = $this->pSet->isDecimalDigits($this->fName);
 			$formatSettings['grouping'] = explode(";", $locale_info['LOCALE_SGROUPING']);
 			$formatSettings['thousandSep'] = $locale_info["LOCALE_STHOUSAND"];
@@ -355,11 +367,11 @@ class FilterIntervalSlider extends FilterControl
 	 * @param number value
 	 * @return number
 	 */
-	protected function round($value, $min) 
+	protected function round( $value, $min ) 
 	{
 		$step = $this->stepValue;
 		
-		if($min)
+		if( $min )
 			return floor( $value / $step ) * $step;
 		
 		return ceil( $value / $step ) * $step;
@@ -383,15 +395,55 @@ class FilterIntervalSlider extends FilterControl
 	public function buildFilterCtrlBlockArray( $pageObj, $dFilterBlocks = null )  
 	{
 		$filterCtrlBlocks = array(); 
-		$this->addFilterBlocksFromDB($filterCtrlBlocks);
+		$this->addFilterBlocksFromDB( $filterCtrlBlocks );
 
-		if( !count($filterCtrlBlocks) )
+		if( !count( $filterCtrlBlocks ) )
 			$this->visible = false;
 			
-		if($this->visible)
-			$this->addFilterControlToControlsMap($pageObj);
+		if( $this->visible )
+			$this->addFilterControlToControlsMap( $pageObj );
 		
 		return $filterCtrlBlocks;
+	}
+	
+	/**
+	 * secondValue is set up for knobsType FS_BOTH only
+	 */
+	public static function getFilterCondition( $fName, $value, $pSet, $secondValue ) {
+		
+		$knobsType = $pSet->getFilterKnobsType( $fName );
+
+		if( $knobsType == FS_MAX_ONLY ) {
+			return DataCondition::_Not(
+				DataCondition::FieldIs( $fName, dsopMORE, $value )
+			);
+		}
+		
+		$conditionMore = DataCondition::_Not(
+			DataCondition::FieldIs( $fName, dsopLESS, $value )
+		);
+		
+		if( $knobsType == FS_MIN_ONLY )
+			return $conditionMore;
+		
+		if( $pSet->getFilterStepType( $fName ) >= 3 && IsDateFieldType( $pSet->getFieldType( $fName ) ) ) {
+			//	interval "up to 2010-10-10" should translate into "x < 2010-10-11" and not in "x <= 2010-10-10"
+			$tm = db2time( $secondValue );
+			if( !$tm[0] ) {
+				$conditionLess = null;
+			} else {
+				$conditionLess = DataCondition::FieldIs( $fName, dsopLESS, date2db( adddays( $tm, 1 ) ) );
+			}
+		} else {
+			$conditionLess = DataCondition::_Not(
+				DataCondition::FieldIs( $fName, dsopMORE, $secondValue )
+			);
+		}
+			
+		return DataCondition::_And( array( 
+			$conditionLess, 
+			$conditionMore 
+		));
 	}
 }
 ?>

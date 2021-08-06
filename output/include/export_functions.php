@@ -2,12 +2,9 @@
 require_once(getabspath("plugins/PHPExcel/IOFactory.php"));
 require_once getabspath("include/export_functions_excel.php");
 
-function ExportToExcel($rs, $nPageSize, $eventObj, $cipherer, $pageObj)
+function ExportToExcel($rs, $pageSize, $pageObj)
 {
-	if( $eventObj->exists("ListFetchArray") )
-		$row = $eventObj->ListFetchArray( $rs, $pageObj );
-	else
-		$row = $cipherer->DecryptFetchedArray( $pageObj->connection->fetch_array( $rs ) );
+	$row = $pageObj->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
 	
 	$totals = array();
 	$arrLabel = array();
@@ -42,8 +39,10 @@ function ExportToExcel($rs, $nPageSize, $eventObj, $cipherer, $pageObj)
 	
 	$objPHPExcel = ExportExcelInit( $arrLabel, $arrColumnWidth );
 	
-	while( (!$nPageSize || $iNumberOfRows < $nPageSize) && $row )
+	while( (!$pageSize || $iNumberOfRows < $pageSize) && $row )
 	{
+		RunnerContext::pushRecordContext( $row, $pageObj );
+		
 		countTotals($totals, $totalsFields, $row);
 		
 		$values = array();	
@@ -56,8 +55,8 @@ function ExportToExcel($rs, $nPageSize, $eventObj, $cipherer, $pageObj)
 		}
 		
 		$eventRes = true;
-		if( $eventObj->exists('BeforeOut') )
-			$eventRes = $eventObj->BeforeOut( $row, $values, $pageObj );
+		if( $pageObj->eventsObject->exists('BeforeOut') )
+			$eventRes = $pageObj->eventsObject->BeforeOut( $row, $values, $pageObj );
 		
 		if( $eventRes )
 		{
@@ -85,10 +84,9 @@ function ExportToExcel($rs, $nPageSize, $eventObj, $cipherer, $pageObj)
 			ExportExcelRecord( $arrData, $arrDataType, $iNumberOfRows, $objPHPExcel, $pageObj );
 		}
 		
-		if( $eventObj->exists("ListFetchArray") )
-			$row = $eventObj->ListFetchArray( $rs, $pageObj );
-		else
-			$row = $cipherer->DecryptFetchedArray( $pageObj->connection->fetch_array( $rs ) );
+		RunnerContext::pop();
+		
+		$row = $pageObj->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
 	}
 	
 	if( count( $arrTmpTotal ) )

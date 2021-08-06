@@ -4,7 +4,7 @@ class ViewDatabaseImageField extends ViewImageDownloadField
 {
 
 	/**
-	 * It returns makePdf image notation { image: ..., width: ..., height: ... }
+	 * It returns pdfmake image notation { image: ..., width: ..., height: ... }
 	*/
 	public function getPdfValue(&$data, $keylink = "")
 	{
@@ -28,6 +28,15 @@ class ViewDatabaseImageField extends ViewImageDownloadField
 				width: ' . $width . ',
 				height: ' .$this->container->pSet->getImageHeight( $this->field ) . '
 			}';
+		} else {
+			$urls = $this->getFileURLs( $data, $keylink );
+			if( $urls ) {
+				return '{
+					image: "' . jsreplace( $urls[0]["image"] ) . '",
+					width: ' . $width . ',
+					height: ' .$this->container->pSet->getImageHeight( $this->field ) . '
+				}';
+			}
 		}
 
 		return '""';
@@ -86,7 +95,7 @@ class ViewDatabaseImageField extends ViewImageDownloadField
 	 * @prarm String keylink
 	 * @return String
 	 */
-	public function getExportValue(&$data, $keylink = "")
+	public function getExportValue(&$data, $keylink = "", $html = false )
 	{
 		return "código binario demasiado grande – no puede ser desplegado";
 	}
@@ -98,7 +107,7 @@ class ViewDatabaseImageField extends ViewImageDownloadField
 	 * @param Boolean hasThumbnail
 	 * @return String
 	 */
-	protected function getSmallThumbnailStyle( $imageSrc, $hasThumbnail )
+	protected function getSmallThumbnailStyle( $imageSrc = false, $hasThumbnail = true )
 	{
 		$styles = array();
 

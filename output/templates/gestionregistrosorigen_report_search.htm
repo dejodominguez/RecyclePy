@@ -21,7 +21,7 @@
 		{$containerCss}
 		</style>
 		<div class="r-vbar-page">
-			<div data-width="" data-fixed class="r-left clearfix {$leftbar_class}" >
+			<div data-width="300px"  class="r-left clearfix {$leftbar_class}" >
 								<div data-location="left" id="form_left_{$pageid}" data-makeup="leftbar" {$form_left} data-pageid="{$pageid}">
 {BEGIN left_block}
  
@@ -44,7 +44,7 @@
 
 			<div class="clearfix " data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
 				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Expand" class="btn btn-link   
+	<a type="button" title="Expandir" class="btn btn-link   
 	" href="#" >
 					<span class="glyphicon glyphicon-triangle-right"></span>
 										</a>
@@ -59,7 +59,7 @@
 				{$menu main}			</div>
 		
     {END left_block}
-</div>				</div>	
+</div>				</div>
 			<div class="r-content-col" data-resize-left="leftbar">
 				<div  class="r-topheader" data-resize-name="topbar">
 									{BEGIN supertop_block}
@@ -67,9 +67,18 @@
 	data-location="supertop" id="form_supertop_{$pageid}" data-makeup="leftbar" {$form_supertop} data-pageid="{$pageid}" >
 			 
 							 
-				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
+				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="expand_menu_button" {$item_expand_menu_button} data-topcell-item-type="expand_menu_button" >
+				<span data-itemtype="expand_menu_button" data-itemid="expand_menu_button" {$item_expand_menu_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Encubrir" class="btn-link   
+	 glyphicon glyphicon-menu-hamburger" href="#" >		
+				
+								</a>
+</span>
+			</span>
+		 
+				<span class="navbar-form  navbar-collapse" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
 				<span data-itemtype="collapse_button" data-itemid="collapse_button" {$item_collapse_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Collapse" class="btn-link   
+	<a type="button" title="Muestrame el menu" class="btn-link   
 	 glyphicon glyphicon-triangle-left" href="#" >		
 				
 								</a>
@@ -95,15 +104,33 @@
 {END breadcrumb}			</span>
 							 
 							 
-				<span class="navbar-form r-align-right r-ori-vert navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="username_button" {$item_username_button} data-topcell-item-type="username_button" >
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="loginform_login" {$item_loginform_login} data-topcell-item-type="loginform_login" >
+				{BEGIN guestloginbutton}
+<span data-itemtype="loginform_login" data-itemid="loginform_login" {$item_loginform_login} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" href="#" {$guestloginlink_attrs} >
+							Conectar			</a>
+</span>
+{END guestloginbutton}
+			</span>
+		 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="username_button" {$item_username_button} data-topcell-item-type="username_button" >
 				{BEGIN loggedas_message}
 <span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-user"></span>
-						{$username}			<span class="caret"></span>
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
 							{BEGIN logoutbutton}
 	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
 				<a  href="#" {$logoutlink_attrs}  title="" >
@@ -112,6 +139,14 @@
 		</a>
 	</li>
 {END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
 					</ul>
 	</span>
 </span>
@@ -152,15 +187,7 @@
 	
 ">
 		{BEGIN firstAboveGridCell}
-		 
-		{BEGIN guestloginbutton}
-<span data-itemtype="loginform_login" data-itemid="loginform_login" {$item_loginform_login} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-primary   
-	" href="#" {$guestloginlink_attrs} >
-							Conectar			</a>
-</span>
-{END guestloginbutton}
-			{END firstAboveGridCell}	
+				{END firstAboveGridCell}	
 	</div>					</div>
 	</div>		
 {END above-grid_block}
@@ -183,7 +210,7 @@
 		data-v-width="6"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -199,264 +226,11 @@
 >
 	<div edit-form-cell class="clearfix">
 				
-{BEGIN IdGesRegOrigen_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesRegOrigen}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="IdGesRegOrigen" 
-	
-	data-signal-error-for="IdGesRegOrigen{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="IdGesRegOrigen" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_IdGesRegOrigen}">
-		{$label public_GestionRegistrosOrigen_Report IdGesRegOrigen }	</label>
-	<div class="r-search-option">
-		{$searchtype_IdGesRegOrigen}
-	</div>
-	<div class="r-search-field">
-		{$IdGesRegOrigen_editcontrol}	</div>
-	<div class="r-search-field">
-		{$IdGesRegOrigen_editcontrol1}
-	</div>
-	
-</div>
-
-{END IdGesRegOrigen_fieldblock}
-											
-{BEGIN IdUsuario_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdUsuario}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="IdUsuario" 
-	
-	data-signal-error-for="IdUsuario{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="IdUsuario" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_IdUsuario}">
-		{$label public_GestionRegistrosOrigen_Report IdUsuario }	</label>
-	<div class="r-search-option">
-		{$searchtype_IdUsuario}
-	</div>
-	<div class="r-search-field">
-		{$IdUsuario_editcontrol}	</div>
-	<div class="r-search-field">
-		{$IdUsuario_editcontrol1}
-	</div>
-	
-</div>
-
-{END IdUsuario_fieldblock}
-											
-{BEGIN CantidadOrigen_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_CantidadOrigen}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="CantidadOrigen" 
-	
-	data-signal-error-for="CantidadOrigen{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field4" {$item_integrated_search_field4} data-pageid="{$pageid}" data-field="CantidadOrigen" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_CantidadOrigen}">
-		{$label public_GestionRegistrosOrigen_Report CantidadOrigen }	</label>
-	<div class="r-search-option">
-		{$searchtype_CantidadOrigen}
-	</div>
-	<div class="r-search-field">
-		{$CantidadOrigen_editcontrol}	</div>
-	<div class="r-search-field">
-		{$CantidadOrigen_editcontrol1}
-	</div>
-	
-</div>
-
-{END CantidadOrigen_fieldblock}
-											
-{BEGIN FotoOrigen_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_FotoOrigen}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="FotoOrigen" 
-	
-	data-signal-error-for="FotoOrigen{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field5" {$item_integrated_search_field5} data-pageid="{$pageid}" data-field="FotoOrigen" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_FotoOrigen}">
-		{$label public_GestionRegistrosOrigen_Report FotoOrigen }	</label>
-	<div class="r-search-option">
-		{$searchtype_FotoOrigen}
-	</div>
-	<div class="r-search-field">
-		{$FotoOrigen_editcontrol}	</div>
-	<div class="r-search-field">
-		{$FotoOrigen_editcontrol1}
-	</div>
-	
-</div>
-
-{END FotoOrigen_fieldblock}
-											
-{BEGIN GPSMapaGoo_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_GPSMapaGoo}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="GPSMapaGoo" 
-	
-	data-signal-error-for="GPSMapaGoo{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field6" {$item_integrated_search_field6} data-pageid="{$pageid}" data-field="GPSMapaGoo" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_GPSMapaGoo}">
-		{$label public_GestionRegistrosOrigen_Report GPSMapaGoo }	</label>
-	<div class="r-search-option">
-		{$searchtype_GPSMapaGoo}
-	</div>
-	<div class="r-search-field">
-		{$GPSMapaGoo_editcontrol}	</div>
-	<div class="r-search-field">
-		{$GPSMapaGoo_editcontrol1}
-	</div>
-	
-</div>
-
-{END GPSMapaGoo_fieldblock}
-											
-{BEGIN NombreUsuario_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_NombreUsuario}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="NombreUsuario" 
-	
-	data-signal-error-for="NombreUsuario{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="NombreUsuario" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_NombreUsuario}">
-		{$label public_GestionRegistrosOrigen_Report NombreUsuario }	</label>
-	<div class="r-search-option">
-		{$searchtype_NombreUsuario}
-	</div>
-	<div class="r-search-field">
-		{$NombreUsuario_editcontrol}	</div>
-	<div class="r-search-field">
-		{$NombreUsuario_editcontrol1}
-	</div>
-	
-</div>
-
-{END NombreUsuario_fieldblock}
-											
-{BEGIN DirecUsuario_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_DirecUsuario}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="DirecUsuario" 
-	
-	data-signal-error-for="DirecUsuario{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="DirecUsuario" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_DirecUsuario}">
-		{$label public_GestionRegistrosOrigen_Report DirecUsuario }	</label>
-	<div class="r-search-option">
-		{$searchtype_DirecUsuario}
-	</div>
-	<div class="r-search-field">
-		{$DirecUsuario_editcontrol}	</div>
-	<div class="r-search-field">
-		{$DirecUsuario_editcontrol1}
-	</div>
-	
-</div>
-
-{END DirecUsuario_fieldblock}
-											
-{BEGIN DescriBarrio_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_DescriBarrio}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="DescriBarrio" 
-	
-	data-signal-error-for="DescriBarrio{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field7" {$item_integrated_search_field7} data-pageid="{$pageid}" data-field="DescriBarrio" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_DescriBarrio}">
-		{$label public_GestionRegistrosOrigen_Report DescriBarrio }	</label>
-	<div class="r-search-option">
-		{$searchtype_DescriBarrio}
-	</div>
-	<div class="r-search-field">
-		{$DescriBarrio_editcontrol}	</div>
-	<div class="r-search-field">
-		{$DescriBarrio_editcontrol1}
-	</div>
-	
-</div>
-
-{END DescriBarrio_fieldblock}
-											
-{BEGIN DescriMedTipOrigen_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_DescriMedTipOrigen}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="DescriMedTipOrigen" 
-	
-	data-signal-error-for="DescriMedTipOrigen{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field8" {$item_integrated_search_field8} data-pageid="{$pageid}" data-field="DescriMedTipOrigen" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_DescriMedTipOrigen}">
-		{$label public_GestionRegistrosOrigen_Report DescriMedTipOrigen }	</label>
-	<div class="r-search-option">
-		{$searchtype_DescriMedTipOrigen}
-	</div>
-	<div class="r-search-field">
-		{$DescriMedTipOrigen_editcontrol}	</div>
-	<div class="r-search-field">
-		{$DescriMedTipOrigen_editcontrol1}
-	</div>
-	
-</div>
-
-{END DescriMedTipOrigen_fieldblock}
-											
-{BEGIN DescriResiduo_fieldblock}
-
-<div class="r-integrated-field form-group clearfix {$fielddispclass_DescriResiduo}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="DescriResiduo" 
-	
-	data-signal-error-for="DescriResiduo{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field9" {$item_integrated_search_field9} data-pageid="{$pageid}" data-field="DescriResiduo" >
-
-
-	<label class="r-search-label control-label" for="{$labelfor_DescriResiduo}">
-		{$label public_GestionRegistrosOrigen_Report DescriResiduo }	</label>
-	<div class="r-search-option">
-		{$searchtype_DescriResiduo}
-	</div>
-	<div class="r-search-field">
-		{$DescriResiduo_editcontrol}	</div>
-	<div class="r-search-field">
-		{$DescriResiduo_editcontrol1}
-	</div>
-	
-</div>
-
-{END DescriResiduo_fieldblock}
-											
 {BEGIN Lat_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_Lat}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="Lat" 
-	
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Lat}  r-horizontal-field form-horizontal" 	
 	data-signal-error-for="Lat{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field10" {$item_integrated_search_field10} data-pageid="{$pageid}" data-field="Lat" >
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field10" {$item_integrated_search_field10} data-pageid="{$pageid}" data-field="Lat" data-fieldname="Lat" >
 
 
 	<label class="r-search-label control-label" for="{$labelfor_Lat}">
@@ -476,12 +250,9 @@
 											
 {BEGIN Lng_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_Lng}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="Lng" 
-	
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Lng}  r-horizontal-field form-horizontal" 	
 	data-signal-error-for="Lng{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field11" {$item_integrated_search_field11} data-pageid="{$pageid}" data-field="Lng" >
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field11" {$item_integrated_search_field11} data-pageid="{$pageid}" data-field="Lng" data-fieldname="Lng" >
 
 
 	<label class="r-search-label control-label" for="{$labelfor_Lng}">
@@ -499,30 +270,247 @@
 
 {END Lng_fieldblock}
 											
-{BEGIN NombreCompleto_fieldblock}
+{BEGIN id_ges_reg_origen_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_NombreCompleto}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="NombreCompleto" 
-	
-	data-signal-error-for="NombreCompleto{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field12" {$item_integrated_search_field12} data-pageid="{$pageid}" data-field="NombreCompleto" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_ges_reg_origen}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="id_ges_reg_origen{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="id_ges_reg_origen" data-fieldname="id_ges_reg_origen" >
 
 
-	<label class="r-search-label control-label" for="{$labelfor_NombreCompleto}">
-		{$label public_GestionRegistrosOrigen_Report NombreCompleto }	</label>
+	<label class="r-search-label control-label" for="{$labelfor_id_ges_reg_origen}">
+		{$label public_GestionRegistrosOrigen_Report id_ges_reg_origen }	</label>
 	<div class="r-search-option">
-		{$searchtype_NombreCompleto}
+		{$searchtype_id_ges_reg_origen}
 	</div>
 	<div class="r-search-field">
-		{$NombreCompleto_editcontrol}	</div>
+		{$id_ges_reg_origen_editcontrol}	</div>
 	<div class="r-search-field">
-		{$NombreCompleto_editcontrol1}
+		{$id_ges_reg_origen_editcontrol1}
 	</div>
 	
 </div>
 
-{END NombreCompleto_fieldblock}
+{END id_ges_reg_origen_fieldblock}
+											
+{BEGIN nombre_usuario_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_nombre_usuario}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="nombre_usuario{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="nombre_usuario" data-fieldname="nombre_usuario" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_nombre_usuario}">
+		{$label public_GestionRegistrosOrigen_Report nombre_usuario }	</label>
+	<div class="r-search-option">
+		{$searchtype_nombre_usuario}
+	</div>
+	<div class="r-search-field">
+		{$nombre_usuario_editcontrol}	</div>
+	<div class="r-search-field">
+		{$nombre_usuario_editcontrol1}
+	</div>
+	
+</div>
+
+{END nombre_usuario_fieldblock}
+											
+{BEGIN nombre_completo_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_nombre_completo}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="nombre_completo{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="nombre_completo" data-fieldname="nombre_completo" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_nombre_completo}">
+		{$label public_GestionRegistrosOrigen_Report nombre_completo }	</label>
+	<div class="r-search-option">
+		{$searchtype_nombre_completo}
+	</div>
+	<div class="r-search-field">
+		{$nombre_completo_editcontrol}	</div>
+	<div class="r-search-field">
+		{$nombre_completo_editcontrol1}
+	</div>
+	
+</div>
+
+{END nombre_completo_fieldblock}
+											
+{BEGIN direc_usuario_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_direc_usuario}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="direc_usuario{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="direc_usuario" data-fieldname="direc_usuario" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_direc_usuario}">
+		{$label public_GestionRegistrosOrigen_Report direc_usuario }	</label>
+	<div class="r-search-option">
+		{$searchtype_direc_usuario}
+	</div>
+	<div class="r-search-field">
+		{$direc_usuario_editcontrol}	</div>
+	<div class="r-search-field">
+		{$direc_usuario_editcontrol1}
+	</div>
+	
+</div>
+
+{END direc_usuario_fieldblock}
+											
+{BEGIN descri_barrio_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_descri_barrio}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="descri_barrio{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field4" {$item_integrated_search_field4} data-pageid="{$pageid}" data-field="descri_barrio" data-fieldname="descri_barrio" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_descri_barrio}">
+		{$label public_GestionRegistrosOrigen_Report descri_barrio }	</label>
+	<div class="r-search-option">
+		{$searchtype_descri_barrio}
+	</div>
+	<div class="r-search-field">
+		{$descri_barrio_editcontrol}	</div>
+	<div class="r-search-field">
+		{$descri_barrio_editcontrol1}
+	</div>
+	
+</div>
+
+{END descri_barrio_fieldblock}
+											
+{BEGIN cantidad_origen_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_cantidad_origen}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="cantidad_origen{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field5" {$item_integrated_search_field5} data-pageid="{$pageid}" data-field="cantidad_origen" data-fieldname="cantidad_origen" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_cantidad_origen}">
+		{$label public_GestionRegistrosOrigen_Report cantidad_origen }	</label>
+	<div class="r-search-option">
+		{$searchtype_cantidad_origen}
+	</div>
+	<div class="r-search-field">
+		{$cantidad_origen_editcontrol}	</div>
+	<div class="r-search-field">
+		{$cantidad_origen_editcontrol1}
+	</div>
+	
+</div>
+
+{END cantidad_origen_fieldblock}
+											
+{BEGIN descri_med_tip_origen_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_descri_med_tip_origen}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="descri_med_tip_origen{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field6" {$item_integrated_search_field6} data-pageid="{$pageid}" data-field="descri_med_tip_origen" data-fieldname="descri_med_tip_origen" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_descri_med_tip_origen}">
+		{$label public_GestionRegistrosOrigen_Report descri_med_tip_origen }	</label>
+	<div class="r-search-option">
+		{$searchtype_descri_med_tip_origen}
+	</div>
+	<div class="r-search-field">
+		{$descri_med_tip_origen_editcontrol}	</div>
+	<div class="r-search-field">
+		{$descri_med_tip_origen_editcontrol1}
+	</div>
+	
+</div>
+
+{END descri_med_tip_origen_fieldblock}
+											
+{BEGIN descri_residuo_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_descri_residuo}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="descri_residuo{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field7" {$item_integrated_search_field7} data-pageid="{$pageid}" data-field="descri_residuo" data-fieldname="descri_residuo" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_descri_residuo}">
+		{$label public_GestionRegistrosOrigen_Report descri_residuo }	</label>
+	<div class="r-search-option">
+		{$searchtype_descri_residuo}
+	</div>
+	<div class="r-search-field">
+		{$descri_residuo_editcontrol}	</div>
+	<div class="r-search-field">
+		{$descri_residuo_editcontrol1}
+	</div>
+	
+</div>
+
+{END descri_residuo_fieldblock}
+											
+{BEGIN id_usuario_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_usuario}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="id_usuario{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field8" {$item_integrated_search_field8} data-pageid="{$pageid}" data-field="id_usuario" data-fieldname="id_usuario" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_id_usuario}">
+		{$label public_GestionRegistrosOrigen_Report id_usuario }	</label>
+	<div class="r-search-option">
+		{$searchtype_id_usuario}
+	</div>
+	<div class="r-search-field">
+		{$id_usuario_editcontrol}	</div>
+	<div class="r-search-field">
+		{$id_usuario_editcontrol1}
+	</div>
+	
+</div>
+
+{END id_usuario_fieldblock}
+											
+{BEGIN gps_mapa_goo_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_gps_mapa_goo}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="gps_mapa_goo{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field9" {$item_integrated_search_field9} data-pageid="{$pageid}" data-field="gps_mapa_goo" data-fieldname="gps_mapa_goo" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_gps_mapa_goo}">
+		{$label public_GestionRegistrosOrigen_Report gps_mapa_goo }	</label>
+	<div class="r-search-option">
+		{$searchtype_gps_mapa_goo}
+	</div>
+	<div class="r-search-field">
+		{$gps_mapa_goo_editcontrol}	</div>
+	<div class="r-search-field">
+		{$gps_mapa_goo_editcontrol1}
+	</div>
+	
+</div>
+
+{END gps_mapa_goo_fieldblock}
+											
+{BEGIN foto_origen_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_foto_origen}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="foto_origen{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field12" {$item_integrated_search_field12} data-pageid="{$pageid}" data-field="foto_origen" data-fieldname="foto_origen" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_foto_origen}">
+		{$label public_GestionRegistrosOrigen_Report foto_origen }	</label>
+	<div class="r-search-option">
+		{$searchtype_foto_origen}
+	</div>
+	<div class="r-search-field">
+		{$foto_origen_editcontrol}	</div>
+	<div class="r-search-field">
+		{$foto_origen_editcontrol1}
+	</div>
+	
+</div>
+
+{END foto_origen_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}
@@ -576,6 +564,8 @@
 					{$footer}
 				</div>	
 			</div>	
+			<div class="r-body-shadow">
+			</div>
 		</div>
 	{END body}
 	</body>

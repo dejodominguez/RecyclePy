@@ -10,7 +10,7 @@ function UsersTableName()
 {
 	global $cman;
 	$connection = $cman->getForLogin();
-	return $connection->addTableWrappers("public.Usuarios");
+	return $connection->addTableWrappers("public.usuarios");
 }
 
 /**
@@ -47,16 +47,17 @@ function DBLookup($sql)
   */
 class tDAL
 {
-	var $tblRealEstate_at_localhost_public_Barrios;
-	var $tblRealEstate_at_localhost_public_DetalleVentas;
-	var $tblRealEstate_at_localhost_public_EmpresasRecicladores;
-	var $tblRealEstate_at_localhost_public_GestionPesosResiduos;
-	var $tblRealEstate_at_localhost_public_GestionRegistrosOrigen;
-	var $tblRealEstate_at_localhost_public_MedTipoOrigen;
-	var $tblRealEstate_at_localhost_public_Recicladores;
-	var $tblRealEstate_at_localhost_public_Residuos;
-	var $tblRealEstate_at_localhost_public_Usuarios;
-	var $tblRealEstate_at_localhost_public_Ventas;
+	var $tblRealEstate_at_localhost_public_barrios;
+	var $tblRealEstate_at_localhost_public_detalles_ventas;
+	var $tblRealEstate_at_localhost_public_empresas_recicladoras;
+	var $tblRealEstate_at_localhost_public_gestion_pesos_residuos;
+	var $tblRealEstate_at_localhost_public_gestion_registros_origen;
+	var $tblRealEstate_at_localhost_public_med_tipo_origen;
+	var $tblRealEstate_at_localhost_public_recicladores;
+	var $tblRealEstate_at_localhost_public_residuos;
+	var $tblRealEstate_at_localhost_public_tipos_usuarios;
+	var $tblRealEstate_at_localhost_public_usuarios;
+	var $tblRealEstate_at_localhost_public_ventas;
 	var $lstTables;
 	var $Table = array();
 
@@ -64,16 +65,17 @@ class tDAL
 	{
 		if($this->lstTables)
 			return;
-		$this->lstTables[] = array("name" => "Barrios", "varname" => "RealEstate_at_localhost_public_Barrios", "altvarname" => "Barrios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "DetalleVentas", "varname" => "RealEstate_at_localhost_public_DetalleVentas", "altvarname" => "DetalleVentas", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "EmpresasRecicladores", "varname" => "RealEstate_at_localhost_public_EmpresasRecicladores", "altvarname" => "EmpresasRecicladores", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "GestionPesosResiduos", "varname" => "RealEstate_at_localhost_public_GestionPesosResiduos", "altvarname" => "GestionPesosResiduos", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "GestionRegistrosOrigen", "varname" => "RealEstate_at_localhost_public_GestionRegistrosOrigen", "altvarname" => "GestionRegistrosOrigen", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "MedTipoOrigen", "varname" => "RealEstate_at_localhost_public_MedTipoOrigen", "altvarname" => "MedTipoOrigen", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "Recicladores", "varname" => "RealEstate_at_localhost_public_Recicladores", "altvarname" => "Recicladores", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "Residuos", "varname" => "RealEstate_at_localhost_public_Residuos", "altvarname" => "Residuos", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "Usuarios", "varname" => "RealEstate_at_localhost_public_Usuarios", "altvarname" => "Usuarios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-		$this->lstTables[] = array("name" => "Ventas", "varname" => "RealEstate_at_localhost_public_Ventas", "altvarname" => "Ventas", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
+		$this->lstTables[] = array("name" => "barrios", "varname" => "RealEstate_at_localhost_public_barrios", "altvarname" => "barrios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "detalles_ventas", "varname" => "RealEstate_at_localhost_public_detalles_ventas", "altvarname" => "detalles_ventas", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "empresas_recicladoras", "varname" => "RealEstate_at_localhost_public_empresas_recicladoras", "altvarname" => "empresas_recicladoras", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "gestion_pesos_residuos", "varname" => "RealEstate_at_localhost_public_gestion_pesos_residuos", "altvarname" => "gestion_pesos_residuos", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "gestion_registros_origen", "varname" => "RealEstate_at_localhost_public_gestion_registros_origen", "altvarname" => "gestion_registros_origen", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "med_tipo_origen", "varname" => "RealEstate_at_localhost_public_med_tipo_origen", "altvarname" => "med_tipo_origen", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "recicladores", "varname" => "RealEstate_at_localhost_public_recicladores", "altvarname" => "recicladores", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "residuos", "varname" => "RealEstate_at_localhost_public_residuos", "altvarname" => "residuos", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "tipos_usuarios", "varname" => "RealEstate_at_localhost_public_tipos_usuarios", "altvarname" => "tipos_usuarios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "usuarios", "varname" => "RealEstate_at_localhost_public_usuarios", "altvarname" => "usuarios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+		$this->lstTables[] = array("name" => "ventas", "varname" => "RealEstate_at_localhost_public_ventas", "altvarname" => "ventas", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
 	}
 
 	/**

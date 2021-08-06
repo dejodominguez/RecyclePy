@@ -45,6 +45,13 @@ class DashboardPage extends RunnerPage
 						$newElem['tabsPageTypes'][] = $pageType;
 					}
 				}
+				
+				$gridElem = $this->getGridElement( $elem['table'] );
+				if( $gridElem ) {
+					$eset = new ProjectSettings( $elem['table'], PAGE_LIST, $gridElem['pageName'] );
+					$newElem['spreadsheetGrid'] = $eset->spreadsheetGrid();
+					$newElem['hostListPage'] = $gridElem['pageName'];
+				}
 			}
 			elseif( $elem['type'] == DASHBOARD_DETAILS)
 			{
@@ -300,13 +307,18 @@ class DashboardPage extends RunnerPage
 	 */
 	protected function hasGridElement( $table )
 	{
-		foreach( $this->pSet->getDashboardElements() as $elem ) 
-		{
-			if( $elem["table"] == $table && $elem["type"] == DASHBOARD_LIST )
-				return true;
-		}
+		if( $this->getGridElement( $table ) )
+			return true;
 		
-		return false;			
+		return false;
+	}
+	
+	protected function getGridElement( $table ) {
+		foreach( $this->pSet->getDashboardElements() as $elem ) {
+			if( $elem["table"] == $table && $elem["type"] == DASHBOARD_LIST )
+				return $elem;
+		}
+		return null;
 	}
 	
 	/**

@@ -4,10 +4,9 @@ class ExportPage extends RunnerPage
 {
 	public $exportType = "";
 
-	public $action = "";
-
-	public $records = "";
-
+	public $allPagesMode = false;
+	public $currentPageMode = false;
+	
 	protected $textFormattingType;
 
 	public $useRawValues = false;
@@ -15,8 +14,6 @@ class ExportPage extends RunnerPage
 	public $csvDelimiter = ",";
 
 	public $selectedFields = array();
-
-	public $querySQL = "";
 
 	/**
 	 * @constructor
@@ -68,9 +65,7 @@ class ExportPage extends RunnerPage
 		if( $this->eventsObject->exists("BeforeProcessExport") )
 			$this->eventsObject->BeforeProcessExport( $this );
 
-		if( $this->exportType )
-		{
-			$this->buildSQL();
+		if( $this->exportType ) {
 			$this->exportByType();
 			exit();
 			return;
@@ -147,103 +142,115 @@ class ExportPage extends RunnerPage
 
 		return '<select name="exportFields" multiple style="width: 100%;" data-placeholder="'."Por favor seleccione".'" id="exportFields'. $this->id .'">'. implode( "", $options ) .'</select>';
 	}
-
+	
 	/**
 	 *
 	 */
 	protected function exportByType()
 	{
-		//	Pagination:
-		$mypage = 1;
-		$nPageSize = 0;
-		if( $this->records == "page" )
-		{
-			$mypage = (integer)@$_SESSION[ $this->tName."_pagenumber" ];
-			if( !$mypage )
-				$mypage = 1;
+		$myPage = 1;
+		$pageSize = 0;
+		if( $this->currentPageMode ) {
+			$myPage = (integer)@$_SESSION[ $this->tName."_pagenumber" ];
+			if( !$myPage )
+				$myPage = 1;
+
+			$pageSize = (integer)@$_SESSION[ $this->tName."_pagesize" ];
+			if( !$pageSize )
+				$pageSize = $this->pSet->getInitialPageSize();
+
+			if( $this->pSet->getRecordsLimit() )
+				$pageSize = $this->pSet->getRecordsLimit() - ( $myPage - 1 ) * $pageSize;
 			
-			$nPageSize = (integer)@$_SESSION[ $this->tName."_pagesize" ];
-			if( !$nPageSize )
-				$nPageSize = $this->pSet->getInitialPageSize();
+			if( $pageSize < 0 )
+				$pageSize = 0;
+			
+		} else if( $this->allPagesMode && $this->pSet->getRecordsLimit() ) {
+			$pageSize = $this->pSet->getRecordsLimit();
+		}
+		
 
-			if( $nPageSize < 0 )
-				$nPageSize = 0;
+		$dc = $this->getSubsetDataCommand();
+		if( $this->currentPageMode || $this->allPagesMode && $this->pSet->getRecordsLimit() ) {
+			$dc->startRecord = $pageSize * ( $myPage - 1 );
+			$dc->reccount = $pageSize;				
 		}
 
-		$listarray = null;
-		if( $this->eventsObject->exists("ListQuery") )
-		{
-			require_once getabspath('classes/orderclause.php');
-			$orderClause = OrderClause::createFromPage( $this );
-			$orderFieldsData = $orderClause->getListQueryData();
-
-			$listarray = $this->eventsObject->ListQuery( $this->searchClauseObj, $orderFieldsData["fieldsForSort"], $orderFieldsData["howToSortData"],
-				$this->masterTable, $this->masterKeysReq, $this->getSelectedRecords(), $nPageSize, $mypage, $this );
+		if( $this->eventsObject->exists("BeforeQueryExport") ) {
+			$prep = $this->dataSource->prepareSQL( $dc );
+			$sql = $prep["sql"];
+			$where = $prep["where"];
+			$order = $prep["order"];
+			
+			$this->eventsObject->BeforeQueryExport( $sql, $where, $order, $this );
+			if( $sql != $prep["sql"] ) {
+				$this->dataSource->overrideSQL( $dc, $sql );
+			} else if( $where != $prep["where"] ) {
+				$this->dataSource->overrideWhere( $dc, $where );
+			}
+			if( $order != $prep["order"] ) {
+				$this->dataSource->overrideOrder( $dc, $order );
+			}
 		}
-
-		if( $listarray != null )
-			$rs = $listarray;
-		else
-		{
-			$_rs = $this->connection->queryPage( $this->querySQL, $mypage, $nPageSize, $nPageSize > 0 );
-			$rs = $_rs->getQueryHandle();
-		}
-
 		runner_set_page_timeout(300);
 
-		if ( $this->pSet->getRecordsLimit()  )
-			$nPageSize = $this->pSet->getRecordsLimit() - ( ($mypage-1) * $nPageSize);
+		$rs = $this->dataSource->getList( $dc );
+		if( !$rs ) {
+			showError( $this->dataSource->lastError() );
+		}
 		
-		$this->exportTo( $this->exportType, $rs, $nPageSize );
-		$this->connection->close();
+		$this->exportTo( $this->exportType, $rs , $pageSize );
 	}
 
+	public function getSubsetDataCommand( $ignoreFilterField = "" ) {
+		$dc = parent::getSubsetDataCommand( $ignoreFilterField );
+		
+		$this->reoderCommandForReoderedRows( $this->getListPSet(), $dc );
+		return $dc;
+	}
+	
 	/**
 	 * @param String type
 	 * @param Mixed rs
-	 * @param Number nPageSize
+	 * @param Number pageSize
 	 */
-	public function exportTo( $type, $rs, $nPageSize)
+	public function exportTo( $type, $rs, $pageSize )
 	{
 		global $locale_info;
 
-		if( substr(@$type, 0, 5) == "excel" )
+		if( substr($type, 0, 5) == "excel" )
+			$type = "excel";
+		
+		if( $type == "excel" ) 
 		{
-			//	remove grouping
 			$locale_info["LOCALE_SGROUPING"] = "0";
 			$locale_info["LOCALE_SMONGROUPING"] = "0";
-			ExportToExcel($rs, $nPageSize, $this->eventsObject, $this->cipherer, $this);
-			return;
-		}
-
-		if( $type == "word" )
+			ExportToExcel( $rs, $pageSize, $this );
+		} 
+		else if( $type == "word" ) 
 		{
-			$this->ExportToWord( $rs, $nPageSize );
-			return;
+				$this->ExportToWord( $rs, $pageSize );
 		}
-
-		if( $type == "xml" )
+		else if( $type == "xml" ) 
 		{
-			$this->ExportToXML( $rs, $nPageSize );
-			return;
+			$this->ExportToXML( $rs, $pageSize );
 		}
-
-		if( $type == "csv" )
+		else if( $type == "csv" ) 
 		{
 			$locale_info["LOCALE_SGROUPING"] = "0";
 			$locale_info["LOCALE_SDECIMAL"] = ".";
 			$locale_info["LOCALE_SMONGROUPING"] = "0";
 			$locale_info["LOCALE_SMONDECIMALSEP"] = ".";
 
-			$this->ExportToCSV( $rs, $nPageSize );
+			$this->ExportToCSV( $rs, $pageSize );
 		}
 	}
 
 	/**
 	 * @param Mixed rs
-	 * @param Number nPageSize
+	 * @param Number pageSize
 	 */
-	public function ExportToWord( $rs, $nPageSize )
+	public function ExportToWord( $rs, $pageSize )
 	{
 		global $cCharset;
 		header("Content-Type: application/vnd.ms-word");
@@ -254,7 +261,7 @@ class ExportPage extends RunnerPage
 		echo "<body>";
 		echo "<table border=1>";
 
-		$this->WriteTableData( $rs, $nPageSize );
+		$this->WriteTableData( $rs, $pageSize );
 
 		echo "</table>";
 		echo "</body>";
@@ -263,61 +270,45 @@ class ExportPage extends RunnerPage
 
 	/**
 	 * @param Mixed rs
-	 * @param Number nPageSize
+	 * @param Number pageSize
 	 */
-	public function ExportToXML( $rs, $nPageSize )
+	public function ExportToXML( $rs, $pageSize )
 	{
 		global $cCharset;
 
 		header("Content-Type: text/xml");
 		header("Content-Disposition: attachment;Filename=".GetTableURL( $this->tName ).".xml");
-
-		if( $this->eventsObject->exists("ListFetchArray") )
-			$row = $this->eventsObject->ListFetchArray( $rs, $this );
-		else
-			$row = $this->cipherer->DecryptFetchedArray( $this->connection->fetch_array( $rs ) );
-
+		
 		echo "<?xml version=\"1.0\" encoding=\"".$cCharset."\" standalone=\"yes\"?>\r\n";
 		echo "<table>\r\n";
-
-		$i = 0;
+		
 		$this->viewControls->setForExportVar("xml");
-		while( (!$nPageSize || $i < $nPageSize) && $row )
-		{
-			$values = array();
-			foreach( $this->selectedFields as $field )
-			{
-				$fType = $this->pSet->getFieldType( $field );
-				if( IsBinaryType( $fType ) )
-					$values[ $field ] = "código binario demasiado grande – no puede ser desplegado";
-				else
-					$values[ $field ] = $this->getFormattedFieldValue( $field, $row );
-			}
 
+		$row = $this->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
+		$numberOfRows = 0;
+		
+		while( ( !$pageSize || $numberOfRows < $pageSize ) && $row )
+		{
+			RunnerContext::pushRecordContext( $row, $this );
+			$values = $this->getValuesFromRow( $row );
+			
 			$eventRes = true;
 			if( $this->eventsObject->exists('BeforeOut') )
 				$eventRes = $this->eventsObject->BeforeOut( $row, $values, $this );
 
-			if( $eventRes )
-			{
-				$i++;
+			if( $eventRes ) {
+				$numberOfRows++;
+				
 				echo "<row>\r\n";
-				foreach( $values as $fName => $val )
-				{
+				foreach( $values as $fName => $val ) {
 					$field = runner_htmlspecialchars( XMLNameEncode( $fName ) );
-
-					echo "<".$field.">";
-					echo xmlencode( $values[ $fName ] );
-					echo "</".$field.">\r\n";
+					echo "<".$field.">" . xmlencode( $values[ $fName ] ) . "</".$field.">\r\n";
 				}
-
 				echo "</row>\r\n";
 			}
 
-			if( $this->eventsObject->exists("ListFetchArray") )
-				$row = $this->eventsObject->ListFetchArray( $rs, $this );
-			else
-				$row = $this->cipherer->DecryptFetchedArray( $this->connection->fetch_array( $rs ) );
+			RunnerContext::pop();
+			$row = $this->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
 		}
 
 		echo "</table>\r\n";
@@ -325,9 +316,9 @@ class ExportPage extends RunnerPage
 
 	/**
 	 * @param Mixed rs
-	 * @param Number nPageSize
+	 * @param Number pageSize
 	 */
-	public function ExportToCSV( $rs, $nPageSize )
+	public function ExportToCSV( $rs, $pageSize )
 	{
 		if( $this->pSet->chekcExportDelimiterSelection() && strlen( $this->csvDelimiter ) )
 			$delimiter = $this->csvDelimiter;
@@ -338,11 +329,10 @@ class ExportPage extends RunnerPage
 		header("Content-Disposition: attachment;Filename=".GetTableURL($this->tName).".csv");
 		printBOM();
 
-		if( $this->eventsObject->exists("ListFetchArray") )
-			$row = $this->eventsObject->ListFetchArray( $rs, $this );
-		else
-			$row = $this->cipherer->DecryptFetchedArray( $this->connection->fetch_array( $rs ) );
+		$this->viewControls->setForExportVar( "csv" );
 
+		$row = $this->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
+		
 		// write header
 		$headerParts = array();
 		foreach( $this->selectedFields as $field )
@@ -352,43 +342,31 @@ class ExportPage extends RunnerPage
 		echo implode( $delimiter, $headerParts );
 		echo "\r\n";
 
-		$this->viewControls->setForExportVar( "csv" ); //?
-
 		// write data rows
-		$iNumberOfRows = 0;
-		while( (!$nPageSize || $iNumberOfRows < $nPageSize) && $row )
+		$numberOfRows = 0;
+		while( ( !$pageSize || $numberOfRows < $pageSize ) && $row )
 		{
-			$values = array();
-			foreach( $this->selectedFields as $field )
-			{
-				$fType = $this->pSet->getFieldType( $field );
-				if( IsBinaryType( $fType ) )
-					$values[ $field ] = "código binario demasiado grande – no puede ser desplegado";
-				else
-					$values[ $field ] = $this->getFormattedFieldValue( $field, $row );
-			}
+			RunnerContext::pushRecordContext( $row, $this );
+			$values = $this->getValuesFromRow( $row );
 
 			$eventRes = true;
 			if( $this->eventsObject->exists('BeforeOut') )
 				$eventRes = $this->eventsObject->BeforeOut( $row, $values, $this );
 
-			if( $eventRes )
-			{
+			if( $eventRes ) {
 				$dataRowParts = array();
-				foreach( $this->selectedFields as $field )
-				{
+				foreach( $this->selectedFields as $field ) {
 					$dataRowParts[] = '"'.str_replace( '"', '""', $values[ $field ] ).'"';
 				}
 				echo implode( $delimiter, $dataRowParts );
 			}
+			
+			RunnerContext::pop();
+			
+			$numberOfRows++;
+			$row = $this->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
 
-			$iNumberOfRows++;
-			if( $this->eventsObject->exists("ListFetchArray") )
-				$row = $this->eventsObject->ListFetchArray( $rs, $this );
-			else
-				$row = $this->cipherer->DecryptFetchedArray( $this->connection->fetch_array( $rs ) );
-
-			if( ( !$nPageSize || $iNumberOfRows < $nPageSize) && $row && $eventRes )
+			if( ( !$pageSize || $numberOfRows < $pageSize) && $row && $eventRes )
 				echo "\r\n";
 		}
 	}
@@ -402,37 +380,25 @@ class ExportPage extends RunnerPage
 		if( $this->useRawValues )
 			return $row[ $fName ];
 
-		return $this->getExportValue( $fName, $row );
+		return $this->getExportValue( $fName, $row, "", $this->exportType == "word" );
 	}
 
 	/**
 	 * @param Mixed rs
-	 * @param Number nPageSize
+	 * @param Number pageSize
 	 */
-	protected function WriteTableData( $rs, $nPageSize )
+	protected function WriteTableData( $rs, $pageSize )
 	{
 		$totalFieldsData = $this->pSet->getTotalsFields();
-
-		if( $this->eventsObject->exists("ListFetchArray") )
-			$row = $this->eventsObject->ListFetchArray( $rs, $this );
-		else
-			$row = $this->cipherer->DecryptFetchedArray( $this->connection->fetch_array( $rs ) );
+		$row = $this->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
 
 		// write header
 		echo "<tr>";
-		if( $this->exportType == "excel" )
-		{
-			foreach( $this->selectedFields as $field )
-			{
+		foreach( $this->selectedFields as $field ) {
+			if( $this->exportType == "excel" )
 				echo '<td style="width: 100" x:str>'.PrepareForExcel( $this->pSet->label( $field ) ).'</td>';
-			}
-		}
-		else
-		{
-			foreach( $this->selectedFields as $field )
-			{
+			else
 				echo "<td>".$this->pSet->label( $field )."</td>";
-			}
 		}
 		echo "</tr>";
 
@@ -444,61 +410,41 @@ class ExportPage extends RunnerPage
 				continue;
 
 			$totals[ $data["fName"] ] = array("value" => 0, "numRows" => 0);
-			$totalsFields[] = array('fName' => $data["fName"], 'totalsType' => $data["totalsType"], 'viewFormat' => $this->pSet->getViewFormat( $data["fName"] ));
+			$totalsFields[] = array('fName' => $data["fName"], 'totalsType' => $data["totalsType"], 
+				'viewFormat' => $this->pSet->getViewFormat( $data["fName"] ));
 		}
 
 		// write data rows
-		$iNumberOfRows = 0;
+		$numberOfRows = 0;
 		$this->viewControls->setForExportVar( "export" );
-		while( (!$nPageSize || $iNumberOfRows < $nPageSize) && $row )
+		while( ( !$pageSize || $numberOfRows < $pageSize ) && $row )
 		{
+			RunnerContext::pushRecordContext( $row, $this );			
 			countTotals( $totals, $totalsFields, $row );
-
-			$values = array();
-
-			foreach( $this->selectedFields as $field )
-			{
-				$fType = $this->pSet->getFieldType( $field );
-				if( IsBinaryType( $fType ) )
-					$values[ $field ] = "código binario demasiado grande – no puede ser desplegado";
-				else
-					$values[ $field ] = $this->getFormattedFieldValue( $field, $row );
-			}
+			$values = $this->getValuesFromRow( $row );
 
 			$eventRes = true;
 			if( $this->eventsObject->exists('BeforeOut') )
-			{
 				$eventRes = $this->eventsObject->BeforeOut( $row, $values, $this );
-			}
 
 			if( $eventRes )
 			{
-				$iNumberOfRows++;
+				$numberOfRows++;
 				echo "<tr>";
 
 				foreach( $this->selectedFields as $field )
 				{
 					$fType = $this->pSet->getFieldType( $field );
-					if( IsCharType( $fType ) )
-					{
-						if( $this->exportType == "excel" )
-							echo '<td x:str>';
-						else
-							echo '<td>';
-					}
+					if( IsCharType( $fType ) && $this->exportType == "excel" )
+						echo '<td x:str>';
 					else
 						echo '<td>';
 
 					$editFormat = $this->pSet->getEditFormat( $field );
 					if( $editFormat == EDIT_FORMAT_LOOKUP_WIZARD )
 					{
-						if( $this->pSet->NeedEncode($field) )
-						{
-							if( $this->exportType == "excel" )
-								echo PrepareForExcel( $values[ $field ] );
-							else
-								echo $values[ $field ];
-						}
+						if( $this->pSet->NeedEncode( $field ) && $this->exportType == "excel" )
+							echo PrepareForExcel( $values[ $field ] );
 						else
 							echo $values[ $field ];
 					}
@@ -508,29 +454,20 @@ class ExportPage extends RunnerPage
 					}
 					else
 					{
-						if( $editFormat == FORMAT_CUSTOM || $this->pSet->isUseRTE( $field ) )
-							echo $values[ $field ];
-						elseif( NeedQuotes( $field ) )
-						{
-							if( $this->exportType == "excel")
-								echo PrepareForExcel( $values[ $field ] );
-							else
-								echo $values[ $field ];
-						}
+						if( NeedQuotes( $field ) && $this->exportType == "excel" && $editFormat != FORMAT_CUSTOM && !$this->pSet->isUseRTE( $field ) )
+							echo PrepareForExcel( $values[ $field ] );
 						else
 							echo $values[ $field ];
 					}
 
 					echo '</td>';
 				}
-
 				echo "</tr>";
 			}
 
-			if( $this->eventsObject->exists("ListFetchArray") )
-				$row = $this->eventsObject->ListFetchArray( $rs, $this );
-			else
-				$row = $this->cipherer->DecryptFetchedArray( $this->connection->fetch_array( $rs ) );
+			RunnerContext::pop();
+			
+			$row = $this->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
 		}
 
 		if( count( $totalFieldsData ) )
@@ -568,6 +505,19 @@ class ExportPage extends RunnerPage
 		}
 	}
 
+	public function getValuesFromRow( &$row ) {
+		$values = array();
+		foreach( $this->selectedFields as $field )
+		{
+			$fType = $this->pSet->getFieldType( $field );
+			if( IsBinaryType( $fType ) )
+				$values[ $field ] = "código binario demasiado grande – no puede ser desplegado";
+			else
+				$values[ $field ] = $this->getFormattedFieldValue( $field, $row );
+		}
+		return $values;
+	}
+	
 	/**
 	 * @deprecated
 	 * @param Mixed rs
@@ -627,91 +577,28 @@ class ExportPage extends RunnerPage
 		return EXPORT_SIMPLE;
 	}
 
-	/**
-	 * @return Array
-	 */
-	protected function getSubsetSQLComponents()
-	{
-		$sql = array();
-
-		$selectedRecords = $this->getSelectedRecords();
-		if( $selectedRecords !== null )
-		{
-			//	export selected mode. Export only selected records, ignore search & filter
-			$sql["sqlParts"] = $this->gQuery->getSqlComponents();
-			
-			$selectedWhereParts = array();
-			foreach( $selectedRecords as $keys )
-				$selectedWhereParts[] = KeyWhere( $keys, $this->tName );
-
-			$sql["mandatoryWhere"][] = implode(" or ", $selectedWhereParts );
-			if( 0 == count( $selectedRecords ) )
-				$sql["mandatoryWhere"][] = "1=0";
-		}
-		else
-		{
-			//	add search, filter and master clauses
-			$sql = parent::getSubsetSQLComponents();
-		}
-		
-		if( $this->connection->dbType == nDATABASE_DB2 ) 
-			$sql["sqlParts"]["head"] .= ", ROW_NUMBER() over () as DB2_ROW_NUMBER ";
 	
-		//	security
-		$sql["mandatoryWhere"][] = $this->SecuritySQL("Export", $this->tName);
+	public function getDataSourceFilterCriteria( $ignoreFilterField = "" ) {
+		$filter = parent::getDataSourceFilterCriteria();
+		$selectedRecords = $this->getSelectedRecords();
 
-		return $sql;
-	}
-
-	/**
-	 * Builds SQL query for retrieving data from DB
-	 * @return String
-	 */
-	protected function buildSQL()
-	{
-		$sql = $this->getSubsetSQLComponents();
-		$orderClause = $this->getOrderByClause();
-
-		//	build SQL
-		$strSQL = SQLQuery::buildSQL( $sql["sqlParts"], $sql["mandatoryWhere"], $sql["mandatoryHaving"], $sql["optionalWhere"], $sql["optionalHaving"] );
-		$strSQL.= $orderClause;
-
-		//	do Before SQL Query event
-		$strSQLbak = $strSQL;
-		$whereModifiedInEvent = false;
-		$orderbyModifiedInEvent = false;
-
-		if( $this->eventsObject->exists("BeforeQueryExport") )
-		{
-			$tstrWhereClause = SQLQuery::combineCases( array(
-					SQLQuery::combineCases( $sql["mandatoryWhere"], "and" ),
-					SQLQuery::combineCases( $sql["optionalWhere"], "or" )
-				), "and" );
-
-			$strWhereBak = $tstrWhereClause;
-			$tstrOrderBy = $orderClause;
-
-			$this->eventsObject->BeforeQueryExport($strSQL, $tstrWhereClause, $tstrOrderBy, $this);
-
-			$whereModifiedInEvent = $tstrWhereClause != $strWhereBak;
-			$orderbyModifiedInEvent = $tstrOrderBy != $orderClause;
-			$orderClause = $tstrOrderBy;
-
-
-			//	Rebuild SQL if needed
-			if( $whereModifiedInEvent )
-			{
-				$strSQL = SQLQuery::buildSQL( $sql["sqlParts"], array( $tstrWhereClause ), $sql["mandatoryHaving"] );
-				$strSQL .= $orderClause;
+		if( $selectedRecords !== null ) {
+			$keyFields = $this->pSet->getTableKeys();
+			
+			$recConditions = array();
+			foreach( $selectedRecords as $keys ) {
+				$recConditions[] = DataCondition::FieldsEqual( $keyFields, $keys );
 			}
-			else if( $orderbyModifiedInEvent )
-			{
-				$strSQL = SQLQuery::buildSQL( $sql["sqlParts"], $sql["mandatoryWhere"], $sql["mandatoryHaving"], $sql["optionalWhere"], $sql["optionalHaving"] );
-				$strSQL.= $orderClause;
-			}
+
+			$filter = DataCondition::_And( array( 
+				$filter,
+				DataCondition::_Or( $recConditions )
+			));
 		}
-
-		LogInfo($strSQL);
-		$this->querySQL = $strSQL;
- 	}
+		return $filter;
+	}
+	
+	public function getSecurityCondition() {
+		return Security::SelectCondition( "P", $this->pSet );
+	}
 }

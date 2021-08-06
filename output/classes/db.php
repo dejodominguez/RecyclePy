@@ -309,13 +309,14 @@ class DB
 	 * 	Find table info stored in the project file
 	 *
 	 */
-	protected static function _findDalTable( $table )
+	public static function _findDalTable( $table, $conn = null )
 	{
 		global $dalTables;
-		$conn = DB::CurrentConnection();
+		if( !$conn )
+			$conn = DB::CurrentConnection();
 		$tableName = $conn->getTableNameComponents( $table );
 
-		DB::_fillTablesList();
+		DB::_fillTablesList( $conn );
 
 		//	exact match
 		foreach( $dalTables[$conn->connId] as $t )
@@ -341,10 +342,11 @@ class DB
 	 *	Check tables stored in the project first, then fetch it from the database.
 	 *
 	 */
-	protected static function _getTableInfo($table)
+	public static function _getTableInfo($table, $connId = null )
 	{
-		global $dal_info, $tableinfo_cache;
-		$connId = DB::CurrentConnectionId();
+		global $dal_info, $tableinfo_cache, $cman;
+		if( !$connId )
+			$connId = DB::CurrentConnectionId();
 
 		//	prepare cache
 		if( !isset($tableinfo_cache[ $connId ] ) )
@@ -353,7 +355,7 @@ class DB
 		$tableInfo = array();
 
 
-		$tableDescriptor = DB::_findDalTable( $table );
+		$tableDescriptor = DB::_findDalTable( $table, $cman->byId( $connId ) );
 
 		if ( $tableDescriptor )
 		{
@@ -393,25 +395,27 @@ class DB
 	}
 
 
-	protected static function _fillTablesList()
+	protected static function _fillTablesList( $conn )
 	{
 		global $dalTables;
-		$conn = DB::CurrentConnection();
+		if( !$conn )
+			$conn = DB::CurrentConnection();
 		if( $dalTables[ $conn->connId ] )
 			return;
 		$dalTables[ $conn->connId ] = array();
 		if( "RealEstate_at_localhost" == $conn->connId )
 		{
-			$dalTables[$conn->connId][] = array("name" => "Barrios", "varname" => "RealEstate_at_localhost_public_Barrios", "altvarname" => "Barrios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "DetalleVentas", "varname" => "RealEstate_at_localhost_public_DetalleVentas", "altvarname" => "DetalleVentas", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "EmpresasRecicladores", "varname" => "RealEstate_at_localhost_public_EmpresasRecicladores", "altvarname" => "EmpresasRecicladores", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "GestionPesosResiduos", "varname" => "RealEstate_at_localhost_public_GestionPesosResiduos", "altvarname" => "GestionPesosResiduos", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "GestionRegistrosOrigen", "varname" => "RealEstate_at_localhost_public_GestionRegistrosOrigen", "altvarname" => "GestionRegistrosOrigen", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "MedTipoOrigen", "varname" => "RealEstate_at_localhost_public_MedTipoOrigen", "altvarname" => "MedTipoOrigen", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "Recicladores", "varname" => "RealEstate_at_localhost_public_Recicladores", "altvarname" => "Recicladores", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "Residuos", "varname" => "RealEstate_at_localhost_public_Residuos", "altvarname" => "Residuos", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "Usuarios", "varname" => "RealEstate_at_localhost_public_Usuarios", "altvarname" => "Usuarios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
-			$dalTables[$conn->connId][] = array("name" => "Ventas", "varname" => "RealEstate_at_localhost_public_Ventas", "altvarname" => "Ventas", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "RecyclePy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "barrios", "varname" => "RealEstate_at_localhost_public_barrios", "altvarname" => "barrios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "detalles_ventas", "varname" => "RealEstate_at_localhost_public_detalles_ventas", "altvarname" => "detalles_ventas", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "empresas_recicladoras", "varname" => "RealEstate_at_localhost_public_empresas_recicladoras", "altvarname" => "empresas_recicladoras", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "gestion_pesos_residuos", "varname" => "RealEstate_at_localhost_public_gestion_pesos_residuos", "altvarname" => "gestion_pesos_residuos", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "gestion_registros_origen", "varname" => "RealEstate_at_localhost_public_gestion_registros_origen", "altvarname" => "gestion_registros_origen", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "med_tipo_origen", "varname" => "RealEstate_at_localhost_public_med_tipo_origen", "altvarname" => "med_tipo_origen", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "recicladores", "varname" => "RealEstate_at_localhost_public_recicladores", "altvarname" => "recicladores", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "residuos", "varname" => "RealEstate_at_localhost_public_residuos", "altvarname" => "residuos", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "tipos_usuarios", "varname" => "RealEstate_at_localhost_public_tipos_usuarios", "altvarname" => "tipos_usuarios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "usuarios", "varname" => "RealEstate_at_localhost_public_usuarios", "altvarname" => "usuarios", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
+			$dalTables[$conn->connId][] = array("name" => "ventas", "varname" => "RealEstate_at_localhost_public_ventas", "altvarname" => "ventas", "connId" => "RealEstate_at_localhost", "schema" => "public", "connName" => "recyclepy at localhost");
 		}
 	}
 
@@ -421,7 +425,6 @@ class DB
 		$args = func_get_args();
 
 		$conn = DB::CurrentConnection();
-		$context = RunnerContext::current();
 
 		$tokens = DB::scanTokenString($sql);
 
@@ -444,26 +447,23 @@ class DB
 			if (is_numeric($token) && count( $args ) > $token) {
 				$val = $args[(int)$token];
 			} else {
-				$val = $context->getValue($token);
+				$val = RunnerContext::getValue($token);
 			}
 
+			/**
+			 * Don't ever dare to alter this code!
+			 * Everything outside quotes must be converted to number to avoid SQL injection
+			 */
 			if ($conn->positionQuoted($sql, $offset))
 				$repl["insert"] = $conn->addSlashes($val);
-			else if(is_numeric($val))
-				$repl["insert"] = DB::prepareNumberValue($val);
 			else
-				$repl["insert"] = $val;
+				$repl["insert"] = DB::prepareNumberValue($val);
 
 			$replacements[] = $repl;
 		}
 
 		//	do replacements
-		$offsetShift = 0;
-		foreach ($replacements as $r) {
-			$sql = substr_replace($sql, $r["insert"], $r["offset"] + $offsetShift, $r["len"]);
-			$offsetShift += strlen($r["insert"]) - $r["len"];
-		}
-		return $sql;
+		return RunnerContext::doReplacements( $sql, $replacements );
 	}
 
 	/**
@@ -514,7 +514,7 @@ class DB
 	 *
  	 *	@return Array [ "tokens" => Array, "matches" => Array, "offsets" => Array ]
 	 */
-	protected static function scanTokenString($sql)
+	public static function scanTokenString($sql)
 	{
 		$tokens = array();
 		$offsets = array();
@@ -523,23 +523,50 @@ class DB
 		//	match aaa, old.bbb, master.order date from:
 		//	insert into table values (':aaa', :old.bbb, ':{master.order date}')
 
-		$pattern = '/(?:[^\w\:]|^)(\:([a-zA-Z_]{1}[\w\.]*))|\:\{(.*?)\}|\:([1-9]+[0-9]*)/';
+		$pattern = '/(?:[^\w\:]|^)(\:([a-zA-Z_]{1}[\w\.]*))|\:\{(.*?)\}|(?:[^\w\:]|^)(\:([1-9]+[0-9]*))/';
 
 
 		$result = findMatches($pattern, $sql);
 		foreach ($result as $m) {
 			if ($m["submatches"][0] != "") {
-				//	first variant, no {}
+				// first variant, no {}
 				$matches[] = $m["submatches"][0];
 				$tokens[] = $m["submatches"][1];
 				$offsets[] = $m["offset"] + strpos($m["match"], $m["submatches"][0]);
 			} else if ($m["submatches"][2] != "") {
+				// second variant, in {}
 				$matches[] = $m["match"];
 				$tokens[] = $m["submatches"][2];
 				$offsets[] = $m["offset"];
 			} else if ($m["submatches"][3] != "") {
-				$matches[] = $m["match"];
-				$tokens[] = $m["submatches"][3];
+				// third variant, numeric like (:1, ':2')
+				$matches[] = $m["submatches"][3];
+				$tokens[] = $m["submatches"][4];
+				$offsets[] = $m["offset"] + strpos($m["match"], $m["submatches"][3]);
+			}
+		}
+
+		return array("tokens" => $tokens, "matches" => $matches, "offsets" => $offsets);
+	}
+
+	public static function scanNewTokenString($sql)
+	{
+		$tokens = array();
+		$offsets = array();
+		$matches = array();
+
+		//	match aaa, old.bbb, master.order date from:
+		//	insert into table values (':aaa', :old.bbb, ':{master.order date}')
+
+		$pattern = "/\\\${[^\\s\{\\}]+}/";
+
+
+		$result = findMatches($pattern, $sql);
+		foreach ($result as $m) {
+			$match = $m["match"];
+			if ( $match != "" ) {
+				$matches[] = $match;
+				$tokens[] = substr( $match, 2, strlen( $match ) - 3 );
 				$offsets[] = $m["offset"];
 			}
 		}
@@ -550,10 +577,26 @@ class DB
 
 	public static function prepareNumberValue( $value )
 	{
-		$strvalue = (string)$value;
-		if(is_numeric($strvalue))
-			return str_replace(",",".",$strvalue);
+		$strvalue = str_replace( ",", ".", (string)$value );
+		if( is_numeric($strvalue) )
+			return $strvalue;
 		return 0;
+	}
+
+	public static function Lookup( $sql ) {
+		$result = DB::Query( $sql );
+		if( !$result ) {
+			return null;
+		}
+		$data = $result->fetchNumeric();
+		if( !$data ) {
+			return null;
+		}
+		return $data[0];
+	}
+	
+	public static function DBLookup( $sql ) {
+		return DB::Lookup( $sql );
 	}
 
 }

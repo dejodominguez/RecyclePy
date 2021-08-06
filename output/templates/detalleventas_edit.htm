@@ -65,7 +65,7 @@
 			<button class="btn btn-sm btn-default" {$backbutton_attrs}>Volver a la lista</button>
 	{END back_button}
 {BEGIN view_page_button}
-	<button class="btn btn-sm btn-default" {$view_page_button_attrs}>Ver</button>
+		<a class="btn btn-sm btn-default" href="detalleventas_view.php?{$editlink}" {$view_page_button_attrs}>Ver</a>
 {END view_page_button}
 </div>
 </div>
@@ -93,7 +93,7 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -113,10 +113,8 @@
 
 
 <div class="r-integrated-field form-group clearfix {$fielddispclass_Cantidad}  r-vertical-field" 
-	data-fieldname="Cantidad" 
 	data-signal-error-for="Cantidad{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="Cantidad" >
-
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="Cantidad" data-fieldname="Cantidad" >
 
 	<label class="r-edit-label control-label" for="{$labelfor_Cantidad}">
 		{BEGIN Cantidad_label}{$label public_DetalleVentas Cantidad }{END Cantidad_label}
@@ -125,7 +123,7 @@
 		{$Cantidad_editcontrol}	</div>
 	<div class="r-edit-tooltip" data-helpfor="Cantidad">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_DetalleVentas Cantidad }		</div>
 	</div>
 </div>
 
@@ -136,10 +134,8 @@
 
 
 <div class="r-integrated-field form-group clearfix {$fielddispclass_Precio}  r-vertical-field" 
-	data-fieldname="Precio" 
 	data-signal-error-for="Precio{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="Precio" >
-
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="Precio" data-fieldname="Precio" >
 
 	<label class="r-edit-label control-label" for="{$labelfor_Precio}">
 		{BEGIN Precio_label}{$label public_DetalleVentas Precio }{END Precio_label}
@@ -148,58 +144,54 @@
 		{$Precio_editcontrol}	</div>
 	<div class="r-edit-tooltip" data-helpfor="Precio">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_DetalleVentas Precio }		</div>
 	</div>
 </div>
 
 
 {END Precio_fieldblock}
 											
-{BEGIN IDVenta_fieldblock}
+{BEGIN IdVenta_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IDVenta}  r-vertical-field" 
-	data-fieldname="IDVenta" 
-	data-signal-error-for="IDVenta{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="IDVenta" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdVenta}  r-vertical-field" 
+	data-signal-error-for="IdVenta{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="IdVenta" data-fieldname="IdVenta" >
 
-
-	<label class="r-edit-label control-label" for="{$labelfor_IDVenta}">
-		{BEGIN IDVenta_label}{$label public_DetalleVentas IDVenta }{END IDVenta_label}
+	<label class="r-edit-label control-label" for="{$labelfor_IdVenta}">
+		{BEGIN IdVenta_label}{$label public_DetalleVentas IdVenta }{END IdVenta_label}
 	</label>
 	<div class="r-edit-field">
-		{$IDVenta_editcontrol}	</div>
-	<div class="r-edit-tooltip" data-helpfor="IDVenta">
+		{$IdVenta_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="IdVenta">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_DetalleVentas IdVenta }		</div>
 	</div>
 </div>
 
 
-{END IDVenta_fieldblock}
+{END IdVenta_fieldblock}
 											
-{BEGIN IdFGesPesResiduo_fieldblock}
+{BEGIN IdGesPesResiduo_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdFGesPesResiduo}  r-vertical-field" 
-	data-fieldname="IdFGesPesResiduo" 
-	data-signal-error-for="IdFGesPesResiduo{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="IdFGesPesResiduo" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-vertical-field" 
+	data-signal-error-for="IdGesPesResiduo{$id}" 
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" >
 
-
-	<label class="r-edit-label control-label" for="{$labelfor_IdFGesPesResiduo}">
-		{BEGIN IdFGesPesResiduo_label}{$label public_DetalleVentas IdFGesPesResiduo }{END IdFGesPesResiduo_label}
+	<label class="r-edit-label control-label" for="{$labelfor_IdGesPesResiduo}">
+		{BEGIN IdGesPesResiduo_label}{$label public_DetalleVentas IdGesPesResiduo }{END IdGesPesResiduo_label}
 	</label>
 	<div class="r-edit-field">
-		{$IdFGesPesResiduo_editcontrol}	</div>
-	<div class="r-edit-tooltip" data-helpfor="IdFGesPesResiduo">
+		{$IdGesPesResiduo_editcontrol}	</div>
+	<div class="r-edit-tooltip" data-helpfor="IdGesPesResiduo">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_DetalleVentas IdGesPesResiduo }		</div>
 	</div>
 </div>
 
 
-{END IdFGesPesResiduo_fieldblock}
+{END IdGesPesResiduo_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}
@@ -252,8 +244,8 @@
 		<span data-itemtype="hamburger" data-itemid="hamburger" {$item_hamburger} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown dropup">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-menu-hamburger"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 								<li data-itemtype="edit_reset" data-itemid="edit_reset" {$item_edit_reset} data-pageid="{$pageid}" data-small >
@@ -264,7 +256,7 @@
 	</li>
 							{BEGIN view_page_button}
 	<li data-itemtype="edit_view" data-itemid="edit_view" {$item_edit_view} data-pageid="{$pageid}" data-small >
-				<a  {$view_page_button_attrs}  title="" >
+				<a  href="detalleventas_view.php?{$editlink}" {$view_page_button_attrs}  title="" >
 				
 		Ver		
 		</a>

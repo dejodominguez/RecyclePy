@@ -164,19 +164,6 @@ class InformixConnection extends Connection
 		return ""; 
 	}
 
-	/**
-	 * @param Mixed qHandle
-	 * @param Number pageSize
-	 * @param Number page
-	 */
-	public function seekPage($qHandle, $pageSize, $page)
-	{
-		$row = ($page - 1) * $pageSize;
-		for($i = 0; $i < $row; $i++)
-		{
-			db_fetch_array($qHandle);
-		}
-	}
 
 	/**
 	 * Execute an SQL query with blob fields processing

@@ -227,9 +227,9 @@ class MySQLConnection extends Connection
 	 * @param Number pageSize
 	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
-		mysql_data_seek($qHandle, ($page - 1) * $pageSize);
+		mysql_data_seek($qHandle, $n );
 	}
 
 	/**

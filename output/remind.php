@@ -9,13 +9,6 @@ require_once(getabspath("classes/cipherer.php"));
 
 
 
-
-
-
-
-
-
-
 $xt = new Xtempl();
 
 

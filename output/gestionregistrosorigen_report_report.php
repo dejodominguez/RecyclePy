@@ -19,12 +19,10 @@ if( !Security::processPageSecurity( $strTableName, 'S' ) )
 
 
 
-
-
-
 $pageMode = ReportPage::readReportModeFromRequest();
 $xt = new Xtempl( $pageMode != REPORT_SIMPLE ); //#9607 1. Temporary fix
 
+$gSettings = new ProjectSettings( $strTableName );
 //array of params for ReportPage constructor
 $params = array();
 $params["id"] = postvalue_number("id");
@@ -33,11 +31,10 @@ $params["mode"] = $pageMode;
 $params["tName"] = $strTableName;
 $params["pageType"] = PAGE_REPORT;
 $params["pageName"] = postvalue("page");
-$params["masterTable"] = postvalue("mastertable");
 $params["isGroupSecurity"] = $isGroupSecurity;
 $params["arrRecsPerPage"] = $gSettings->getRecordsPerPageArray();
 $params["arrGroupsPerPage"] = $gSettings->getGroupsPerPageArray();
-$params["masterPageType"] = postvalue("masterpagetype");
+$params["requestGoto"] = postvalue_number("goto");
 
 //crosstable params
 $params["x"] = postvalue("x");
@@ -50,9 +47,12 @@ $params["selectedAxis"] = postvalue("axis");
 
 if( postvalue("crosstable_refresh") )
 	$params["crosstableRefresh"] = true;
-//
 
-$params["masterKeysReq"] = ReportPage::getMasterKeysFromRequest();
+$params["masterPageType"] = postvalue("masterpagetype");
+
+$params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 
 
 if( $pageMode = REPORT_DASHBOARD )

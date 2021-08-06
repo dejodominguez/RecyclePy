@@ -116,9 +116,13 @@ class ListPage_Simple extends ListPage
 
 				foreach( $hideColumns as $d => $fields)
 				{
-					foreach( $fields as $f )
-					{
-						$this->hideField( $f );
+					$dm = RunnerPage::deviceClassToMacro( $d );
+					if( getMediaType() == 0 && $dm == 0 ||
+						( getMediaType() == 2 || getMediaType() == 1 ) &&  $dm == 2  ) {
+						foreach( $fields as $f )
+						{
+							$this->hideField( $f );
+						}
 					}
 				}
 			} else {
@@ -261,7 +265,7 @@ class ListPage_Simple extends ListPage
 		
 		for($i=0; $i<count($allSearchFields); $i++)
 		{
-			if( !$this->matchWithDetailKeys($allSearchFields[$i]) )
+			if( !$this->detailsKeyField( $allSearchFields[$i] ) )
 				$panelSearchFields[] = $allSearchFields[$i];
 		}
 				

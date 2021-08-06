@@ -79,7 +79,22 @@ pdfDocument = {
 										{BEGIN col_grid_6}
 					"%",
 					{END col_grid_6}
-													],
+															],
+											heights: [ // first height for header part
+					"%",
+																		{BEGIN row_grid_0}
+							"%",
+							{END row_grid_0}
+																							 	{BEGIN grid_row}
+													{BEGIN row_grid_1}
+							"%",
+							{END row_grid_1}
+													{END grid_row}
+																								{BEGIN row_grid_2}
+							"%",
+							{END row_grid_2}
+															],
+							
 				body: [
 				{BEGIN standalone_page}
 					[
@@ -100,16 +115,14 @@ pdfDocument = {
 								"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c2',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -119,17 +132,15 @@ pdfDocument = {
 	
 			"text": [
 		
-				
-			{BEGIN mastertable_block}
-			{$showmasterfile}
-		{END mastertable_block},
-				
-		  ],
+				'',
+	  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
 											],
-					]
+		
+		]
 	}
 }
 ,
@@ -147,16 +158,14 @@ pdfDocument = {
 											"*", 
 					 ],	
 		
+	
 		body: [
 				
-					
-		[
-												
-{
+				[
+																{
 	cellId: 'c1',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -170,21 +179,17 @@ pdfDocument = {
 			{"text":"","hidden":"{$item_hide_add}"},
 				
 				
-			{"text":"","hidden":"{$item_hide_inline_add}"},
-				
-				
 			{"text":"","hidden":"{$item_hide_delete}"},
 				
 		  ],
   "border": [ false, false, false, false ],
-          },
+              "alignment": 'left',
+  },
 
-																			
-{
+																							{
 	cellId: 'c2',
 	col:0,
 	row:0,
-			style: 'undefinedcell',
 		
 		
 	//	static colspan/rowspan
@@ -195,7 +200,7 @@ pdfDocument = {
 			"text": [
 		
 				
-			{"text":"Viendo %first% - %last% de %total%","hidden":"{$item_hide_details_found}","isHtml":true,"page_indicator":true},
+			{"text":"Mostrando %first% - %last% de %total%","hidden":"{$item_hide_details_found}","isHtml":true,"page_indicator":true},
 				
 				
 			{"text":"","hidden":"{$item_hide_page_size}"},
@@ -205,11 +210,54 @@ pdfDocument = {
 				
 		  ],
   "border": [ false, false, false, false ],
-          "alignment": 'right',
-    },
+              "alignment": 'right',
+  },
 
 											],
-					]
+						[
+																{
+	cellId: 'c3',
+	col:0,
+	row:0,
+		
+		
+	//	static colspan/rowspan
+		
+			
+	
+	
+			"text": [
+		
+				
+			{"text":"Listas de Empresas Recicladoras","color":"#80f087","hidden":"{$item_hide_text}","italics":true,"fontSize":24,"bold":true,"isHtml":true},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'right',
+  },
+
+																							{
+	cellId: 'c4',
+	col:0,
+	row:0,
+		
+		
+	//	static colspan/rowspan
+		
+			
+	
+	
+			"text": [
+		
+				'',
+	  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'right',
+  },
+
+											],
+		
+		]
 	}
 }
 ,
@@ -221,11 +269,9 @@ pdfDocument = {
 																	
 
 				
-					{BEGIN row_grid_0}
-				
-		[
-												{BEGIN cellblock_grid_headcell_icons}
-
+				{BEGIN row_grid_0}
+				[
+																{BEGIN cellblock_grid_headcell_icons}
 {
 	cellId: 'headcell_icons',
 	col:0,
@@ -236,7 +282,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -244,12 +291,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',        "alignment": 'center',
-    },
+      fillColor: '#9ee6b2',        "alignment": 'center',
+  },
 
 {END cellblock_grid_headcell_icons}
-																			{BEGIN cellblock_grid_headcell_checkbox}
-
+																							{BEGIN cellblock_grid_headcell_checkbox}
 {
 	cellId: 'headcell_checkbox',
 	col:0,
@@ -260,7 +306,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -270,12 +317,11 @@ pdfDocument = {
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',        "alignment": 'center',
-    },
+      fillColor: '#9ee6b2',        "alignment": 'center',
+  },
 
 {END cellblock_grid_headcell_checkbox}
-																			{BEGIN cellblock_grid_headcell_field}
-
+																							{BEGIN cellblock_grid_headcell_field}
 {
 	cellId: 'headcell_field',
 	col:0,
@@ -286,22 +332,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field5}","text":"{$jslabel public_EmpresasRecicladores IdEmpreRecicladora }","bold":true},
+			{"text":"{$jslabel public_EmpresasRecicladores IdEmpreRecicladora }","hidden":"{$item_hide_simple_grid_field5}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',        "alignment": 'center',
-    },
+      fillColor: '#9ee6b2',        "alignment": 'center',
+  },
 
 {END cellblock_grid_headcell_field}
-																			{BEGIN cellblock_grid_headcell_field1}
-
+																							{BEGIN cellblock_grid_headcell_field1}
 {
 	cellId: 'headcell_field1',
 	col:0,
@@ -312,22 +358,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field6}","text":"{$jslabel public_EmpresasRecicladores RUCEmpre }","bold":true},
+			{"text":"{$jslabel public_EmpresasRecicladores RUCEmpre }","hidden":"{$item_hide_simple_grid_field6}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',        "alignment": 'center',
-    },
+      fillColor: '#9ee6b2',        "alignment": 'center',
+  },
 
 {END cellblock_grid_headcell_field1}
-																			{BEGIN cellblock_grid_headcell_field2}
-
+																							{BEGIN cellblock_grid_headcell_field2}
 {
 	cellId: 'headcell_field2',
 	col:0,
@@ -338,22 +384,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field7}","text":"{$jslabel public_EmpresasRecicladores NombreEmpre }","bold":true},
+			{"text":"{$jslabel public_EmpresasRecicladores NombreEmpre }","hidden":"{$item_hide_simple_grid_field7}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',        "alignment": 'center',
-    },
+      fillColor: '#9ee6b2',        "alignment": 'center',
+  },
 
 {END cellblock_grid_headcell_field2}
-																			{BEGIN cellblock_grid_headcell_field3}
-
+																							{BEGIN cellblock_grid_headcell_field3}
 {
 	cellId: 'headcell_field3',
 	col:0,
@@ -364,22 +410,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field8}","text":"{$jslabel public_EmpresasRecicladores DirecEmpre }","bold":true},
+			{"text":"{$jslabel public_EmpresasRecicladores DirecEmpre }","hidden":"{$item_hide_simple_grid_field8}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-  fillColor: '#9ee6b2',        "alignment": 'center',
-    },
+      fillColor: '#9ee6b2',        "alignment": 'center',
+  },
 
 {END cellblock_grid_headcell_field3}
-																			{BEGIN cellblock_grid_headcell_field4}
-
+																							{BEGIN cellblock_grid_headcell_field4}
 {
 	cellId: 'headcell_field4',
 	col:0,
@@ -390,31 +436,31 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field9}","text":"{$jslabel public_EmpresasRecicladores TelEmpre }","bold":true},
+			{"text":"{$jslabel public_EmpresasRecicladores TelEmpre }","hidden":"{$item_hide_simple_grid_field9}","bold":true},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$TelEmpre_align}',
+      fillColor: '#9ee6b2',        "alignment": '{$TelEmpre_align}',
   },
 
 {END cellblock_grid_headcell_field4}
 											],
 				{END row_grid_0}
-								
+		
+			
 		{BEGIN grid_row}
 	{BEGIN grid_record}
 				
-						{BEGIN row_grid_1}
-				
-		[
-												{BEGIN cellblock_grid_cell_icons}
-
+				{BEGIN row_grid_1}
+				[
+																{BEGIN cellblock_grid_cell_icons}
 {
 	cellId: 'cell_icons',
 	col:0,
@@ -425,7 +471,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -434,18 +481,15 @@ pdfDocument = {
 			{"text":"","hidden":"{$item_hide_grid_edit}"},
 				
 				
-			{"text":"","hidden":"{$item_hide_grid_inline_cancel}"},
-				
-				
 			{"text":"","hidden":"{$item_hide_grid_view}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_cell_icons}
-																			{BEGIN cellblock_grid_cell_checkbox}
-
+																							{BEGIN cellblock_grid_cell_checkbox}
 {
 	cellId: 'cell_checkbox',
 	col:0,
@@ -456,7 +500,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -466,11 +511,11 @@ pdfDocument = {
 				
 		  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_cell_checkbox}
-																			{BEGIN cellblock_grid_cell_field}
-
+																							{BEGIN cellblock_grid_cell_field}
 {
 	cellId: 'cell_field',
 	col:0,
@@ -481,22 +526,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field}","text":{$IdEmpreRecicladora_pdfvalue}},
+			{"text":{$IdEmpreRecicladora_pdfvalue},"hidden":"{$item_hide_simple_grid_field}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$IdEmpreRecicladora_align}',
+              "alignment": '{$IdEmpreRecicladora_align}',
   },
 
 {END cellblock_grid_cell_field}
-																			{BEGIN cellblock_grid_cell_field1}
-
+																							{BEGIN cellblock_grid_cell_field1}
 {
 	cellId: 'cell_field1',
 	col:0,
@@ -507,22 +552,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field1}","text":{$RUCEmpre_pdfvalue}},
+			{"text":{$RUCEmpre_pdfvalue},"hidden":"{$item_hide_simple_grid_field1}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$RUCEmpre_align}',
+              "alignment": '{$RUCEmpre_align}',
   },
 
 {END cellblock_grid_cell_field1}
-																			{BEGIN cellblock_grid_cell_field2}
-
+																							{BEGIN cellblock_grid_cell_field2}
 {
 	cellId: 'cell_field2',
 	col:0,
@@ -533,22 +578,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field2}","text":{$NombreEmpre_pdfvalue}},
+			{"text":{$NombreEmpre_pdfvalue},"hidden":"{$item_hide_simple_grid_field2}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$NombreEmpre_align}',
+              "alignment": '{$NombreEmpre_align}',
   },
 
 {END cellblock_grid_cell_field2}
-																			{BEGIN cellblock_grid_cell_field3}
-
+																							{BEGIN cellblock_grid_cell_field3}
 {
 	cellId: 'cell_field3',
 	col:0,
@@ -559,22 +604,22 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field3}","text":{$DirecEmpre_pdfvalue}},
+			{"text":{$DirecEmpre_pdfvalue},"hidden":"{$item_hide_simple_grid_field3}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$DirecEmpre_align}',
+              "alignment": '{$DirecEmpre_align}',
   },
 
 {END cellblock_grid_cell_field3}
-																			{BEGIN cellblock_grid_cell_field4}
-
+																							{BEGIN cellblock_grid_cell_field4}
 {
 	cellId: 'cell_field4',
 	col:0,
@@ -585,31 +630,31 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
 		
 				
-			{"hidden":"{$item_hide_simple_grid_field4}","text":{$TelEmpre_pdfvalue}},
+			{"text":{$TelEmpre_pdfvalue},"hidden":"{$item_hide_simple_grid_field4}"},
 				
 		  ],
   "border": [ true, true, true, true ],
-            "alignment": '{$TelEmpre_align}',
+              "alignment": '{$TelEmpre_align}',
   },
 
 {END cellblock_grid_cell_field4}
 											],
 				{END row_grid_1}
-						{END grid_record}
+		
+		{END grid_record}
 	{END grid_row}
 			
 					
-							{BEGIN row_grid_2}
-				
-		[
-												{BEGIN cellblock_grid_footcell_icons}
-
+				{BEGIN row_grid_2}
+				[
+																{BEGIN cellblock_grid_footcell_icons}
 {
 	cellId: 'footcell_icons',
 	col:0,
@@ -620,7 +665,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -628,11 +674,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_icons}
-																			{BEGIN cellblock_grid_footcell_checkbox}
-
+																							{BEGIN cellblock_grid_footcell_checkbox}
 {
 	cellId: 'footcell_checkbox',
 	col:0,
@@ -643,7 +689,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -651,11 +698,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_checkbox}
-																			{BEGIN cellblock_grid_footcell_field}
-
+																							{BEGIN cellblock_grid_footcell_field}
 {
 	cellId: 'footcell_field',
 	col:0,
@@ -666,7 +713,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -674,11 +722,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field}
-																			{BEGIN cellblock_grid_footcell_field1}
-
+																							{BEGIN cellblock_grid_footcell_field1}
 {
 	cellId: 'footcell_field1',
 	col:0,
@@ -689,7 +737,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -697,11 +746,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field1}
-																			{BEGIN cellblock_grid_footcell_field2}
-
+																							{BEGIN cellblock_grid_footcell_field2}
 {
 	cellId: 'footcell_field2',
 	col:0,
@@ -712,7 +761,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -720,11 +770,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field2}
-																			{BEGIN cellblock_grid_footcell_field3}
-
+																							{BEGIN cellblock_grid_footcell_field3}
 {
 	cellId: 'footcell_field3',
 	col:0,
@@ -735,7 +785,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -743,11 +794,11 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field3}
-																			{BEGIN cellblock_grid_footcell_field4}
-
+																							{BEGIN cellblock_grid_footcell_field4}
 {
 	cellId: 'footcell_field4',
 	col:0,
@@ -758,7 +809,8 @@ pdfDocument = {
 	//	dynamic colspan/rowspan
 
 		
-			
+						
+	
 	
 	
 			"text": [
@@ -766,12 +818,14 @@ pdfDocument = {
 				'',
 	  ],
   "border": [ true, true, true, true ],
-          },
+              "alignment": 'left',
+  },
 
 {END cellblock_grid_footcell_field4}
 											],
 				{END row_grid_2}
-							
+		
+				
 									]
 			
 			}

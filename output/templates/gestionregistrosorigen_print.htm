@@ -99,7 +99,7 @@
 									{BEGIN grid_block}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -130,7 +130,7 @@
 	 
 		{BEGIN IdGesRegOrigen_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesRegOrigen">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesRegOrigen" data-fieldname="IdGesRegOrigen">
 	{$label public_GestionRegistrosOrigen IdGesRegOrigen }	</span>
 {END IdGesRegOrigen_fieldheadercolumn}
 
@@ -155,7 +155,7 @@
 	 
 		{BEGIN IdResiduo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field10" {$item_simple_grid_field10} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdResiduo">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field10" {$item_simple_grid_field10} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdResiduo" data-fieldname="IdResiduo">
 	{$label public_GestionRegistrosOrigen IdResiduo }	</span>
 {END IdResiduo_fieldheadercolumn}
 
@@ -180,7 +180,7 @@
 	 
 		{BEGIN IdMedTipOrigen_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field11" {$item_simple_grid_field11} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdMedTipOrigen">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field11" {$item_simple_grid_field11} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdMedTipOrigen" data-fieldname="IdMedTipOrigen">
 	{$label public_GestionRegistrosOrigen IdMedTipOrigen }	</span>
 {END IdMedTipOrigen_fieldheadercolumn}
 
@@ -205,7 +205,7 @@
 	 
 		{BEGIN IdUsuario_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field12" {$item_simple_grid_field12} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdUsuario">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field12" {$item_simple_grid_field12} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdUsuario" data-fieldname="IdUsuario">
 	{$label public_GestionRegistrosOrigen IdUsuario }	</span>
 {END IdUsuario_fieldheadercolumn}
 
@@ -230,7 +230,7 @@
 	 
 		{BEGIN CantidadOrigen_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field13" {$item_simple_grid_field13} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="CantidadOrigen">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field13" {$item_simple_grid_field13} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="CantidadOrigen" data-fieldname="CantidadOrigen">
 	{$label public_GestionRegistrosOrigen CantidadOrigen }	</span>
 {END CantidadOrigen_fieldheadercolumn}
 
@@ -255,7 +255,7 @@
 	 
 		{BEGIN FotoOrigen_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field14" {$item_simple_grid_field14} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FotoOrigen">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field14" {$item_simple_grid_field14} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FotoOrigen" data-fieldname="FotoOrigen">
 	{$label public_GestionRegistrosOrigen FotoOrigen }	</span>
 {END FotoOrigen_fieldheadercolumn}
 
@@ -280,7 +280,7 @@
 	 
 		{BEGIN GPSMapaGoo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field15" {$item_simple_grid_field15} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="GPSMapaGoo">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field15" {$item_simple_grid_field15} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="GPSMapaGoo" data-fieldname="GPSMapaGoo">
 	{$label public_GestionRegistrosOrigen GPSMapaGoo }	</span>
 {END GPSMapaGoo_fieldheadercolumn}
 
@@ -305,7 +305,7 @@
 	 
 		{BEGIN Lat_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field16" {$item_simple_grid_field16} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Lat">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field16" {$item_simple_grid_field16} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Lat" data-fieldname="Lat">
 	{$label public_GestionRegistrosOrigen Lat }	</span>
 {END Lat_fieldheadercolumn}
 
@@ -330,7 +330,7 @@
 	 
 		{BEGIN Lng_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field17" {$item_simple_grid_field17} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Lng">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field17" {$item_simple_grid_field17} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Lng" data-fieldname="Lng">
 	{$label public_GestionRegistrosOrigen Lng }	</span>
 {END Lng_fieldheadercolumn}
 
@@ -369,7 +369,7 @@
 
 	 
 		{BEGIN IdGesRegOrigen_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesRegOrigen" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesRegOrigen" data-fieldname="IdGesRegOrigen" data-default-width >
 {$IdGesRegOrigen_value}
 </span>
 {END IdGesRegOrigen_fieldcolumn}	
@@ -392,7 +392,7 @@
 
 	 
 		{BEGIN IdResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdResiduo" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdResiduo" data-fieldname="IdResiduo" data-default-width >
 {$IdResiduo_value}
 </span>
 {END IdResiduo_fieldcolumn}	
@@ -415,7 +415,7 @@
 
 	 
 		{BEGIN IdMedTipOrigen_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdMedTipOrigen" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdMedTipOrigen" data-fieldname="IdMedTipOrigen" data-default-width >
 {$IdMedTipOrigen_value}
 </span>
 {END IdMedTipOrigen_fieldcolumn}	
@@ -438,7 +438,7 @@
 
 	 
 		{BEGIN IdUsuario_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdUsuario" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdUsuario" data-fieldname="IdUsuario" data-default-width >
 {$IdUsuario_value}
 </span>
 {END IdUsuario_fieldcolumn}	
@@ -461,7 +461,7 @@
 
 	 
 		{BEGIN CantidadOrigen_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="CantidadOrigen" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="CantidadOrigen" data-fieldname="CantidadOrigen" data-default-width >
 {$CantidadOrigen_value}
 </span>
 {END CantidadOrigen_fieldcolumn}	
@@ -484,7 +484,7 @@
 
 	 
 		{BEGIN FotoOrigen_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FotoOrigen" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FotoOrigen" data-fieldname="FotoOrigen" data-default-width >
 {$FotoOrigen_value}
 </span>
 {END FotoOrigen_fieldcolumn}	
@@ -507,7 +507,7 @@
 
 	 
 		{BEGIN GPSMapaGoo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="GPSMapaGoo" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="GPSMapaGoo" data-fieldname="GPSMapaGoo" data-default-width >
 {$GPSMapaGoo_value}
 </span>
 {END GPSMapaGoo_fieldcolumn}	
@@ -530,7 +530,7 @@
 
 	 
 		{BEGIN Lat_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Lat" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Lat" data-fieldname="Lat" data-default-width >
 {$Lat_value}
 </span>
 {END Lat_fieldcolumn}	
@@ -553,7 +553,7 @@
 
 	 
 		{BEGIN Lng_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Lng" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Lng" data-fieldname="Lng" data-default-width >
 {$Lng_value}
 </span>
 {END Lng_fieldcolumn}	

@@ -21,6 +21,7 @@ $masterTablesData = array();
 $tdataGLOBAL = array();
 $pages = array();
 $defaultPages = array();
+$topsArray = array();
 
 /**
  * Breadcrumb label templates
@@ -65,6 +66,7 @@ define('PAGE_MENU',"menu");
 define('PAGE_LOGIN',"login");
 define('PAGE_REGISTER',"register");
 define('PAGE_REMIND',"remind");
+define('PAGE_REMIND_SUCCESS',"remind_success");
 define('PAGE_CHANGEPASS',"changepwd");
 define('PAGE_SEARCH',"search");
 define('PAGE_REPORT',"report");
@@ -83,6 +85,7 @@ define('PAGE_DASHMAP', "map");
 define('PAGE_ADMIN_RIGHTS', "admin_rights_list");
 define('PAGE_ADMIN_MEMBERS', "admin_members_list");
 define('PAGE_ADMIN_ADMEMBERS', "admin_admembers_list");
+define('PAGE_USERINFO',"userinfo");
 
 define('ADMIN_USERS',"admin_users");
 
@@ -155,6 +158,7 @@ define("MODE_EXPORT",8);
 
 define("LOGIN_HARDCODED",0);
 define("LOGIN_TABLE",1);
+define("LOGIN_AD",2);
 
 define("SECURITY_NONE",-1);
 define("SECURITY_HARDCODED", 0);
@@ -180,6 +184,7 @@ define("nDATABASE_Informix",5);
 define("nDATABASE_SQLite3",6);
 define("nDATABASE_DB2",7);
 define("nDATABASE_Interbase", 16);
+define("nDATABASE_REST", 19 );
 
 define("ADD_SIMPLE",0);
 define("ADD_INLINE",1);
@@ -223,11 +228,23 @@ define("EXPORT_FORMATTED", 1);
 define("EXPORT_BOTH", 2);
 
 
+define("CHANGEPASS_SIMPLE", 0);
+define("CHANGEPASS_POPUP", 1);
+
+define("USERINFO_SIMPLE", 0 );
+define("USERINFO_2FACTOR", 1 );
+
 define("titTABLE",0);
 define("titVIEW",1);
 define("titREPORT",2);
 define("titCHART",3);
 define("titDASHBOARD",4);
+define("titSQL",6);
+define("titREST",7);
+define("titSQL_REPORT",8);
+define("titSQL_CHART",9);
+define("titREST_REPORT",10);
+define("titREST_CHART",11);
 
 define("TAB_TYPE_TAB", 0);
 define("TAB_TYPE_SECTION", 1);
@@ -420,6 +437,8 @@ define("PDF_PAGE_HEIGHT", 1060);
 define("GOOGLE_MAPS", 0);
 define("OPEN_STREET_MAPS", 1);
 define("BING_MAPS", 2);
+define("HERE_MAPS", 3);
+define("MAPQUEST_MAPS", 4);
 
 /* Defined captcha type */
 define("FLASH_CAPTCHA", 0);
@@ -447,7 +466,7 @@ define('PD_BS_LAYOUT', 4); // temp
 define('ICON_NONE', 0);
 define('ICON_FILE', 1);
 define('ICON_BOOTSTRAP_GLYPH', 2);
-
+define('ICON_FONT_AWESOME', 3);
 
 
 define('WELCOME_MENU', "welcome_page");
@@ -471,6 +490,9 @@ define('CONTEXT_PAGE', 1);		//	page where pageObject is available
 define('CONTEXT_BUTTON', 2);	// 	button or other AJAX event
 define('CONTEXT_LOOKUP', 3);	//	dependent lookup
 define('CONTEXT_ROW', 4);		// 	processing grid row on multiple-records page (list)
+define('CONTEXT_COMMAND', 5);	// 	DsCommand context
+define('CONTEXT_SEARCH', 6);	// 	Search object context
+define('CONTEXT_MASTER', 7);	// 	Master-details context
 
 define('BOTH_RECORDS', 0);
 define('NEXT_RECORD', 1);
@@ -486,6 +508,27 @@ define('MEDIA_DESKTOP', 0);
 define('MEDIA_MOBILE', 1);
 define('MEDIA_MOBILE_EXPANDED', 2);
 
+define('WEBREPORTS_TABLE', "{04AFFBE6-86C0-47b0-ADD3-BA7FA19CA6FC}" );
+
+define('REST_BASIC', 1);
+define('REST_APIKEY', 2);
+define('REST_JWT', 3);
+define('REST_OAUTH', 4);
+
+define("TIME_FORMAT_TIME_OF_DAY", 0);
+define("TIME_FORMAT_DURATION", 1);
+
+// user session levels
+define("LOGGED_NONE", 0 );
+//	logged in
+define("LOGGED_FULL", 1 );
+//	user has entered username & password, has to do 2factor authentication
+define("LOGGED_2F_PENDING", 2 );
+//	user has logged in, must setup 2factor authentication
+define("LOGGED_2FSETUP_PENDING", 3 );
+//	user has logged in, acount not activated, must confirm email address
+define("LOGGED_ACTIVATION_PENDING", 4 );
+
 
 $globalSettings = array();
 $g_defaultOptionValues = array();
@@ -498,14 +541,15 @@ $twilioAuth = "";
 $twilioNumber = "";
 $globalSettings["bTwoFactorAuth"] = false;
 
+/**
+ * An option to be added to the wizard
+ * Controls 'Remeber me' option
+ */
+$globalSettings["keepLoggedIn"] = true;
 
 
 
 
-$globalSettings["popupPagesLayoutNames"] = array();
-					
-;
-$globalSettings["popupPagesLayoutNames"]["login"] = "login";
 
 //mail settings
 $globalSettings["useBuiltInMailer"] = false;
@@ -528,9 +572,9 @@ $ajaxSearchStartsWith = true;
 
 $globalSettings["LandingPageType"] = 0;
 $globalSettings["LandingTable"] = "";
-$globalSettings["LandingPage"] = "";
+$globalSettings["LandingPage"] = "login";
 $globalSettings["LandingURL"] = "";
-$globalSettings["LandingPageId"] = "";
+$globalSettings["LandingPageId"] = "login";
 
 $globalSettings["ProjectLogo"] = array();
 $globalSettings["ProjectLogo"]["Spanish"] = "RecyclePy";
@@ -545,6 +589,8 @@ $globalSettings["userGroupCount"] = 3;
 
 
 $globalSettings["apiGoogleMapsCode"] = "AIzaSyDFSwyryFi6FXgGrHICDE86LGY2FVoVogQ";
+
+$globalSettings["useEmbedMapsAPI"] = 1 != 0;
 
 $globalSettings["SpUserIdField"] = "";
 
@@ -586,12 +632,10 @@ $globalSettings["override"] = array();
 
 $styleOverrides = array();
 
-$styleOverrides["public.Recicladores_list"] = array(
-	"theme" => "sandstone",
-	"size" => "normal",
-);
 
 $globalSettings["mapProvider"]=2;
+//$globalSettings["mapProvider"] = HERE_MAPS;
+//$globalSettings["mapProvider"] = MAPQUEST_MAPS;
 
 $globalSettings["CaptchaSettings"] = array();
 $globalSettings["CaptchaSettings"]["type"] = 0;
@@ -600,23 +644,31 @@ $globalSettings["CaptchaSettings"]["secretKey"] = "";
 $globalSettings["CaptchaSettings"]["captchaPassesCount"] = "5";
 
 
-$bsProjectTheme = "sandstone";
+$bsProjectTheme = "spacelab";
 $bsProjectSize = "normal";
 
 $wr_pagestylepath = "OfficeOffice";
 $wr_is_standalone = false;
 $WRAdminPagePassword = "";
 
-$cLoginTable = "public.Usuarios";
-$cDisplayNameField = "NombreCompleto";
-$cUserNameField	= "NombreUsuario";
-$cPasswordField	= "Password";
-$cUserGroupField = "Groupid";
+$cLoginTable = "public.usuarios";
+$cDisplayNameField = "nombre_completo";
+$cUserNameField	= "nombre_usuario";
+$cPasswordField	= "password";
+$cUserGroupField = "id_tipo_usu";
 $cEmailField = "email";
-$globalSettings["usersTableInProject"] = true;
-$globalSettings["usersDatasourceTable"] = "public.Usuarios";
+$cUserpicField = "";
+$loginKeyFields= array();
+$loginKeyFields[] = "id_usuario";
 
-$globalSettings["jwtSecret"] = "s2dgfsg-43f";
+//	legacy use only
+$cKeyFields = $loginKeyFields;
+
+$globalSettings["usersTableInProject"] = true;
+$globalSettings["usersDatasourceTable"] = "public.usuarios";
+
+
+$globalSettings["jwtSecret"] = "U7W1k470LIo6909p4Ftp";
 
 if( $cDisplayNameField == '' )
 	$cDisplayNameField = $cUserNameField;
@@ -630,15 +682,18 @@ $arrCustomPages = array();
 
 
 
+//	-1 - undetermined, 0 - nah, 1 - yep
+$gGuestHasPermissions = -1;
+
 $useAJAX = true;
 $suggestAllContent = true;
 
 $strLastSQL = "";
 $showCustomMarkerOnPrint = false;
 
-$projectBuildKey = "723_1623097744";
-$wizardBuildKey = "33793";
-$projectBuildNumber = "723";
+$projectBuildKey = "1375_1628281436";
+$wizardBuildKey = "37251";
+$projectBuildNumber = "1375";
 
 $mlang_messages = array();
 $mlang_charsets = array();
@@ -646,12 +701,14 @@ $mlang_charsets = array();
 
 $projectMenus = array();
 $projectMenus[] = "main";
+$projectMenus[] = "secondary";
 
 
 $menuTreelikeFlags = array();
-$menuTreelikeFlags["main"] = 1;
+$menuTreelikeFlags["main"] = 0;
 
 
+$menuTreelikeFlags["secondary"] = 1;
 
 
 
@@ -659,18 +716,18 @@ $menuTreelikeFlags["main"] = 1;
 $tableCaptions = array();
 $tableCaptions["Spanish"] = array();
 $tableCaptions["Spanish"][""] = "";
-$tableCaptions["Spanish"]["public_Recicladores"] = "Recicladores";
-$tableCaptions["Spanish"]["public_GestionPesosResiduos"] = "Gestion Pesos Residuos";
-$tableCaptions["Spanish"]["public_Residuos"] = "Residuos";
-$tableCaptions["Spanish"]["public_Usuarios"] = "Usuarios";
-$tableCaptions["Spanish"]["public_MedTipoOrigen"] = "Med Tipo Origen";
-$tableCaptions["Spanish"]["public_EmpresasRecicladores"] = "Empresas Recicladores";
-$tableCaptions["Spanish"]["public_DetalleVentas"] = "Detalle Ventas";
-$tableCaptions["Spanish"]["public_Ventas"] = "Ventas";
-$tableCaptions["Spanish"]["public_GestionPesosResiduosDetVen"] = "Gestion Pesos Residuos Det Ven";
-$tableCaptions["Spanish"]["public_Barrios"] = "Barrios";
-$tableCaptions["Spanish"]["public_GestionRegistrosOrigen"] = "Gestion Registros Origen";
-$tableCaptions["Spanish"]["public_GestionRegistrosOrigen_Report"] = "GestionRegistrosOrigen Report";
+$tableCaptions["Spanish"]["public_tipos_usuarios"] = "Tipos Usuarios";
+$tableCaptions["Spanish"]["public_barrios"] = "Barrios";
+$tableCaptions["Spanish"]["public_residuos"] = "Residuos";
+$tableCaptions["Spanish"]["public_recicladores"] = "Recicladores";
+$tableCaptions["Spanish"]["public_usuarios"] = "Usuarios";
+$tableCaptions["Spanish"]["public_empresas_recicladoras"] = "Empresas Recicladoras";
+$tableCaptions["Spanish"]["public_gestion_pesos_residuos"] = "Gestion Pesos Residuos";
+$tableCaptions["Spanish"]["public_ventas"] = "Ventas";
+$tableCaptions["Spanish"]["public_detalles_ventas"] = "Detalles Ventas";
+$tableCaptions["Spanish"]["public_gestion_pesos_residuos_ven"] = "Gestion Pesos Residuos Ven";
+$tableCaptions["Spanish"]["public_gestion_registros_origen"] = "Gestion Registros Origen";
+$tableCaptions["Spanish"]["public_med_tipo_origen"] = "Med Tipo Origen";
 
 
 $globalEvents = new class_GlobalEvents;
@@ -678,10 +735,14 @@ $tableEvents = array();
 $dalTables = array();
 $tableinfo_cache = array();
 
+$projectLanguage = "php";
+
 require_once( getabspath('classes/labels.php') );
 require_once( getabspath('classes/security.php') );
 require_once( getabspath("connections/dbfunctions_legacy.php") );
+require_once( getabspath("classes/datasource/httprequest.php") );
 require_once( getabspath("connections/ConnectionManager.php") );
+require_once( getabspath("connections/apis.php") );
 include(getabspath('classes/searchclause.php'));
 include(getabspath('classes/projectsettings.php'));
 include_once(getabspath('classes/runnerpage.php'));
@@ -690,10 +751,41 @@ require_once( getabspath('classes/db.php') );
 require_once( getabspath('classes/context.php') );
 require_once(getabspath("classes/cipherer.php"));
 require_once( getabspath('classes/wheretabs.php') );
+require_once( getabspath('classes/datasource/datacontext.php') );
+
+$pageTypesForView = array();
+$pageTypesForView[] = "list";
+$pageTypesForView[] = "view";
+$pageTypesForView[] = "export";
+$pageTypesForView[] = "print";
+$pageTypesForView[] = "report";
+$pageTypesForView[] = "rprint";
+$pageTypesForView[] = "chart";
+
+$pageTypesForEdit = array();
+$pageTypesForEdit[] = "add";
+$pageTypesForEdit[] = "edit";
+$pageTypesForEdit[] = "search";
+$pageTypesForEdit[] = "register";
+
+
+$projectEntities = array();
+$projectEntitiesReverse = array();
+$tablesByGoodName = array();
+$tablesByUpperCase = array();
+$tablesByUpperGoodname = array();
+
 
 $contextStack = new RunnerContext;
 
 $cman = new ConnectionManager();
+$restApis = new RestManager();
+$restResultCache = array();
+
+/**
+ * substitute for $_SESSION when in REST API (stateless) mode
+ */
+$restStorage = array();
 
 $currentConnection = null;
 
@@ -706,7 +798,7 @@ $mediaType = $mediaType ? $mediaType : 0;
 
 
 
-$page_titles[".global"] = array();
+$page_titles[GLOBAL_PAGES_SHORT] = array();
 if(mlang_getcurrentlang()=="Spanish")
 {
 }
@@ -714,10 +806,14 @@ if(mlang_getcurrentlang()=="Spanish")
 $globalSettings["showDetailedError"] = true;
 
 
+
 // SearchClause::getSearchObject
 $_cachedSeachClauses = array();
 
 $auditMaxFieldLength = 300;
+$mysqlSupportDates0000 = false;
+
+$csrfProtectionOff = false;
 
 
 
@@ -727,17 +823,15 @@ $conn = $cman->getDefault()->conn;
 
 //	delete old username & password cookies
 if( $_COOKIE["password"] ) {
-	setcookie("username", "", time() - 1, "", "", false, false);
-	setcookie("password", "", time() - 1, "", "", false, false);
+	runner_setcookie("username", "", time() - 1, "", "", false, false);
+	runner_setcookie("password", "", time() - 1, "", "", false, false);
 }
 
 
 $logoutPerformed = false;
-$scriptname = getFileNameFromURL();
-	if(!isLogged() && $scriptname!="login.php" && $scriptname!="remind.php" && $scriptname!="register.php" && $scriptname!="checkduplicates.php")
-{
-	Security::doGuestLogin();
-}
+Security::autoLoginAsGuest();
+Security::updateCSRFCookie();
+
 
 
 $isGroupSecurity = true;
@@ -755,7 +849,6 @@ $menuNodesIndex=0;
 
 /**
  *	Sundry data the page classes want pass to their JS counterparts
- * 	TODO: Move proxy here
  *
  *	$pagesData[<pageid>] = array( 	<key> => <value>
  *									<key> => <value> ... )

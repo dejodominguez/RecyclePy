@@ -1,9 +1,15 @@
 [data-cellid="top_c1"][data-page="recicladores_add"][data-cellid="top_c1"][data-page="recicladores_add"][data-cellid="top_c1"][data-page="recicladores_add"] {
   background-color: #9ee6b2;
 }
-[data-page="recicladores_add"][data-itemid="add_header"] {
-  background-color: #9ee6b2;
+[data-page="recicladores_add"][data-itemid="logo"] {
   font-weight: bold;
+}
+[data-page="recicladores_add"][data-itemid="menu"] > .nav {
+  padding-bottom: 300;
+}
+[data-page="recicladores_add"][data-itemid="image"] {
+  width: 270px;
+  height: 170px;
 }
 
 

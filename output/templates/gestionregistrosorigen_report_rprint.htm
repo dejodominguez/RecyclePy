@@ -81,17 +81,17 @@
 	<thead>
 		{BEGIN grid_header}
 		<tr class="rnr-toprow table-header style1">
-					<th class="{$fieldclass_IdUsuario}"> {$label public_GestionRegistrosOrigen_Report IdUsuario }</th>
-					<th class="{$fieldclass_CantidadOrigen}"> {$label public_GestionRegistrosOrigen_Report CantidadOrigen }</th>
-					<th class="{$fieldclass_FotoOrigen}"> {$label public_GestionRegistrosOrigen_Report FotoOrigen }</th>
-					<th class="{$fieldclass_GPSMapaGoo}"> {$label public_GestionRegistrosOrigen_Report GPSMapaGoo }</th>
-					<th class="{$fieldclass_DirecUsuario}"> {$label public_GestionRegistrosOrigen_Report DirecUsuario }</th>
-					<th class="{$fieldclass_DescriBarrio}"> {$label public_GestionRegistrosOrigen_Report DescriBarrio }</th>
-					<th class="{$fieldclass_DescriMedTipOrigen}"> {$label public_GestionRegistrosOrigen_Report DescriMedTipOrigen }</th>
-					<th class="{$fieldclass_DescriResiduo}"> {$label public_GestionRegistrosOrigen_Report DescriResiduo }</th>
-					<th class="{$fieldclass_Lat}"> {$label public_GestionRegistrosOrigen_Report Lat }</th>
-					<th class="{$fieldclass_Lng}"> {$label public_GestionRegistrosOrigen_Report Lng }</th>
-					<th class="{$fieldclass_NombreCompleto}"> {$label public_GestionRegistrosOrigen_Report NombreCompleto }</th>
+					<th class="{$fieldclass_id_ges_reg_origen}"> {$label public_GestionRegistrosOrigen_Report id_ges_reg_origen }</th>
+					<th class="{$fieldclass_nombre_usuario}"> {$label public_GestionRegistrosOrigen_Report nombre_usuario }</th>
+					<th class="{$fieldclass_nombre_completo}"> {$label public_GestionRegistrosOrigen_Report nombre_completo }</th>
+					<th class="{$fieldclass_direc_usuario}"> {$label public_GestionRegistrosOrigen_Report direc_usuario }</th>
+					<th class="{$fieldclass_descri_barrio}"> {$label public_GestionRegistrosOrigen_Report descri_barrio }</th>
+					<th class="{$fieldclass_cantidad_origen}"> {$label public_GestionRegistrosOrigen_Report cantidad_origen }</th>
+					<th class="{$fieldclass_descri_med_tip_origen}"> {$label public_GestionRegistrosOrigen_Report descri_med_tip_origen }</th>
+					<th class="{$fieldclass_descri_residuo}"> {$label public_GestionRegistrosOrigen_Report descri_residuo }</th>
+					<th class="{$fieldclass_id_usuario}"> {$label public_GestionRegistrosOrigen_Report id_usuario }</th>
+					<th class="{$fieldclass_gps_mapa_goo}"> {$label public_GestionRegistrosOrigen_Report gps_mapa_goo }</th>
+					<th class="{$fieldclass_foto_origen}"> {$label public_GestionRegistrosOrigen_Report foto_origen }</th>
 				</tr>
 		{END grid_header}
 	</thead>
@@ -100,59 +100,59 @@
 	{BEGIN row_data}
 		<tr class="rnr-row style1" {$rowattrs}>
 			
-			<td {$recordattrs} class="{$fieldclass_IdUsuario}">
-						<span data-itemtype="grid_field" data-field="IdUsuario" data-itemid="grid_field2" data-pageid={$pageid} data-record-id="{$recId}">
-{$IdUsuario_value}
+			<td {$recordattrs} class="{$fieldclass_id_ges_reg_origen}">
+						<span data-itemtype="grid_field" data-field="id_ges_reg_origen" data-itemid="grid_field2" data-pageid={$pageid} data-record-id="{$recId}">
+{$id_ges_reg_origen_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_CantidadOrigen}">
-						<span data-itemtype="grid_field" data-field="CantidadOrigen" data-itemid="grid_field3" data-pageid={$pageid} data-record-id="{$recId}">
-{$CantidadOrigen_value}
+			<td {$recordattrs} class="{$fieldclass_nombre_usuario}">
+						<span data-itemtype="grid_field" data-field="nombre_usuario" data-itemid="grid_field3" data-pageid={$pageid} data-record-id="{$recId}">
+{$nombre_usuario_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_FotoOrigen}">
-						<span data-itemtype="grid_field" data-field="FotoOrigen" data-itemid="grid_field4" data-pageid={$pageid} data-record-id="{$recId}">
-{$FotoOrigen_value}
+			<td {$recordattrs} class="{$fieldclass_nombre_completo}">
+						<span data-itemtype="grid_field" data-field="nombre_completo" data-itemid="grid_field4" data-pageid={$pageid} data-record-id="{$recId}">
+{$nombre_completo_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_GPSMapaGoo}">
-						<span data-itemtype="grid_field" data-field="GPSMapaGoo" data-itemid="grid_field5" data-pageid={$pageid} data-record-id="{$recId}">
-{$GPSMapaGoo_value}
+			<td {$recordattrs} class="{$fieldclass_direc_usuario}">
+						<span data-itemtype="grid_field" data-field="direc_usuario" data-itemid="grid_field5" data-pageid={$pageid} data-record-id="{$recId}">
+{$direc_usuario_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_DirecUsuario}">
-						<span data-itemtype="grid_field" data-field="DirecUsuario" data-itemid="grid_field6" data-pageid={$pageid} data-record-id="{$recId}">
-{$DirecUsuario_value}
+			<td {$recordattrs} class="{$fieldclass_descri_barrio}">
+						<span data-itemtype="grid_field" data-field="descri_barrio" data-itemid="grid_field6" data-pageid={$pageid} data-record-id="{$recId}">
+{$descri_barrio_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_DescriBarrio}">
-						<span data-itemtype="grid_field" data-field="DescriBarrio" data-itemid="grid_field7" data-pageid={$pageid} data-record-id="{$recId}">
-{$DescriBarrio_value}
+			<td {$recordattrs} class="{$fieldclass_cantidad_origen}">
+						<span data-itemtype="grid_field" data-field="cantidad_origen" data-itemid="grid_field7" data-pageid={$pageid} data-record-id="{$recId}">
+{$cantidad_origen_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_DescriMedTipOrigen}">
-						<span data-itemtype="grid_field" data-field="DescriMedTipOrigen" data-itemid="grid_field8" data-pageid={$pageid} data-record-id="{$recId}">
-{$DescriMedTipOrigen_value}
+			<td {$recordattrs} class="{$fieldclass_descri_med_tip_origen}">
+						<span data-itemtype="grid_field" data-field="descri_med_tip_origen" data-itemid="grid_field8" data-pageid={$pageid} data-record-id="{$recId}">
+{$descri_med_tip_origen_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_DescriResiduo}">
-						<span data-itemtype="grid_field" data-field="DescriResiduo" data-itemid="grid_field9" data-pageid={$pageid} data-record-id="{$recId}">
-{$DescriResiduo_value}
+			<td {$recordattrs} class="{$fieldclass_descri_residuo}">
+						<span data-itemtype="grid_field" data-field="descri_residuo" data-itemid="grid_field9" data-pageid={$pageid} data-record-id="{$recId}">
+{$descri_residuo_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_Lat}">
-						<span data-itemtype="grid_field" data-field="Lat" data-itemid="grid_field10" data-pageid={$pageid} data-record-id="{$recId}">
-{$Lat_value}
+			<td {$recordattrs} class="{$fieldclass_id_usuario}">
+						<span data-itemtype="grid_field" data-field="id_usuario" data-itemid="grid_field10" data-pageid={$pageid} data-record-id="{$recId}">
+{$id_usuario_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_Lng}">
-						<span data-itemtype="grid_field" data-field="Lng" data-itemid="grid_field11" data-pageid={$pageid} data-record-id="{$recId}">
-{$Lng_value}
+			<td {$recordattrs} class="{$fieldclass_gps_mapa_goo}">
+						<span data-itemtype="grid_field" data-field="gps_mapa_goo" data-itemid="grid_field11" data-pageid={$pageid} data-record-id="{$recId}">
+{$gps_mapa_goo_value}
 </span>			</td>
 			
-			<td {$recordattrs} class="{$fieldclass_NombreCompleto}">
-						<span data-itemtype="grid_field" data-field="NombreCompleto" data-itemid="grid_field12" data-pageid={$pageid} data-record-id="{$recId}">
-{$NombreCompleto_value}
+			<td {$recordattrs} class="{$fieldclass_foto_origen}">
+						<span data-itemtype="grid_field" data-field="foto_origen" data-itemid="grid_field12" data-pageid={$pageid} data-record-id="{$recId}">
+{$foto_origen_value}
 </span>			</td>
 				</tr>
 	{END row_data}
@@ -161,6 +161,11 @@
 	
 
 	
+
+
+    
+    
+
 
 	</tbody>
 </table>	</div>

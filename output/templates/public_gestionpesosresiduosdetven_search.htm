@@ -69,7 +69,7 @@
 		data-v-width="6"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -87,12 +87,9 @@
 				
 {BEGIN IdGesPesResiduo_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="IdGesPesResiduo" 
-	
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-horizontal-field form-horizontal" 	
 	data-signal-error-for="IdGesPesResiduo{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="IdGesPesResiduo" >
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" >
 
 
 	<label class="r-search-label control-label" for="{$labelfor_IdGesPesResiduo}">
@@ -110,14 +107,33 @@
 
 {END IdGesPesResiduo_fieldblock}
 											
+{BEGIN concat_fieldblock}
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_concat}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="concat{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="concat" data-fieldname="concat" >
+
+
+	<label class="r-search-label control-label" for="{$labelfor_concat}">
+		{$label public_GestionPesosResiduosDetVen concat }	</label>
+	<div class="r-search-option">
+		{$searchtype_concat}
+	</div>
+	<div class="r-search-field">
+		{$concat_editcontrol}	</div>
+	<div class="r-search-field">
+		{$concat_editcontrol1}
+	</div>
+	
+</div>
+
+{END concat_fieldblock}
+											
 {BEGIN KilosResiduos_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_KilosResiduos}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="KilosResiduos" 
-	
+<div class="r-integrated-field form-group clearfix {$fielddispclass_KilosResiduos}  r-horizontal-field form-horizontal" 	
 	data-signal-error-for="KilosResiduos{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field4" {$item_integrated_search_field4} data-pageid="{$pageid}" data-field="KilosResiduos" >
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="KilosResiduos" data-fieldname="KilosResiduos" >
 
 
 	<label class="r-search-label control-label" for="{$labelfor_KilosResiduos}">
@@ -135,30 +151,27 @@
 
 {END KilosResiduos_fieldblock}
 											
-{BEGIN concat_fieldblock}
+{BEGIN Estado_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_concat}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="concat" 
-	
-	data-signal-error-for="concat{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="concat" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Estado}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="Estado{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="Estado" data-fieldname="Estado" >
 
 
-	<label class="r-search-label control-label" for="{$labelfor_concat}">
-		{$label public_GestionPesosResiduosDetVen concat }	</label>
+	<label class="r-search-label control-label" for="{$labelfor_Estado}">
+		{$label public_GestionPesosResiduosDetVen Estado }	</label>
 	<div class="r-search-option">
-		{$searchtype_concat}
+		{$searchtype_Estado}
 	</div>
 	<div class="r-search-field">
-		{$concat_editcontrol}	</div>
+		{$Estado_editcontrol}	</div>
 	<div class="r-search-field">
-		{$concat_editcontrol1}
+		{$Estado_editcontrol1}
 	</div>
 	
 </div>
 
-{END concat_fieldblock}
+{END Estado_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}

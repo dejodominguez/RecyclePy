@@ -3,21 +3,12 @@ class ReportPrintPage extends ReportPage
 {
 	public $pageWidth = PDF_PAGE_WIDTH;
 	public $pageHeight = PDF_PAGE_HEIGHT;
-	public $pdfWidth = PDF_PAGE_WIDTH;
+
 	public $splitAtServer = false;
 	public $splitByGroups = 0;
 	public $pages = array();
 
 	public $arrPages = array();
-
-	/**
-	 *	PDF rendering mode.
-	 *	empty - regular page display
-	 * 	"build" - build page and return PDF
-	 * 	"prepare" - build page and return HTML for browser post-processing
-	 *	"convert" - convert post-processed HTML to PDF
-	 */
-	public $pdfContent = "";
 
 	/**
 	 *
@@ -37,8 +28,6 @@ class ReportPrintPage extends ReportPage
 	public $isReportEmpty = false;
 
 	public $multipleDetails = false;
-	
-	public $exportPdf;
 	
 	/**
 	 *
@@ -68,12 +57,9 @@ class ReportPrintPage extends ReportPage
 		else if( !$this->pdfJsonMode() )
 		{
 			//	print mode
-			if( $this->pSet->getReportPrintPartitionType() != 0 )
-			{
-				$this->splitAtServer = true;
-				if( !$this->splitByGroups )
-					$this->splitByGroups = $this->pSet->getReportPrintGroupsPerPage();
-			}
+			$this->splitAtServer = true;
+			if( !$this->splitByGroups )
+				$this->splitByGroups = $this->pSet->getReportPrintGroupsPerPage();
 			$this->pageData["printRecords"] = $this->splitByGroups;
 
 		} else if ( $this->pdfJsonMode() ) {
@@ -96,10 +82,9 @@ class ReportPrintPage extends ReportPage
 		if( isRTL() )
 			$this->jsSettings['tableSettings'][ $this->tName ]['isRTL'] = true;
 
-		$this->jsSettings['tableSettings'][ $this->tName ]['reportPrintPartitionType'] = $this->pSet->getReportPrintPartitionType();
+		$this->jsSettings['tableSettings'][ $this->tName ]['reportPrintPartitionType'] = 1;
 		$this->jsSettings['tableSettings'][ $this->tName ]['reportPrintGroupsPerPage'] = $this->pSet->getReportPrintGroupsPerPage();
-		$this->jsSettings['tableSettings'][ $this->tName ]['reportPrintLayout'] = $this->pSet->getReportPrintLayout();
-		$this->jsSettings['tableSettings'][ $this->tName ]['lowGroup'] = $this->pSet->getLowGroup();
+		$this->jsSettings['tableSettings'][ $this->tName ]['reportPrintLayout'] = $this->pSet->getReportLayout();
 
 		$this->jsSettings['tableSettings'][ $this->tName ]['printerPagePDF'] = $this->pSet->isPrinterPagePDF();
 
@@ -107,10 +92,7 @@ class ReportPrintPage extends ReportPage
 		$this->jsSettings['tableSettings'][ $this->tName ]['printerPageScale'] = $this->pSet->getPrinterPageScale();
 		$this->jsSettings['tableSettings'][ $this->tName ]['isPrinterPageFitToPage'] = $this->pSet->isPrinterPageFitToPage();
 
-		if( $this->pSet->getReportPrintPartitionType() == 0 )
-			$this->jsSettings['tableSettings'][ $this->tName ]['printerSplitRecords'] = 0;
-		else
-			$this->jsSettings['tableSettings'][ $this->tName ]['printerSplitRecords'] = $this->pSet->getReportPrintGroupsPerPage();
+		$this->jsSettings['tableSettings'][ $this->tName ]['printerSplitRecords'] = $this->pSet->getReportPrintGroupsPerPage();
 
 		$this->jsSettings['tableSettings'][ $this->tName ]['printerPDFSplitRecords'] = $this->pSet->getReportPrintPDFGroupsPerPage();
 		
@@ -122,10 +104,7 @@ class ReportPrintPage extends ReportPage
 	 *
 	 */
 	public function assignPDFFormatSettings()
-	{		
-		if( $this->exportPdf )
-			$this->jsSettings['tableSettings'][ $this->tName ]['exportPdf'] = 1;
-
+	{
 		if( !$this->pdfMode )
 			return;
 
@@ -211,9 +190,12 @@ class ReportPrintPage extends ReportPage
 		// the table info params
 		$extraParams = $this->getExtraReportParams();	
 		$this->setGoogleMapsParams( $extraParams['fieldsArr'] );
+		$this->fillAdvancedMapData();
+
 		if( $this->pdfJsonMode() ) {
 			$this->assignTotalsDefaults();
 		}
+		RunnerContext::pushSearchContext( $this->searchClauseObj );
 		$this->setReportData( $extraParams );
 
 		// add button events if exist
@@ -252,6 +234,13 @@ class ReportPrintPage extends ReportPage
 			$this->xt->assign("printtabheader",true);
 			$this->xt->assign("printtabheader_text", $this->getTabTitle($curTabId));
 		}
+		foreach( $this->pSet->getPageFields() as $f )
+		{
+			$gf = GoodFieldName($f);
+			$this->xt->assign( $gf . "_class", $this->fieldClass( $f ));
+			$this->xt->assign( $gf . "_align", $this->fieldAlign( $f ));
+		}
+
 	}
 
 	protected function setRecordsId() {
@@ -385,16 +374,13 @@ class ReportPrintPage extends ReportPage
 		}
 
 
-		$whereComponents = $this->getWhereComponents();
-		$sqlArray = $this->getReportSQLData();
-		
-
-		$rb = new Report($sqlArray, $this->pSet->getOrderIndexes(), $this->connection
-			, $PageSize, $this->splitByGroups, $_options, $whereComponents["searchWhere"], $whereComponents["searchHaving"], $this);
+		$rb = new Report( $this->pSet->getOrderIndexes(), $this->connection
+			, $PageSize, $this->splitByGroups, $_options, $this);
 
 		$this->arrReport = $rb->getReport( $pagestart );
 		$this->arrPages = $rb->getPages();
 		$this->standardReportCommonAssign();
+		$this->assignColumnHeaderClasses();
 	}
 
 	/**
@@ -639,6 +625,7 @@ class ReportPrintPage extends ReportPage
 
 		if( $this->pdfJsonMode() )
 		{
+			$this->preparePDFBackground();
 			$this->xt->assign( "standalone_page", true );
 			$this->xt->displayJSON($this->templatefile);
 			return;

@@ -1,7 +1,4 @@
 <?php
-
-
-
 $tdataempresasrecicladores = array();
 $tdataempresasrecicladores[".searchableFields"] = array();
 $tdataempresasrecicladores[".ShortName"] = "empresasrecicladores";
@@ -9,11 +6,12 @@ $tdataempresasrecicladores[".OwnerID"] = "";
 $tdataempresasrecicladores[".OriginalTable"] = "public.EmpresasRecicladores";
 
 
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
-
 $tdataempresasrecicladores[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
+$tdataempresasrecicladores[".originalPagesByType"] = $tdataempresasrecicladores[".pagesByType"];
 $tdataempresasrecicladores[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdataempresasrecicladores[".defaultPages"] = $defaultPages;
+$tdataempresasrecicladores[".originalPages"] = $tdataempresasrecicladores[".pages"];
+$tdataempresasrecicladores[".defaultPages"] = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
+$tdataempresasrecicladores[".originalDefaultPages"] = $tdataempresasrecicladores[".defaultPages"];
 
 //	field labels
 $fieldLabelsempresasrecicladores = array();
@@ -56,6 +54,8 @@ $tdataempresasrecicladores[".nSecOptions"] = 0;
 
 $tdataempresasrecicladores[".mainTableOwnerID"] = "";
 $tdataempresasrecicladores[".entityType"] = 0;
+$tdataempresasrecicladores[".connId"] = "RealEstate_at_localhost";
+
 
 $tdataempresasrecicladores[".strOriginalTableName"] = "public.EmpresasRecicladores";
 
@@ -69,14 +69,9 @@ $tdataempresasrecicladores[".showEditInPopup"] = false;
 
 $tdataempresasrecicladores[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdataempresasrecicladores[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdataempresasrecicladores[".listAjax"] = false;
 //	temporary
-$tdataempresasrecicladores[".listAjax"] = false;
+//$tdataempresasrecicladores[".listAjax"] = false;
 
 	$tdataempresasrecicladores[".audit"] = false;
 
@@ -87,7 +82,7 @@ $pages = $tdataempresasrecicladores[".defaultPages"];
 
 if( $pages[PAGE_EDIT] ) {
 	$tdataempresasrecicladores[".edit"] = true;
-	$tdataempresasrecicladores[".afterEditAction"] = 1;
+	$tdataempresasrecicladores[".afterEditAction"] = 0;
 	$tdataempresasrecicladores[".closePopupAfterEdit"] = 1;
 	$tdataempresasrecicladores[".afterEditActionDetTable"] = "";
 }
@@ -197,11 +192,10 @@ $tdataempresasrecicladores[".warnLeavingPages"] = true;
 
 
 $tstrOrderBy = "";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
 $tdataempresasrecicladores[".strOrderBy"] = $tstrOrderBy;
 
 $tdataempresasrecicladores[".orderindexes"] = array();
+
 
 $tdataempresasrecicladores[".sqlHead"] = "SELECT \"IdEmpreRecicladora\",  	\"RUCEmpre\",  	\"NombreEmpre\",  	\"DirecEmpre\",  	\"TelEmpre\"";
 $tdataempresasrecicladores[".sqlFrom"] = "FROM \"public\".\"EmpresasRecicladores\"";
@@ -261,7 +255,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_EmpresasRecicladores","IdEmpreRecicladora");
 	$fdata["FieldType"] = 3;
 
-	
+
 		$fdata["AutoInc"] = true;
 
 	
@@ -269,6 +263,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 
 		$fdata["strField"] = "IdEmpreRecicladora";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"IdEmpreRecicladora\"";
 
@@ -292,6 +287,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -399,13 +395,14 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_EmpresasRecicladores","RUCEmpre");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "RUCEmpre";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"RUCEmpre\"";
 
@@ -429,6 +426,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -450,6 +448,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -471,6 +470,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -492,6 +492,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -687,13 +688,14 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_EmpresasRecicladores","NombreEmpre");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "NombreEmpre";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"NombreEmpre\"";
 
@@ -717,6 +719,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -823,13 +826,14 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_EmpresasRecicladores","DirecEmpre");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "DirecEmpre";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"DirecEmpre\"";
 
@@ -853,6 +857,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -959,13 +964,14 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_EmpresasRecicladores","TelEmpre");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "TelEmpre";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"TelEmpre\"";
 
@@ -989,6 +995,7 @@ $tdataempresasrecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1095,6 +1102,9 @@ $page_titles["public_EmpresasRecicladores"] = &$pageTitlesempresasrecicladores;
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
+
+//if !@TABLE.bReportCrossTab
+
 $detailsTablesData["public.EmpresasRecicladores"] = array();
 //	public.Ventas
 	
@@ -1107,7 +1117,8 @@ $detailsTablesData["public.EmpresasRecicladores"] = array();
 
 
 
-				$detailsParam["dType"]=PAGE_LIST;
+		
+		$detailsParam["dType"]=PAGE_LIST;
 	$detailsParam["dShortTable"] = "ventas";
 	$detailsParam["dCaptionTable"] = GetTableCaption("public_Ventas");
 	$detailsParam["masterKeys"] =array();
@@ -1125,6 +1136,7 @@ $detailsTablesData["public.EmpresasRecicladores"] = array();
 				$detailsTablesData["public.EmpresasRecicladores"][$dIndex]["detailKeys"] = array();
 
 	$detailsTablesData["public.EmpresasRecicladores"][$dIndex]["detailKeys"][]="IdEmpreRecicladora";
+//endif
 
 // tables which are master tables for current table (detail)
 $masterTablesData["public.EmpresasRecicladores"] = array();
@@ -1134,7 +1146,9 @@ $masterTablesData["public.EmpresasRecicladores"] = array();
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -1312,6 +1326,8 @@ $queryData_empresasrecicladores = createSqlQuery_empresasrecicladores();
 					
 
 $tdataempresasrecicladores[".sqlquery"] = $queryData_empresasrecicladores;
+
+
 
 $tableEvents["public.EmpresasRecicladores"] = new eventsBase;
 $tdataempresasrecicladores[".hasEvents"] = false;

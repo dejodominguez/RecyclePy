@@ -37,7 +37,7 @@
 	
 ">
 		 
-		<h2 data-itemtype="print_header" data-itemid="print_header" {$item_print_header} data-pageid="{$pageid}" >{$pagetitlelabel public_Ventas print}</h2>
+		<h2 data-itemtype="print_header" data-itemid="print_header" {$item_print_header} data-pageid="{$pageid}" >{$pagetitlelabel public_ventas print}</h2>
 	 
 		{BEGIN printtabheader}
 <span data-itemtype="print_subheader" data-itemid="print_subheader" {$item_print_subheader} data-pageid="{$pageid}" >
@@ -68,40 +68,23 @@
 			 
 				<div 
 	data-cellId="above-grid_c1" data-pageid="{$pageid}"	{$cell_above-grid_c1}
-	class="			col-md-12
+	class=" r-ori-vert			col-md-12
 	
 ">
 		{BEGIN firstAboveGridCell}
 		 
 		<span data-itemtype="print_pages" data-itemid="print_pages" {$item_print_pages} data-pageid="{$pageid}" data-small >
 	{$print_pages_labelprint_pages}
-</span>	 
-		{BEGIN inline_cancel}
-<span data-itemtype="grid_inline_cancel" data-itemid="grid_inline_cancel" {$item_grid_inline_cancel} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Cancelar" class="btn-link   
-	 glyphicon glyphicon-remove" {$inlinerevertlink_attrs} title="Cancelar" >		
-				
-								</a>
-</span>
-{END inline_cancel}
-	 
-		{BEGIN inlineadd_link}
-<span data-itemtype="inline_add" data-itemid="inline_add" {$item_inline_add} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-primary   
-	" {$inlineaddlink_attrs} >
-							Añadir nuevo			</a>
-</span>
-{END inlineadd_link}
-			{END firstAboveGridCell}	
+</span>			{END firstAboveGridCell}	
 	</div>					</div>
 	</div>		
 {END above-grid_block}
 									{BEGIN grid_block}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
-	data-body-height="1"
+	data-body-height="2"
 >
 						<thead>
 			{BEGIN grid_header}
@@ -119,20 +102,20 @@
 	{$cell_grid_headcell_field}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdVenta_class}
+		 r-ori-vert				{$id_venta_class}
 			"
 
-			data-field="IdVenta"
+			data-field="id_venta"
 	
 	data-cellId="grid_headcell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdVenta_fieldheadercolumn}
+		{BEGIN id_venta_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdVenta">
-	{$label public_Ventas IdVenta }	</span>
-{END IdVenta_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_venta" data-fieldname="id_venta">
+	{$label public_ventas id_venta }	</span>
+{END id_venta_fieldheadercolumn}
 
 	
 	</th>
@@ -144,20 +127,20 @@
 	{$cell_grid_headcell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$FechaVenta_class}
+		 r-ori-vert				{$fecha_venta_class}
 			"
 
-			data-field="FechaVenta"
+			data-field="fecha_venta"
 	
 	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN FechaVenta_fieldheadercolumn}
+		{BEGIN fecha_venta_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FechaVenta">
-	{$label public_Ventas FechaVenta }	</span>
-{END FechaVenta_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="fecha_venta" data-fieldname="fecha_venta">
+	{$label public_ventas fecha_venta }	</span>
+{END fecha_venta_fieldheadercolumn}
 
 	
 	</th>
@@ -169,20 +152,20 @@
 	{$cell_grid_headcell_field2}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$Observaci_n_class}
+		 r-ori-vert				{$id_empre_recichadora_class}
 			"
 
-			data-field="Observaci_n"
+			data-field="id_empre_recichadora"
 	
 	data-cellId="grid_headcell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN Observaci_n_fieldheadercolumn}
+		{BEGIN id_empre_recichadora_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Observaci_n">
-	{$label public_Ventas Observaci_n }	</span>
-{END Observaci_n_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_empre_recichadora" data-fieldname="id_empre_recichadora">
+	{$label public_ventas id_empre_recichadora }	</span>
+{END id_empre_recichadora_fieldheadercolumn}
 
 	
 	</th>
@@ -194,25 +177,26 @@
 	{$cell_grid_headcell_field3}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdEmpreRecicladora_class}
+		 r-ori-vert				{$observacion_class}
 			"
 
-			data-field="IdEmpreRecicladora"
+			data-field="observacion"
 	
 	data-cellId="grid_headcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdEmpreRecicladora_fieldheadercolumn}
+		{BEGIN observacion_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdEmpreRecicladora">
-	{$label public_Ventas IdEmpreRecicladora }	</span>
-{END IdEmpreRecicladora_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="observacion" data-fieldname="observacion">
+	{$label public_ventas observacion }	</span>
+{END observacion_fieldheadercolumn}
 
 	
 	</th>
 	{END cellblock_grid_headcell_field3}
 							</tr>
+					 
 					 
 					 
 					
@@ -234,20 +218,20 @@
 	{$cell_grid_cell_field}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdVenta_class}
+		 r-ori-vert				{$id_venta_class}
 			"
 
-			data-field="IdVenta"
+			data-field="id_venta"
 	
 	data-cellId="grid_cell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdVenta_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdVenta" data-default-width >
-{$IdVenta_value}
+		{BEGIN id_venta_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_venta" data-fieldname="id_venta" data-default-width >
+{$id_venta_value}
 </span>
-{END IdVenta_fieldcolumn}	
+{END id_venta_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field}
 				 
@@ -257,20 +241,20 @@
 	{$cell_grid_cell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$FechaVenta_class}
+		 r-ori-vert				{$fecha_venta_class}
 			"
 
-			data-field="FechaVenta"
+			data-field="fecha_venta"
 	
 	data-cellId="grid_cell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN FechaVenta_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="FechaVenta" data-default-width >
-{$FechaVenta_value}
+		{BEGIN fecha_venta_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="fecha_venta" data-fieldname="fecha_venta" data-default-width >
+{$fecha_venta_value}
 </span>
-{END FechaVenta_fieldcolumn}	
+{END fecha_venta_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field1}
 				 
@@ -280,20 +264,20 @@
 	{$cell_grid_cell_field2}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$Observaci_n_class}
+		 r-ori-vert				{$id_empre_recichadora_class}
 			"
 
-			data-field="Observaci_n"
+			data-field="id_empre_recichadora"
 	
 	data-cellId="grid_cell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN Observaci_n_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Observaci_n" data-default-width >
-{$Observaci_n_value}
+		{BEGIN id_empre_recichadora_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_empre_recichadora" data-fieldname="id_empre_recichadora" data-default-width >
+{$id_empre_recichadora_value}
 </span>
-{END Observaci_n_fieldcolumn}	
+{END id_empre_recichadora_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field2}
 				 
@@ -303,22 +287,47 @@
 	{$cell_grid_cell_field3}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdEmpreRecicladora_class}
+		 r-ori-vert				{$observacion_class}
 			"
 
-			data-field="IdEmpreRecicladora"
+			data-field="observacion"
 	
 	data-cellId="grid_cell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdEmpreRecicladora_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdEmpreRecicladora" data-default-width >
-{$IdEmpreRecicladora_value}
+		{BEGIN observacion_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="observacion" data-fieldname="observacion" data-default-width >
+{$observacion_value}
 </span>
-{END IdEmpreRecicladora_fieldcolumn}	
+{END observacion_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field3}
+							</tr>
+					 
+						<tr {$rowattrs} {$row_grid_2} class="{$rowclass} 
+								
+							">
+				 
+					{BEGIN cellblock_grid_cell_dpreview}
+	<td
+	
+	{$cell_grid_cell_dpreview}
+	{$recordattrs}
+	class="
+		 r-ori-vert			"
+
+	
+	data-cellId="grid_cell_dpreview" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN details_detalles_ventas}
+{$displayDetailTable_detalles_ventas}
+{END details_detalles_ventas}
+	
+	</td>
+	{END cellblock_grid_cell_dpreview}
 							</tr>
 					 
 					
@@ -329,7 +338,8 @@
 		 
 					 
 					 
-						<tr {$rowattrs} {$row_grid_2} class="{$rowclass} 
+					 
+						<tr {$rowattrs} {$row_grid_3} class="{$rowclass} 
 									{$gridFooter_class}
 									
 								r-gridrow
@@ -405,6 +415,15 @@
 {END grid_block}
 									{BEGIN below-grid_block}
 <div class="r-form" data-location="below-grid" id="form_below-grid_{$pageid}" data-makeup="small" {$form_below-grid} data-pageid="{$pageid}" >		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="below-grid_c1" data-pageid="{$pageid}"	{$cell_below-grid_c1}
+	class=" r-ori-vert			col-md-12
+	
+">
+			</div>					</div>
 	</div>		
 {END below-grid_block}
 			</div>

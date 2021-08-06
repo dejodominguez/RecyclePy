@@ -66,6 +66,7 @@ class FilterControl
 	 * @type Connection
 	 */
 	protected $connection;
+	protected $dataSource;
 	
 	public $dependent = false;	
 	
@@ -84,6 +85,7 @@ class FilterControl
 		$this->gfName = GoodFieldName($this->fName);
 		$this->tName = $pageObj->tName;
 		$this->connection = $pageObj->connection;
+		$this->dataSource = $pageObj->getDataSource();
 		
 		$this->pSet = $pageObj->pSet;
 		$this->cipherer = $pageObj->cipherer;
@@ -98,9 +100,8 @@ class FilterControl
 		
 		$this->multiSelect = $this->pSet->getFilterFiledMultiSelect($fName);	
 		
-		$this->whereComponents = $this->getFullWhereComponent($pageObj);
 
-		$this->filteredFields = $pageObj->searchClauseObj->filteredFields; 
+		$this->filteredFields = $pageObj->searchClauseObj->getFilteredFields(); 
 		$this->fieldType = $this->pSet->getFieldType($this->fName);
 		
 		if( count($this->filteredFields[ $this->fName ]) )
@@ -109,21 +110,6 @@ class FilterControl
 		$this->assignViewControls($viewControls);
 
 		$this->showCollapsed = $this->pSet->showCollapsed($this->fName);
-	}
-
-	public function getFullWhereComponent($pageObj)
-	{
-		$whereComponents = $pageObj->getWhereComponents();
-
-		$searchWhere = array();
-		$searchWhere[] = $whereComponents["searchWhere"];
-		
-		// where tab
-		$searchWhere[] = $pageObj->getCurrentTabWhere();
-
-		$whereComponents["searchWhere"] = SQLQuery::combineCases( $searchWhere, "and" );
-
-		return $whereComponents;
 	}
 
 	/**
@@ -170,13 +156,6 @@ class FilterControl
 		$this->aggregate = $this->totalsOptions[$totalsOption];
 	}
 	
-	/**
-	 * Form the SQL query string to get then the filter's data 
-	 */
-	protected function buildSQL()
-	{	
-		$this->strSQL = "SELECT ".$this->getTotals() . " from ( " . $this->buildBasicSQL() . ") a";
-	}
 
 	/**
 	 * Stub
@@ -434,7 +413,7 @@ class FilterControl
 		{
 			$showValue = $this->getControlCaption( $value );
 			$delButtonHtml = $this->getDelButtonHtml($this->gfName, $this->id, $value);
-			$filterControl = $delButtonHtml.'<span dir="LTR">'.$showValue.'</span>';
+			$filterControl = '<span>'.$delButtonHtml.$showValue.'</span>';
 			$parentFiltersData = $this->getParentFiltersDataForFilteredBlock($value);
 			$classes = 'filter-ready-value'.( $this->multiSelect == FM_ON_DEMAND ? ' ondemand' : '' );
 			$filterCtrlBlocks[] = $this->getFilterBlockStructure($filterControl, $classes, $value, $parentFiltersData);
@@ -484,9 +463,9 @@ class FilterControl
 		$extraDataAttrs = $this->getExtraDataAttrs($parentFiltersData);
 		
 		$pageType = 'list';
-		if( titREPORT == $this->pSet->getEntityType() )
+		if( isReport( $this->pSet->getEntityType() ) )
 			$pageType = 'report';
-		else if( titCHART == $this->pSet->getEntityType() )
+		else if( isChart( $this->pSet->getEntityType() ) )
 			$pageType = 'chart';
 		
 		if($this->multiSelect != FM_NONE)
@@ -496,25 +475,27 @@ class FilterControl
 						
 			$checkBox = '<input type="checkbox" '.$checkedAttr.' name="f[]" value="'.$encodeDataValue.'" '
 				.$extraDataAttrs.' class="multifilter-checkbox filter_'.$this->gfName.'_'.$this->id.'" '.$style.'>';	
-			$filterControl.= $checkBox.'&nbsp;';
 		}
 				
+		$href = "javascript:void(0)";
 		if($this->multiSelect != FM_ALWAYS) 
 		{
 			$href = GetTableLink( GetTableURL($this->tName), $pageType, 'f=('.runner_htmlspecialchars( rawurlencode( $this->fName ) ).
-				$separator.$encodeDataValue.')' );
-				
-			$label = '<a href="'.$href.'" '.$dataValueAttr.' '.$extraDataAttrs.' class="'.$this->gfName.'-filter-value">'.$showValue.'</a>';
+			$separator.$encodeDataValue.')' );
+			$label = $checkBox . ' ' .$showValue;
 		} 
 		else
 		{
-			$label = '<span>'.$showValue.'</span>';
+			$label = $checkBox . ' <span>'.$showValue.'</span>';
 		}
 			
 		if($this->useTotals && $totalValue != "")
-			$label .= '<span>&nbsp;('.$totalValue.')</span>';
+			$label .= ' <span dir="LTR">('.$totalValue.')</span>';
+
+		$label = '<a href="'.$href.'" '.$dataValueAttr.' '.$extraDataAttrs.' class="'.$this->gfName.'-filter-value">' . $label . "</a>";
 		
-		$filterControl.= '<span dir="LTR">'.$label.'</span>';
+		$filterControl.= $label;
+//		$filterControl.= '<span>'.$label.'</span>';
 		
 		return $filterControl;		
 	}
@@ -685,6 +666,10 @@ class FilterControl
 	 */
 	static function getFilterControl($fName, $pageObj, $id, $viewControls = null ) 
 	{
+		$filterFields = $pageObj->pSet->getFilterFields();
+		if( array_search( $fName, $filterFields ) === false ) {
+			return null;
+		}
 		$contorlType = $pageObj->pSet->getFilterFieldFormat($fName);
 		switch($contorlType)
 		{
@@ -724,94 +709,22 @@ class FilterControl
 				return new FilterValuesList($fName, $pageObj, $id, $viewControls);
 		}	
 	}
-	
-	/**
-	 * Build the main filter data source. Apply search, filter and security params to the original SQL
-	 * This will be used in a subquery or as is
-	 * @return String
-	 */
-	protected function buildBasicSQL()
-	{
-		$query = $this->pSet->getSQLQuery();
-		
-		$sqlParts = $query->getSqlComponents();
-
-		$mandatoryWhere = array();
-		$mandatoryHaving = array();
-		$optionalWhere = array();
-		$optionalHaving = array();
-
-//	search where & having
-		if( $this->whereComponents["searchUnionRequired"] )
-		{
-			$optionalWhere[] = $this->whereComponents["searchWhere"];
-			$optionalHaving[] = $this->whereComponents["searchHaving"];
-		}
-		else
-		{
-			$mandatoryWhere[] = $this->whereComponents["searchWhere"];
-			$mandatoryHaving[] = $this->whereComponents["searchHaving"];
-		}
-		$sqlParts["from"] .= $this->whereComponents["joinFromPart"];
-		
-//	filter where & having
-//	don't apply field's own filter expression!
-		foreach( $this->whereComponents["filterWhere"] as $f => $w )
-		{
-			if( $f != $this->fName )
-				$mandatoryWhere[] = $w;
-		}
-		foreach( $this->whereComponents["filterHaving"] as $f => $w )
-		{
-			if( $f != $this->fName )
-				$mandatoryHaving[] = $w;
-		}
-		
-//	master and security		
-		$mandatoryWhere[] = $this->whereComponents["security"];
-		$mandatoryWhere[] = $this->whereComponents["master"];
-		
-
-		return SQLQuery::buildSQL( $sqlParts, $mandatoryWhere, $mandatoryHaving, $optionalWhere, $optionalHaving );
-		
-	}
-	
-	/**
-	 * Get the 'not null' condition to add it to the WHERE clause
-	 * @param String dbfName
-	 * @return String
-	 */
-	protected function getNotNullWhere()
-	{
-		//	'field is not null' clauses for the field and all parent filters
-		
-		$ret = array();
-		$wName = $this->connection->addFieldWrappers( $this->fName );
-		$ret[] = $wName . " is not NULL";
-		if( $this->connection->dbType != nDATABASE_Oracle && IsCharType($this->fieldType) )
-		{	
-			$ret[] = $wName . " <> ''";
-		}
-			
-		if( !$this->dependent )
-			return $ret;
-			
-		foreach( $this->parentFiltersNames as $p )
-		{
-			$wp = $this->connection->addFieldWrappers( $p );
-			$ret[] = $wp . " is not NULL";
-			if( $this->connection->dbType != nDATABASE_Oracle && IsCharType( $this->pSet->getFieldType( $p ) ) )
-			{	
-				$ret[] = $wp . " <> ''";
-			}
-		}
-		
-		return $ret;
-	}
 
 	public function hasDependentFilter() {
 		return false;
 	}
-	
+
+	protected function dataTotalsName() {
+		$totalOption = $this->pSet->getFilterFieldTotal( $this->fName );
+		if( $totalOption == FT_COUNT ) {
+			return 'count';
+		} else if( $totalOption == FT_MIN ) {
+			return 'min';
+		} else if( $totalOption == FT_MAX ) {
+			return 'max';
+		}
+		return '';
+	}
 }
+
 ?>

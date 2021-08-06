@@ -21,7 +21,7 @@
 		{$containerCss}
 		</style>
 		<div class="r-vbar-page">
-			<div data-width="" data-fixed class="r-left clearfix {$leftbar_class}" >
+			<div data-width="300px"  class="r-left clearfix {$leftbar_class}" >
 								<div data-location="left" id="form_left_{$pageid}" data-makeup="leftbar" {$form_left} data-pageid="{$pageid}">
 {BEGIN left_block}
  
@@ -44,7 +44,7 @@
 
 			<div class="clearfix " data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
 				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Expand" class="btn btn-link   
+	<a type="button" title="Expandir" class="btn btn-link   
 	" href="#" >
 					<span class="glyphicon glyphicon-triangle-right"></span>
 										</a>
@@ -66,14 +66,14 @@
 
 	<div class="panel-heading">
 		<div class="btn-group" id="addSearchFieldButton{$id}">
-			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle btn-sm )" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Búsqueda			<span class="caret"></span>
 			</button>
 		</div>
 
 
 		<div class="btn-group searchpanel-options" id="searchPanelOptions{$id}">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="glyphicon glyphicon glyphicon-option-vertical"></span>
 			</button>
 			<ul class="dropdown-menu dropdown-left">
@@ -100,45 +100,45 @@
 				<span class="rnr-searchcontrol">{$searchcontrol1}</span>
 		</div>
 		{END searchCtrlBlock}
-																		{BEGIN searchCtrlBlock_Cantidad}
+																		{BEGIN searchCtrlBlock_ID}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_Cantidad}" {$filterRow_attrs_Cantidad}>
-			<label>{$label public_DetalleVentas Cantidad }</label>
-
-							{$delCtrlButt}
-			
-								<span class="rnr-searchtype">{$searchtype_Cantidad}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_Cantidad}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_Cantidad}</span>
-						</div>
-		{END searchCtrlBlock_Cantidad}
-																{BEGIN searchCtrlBlock_IdFGesPesResiduo}
-
-
-		<div class="form-group srchPanelRow {$filterRow_class_IdFGesPesResiduo}" {$filterRow_attrs_IdFGesPesResiduo}>
-			<label>{$label public_DetalleVentas IdFGesPesResiduo }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_ID}" {$filterRow_attrs_ID}>
+			<label>{$label public_DetalleVentas ID }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_IdFGesPesResiduo}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_IdFGesPesResiduo}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_IdFGesPesResiduo}</span>
+								<span class="rnr-searchtype">{$searchtype_ID}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_ID}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_ID}</span>
 						</div>
-		{END searchCtrlBlock_IdFGesPesResiduo}
-																{BEGIN searchCtrlBlock_IDVenta}
+		{END searchCtrlBlock_ID}
+																{BEGIN searchCtrlBlock_IdGesPesResiduo}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_IDVenta}" {$filterRow_attrs_IDVenta}>
-			<label>{$label public_DetalleVentas IDVenta }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_IdGesPesResiduo}" {$filterRow_attrs_IdGesPesResiduo}>
+			<label>{$label public_DetalleVentas IdGesPesResiduo }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_IDVenta}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_IDVenta}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_IDVenta}</span>
+								<span class="rnr-searchtype">{$searchtype_IdGesPesResiduo}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_IdGesPesResiduo}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_IdGesPesResiduo}</span>
 						</div>
-		{END searchCtrlBlock_IDVenta}
+		{END searchCtrlBlock_IdGesPesResiduo}
+																{BEGIN searchCtrlBlock_IdVenta}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_IdVenta}" {$filterRow_attrs_IdVenta}>
+			<label>{$label public_DetalleVentas IdVenta }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_IdVenta}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_IdVenta}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_IdVenta}</span>
+						</div>
+		{END searchCtrlBlock_IdVenta}
 																{BEGIN searchCtrlBlock_Precio}
 
 
@@ -152,33 +152,34 @@
 								<span class="rnr-searchcontrol">{$searchcontrol1_Precio}</span>
 						</div>
 		{END searchCtrlBlock_Precio}
-																{BEGIN searchCtrlBlock_ID}
+																{BEGIN searchCtrlBlock_Cantidad}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_ID}" {$filterRow_attrs_ID}>
-			<label>{$label public_DetalleVentas ID }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_Cantidad}" {$filterRow_attrs_Cantidad}>
+			<label>{$label public_DetalleVentas Cantidad }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_ID}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_ID}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_ID}</span>
+								<span class="rnr-searchtype">{$searchtype_Cantidad}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_Cantidad}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_Cantidad}</span>
 						</div>
-		{END searchCtrlBlock_ID}
+		{END searchCtrlBlock_Cantidad}
 		
 
 	</div>
 
 	<div class="panel-footer bottomSearchButt" {$bottomSearchButt_attrs}>
-		<button class="btn btn-primary" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
-		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
+		<button class="btn btn-primary btn-sm" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
+
+				<button class="btn btn-default btn-sm" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
 	</div>
 </div>
 <!-- End Search panel content -->
 			</div>
 		
     {END left_block}
-</div>				</div>	
+</div>				</div>
 			<div class="r-content-col" data-resize-left="leftbar">
 				<div  class="r-topheader" data-resize-name="topbar">
 									{BEGIN supertop_block}
@@ -186,9 +187,18 @@
 	data-location="supertop" id="form_supertop_{$pageid}" data-makeup="leftbar" {$form_supertop} data-pageid="{$pageid}" >
 			 
 							 
-				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
+				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="expand_menu_button" {$item_expand_menu_button} data-topcell-item-type="expand_menu_button" >
+				<span data-itemtype="expand_menu_button" data-itemid="expand_menu_button" {$item_expand_menu_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Encubrir" class="btn-link   
+	 glyphicon glyphicon-menu-hamburger" href="#" >		
+				
+								</a>
+</span>
+			</span>
+		 
+				<span class="navbar-form  navbar-collapse" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
 				<span data-itemtype="collapse_button" data-itemid="collapse_button" {$item_collapse_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Collapse" class="btn-link   
+	<a type="button" title="Muestrame el menu" class="btn-link   
 	 glyphicon glyphicon-triangle-left" href="#" >		
 				
 								</a>
@@ -223,10 +233,11 @@
 {END searchform_text}
 	<span class="input-group-btn">
 	{BEGIN searchform_showall}
-		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
+				<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
 			<span class="glyphicon glyphicon-remove"></span>
 		</button>
 	{END searchform_showall}
+
 	{BEGIN searchform_search}
 	<button {$searchbutton_attrs} class="btn btn-primary" >
 		<span class="glyphicon glyphicon-search"></span>
@@ -241,8 +252,8 @@
 				<span data-itemtype="list_options" data-itemid="list_options" {$item_list_options} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-cog"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-cog"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN exportselected_link}
@@ -253,16 +264,8 @@
 		</a>
 	</li>
 {END exportselected_link}
-							{BEGIN deleteselected_link}
-	<li data-itemtype="delete_selected" data-itemid="delete_selected" {$item_delete_selected} data-pageid="{$pageid}" data-small >
-				<a  href="#" {$deleteselectedlink_attrs} {$deleteselectedlink_span}  title="" >
-				
-		Borrar articulos seleccionados		
-		</a>
-	</li>
-{END deleteselected_link}
 							<li role="separator" class="divider"></li>								<li data-itemtype="advsearch_link" data-itemid="advsearch_link" {$item_advsearch_link} data-pageid="{$pageid}" data-small >
-				<a   href="detalleventas_search.php" {$advsearchlink_attrs}  title="" >
+				<a   href="detalleventas_search.php{$stateLink_full}" {$advsearchlink_attrs}  title="" >
 				
 		Búsqueda avanzada		
 		</a>
@@ -293,7 +296,7 @@
 {END export_link}
 							<li role="separator" class="divider"></li>							{BEGIN import_link}
 	<li data-itemtype="import" data-itemid="import" {$item_import} data-pageid="{$pageid}" data-small >
-				<a  {$importlink_attrs} href="detalleventas_import.php?{$crosstable_attrs}"  title="" >
+				<a  {$importlink_attrs} href="detalleventas_import.php{$stateLink_full}"  title="" >
 				
 		Importar		
 		</a>
@@ -319,10 +322,18 @@
 <span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-user"></span>
-						{$username}			<span class="caret"></span>
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
 							{BEGIN logoutbutton}
 	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
 				<a  href="#" {$logoutlink_attrs}  title="" >
@@ -331,6 +342,14 @@
 		</a>
 	</li>
 {END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
 					</ul>
 	</span>
 </span>
@@ -375,14 +394,6 @@
 ">
 		{BEGIN firstAboveGridCell}
 		 
-		{BEGIN add_link}
-<span data-itemtype="add" data-itemid="add" {$item_add} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-primary   
-	" {$addlink_attrs} href="detalleventas_add.php" >
-							Añadir nuevo			</a>
-</span>
-{END add_link}
-	 
 		{BEGIN inlineadd_link}
 <span data-itemtype="inline_add" data-itemid="inline_add" {$item_inline_add} data-pageid="{$pageid}" data-small data-button-item>
 	<a type="button" title="" class="btn btn-primary   
@@ -391,13 +402,21 @@
 </span>
 {END inlineadd_link}
 	 
-		{BEGIN deleteselected_link}
-<span data-itemtype="delete" data-itemid="delete" {$item_delete} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-default   
-	" {$deleteselectedlink_attrs} {$deleteselectedlink_span} disabled >
-							Borrar artículos seleccionados			</a>
+		{BEGIN saveall_link}
+<span data-itemtype="inline_save_all" data-itemid="inline_save_all" {$item_inline_save_all} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" {$savealllink_attrs} {$savealllink_span} >
+							Guardar todo			</a>
 </span>
-{END deleteselected_link}
+{END saveall_link}
+	 
+		{BEGIN cancelall_link}
+<span data-itemtype="inline_cancel_all" data-itemid="inline_cancel_all" {$item_inline_cancel_all} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-default   
+	" {$cancelalllink_attrs} {$cancelalllink_span} >
+							Cancelar			</a>
+</span>
+{END cancelall_link}
 			{END firstAboveGridCell}	
 	</div>			 
 				<div 
@@ -428,15 +447,16 @@
 		<div class="col-md-4">
 			Rango:		</div>
 
+			 
 		{BEGIN print_friendly_all}
 		<div class="col-md-8">
 			<label for="printAll{$id}">
-				<input type="radio" id="printAll{$id}" data-href="detalleventas_print.php?all=1&amp;{$crosstable_attrs}" name="printScope">
+				<input type="radio" id="printAll{$id}" data-href="detalleventas_print.php?all=1&amp;{$crosstable_attrs}" name="printScope" >
 									Imprimir todas las páginas							</label>
 		</div>
 		{END print_friendly_all}
-	</div>
-	<div class="row">
+		</div>
+		<div class="row">
 		<div class="col-md-4">&nbsp;</div>
 		<div class="col-md-8">
 			<label for="printPage{$id}">
@@ -444,18 +464,9 @@
 				Imprimir esta página			</label>
 		</div>
 	</div>
-	
-		<div class="row">
-		<div class="col-md-4">
-			&nbsp;
-		</div>
-		<div class="col-md-8">
-			<label style="color: gray;" for="printSelection{$id}">
-			<input name="printScope" disabled="disabled" id="printSelection{$id}" type="radio">
-			Imprimir la selección			</label>
-		</div>
+		
 	</div>
-	</div>				 
+				 
 					</li>
 											<li class="divider" role="separator"></li>
 																				 
@@ -468,14 +479,7 @@
 		<input type="checkbox" id="printDetailsToggler{$id}">
 		Detalles de impresión	</label>
 	<div  id="printdetailstables{$id}" style="display:none;">
-											{BEGIN print_details_gestionpesosresiduos}
-			<div>
-				<label for="printDetailsgestionpesosresiduos{$id}">
-					<input type="checkbox" value="gestionpesosresiduos" id="printDetailsgestionpesosresiduos{$id}" checked>
-					Gestion Pesos Residuos				</label>
-			</div>
-			{END print_details_gestionpesosresiduos}
-						</div>
+											</div>
 </div>
 {END print_details}
 				 
@@ -523,29 +527,24 @@
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
 {END message_block}	<style>
 @media screen and (max-width: 767px) {
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="ID"]:before {
+		[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="ID"]:before {
 		content: "{$label public_DetalleVentas ID}";
 	}
-	
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="Cantidad"]:before {
+			[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="Cantidad"]:before {
 		content: "{$label public_DetalleVentas Cantidad}";
 	}
-	
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="Precio"]:before {
+			[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="Precio"]:before {
 		content: "{$label public_DetalleVentas Precio}";
 	}
-	
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="IDVenta"]:before {
-		content: "{$label public_DetalleVentas IDVenta}";
+			[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="IdVenta"]:before {
+		content: "{$label public_DetalleVentas IdVenta}";
 	}
-	
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="IdFGesPesResiduo"]:before {
-		content: "{$label public_DetalleVentas IdFGesPesResiduo}";
+			[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="IdGesPesResiduo"]:before {
+		content: "{$label public_DetalleVentas IdGesPesResiduo}";
 	}
-	
-}
+	}
 </style>
-<table data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  r-flexgrid rnr-b-grid rnr-gridtable" 
+<table data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  r-flexgrid rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -576,29 +575,6 @@
 	</th>
 	{END cellblock_grid_headcell_icons}
 				 
-					{BEGIN cellblock_grid_headcell_checkbox}
-	<th
-	
-	{$cell_grid_headcell_checkbox}
-	{$recordattrs}
-	class="
-		 r-ori-vert			"
-
-	
-	data-cellId="grid_headcell_checkbox" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
-		data-checkbox-cell
-	>
-
-	 
-		{BEGIN checkbox_column}
-<span data-itemtype="grid_checkbox_head" data-itemid="grid_checkbox_head" {$item_grid_checkbox_head} data-pageid="{$pageid}" data-record-id="{$recId}" >
-	<input type="checkbox" {$checkboxheader_attrs}>
-</span>
-{END checkbox_column}
-	
-	</th>
-	{END cellblock_grid_headcell_checkbox}
-				 
 					{BEGIN cellblock_grid_headcell_details}
 	<th
 	
@@ -608,7 +584,8 @@
 		 r-ori-vert			"
 
 	
-	data-cellId="grid_headcell_details" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
+	data-cellId="grid_headcell_details" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"		data-control-cell
+	
 	>
 
 	
@@ -621,22 +598,22 @@
 	{$cell_grid_headcell_field}
 	{$recordattrs}
 	class="
-		r-align-left r-ori-vert				{$IdFGesPesResiduo_class}
+		 r-ori-vert				{$ID_class}
 			"
 
-			data-field="IdFGesPesResiduo"
+			data-field="ID"
 	
-	data-cellId="grid_headcell_field" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
+	data-cellId="grid_headcell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdFGesPesResiduo_fieldheadercolumn}
-	{BEGIN IdFGesPesResiduo_fieldheader}
-	<SPAN {$IdFGesPesResiduo_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdFGesPesResiduo">
-	{$label public_DetalleVentas IdFGesPesResiduo }	{$arrow_icon_IdFGesPesResiduo}
+		{BEGIN ID_fieldheadercolumn}
+	{BEGIN ID_fieldheader}
+	<SPAN {$ID_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="grid_field_label" {$item_grid_field_label} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="ID" data-fieldname="ID">
+	{$label public_DetalleVentas ID }	{$arrow_icon_ID}
 	</SPAN>
-	{END IdFGesPesResiduo_fieldheader}
-{END IdFGesPesResiduo_fieldheadercolumn}
+	{END ID_fieldheader}
+{END ID_fieldheadercolumn}
 
 	
 	</th>
@@ -648,18 +625,18 @@
 	{$cell_grid_headcell_field1}
 	{$recordattrs}
 	class="
-		r-align-left r-ori-vert				{$Cantidad_class}
+		 r-ori-vert				{$Cantidad_class}
 			"
 
 			data-field="Cantidad"
 	
-	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
+	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
 		{BEGIN Cantidad_fieldheadercolumn}
 	{BEGIN Cantidad_fieldheader}
-	<SPAN {$Cantidad_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Cantidad">
+	<SPAN {$Cantidad_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="grid_field_label1" {$item_grid_field_label1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Cantidad" data-fieldname="Cantidad">
 	{$label public_DetalleVentas Cantidad }	{$arrow_icon_Cantidad}
 	</SPAN>
 	{END Cantidad_fieldheader}
@@ -675,18 +652,18 @@
 	{$cell_grid_headcell_field2}
 	{$recordattrs}
 	class="
-		r-align-left r-ori-vert				{$Precio_class}
+		 r-ori-vert				{$Precio_class}
 			"
 
 			data-field="Precio"
 	
-	data-cellId="grid_headcell_field2" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
+	data-cellId="grid_headcell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
 		{BEGIN Precio_fieldheadercolumn}
 	{BEGIN Precio_fieldheader}
-	<SPAN {$Precio_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio">
+	<SPAN {$Precio_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="grid_field_label2" {$item_grid_field_label2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio" data-fieldname="Precio">
 	{$label public_DetalleVentas Precio }	{$arrow_icon_Precio}
 	</SPAN>
 	{END Precio_fieldheader}
@@ -695,6 +672,60 @@
 	
 	</th>
 	{END cellblock_grid_headcell_field2}
+				 
+					{BEGIN cellblock_grid_headcell_field3}
+	<th
+	
+	{$cell_grid_headcell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$IdVenta_class}
+			"
+
+			data-field="IdVenta"
+	
+	data-cellId="grid_headcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN IdVenta_fieldheadercolumn}
+	{BEGIN IdVenta_fieldheader}
+	<SPAN {$IdVenta_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="grid_field_label3" {$item_grid_field_label3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdVenta" data-fieldname="IdVenta">
+	{$label public_DetalleVentas IdVenta }	{$arrow_icon_IdVenta}
+	</SPAN>
+	{END IdVenta_fieldheader}
+{END IdVenta_fieldheadercolumn}
+
+	
+	</th>
+	{END cellblock_grid_headcell_field3}
+				 
+					{BEGIN cellblock_grid_headcell_field4}
+	<th
+	
+	{$cell_grid_headcell_field4}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$IdGesPesResiduo_class}
+			"
+
+			data-field="IdGesPesResiduo"
+	
+	data-cellId="grid_headcell_field4" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN IdGesPesResiduo_fieldheadercolumn}
+	{BEGIN IdGesPesResiduo_fieldheader}
+	<SPAN {$IdGesPesResiduo_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="grid_field_label4" {$item_grid_field_label4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo">
+	{$label public_DetalleVentas IdGesPesResiduo }	{$arrow_icon_IdGesPesResiduo}
+	</SPAN>
+	{END IdGesPesResiduo_fieldheader}
+{END IdGesPesResiduo_fieldheadercolumn}
+
+	
+	</th>
+	{END cellblock_grid_headcell_field4}
 							</tr>
 					 
 					 
@@ -725,16 +756,14 @@
 	>
 
 	 
-		{BEGIN edit_column}
-{BEGIN edit_link}
-<span data-itemtype="grid_edit" data-itemid="grid_edit" {$item_grid_edit} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
-	<a type="button" title="Editar" class="btn-link   
-	 glyphicon glyphicon-pencil" href="detalleventas_edit.php?{$editlink}" {$editlink_attrs} title="Editar" >		
+		{BEGIN inline_save}
+<span data-itemtype="grid_inline_save" data-itemid="grid_inline_save" {$item_grid_inline_save} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
+	<a type="button" title="Guardar" class="btn-link   
+	 glyphicon glyphicon-ok" {$inlinesavelink_attrs} title="Guardar" >		
 				
 								</a>
 </span>
-{END edit_link}
-{END edit_column}
+{END inline_save}
 	 
 		{BEGIN inline_cancel}
 <span data-itemtype="grid_inline_cancel" data-itemid="grid_inline_cancel" {$item_grid_inline_cancel} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
@@ -744,44 +773,9 @@
 								</a>
 </span>
 {END inline_cancel}
-	 
-		{BEGIN view_column}
-{BEGIN view_link}
-<span data-itemtype="grid_view" data-itemid="grid_view" {$item_grid_view} data-pageid="{$pageid}" data-record-id="{$recId}" data-small data-button-item>
-	<a type="button" title="Ver registro" class="btn-link   
-	 glyphicon glyphicon-search" href="detalleventas_view.php?{$editlink}" {$viewlink_attrs} title="Ver" >		
-				
-								</a>
-</span>
-{END view_link}
-{END view_column}
 	
 	</td>
 	{END cellblock_grid_cell_icons}
-				 
-					{BEGIN cellblock_grid_cell_checkbox}
-	<td
-	
-	{$cell_grid_cell_checkbox}
-	{$recordattrs}
-	class="
-		 r-ori-vert			"
-
-	
-	data-cellId="grid_cell_checkbox" data-pageid="{$pageid}" data-record-id="{$recId}"		data-control-cell
-	
-		data-checkbox-cell
-	>
-
-	 
-		{BEGIN checkbox_column}
-<span data-itemtype="grid_checkbox" data-itemid="grid_checkbox" {$item_grid_checkbox} data-pageid="{$pageid}" data-record-id="{$recId}" >
-	<input type="checkbox" {$checkbox_attrs}>
-</span>	
-{END checkbox_column}
-	
-	</td>
-	{END cellblock_grid_cell_checkbox}
 				 
 					{BEGIN cellblock_grid_cell_details}
 	<td
@@ -802,13 +796,14 @@
 	{BEGIN dtables_link}
 				<span data-itemtype="grid_details_link" data-itemid="grid_details_link1" {$item_grid_details_link1} data-pageid="{$pageid}" data-record-id="{$recId}">
 		<a 
-			{$gestionpesosresiduos_link_attrs} 
-			class="{$dtables_link_class} details-badge badge gestionpesosresiduos_badge" 
+			{$_link_attrs} 
+			class="{$dtables_link_class} details-badge badge _badge" 
 			title="Mostrar detalles"
+						
 		>
 							<span class="glyphicon glyphicon-th-list"></span>
-									<span class="{$gestionpesosresiduos_cntspan_class}" {$gestionpesosresiduos_childnumber_attr}>
-				{$gestionpesosresiduos_childnumber}				
+									<span class="{$_cntspan_class}" {$_childnumber_attr}>
+				{$_childnumber}				
 			</span>
 		</a>
 		</span>
@@ -824,20 +819,20 @@
 	{$cell_grid_cell_field}
 	{$recordattrs}
 	class="
-		r-align-left r-ori-vert				{$IdFGesPesResiduo_class}
+		 r-ori-vert				{$ID_class}
 			"
 
-			data-field="IdFGesPesResiduo"
+			data-field="ID"
 	
 	data-cellId="grid_cell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdFGesPesResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdFGesPesResiduo" data-default-width >
-{$IdFGesPesResiduo_value}
+		{BEGIN ID_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="grid_field" {$item_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="ID" data-fieldname="ID" data-default-width >
+{$ID_value}
 </span>
-{END IdFGesPesResiduo_fieldcolumn}	
+{END ID_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field}
 				 
@@ -847,7 +842,7 @@
 	{$cell_grid_cell_field1}
 	{$recordattrs}
 	class="
-		r-align-left r-ori-vert				{$Cantidad_class}
+		 r-ori-vert				{$Cantidad_class}
 			"
 
 			data-field="Cantidad"
@@ -857,7 +852,7 @@
 
 	 
 		{BEGIN Cantidad_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Cantidad" data-default-width >
+<span data-itemtype="grid_field" data-itemid="grid_field1" {$item_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Cantidad" data-fieldname="Cantidad" data-default-width >
 {$Cantidad_value}
 </span>
 {END Cantidad_fieldcolumn}	
@@ -870,7 +865,7 @@
 	{$cell_grid_cell_field2}
 	{$recordattrs}
 	class="
-		r-align-left r-ori-vert				{$Precio_class}
+		 r-ori-vert				{$Precio_class}
 			"
 
 			data-field="Precio"
@@ -880,12 +875,58 @@
 
 	 
 		{BEGIN Precio_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio" data-default-width >
+<span data-itemtype="grid_field" data-itemid="grid_field2" {$item_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio" data-fieldname="Precio" data-default-width >
 {$Precio_value}
 </span>
 {END Precio_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field2}
+				 
+					{BEGIN cellblock_grid_cell_field3}
+	<td
+	
+	{$cell_grid_cell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$IdVenta_class}
+			"
+
+			data-field="IdVenta"
+	
+	data-cellId="grid_cell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN IdVenta_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="grid_field3" {$item_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdVenta" data-fieldname="IdVenta" data-default-width >
+{$IdVenta_value}
+</span>
+{END IdVenta_fieldcolumn}	
+	</td>
+	{END cellblock_grid_cell_field3}
+				 
+					{BEGIN cellblock_grid_cell_field4}
+	<td
+	
+	{$cell_grid_cell_field4}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$IdGesPesResiduo_class}
+			"
+
+			data-field="IdGesPesResiduo"
+	
+	data-cellId="grid_cell_field4" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN IdGesPesResiduo_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="grid_field4" {$item_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" data-default-width >
+{$IdGesPesResiduo_value}
+</span>
+{END IdGesPesResiduo_fieldcolumn}	
+	</td>
+	{END cellblock_grid_cell_field4}
 							</tr>
 					 
 					
@@ -911,30 +952,12 @@
 		 r-ori-vert			"
 
 	
-	data-cellId="grid_footcell_icons" data-pageid="{$pageid}" data-record-id="{$recId}"		data-control-cell
-	
+	data-cellId="grid_footcell_icons" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	
 	</td>
 	{END cellblock_grid_footcell_icons}
-				 
-					{BEGIN cellblock_grid_footcell_checkbox}
-	<td
-	
-	{$cell_grid_footcell_checkbox}
-	{$recordattrs}
-	class="
-		 r-ori-vert			"
-
-	
-	data-cellId="grid_footcell_checkbox" data-pageid="{$pageid}" data-record-id="{$recId}"		data-control-cell
-	
-	>
-
-	
-	</td>
-	{END cellblock_grid_footcell_checkbox}
 				 
 					{BEGIN cellblock_grid_footcell_details}
 	<td
@@ -945,8 +968,7 @@
 		 r-ori-vert			"
 
 	
-	data-cellId="grid_footcell_details" data-pageid="{$pageid}" data-record-id="{$recId}"		data-control-cell
-	
+	data-cellId="grid_footcell_details" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	
@@ -962,8 +984,7 @@
 		 r-ori-vert			"
 
 	
-	data-cellId="grid_footcell_field" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"		data-control-cell
-	
+	data-cellId="grid_footcell_field" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
 	>
 
 	
@@ -976,11 +997,10 @@
 	{$cell_grid_footcell_field1}
 	{$recordattrs}
 	class="
-		r-align-left r-ori-vert			"
+		 r-ori-vert			"
 
 	
-	data-cellId="grid_footcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"		data-control-cell
-	
+	data-cellId="grid_footcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
 	>
 
 	
@@ -993,26 +1013,47 @@
 	{$cell_grid_footcell_field2}
 	{$recordattrs}
 	class="
-		r-align-left r-ori-vert				{$Precio_class}
-			"
+		 r-ori-vert			"
 
-			data-field="Precio"
 	
 	data-cellId="grid_footcell_field2" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
 	>
 
-	 
-		{BEGIN Precio_fieldfootercolumn}
-{BEGIN Precio_showtotal}
-<span data-itemtype="grid_field_totals" data-itemid="grid_field_totals1" {$item_grid_field_totals1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Precio">
-	Total	{$Precio_total}
-</span>
-{END Precio_showtotal}
-{END Precio_fieldfootercolumn}
-
 	
 	</td>
 	{END cellblock_grid_footcell_field2}
+				 
+					{BEGIN cellblock_grid_footcell_field3}
+	<td
+	
+	{$cell_grid_footcell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert			"
+
+	
+	data-cellId="grid_footcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
+	>
+
+	
+	</td>
+	{END cellblock_grid_footcell_field3}
+				 
+					{BEGIN cellblock_grid_footcell_field4}
+	<td
+	
+	{$cell_grid_footcell_field4}
+	{$recordattrs}
+	class="
+		 r-ori-vert			"
+
+	
+	data-cellId="grid_footcell_field4" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="detalleventas_list"	
+	>
+
+	
+	</td>
+	{END cellblock_grid_footcell_field4}
 							</tr>
 					
 					</tfoot>
@@ -1043,6 +1084,8 @@
 					{$footer}
 				</div>	
 			</div>	
+			<div class="r-body-shadow">
+			</div>
 		</div>
 	{END body}
 	</body>

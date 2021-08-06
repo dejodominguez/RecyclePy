@@ -6,6 +6,7 @@
     require_once("classes/charts.php");
 	require_once(getabspath("include/xml.php"));
 	require_once(getabspath("classes/searchclause.php"));
+	include_once("include/reportfunctions.php");
 	
 
 	if(!isLogged())
@@ -18,7 +19,7 @@
     $xml = new xml();
 
 	$chrt_strXML = "";
-	if( checkTableName(postvalue("chartname"), titCHART) )
+	if( checkTableName(postvalue("chartname") ) )
 	{
 		include_once("include/".postvalue("chartname")."_variables.php");
 		$chrt_strXML = GetChartXML(postvalue("chartname"));
@@ -49,6 +50,10 @@
 	$param["chartPreview"] = postvalue('chartPreview');
 	$param["dashChart"] = postvalue('dashChart');
 	$param["pageId"] = postvalue('pageId');
+	
+	$param["masterTable"] = postvalue('mastertable');
+	if( $param["masterTable"] )
+		$param["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 	
 	if( $param["dashChart"] )
 	{
@@ -115,8 +120,6 @@
 		$param["cname"] = postvalue("chartname");
 	}
 		
-	if( !$webchart )
-		$param["gstrOrderBy"] = $gstrOrderBy;
 	
 	if( $chrt_array["chart_type"]["type"] == "candle" )
         $chrt_array["chart_type"]["type"] = "candlestick";

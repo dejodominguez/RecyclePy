@@ -61,17 +61,23 @@ class ListPage_DPInline extends ListPage_Embed
 		$this->showEditInPopup = true;
 		$this->showViewInPopup = true;
 		
-		if($this->mobileTemplateMode())
-			$this->pageSize = -1;
-		
+	
 		$this->initDPInlineParams();
-		$this->searchClauseObj->clearSearch();
+		if( $this->firstTime ) {
+			$this->searchClauseObj->resetSearch();
+			unset( $_SESSION[$this->sessionPrefix.'_advsearch'] );
+		}
 		
 		$this->jsSettings['tableSettings'][$this->tName]['masterPageType'] = $this->masterPageType;
 		$this->jsSettings['tableSettings'][$this->tName]['masterTable'] = $this->masterTable;
 		$this->jsSettings['tableSettings'][$this->tName]['firstTime'] = $this->firstTime;
 		$this->jsSettings['tableSettings'][$this->tName]['strKey'] = $this->getStrMasterKey();
 		$this->addRawFieldValues = true;
+		
+		if( $this->masterPageType == PAGE_ADD && parent::spreadsheetGridApplicable() ) {
+			$this->pageData['spreadsheetOnList'] = true;
+			$this->jsSettings['tableSettings'][ $this->tName ]['autoAddNewRecord'] = $this->pSet->addNewRecordAutomatically();
+		}
 	}
 	
 	/**
@@ -95,15 +101,9 @@ class ListPage_DPInline extends ListPage_Embed
 	function processMasterKeyValue() 
 	{
 		parent::processMasterKeyValue();
-		for($i = 1; $i <= count($this->masterKeysReq); $i++)
+		for($i = 1; $i <= count($this->masterKeysReq); $i++) {
 			$this->dpMasterKey[] = $this->masterKeysReq[$i];
-			
-		$masterKeys = array();
-		for($i = 0; $i < count($this->dpMasterKey); $i++)
-		{
-			$masterKeys[ "masterkey".($i + 1) ] = $this->dpMasterKey[ $i ];
-		}		
-		$this->controlsMap["masterKeys"] = $masterKeys;				
+		}
 	}
 	
 	/**
@@ -216,7 +216,8 @@ class ListPage_DPInline extends ListPage_Embed
 		if( $this->masterPageType != PAGE_VIEW  )
 		{
 			//inline edit column
-			$this->xt->assign("inlineedit_column", $this->inlineEditAvailable() && $this->permis[ $this->tName ]['edit']);
+			$this->xt->assign("inlineedit_column", 
+				$this->inlineEditAvailable() && $this->permis[ $this->tName ]['edit'] && !$this->spreadsheetGridApplicable() );
 			
 			//for list icons instead of list links
 			$this->assignListIconsColumn();
@@ -349,8 +350,11 @@ class ListPage_DPInline extends ListPage_Embed
 
 		if( $this->updateSelectedAvailable() && $this->xt->getVar("updateselected_link") && $this->isBootstrap() )
 		{
-			$updateselectedlink_attrs = $this->xt->getVar("updateselectedlink_attrs");         
-			$buttons.= '<a class="' . $bs_button_class . '" disabled href="#" '.$updateselectedlink_attrs.'>'."actualización seleccionada".'</a> ';		  		
+			$updateselectedlink_attrs = $this->xt->getVar("updateselectedlink_attrs");   
+			if( $this->isPD() )
+				$buttons.= '<a class="' . $bs_button_class . '" disabled '.$updateselectedlink_attrs.'>'."Actualizar los seleccionados".'</a> ';
+			else	
+				$buttons.= '<a class="' . $bs_button_class . '" disabled href="#" '.$updateselectedlink_attrs.'>'."Actualizar los seleccionados".'</a> ';		  		
 		}
 		
 		if( $this->xt->getVar("saveall_link") )
@@ -559,12 +563,6 @@ class ListPage_DPInline extends ListPage_Embed
 	}
 
 
-	/**
-	 * A stub preventing the Search Panel from building
-	 */
-	function buildSearchPanel()
-	{
-	}
 
 	public function isPageSortable()
 	{
@@ -578,7 +576,7 @@ class ListPage_DPInline extends ListPage_Embed
 	{
 	}
 	
-	function getMasterTableSQLClause( $basedOnProp = false ) 
+	function getMasterTableSQLClause() 
 	{
 		if($this->masterPageType==PAGE_ADD)
 			return "1=0";
@@ -687,7 +685,7 @@ class ListPage_DPInline extends ListPage_Embed
 	}
 	
 	protected function displayViewLink() {
-		return $this->masterPageType != PAGE_VIEW && $this->masterPageType != PAGE_ADD && $this->viewAvailable();
+		return $this->masterPageType != PAGE_ADD && $this->viewAvailable();
 	}
 	
 	
@@ -718,5 +716,17 @@ class ListPage_DPInline extends ListPage_Embed
 	{
 		return $this->mode == LIST_PDFJSON;
 	}
+	
+	protected function spreadsheetGridApplicable() {
+		return $this->masterPageType != PAGE_ADD 
+			&& parent::spreadsheetGridApplicable();
+	}
+
+	protected function assignSessionPrefix() 
+	{
+		$masterKeys = md5( implode( '-', $this->masterKeysReq ) );
+		$this->sessionPrefix = $this->tName."_preview" . $masterKeys;	
+	}
+
 }
 ?>

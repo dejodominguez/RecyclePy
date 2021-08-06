@@ -1,19 +1,17 @@
 <?php
-
-
-
 $tdatarecicladores = array();
 $tdatarecicladores[".searchableFields"] = array();
 $tdatarecicladores[".ShortName"] = "recicladores";
 $tdatarecicladores[".OwnerID"] = "";
-$tdatarecicladores[".OriginalTable"] = "public.Recicladores";
+$tdatarecicladores[".OriginalTable"] = "public.recicladores";
 
-
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
 
 $tdatarecicladores[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
+$tdatarecicladores[".originalPagesByType"] = $tdatarecicladores[".pagesByType"];
 $tdatarecicladores[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdatarecicladores[".defaultPages"] = $defaultPages;
+$tdatarecicladores[".originalPages"] = $tdatarecicladores[".pages"];
+$tdatarecicladores[".defaultPages"] = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
+$tdatarecicladores[".originalDefaultPages"] = $tdatarecicladores[".defaultPages"];
 
 //	field labels
 $fieldLabelsrecicladores = array();
@@ -27,31 +25,33 @@ if(mlang_getcurrentlang()=="Spanish")
 	$fieldToolTipsrecicladores["Spanish"] = array();
 	$placeHoldersrecicladores["Spanish"] = array();
 	$pageTitlesrecicladores["Spanish"] = array();
-	$fieldLabelsrecicladores["Spanish"]["IdReciclador"] = " = Nº :";
-	$fieldToolTipsrecicladores["Spanish"]["IdReciclador"] = "";
-	$placeHoldersrecicladores["Spanish"]["IdReciclador"] = "";
-	$fieldLabelsrecicladores["Spanish"]["FotoReciclador"] = "Foto de Reciclador:";
-	$fieldToolTipsrecicladores["Spanish"]["FotoReciclador"] = "";
-	$placeHoldersrecicladores["Spanish"]["FotoReciclador"] = "";
-	$fieldLabelsrecicladores["Spanish"]["CIReciclador"] = "C.I. Nº Reciclador:";
-	$fieldToolTipsrecicladores["Spanish"]["CIReciclador"] = "";
-	$placeHoldersrecicladores["Spanish"]["CIReciclador"] = "";
-	$fieldLabelsrecicladores["Spanish"]["NomReciclador"] = "Nombre/s:";
-	$fieldToolTipsrecicladores["Spanish"]["NomReciclador"] = "";
-	$placeHoldersrecicladores["Spanish"]["NomReciclador"] = "";
-	$fieldLabelsrecicladores["Spanish"]["ApeReciclador"] = "Apellido/s:";
-	$fieldToolTipsrecicladores["Spanish"]["ApeReciclador"] = "";
-	$placeHoldersrecicladores["Spanish"]["ApeReciclador"] = "";
-	$fieldLabelsrecicladores["Spanish"]["DirReciclador"] = "Dirección:";
-	$fieldToolTipsrecicladores["Spanish"]["DirReciclador"] = "";
-	$placeHoldersrecicladores["Spanish"]["DirReciclador"] = "";
-	$fieldLabelsrecicladores["Spanish"]["TelReciclador"] = "Teléfono:";
-	$fieldToolTipsrecicladores["Spanish"]["TelReciclador"] = "";
-	$placeHoldersrecicladores["Spanish"]["TelReciclador"] = "";
-	$fieldLabelsrecicladores["Spanish"]["LogoASO"] = "Logo de la ASO:";
-	$fieldToolTipsrecicladores["Spanish"]["LogoASO"] = "";
-	$placeHoldersrecicladores["Spanish"]["LogoASO"] = "";
-	$pageTitlesrecicladores["Spanish"]["edit"] = "Recicladores, Editar/Modificar [{%IdReciclador}]";
+	$fieldLabelsrecicladores["Spanish"]["id_reciclador"] = "Perfil Reciclador Nº:";
+	$fieldToolTipsrecicladores["Spanish"]["id_reciclador"] = "";
+	$placeHoldersrecicladores["Spanish"]["id_reciclador"] = "";
+	$fieldLabelsrecicladores["Spanish"]["foto_reciclador"] = "Foto Reciclador";
+	$fieldToolTipsrecicladores["Spanish"]["foto_reciclador"] = "";
+	$placeHoldersrecicladores["Spanish"]["foto_reciclador"] = "";
+	$fieldLabelsrecicladores["Spanish"]["ci_reciclador"] = "C.I. Nº Reciclador:";
+	$fieldToolTipsrecicladores["Spanish"]["ci_reciclador"] = "";
+	$placeHoldersrecicladores["Spanish"]["ci_reciclador"] = "";
+	$fieldLabelsrecicladores["Spanish"]["nombre_reciclador"] = "Nombre/s:";
+	$fieldToolTipsrecicladores["Spanish"]["nombre_reciclador"] = "";
+	$placeHoldersrecicladores["Spanish"]["nombre_reciclador"] = "";
+	$fieldLabelsrecicladores["Spanish"]["apellido_reciclador"] = "Apellido/s:";
+	$fieldToolTipsrecicladores["Spanish"]["apellido_reciclador"] = "";
+	$placeHoldersrecicladores["Spanish"]["apellido_reciclador"] = "";
+	$fieldLabelsrecicladores["Spanish"]["direc_reciclador"] = "Dirección:";
+	$fieldToolTipsrecicladores["Spanish"]["direc_reciclador"] = "";
+	$placeHoldersrecicladores["Spanish"]["direc_reciclador"] = "";
+	$fieldLabelsrecicladores["Spanish"]["tel_reciclador"] = "Teléfono:";
+	$fieldToolTipsrecicladores["Spanish"]["tel_reciclador"] = "";
+	$placeHoldersrecicladores["Spanish"]["tel_reciclador"] = "";
+	$fieldLabelsrecicladores["Spanish"]["logo_aso"] = "Logo Aso";
+	$fieldToolTipsrecicladores["Spanish"]["logo_aso"] = "";
+	$placeHoldersrecicladores["Spanish"]["logo_aso"] = "";
+	$fieldLabelsrecicladores["Spanish"]["id_residuo"] = "Tipo de residuo que recoge:";
+	$fieldToolTipsrecicladores["Spanish"]["id_residuo"] = "";
+	$placeHoldersrecicladores["Spanish"]["id_residuo"] = "";
 	if (count($fieldToolTipsrecicladores["Spanish"]))
 		$tdatarecicladores[".isUseToolTips"] = true;
 }
@@ -66,8 +66,10 @@ $tdatarecicladores[".nSecOptions"] = 0;
 
 $tdatarecicladores[".mainTableOwnerID"] = "";
 $tdatarecicladores[".entityType"] = 0;
+$tdatarecicladores[".connId"] = "RealEstate_at_localhost";
 
-$tdatarecicladores[".strOriginalTableName"] = "public.Recicladores";
+
+$tdatarecicladores[".strOriginalTableName"] = "public.recicladores";
 
 	
 
@@ -79,14 +81,9 @@ $tdatarecicladores[".showEditInPopup"] = false;
 
 $tdatarecicladores[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdatarecicladores[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdatarecicladores[".listAjax"] = false;
 //	temporary
-$tdatarecicladores[".listAjax"] = false;
+//$tdatarecicladores[".listAjax"] = false;
 
 	$tdatarecicladores[".audit"] = false;
 
@@ -154,7 +151,7 @@ $tdatarecicladores[".rowHighlite"] = true;
 
 
 
-			
+						
 
 $tdatarecicladores[".ajaxCodeSnippetAdded"] = false;
 
@@ -166,7 +163,7 @@ $tdatarecicladores[".addPageEvents"] = false;
 $tdatarecicladores[".isUseTimeForSearch"] = false;
 
 
-$tdatarecicladores[".badgeColor"] = "008b8b";
+$tdatarecicladores[".badgeColor"] = "e67349";
 
 
 $tdatarecicladores[".allSearchFields"] = array();
@@ -174,14 +171,15 @@ $tdatarecicladores[".filterFields"] = array();
 $tdatarecicladores[".requiredSearchFields"] = array();
 
 $tdatarecicladores[".googleLikeFields"] = array();
-$tdatarecicladores[".googleLikeFields"][] = "IdReciclador";
-$tdatarecicladores[".googleLikeFields"][] = "FotoReciclador";
-$tdatarecicladores[".googleLikeFields"][] = "CIReciclador";
-$tdatarecicladores[".googleLikeFields"][] = "NomReciclador";
-$tdatarecicladores[".googleLikeFields"][] = "ApeReciclador";
-$tdatarecicladores[".googleLikeFields"][] = "DirReciclador";
-$tdatarecicladores[".googleLikeFields"][] = "TelReciclador";
-$tdatarecicladores[".googleLikeFields"][] = "LogoASO";
+$tdatarecicladores[".googleLikeFields"][] = "id_reciclador";
+$tdatarecicladores[".googleLikeFields"][] = "foto_reciclador";
+$tdatarecicladores[".googleLikeFields"][] = "ci_reciclador";
+$tdatarecicladores[".googleLikeFields"][] = "nombre_reciclador";
+$tdatarecicladores[".googleLikeFields"][] = "apellido_reciclador";
+$tdatarecicladores[".googleLikeFields"][] = "direc_reciclador";
+$tdatarecicladores[".googleLikeFields"][] = "tel_reciclador";
+$tdatarecicladores[".googleLikeFields"][] = "logo_aso";
+$tdatarecicladores[".googleLikeFields"][] = "id_residuo";
 
 
 
@@ -210,14 +208,13 @@ $tdatarecicladores[".warnLeavingPages"] = true;
 
 
 $tstrOrderBy = "";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
 $tdatarecicladores[".strOrderBy"] = $tstrOrderBy;
 
 $tdatarecicladores[".orderindexes"] = array();
 
-$tdatarecicladores[".sqlHead"] = "SELECT \"IdReciclador\",  	\"FotoReciclador\",  	\"CIReciclador\",  	\"NomReciclador\",  	\"ApeReciclador\",  	\"DirReciclador\",  	\"TelReciclador\",  	\"LogoASO\"";
-$tdatarecicladores[".sqlFrom"] = "FROM \"public\".\"Recicladores\"";
+
+$tdatarecicladores[".sqlHead"] = "SELECT id_reciclador,  	foto_reciclador,  	ci_reciclador,  	nombre_reciclador,  	apellido_reciclador,  	direc_reciclador,  	tel_reciclador,  	logo_aso,  	id_residuo";
+$tdatarecicladores[".sqlFrom"] = "FROM \"public\".recicladores";
 $tdatarecicladores[".sqlWhereExpr"] = "";
 $tdatarecicladores[".sqlTail"] = "";
 
@@ -255,7 +252,7 @@ $tdatarecicladores[".arrGroupsPerPage"] = $arrGPP;
 $tdatarecicladores[".highlightSearchResults"] = true;
 
 $tableKeysrecicladores = array();
-$tableKeysrecicladores[] = "IdReciclador";
+$tableKeysrecicladores[] = "id_reciclador";
 $tdatarecicladores[".Keys"] = $tableKeysrecicladores;
 
 
@@ -264,26 +261,27 @@ $tdatarecicladores[".hideMobileList"] = array();
 
 
 
-//	IdReciclador
+//	id_reciclador
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 1;
-	$fdata["strName"] = "IdReciclador";
-	$fdata["GoodName"] = "IdReciclador";
-	$fdata["ownerTable"] = "public.Recicladores";
-	$fdata["Label"] = GetFieldLabel("public_Recicladores","IdReciclador");
+	$fdata["strName"] = "id_reciclador";
+	$fdata["GoodName"] = "id_reciclador";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","id_reciclador");
 	$fdata["FieldType"] = 3;
 
-	
-		$fdata["AutoInc"] = true;
 
+	
 	
 			
 
-		$fdata["strField"] = "IdReciclador";
+		$fdata["strField"] = "id_reciclador";
+
+		$fdata["sourceSingle"] = "id_reciclador";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"IdReciclador\"";
+	$fdata["FullName"] = "id_reciclador";
 
 	
 	
@@ -305,6 +303,7 @@ $tdatarecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -400,27 +399,29 @@ $tdatarecicladores[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatarecicladores["IdReciclador"] = $fdata;
-		$tdatarecicladores[".searchableFields"][] = "IdReciclador";
-//	FotoReciclador
+	$tdatarecicladores["id_reciclador"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "id_reciclador";
+//	foto_reciclador
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 2;
-	$fdata["strName"] = "FotoReciclador";
-	$fdata["GoodName"] = "FotoReciclador";
-	$fdata["ownerTable"] = "public.Recicladores";
-	$fdata["Label"] = GetFieldLabel("public_Recicladores","FotoReciclador");
-	$fdata["FieldType"] = 200;
+	$fdata["strName"] = "foto_reciclador";
+	$fdata["GoodName"] = "foto_reciclador";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","foto_reciclador");
+	$fdata["FieldType"] = 201;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "FotoReciclador";
+		$fdata["strField"] = "foto_reciclador";
+
+		$fdata["sourceSingle"] = "foto_reciclador";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"FotoReciclador\"";
+	$fdata["FullName"] = "foto_reciclador";
 
 	
 	
@@ -456,6 +457,7 @@ $tdatarecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 	
 	
@@ -545,27 +547,29 @@ $tdatarecicladores[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatarecicladores["FotoReciclador"] = $fdata;
-		$tdatarecicladores[".searchableFields"][] = "FotoReciclador";
-//	CIReciclador
+	$tdatarecicladores["foto_reciclador"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "foto_reciclador";
+//	ci_reciclador
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 3;
-	$fdata["strName"] = "CIReciclador";
-	$fdata["GoodName"] = "CIReciclador";
-	$fdata["ownerTable"] = "public.Recicladores";
-	$fdata["Label"] = GetFieldLabel("public_Recicladores","CIReciclador");
+	$fdata["strName"] = "ci_reciclador";
+	$fdata["GoodName"] = "ci_reciclador";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","ci_reciclador");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "CIReciclador";
+		$fdata["strField"] = "ci_reciclador";
+
+		$fdata["sourceSingle"] = "ci_reciclador";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"CIReciclador\"";
+	$fdata["FullName"] = "ci_reciclador";
 
 	
 	
@@ -587,6 +591,7 @@ $tdatarecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -679,27 +684,29 @@ $tdatarecicladores[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatarecicladores["CIReciclador"] = $fdata;
-		$tdatarecicladores[".searchableFields"][] = "CIReciclador";
-//	NomReciclador
+	$tdatarecicladores["ci_reciclador"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "ci_reciclador";
+//	nombre_reciclador
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 4;
-	$fdata["strName"] = "NomReciclador";
-	$fdata["GoodName"] = "NomReciclador";
-	$fdata["ownerTable"] = "public.Recicladores";
-	$fdata["Label"] = GetFieldLabel("public_Recicladores","NomReciclador");
+	$fdata["strName"] = "nombre_reciclador";
+	$fdata["GoodName"] = "nombre_reciclador";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","nombre_reciclador");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "NomReciclador";
+		$fdata["strField"] = "nombre_reciclador";
+
+		$fdata["sourceSingle"] = "nombre_reciclador";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"NomReciclador\"";
+	$fdata["FullName"] = "nombre_reciclador";
 
 	
 	
@@ -721,6 +728,7 @@ $tdatarecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -813,27 +821,29 @@ $tdatarecicladores[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatarecicladores["NomReciclador"] = $fdata;
-		$tdatarecicladores[".searchableFields"][] = "NomReciclador";
-//	ApeReciclador
+	$tdatarecicladores["nombre_reciclador"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "nombre_reciclador";
+//	apellido_reciclador
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 5;
-	$fdata["strName"] = "ApeReciclador";
-	$fdata["GoodName"] = "ApeReciclador";
-	$fdata["ownerTable"] = "public.Recicladores";
-	$fdata["Label"] = GetFieldLabel("public_Recicladores","ApeReciclador");
+	$fdata["strName"] = "apellido_reciclador";
+	$fdata["GoodName"] = "apellido_reciclador";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","apellido_reciclador");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "ApeReciclador";
+		$fdata["strField"] = "apellido_reciclador";
+
+		$fdata["sourceSingle"] = "apellido_reciclador";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"ApeReciclador\"";
+	$fdata["FullName"] = "apellido_reciclador";
 
 	
 	
@@ -855,6 +865,7 @@ $tdatarecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -947,27 +958,29 @@ $tdatarecicladores[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatarecicladores["ApeReciclador"] = $fdata;
-		$tdatarecicladores[".searchableFields"][] = "ApeReciclador";
-//	DirReciclador
+	$tdatarecicladores["apellido_reciclador"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "apellido_reciclador";
+//	direc_reciclador
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 6;
-	$fdata["strName"] = "DirReciclador";
-	$fdata["GoodName"] = "DirReciclador";
-	$fdata["ownerTable"] = "public.Recicladores";
-	$fdata["Label"] = GetFieldLabel("public_Recicladores","DirReciclador");
+	$fdata["strName"] = "direc_reciclador";
+	$fdata["GoodName"] = "direc_reciclador";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","direc_reciclador");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "DirReciclador";
+		$fdata["strField"] = "direc_reciclador";
+
+		$fdata["sourceSingle"] = "direc_reciclador";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"DirReciclador\"";
+	$fdata["FullName"] = "direc_reciclador";
 
 	
 	
@@ -989,6 +1002,7 @@ $tdatarecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1081,27 +1095,29 @@ $tdatarecicladores[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatarecicladores["DirReciclador"] = $fdata;
-		$tdatarecicladores[".searchableFields"][] = "DirReciclador";
-//	TelReciclador
+	$tdatarecicladores["direc_reciclador"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "direc_reciclador";
+//	tel_reciclador
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 7;
-	$fdata["strName"] = "TelReciclador";
-	$fdata["GoodName"] = "TelReciclador";
-	$fdata["ownerTable"] = "public.Recicladores";
-	$fdata["Label"] = GetFieldLabel("public_Recicladores","TelReciclador");
+	$fdata["strName"] = "tel_reciclador";
+	$fdata["GoodName"] = "tel_reciclador";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","tel_reciclador");
 	$fdata["FieldType"] = 200;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "TelReciclador";
+		$fdata["strField"] = "tel_reciclador";
+
+		$fdata["sourceSingle"] = "tel_reciclador";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"TelReciclador\"";
+	$fdata["FullName"] = "tel_reciclador";
 
 	
 	
@@ -1123,6 +1139,7 @@ $tdatarecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1215,27 +1232,29 @@ $tdatarecicladores[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatarecicladores["TelReciclador"] = $fdata;
-		$tdatarecicladores[".searchableFields"][] = "TelReciclador";
-//	LogoASO
+	$tdatarecicladores["tel_reciclador"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "tel_reciclador";
+//	logo_aso
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 8;
-	$fdata["strName"] = "LogoASO";
-	$fdata["GoodName"] = "LogoASO";
-	$fdata["ownerTable"] = "public.Recicladores";
-	$fdata["Label"] = GetFieldLabel("public_Recicladores","LogoASO");
-	$fdata["FieldType"] = 200;
+	$fdata["strName"] = "logo_aso";
+	$fdata["GoodName"] = "logo_aso";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","logo_aso");
+	$fdata["FieldType"] = 201;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "LogoASO";
+		$fdata["strField"] = "logo_aso";
+
+		$fdata["sourceSingle"] = "logo_aso";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"LogoASO\"";
+	$fdata["FullName"] = "logo_aso";
 
 	
 	
@@ -1271,6 +1290,7 @@ $tdatarecicladores[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 	
 	
@@ -1360,58 +1380,474 @@ $tdatarecicladores[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatarecicladores["LogoASO"] = $fdata;
-		$tdatarecicladores[".searchableFields"][] = "LogoASO";
+	$tdatarecicladores["logo_aso"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "logo_aso";
+//	id_residuo
+//	Custom field settings
+	$fdata = array();
+	$fdata["Index"] = 9;
+	$fdata["strName"] = "id_residuo";
+	$fdata["GoodName"] = "id_residuo";
+	$fdata["ownerTable"] = "public.recicladores";
+	$fdata["Label"] = GetFieldLabel("public_recicladores","id_residuo");
+	$fdata["FieldType"] = 200;
 
 
-$tables_data["public.Recicladores"]=&$tdatarecicladores;
-$field_labels["public_Recicladores"] = &$fieldLabelsrecicladores;
-$fieldToolTips["public_Recicladores"] = &$fieldToolTipsrecicladores;
-$placeHolders["public_Recicladores"] = &$placeHoldersrecicladores;
-$page_titles["public_Recicladores"] = &$pageTitlesrecicladores;
+	
+	
+			
+
+		$fdata["strField"] = "id_residuo";
+
+		$fdata["sourceSingle"] = "id_residuo";
+
+		$fdata["isSQLExpression"] = true;
+	$fdata["FullName"] = "id_residuo";
+
+	
+	
+				$fdata["UploadFolder"] = "files";
+
+//  Begin View Formats
+	$fdata["ViewFormats"] = array();
+
+	$vdata = array("ViewFormat" => "");
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["view"] = $vdata;
+	$vdata = array("ViewFormat" => "");
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["list"] = $vdata;
+	$vdata = array("ViewFormat" => "");
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["print"] = $vdata;
+	$vdata = array("ViewFormat" => "");
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["export"] = $vdata;
+	$vdata = array("ViewFormat" => "");
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["masterlist"] = $vdata;
+	$vdata = array("ViewFormat" => "");
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["masterprint"] = $vdata;
+//  End View Formats
+
+//	Begin Edit Formats
+	$fdata["EditFormats"] = array();
+
+	$edata = array("EditFormat" => "Lookup wizard");
+
+	
+		$edata["weekdayMessage"] = array("message" => "", "messageType" => "Text");
+	$edata["weekdays"] = "[]";
+
+
+	
+	
+
+// Begin Lookup settings
+				$edata["LookupType"] = 2;
+	$edata["LookupTable"] = "public.residuos";
+			$edata["autoCompleteFieldsOnEdit"] = 0;
+	$edata["autoCompleteFields"] = array();
+		$edata["LCType"] = 0;
+
+	
+		
+	$edata["LinkField"] = "id_residuo";
+	$edata["LinkFieldType"] = 0;
+	$edata["DisplayField"] = "descri_residuo";
+
+	
+
+	
+	$edata["LookupOrderBy"] = "";
+
+	
+	
+	
+	
+
+	
+		$edata["Multiselect"] = true;
+
+		$edata["SelectSize"] = 1;
+
+// End Lookup Settings
+
+
+	
+	
+	
+	
+			$edata["acceptFileTypes"] = ".+$";
+		$edata["acceptFileTypesHtml"] = "";
+
+		$edata["maxNumberOfFiles"] = 1;
+
+	
+	
+	
+	
+	
+	
+		$edata["controlWidth"] = 200;
+
+//	Begin validation
+	$edata["validateAs"] = array();
+	$edata["validateAs"]["basicValidate"] = array();
+	$edata["validateAs"]["customMessages"] = array();
+	
+	
+	//	End validation
+
+	
+			
+	
+	
+	
+	$fdata["EditFormats"]["edit"] = $edata;
+	$edata = array("EditFormat" => "Lookup wizard");
+
+	
+		$edata["weekdayMessage"] = array("message" => "", "messageType" => "Text");
+	$edata["weekdays"] = "[]";
+
+
+	
+	
+
+// Begin Lookup settings
+				$edata["LookupType"] = 2;
+	$edata["LookupTable"] = "public.residuos";
+			$edata["autoCompleteFieldsOnEdit"] = 0;
+	$edata["autoCompleteFields"] = array();
+		$edata["LCType"] = 0;
+
+	
+		
+	$edata["LinkField"] = "id_residuo";
+	$edata["LinkFieldType"] = 0;
+	$edata["DisplayField"] = "descri_residuo";
+
+	
+
+	
+	$edata["LookupOrderBy"] = "";
+
+	
+	
+	
+	
+
+	
+		$edata["Multiselect"] = true;
+
+		$edata["SelectSize"] = 1;
+
+// End Lookup Settings
+
+
+	
+	
+	
+	
+			$edata["acceptFileTypes"] = ".+$";
+		$edata["acceptFileTypesHtml"] = "";
+
+		$edata["maxNumberOfFiles"] = 1;
+
+	
+	
+	
+	
+	
+	
+		$edata["controlWidth"] = 200;
+
+//	Begin validation
+	$edata["validateAs"] = array();
+	$edata["validateAs"]["basicValidate"] = array();
+	$edata["validateAs"]["customMessages"] = array();
+	
+	
+	//	End validation
+
+	
+			
+	
+	
+	
+	$fdata["EditFormats"]["add"] = $edata;
+	$edata = array("EditFormat" => "Text field");
+
+	
+		$edata["weekdayMessage"] = array("message" => "", "messageType" => "Text");
+	$edata["weekdays"] = "[]";
+
+
+	
+	
+
+
+
+	
+	
+	
+	
+			$edata["acceptFileTypes"] = ".+$";
+		$edata["acceptFileTypesHtml"] = "";
+
+		$edata["maxNumberOfFiles"] = 1;
+
+	
+	
+	
+	
+			$edata["HTML5InuptType"] = "text";
+
+		$edata["EditParams"] = "";
+		
+		$edata["controlWidth"] = 200;
+
+//	Begin validation
+	$edata["validateAs"] = array();
+	$edata["validateAs"]["basicValidate"] = array();
+	$edata["validateAs"]["customMessages"] = array();
+	
+	
+	//	End validation
+
+	
+			
+	
+	
+	
+	$fdata["EditFormats"]["search"] = $edata;
+//	End Edit Formats
+
+
+	$fdata["isSeparate"] = true;
+
+
+
+
+// the field's search options settings
+		$fdata["defaultSearchOption"] = "Contains";
+
+			// the default search options list
+				$fdata["searchOptionsList"] = array("Contains", "Equals", "Starts with", "More than", "Less than", "Between", "Empty", NOT_EMPTY);
+// the end of search options settings
+
+
+//Filters settings
+	$fdata["filterTotals"] = 0;
+		$fdata["filterMultiSelect"] = 0;
+			$fdata["filterFormat"] = "Values list";
+		$fdata["showCollapsed"] = false;
+
+		$fdata["sortValueType"] = 0;
+		$fdata["numberOfVisibleItems"] = 10;
+
+		$fdata["filterBy"] = 0;
+
+	
+
+	
+	
+//end of Filters settings
+
+
+	$tdatarecicladores["id_residuo"] = $fdata;
+		$tdatarecicladores[".searchableFields"][] = "id_residuo";
+
+
+$tables_data["public.recicladores"]=&$tdatarecicladores;
+$field_labels["public_recicladores"] = &$fieldLabelsrecicladores;
+$fieldToolTips["public_recicladores"] = &$fieldToolTipsrecicladores;
+$placeHolders["public_recicladores"] = &$placeHoldersrecicladores;
+$page_titles["public_recicladores"] = &$pageTitlesrecicladores;
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
-$detailsTablesData["public.Recicladores"] = array();
-//	public.GestionPesosResiduos
+
+//if !@TABLE.bReportCrossTab
+
+$detailsTablesData["public.recicladores"] = array();
+//	public.gestion_pesos_residuos
 	
 	
 
 		$dIndex = 0;
 	$detailsParam = array();
-	$detailsParam["dDataSourceTable"]="public.GestionPesosResiduos";
-		$detailsParam["dOriginalTable"] = "public.GestionPesosResiduos";
+	$detailsParam["dDataSourceTable"]="public.gestion_pesos_residuos";
+		$detailsParam["dOriginalTable"] = "public.gestion_pesos_residuos";
 
 
 
-				$detailsParam["dType"]=PAGE_LIST;
-	$detailsParam["dShortTable"] = "gestionpesosresiduos";
-	$detailsParam["dCaptionTable"] = GetTableCaption("public_GestionPesosResiduos");
+		
+		$detailsParam["dType"]=PAGE_LIST;
+	$detailsParam["dShortTable"] = "gestion_pesos_residuos";
+	$detailsParam["dCaptionTable"] = GetTableCaption("public_gestion_pesos_residuos");
 	$detailsParam["masterKeys"] =array();
 	$detailsParam["detailKeys"] =array();
 
 
 		
-	$detailsTablesData["public.Recicladores"][$dIndex] = $detailsParam;
+	$detailsTablesData["public.recicladores"][$dIndex] = $detailsParam;
 
 	
-		$detailsTablesData["public.Recicladores"][$dIndex]["masterKeys"] = array();
+		$detailsTablesData["public.recicladores"][$dIndex]["masterKeys"] = array();
 
-	$detailsTablesData["public.Recicladores"][$dIndex]["masterKeys"][]="IdReciclador";
+	$detailsTablesData["public.recicladores"][$dIndex]["masterKeys"][]="id_reciclador";
 
-				$detailsTablesData["public.Recicladores"][$dIndex]["detailKeys"] = array();
+				$detailsTablesData["public.recicladores"][$dIndex]["detailKeys"] = array();
 
-	$detailsTablesData["public.Recicladores"][$dIndex]["detailKeys"][]="IdReciclador";
+	$detailsTablesData["public.recicladores"][$dIndex]["detailKeys"][]="id_reciclador";
+//endif
 
 // tables which are master tables for current table (detail)
-$masterTablesData["public.Recicladores"] = array();
+$masterTablesData["public.recicladores"] = array();
 
 
 
+	
+	//if !@t.bReportCrossTab
+			$strOriginalDetailsTable="public.residuos";
+	$masterParams = array();
+	$masterParams["mDataSourceTable"]="public.residuos";
+	$masterParams["mOriginalTable"]= $strOriginalDetailsTable;
+	$masterParams["mShortTable"]= "residuos";
+	$masterParams["masterKeys"]= array();
+	$masterParams["detailKeys"]= array();
+
+	$masterParams["type"] = PAGE_LIST;
+					$masterTablesData["public.recicladores"][0] = $masterParams;
+				$masterTablesData["public.recicladores"][0]["masterKeys"] = array();
+	$masterTablesData["public.recicladores"][0]["masterKeys"][]="id_residuo";
+				$masterTablesData["public.recicladores"][0]["detailKeys"] = array();
+	$masterTablesData["public.recicladores"][0]["detailKeys"][]="id_residuo";
+		
+	//endif
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -1426,8 +1862,8 @@ function createSqlQuery_recicladores()
 {
 $proto0=array();
 $proto0["m_strHead"] = "SELECT";
-$proto0["m_strFieldList"] = "\"IdReciclador\",  	\"FotoReciclador\",  	\"CIReciclador\",  	\"NomReciclador\",  	\"ApeReciclador\",  	\"DirReciclador\",  	\"TelReciclador\",  	\"LogoASO\"";
-$proto0["m_strFrom"] = "FROM \"public\".\"Recicladores\"";
+$proto0["m_strFieldList"] = "id_reciclador,  	foto_reciclador,  	ci_reciclador,  	nombre_reciclador,  	apellido_reciclador,  	direc_reciclador,  	tel_reciclador,  	logo_aso,  	id_residuo";
+$proto0["m_strFrom"] = "FROM \"public\".recicladores";
 $proto0["m_strWhere"] = "";
 $proto0["m_strOrderBy"] = "";
 	
@@ -1468,13 +1904,13 @@ $proto0["m_having"] = $obj;
 $proto0["m_fieldlist"] = array();
 						$proto6=array();
 			$obj = new SQLField(array(
-	"m_strName" => "IdReciclador",
-	"m_strTable" => "public.Recicladores",
-	"m_srcTableName" => "public.Recicladores"
+	"m_strName" => "id_reciclador",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
 ));
 
-$proto6["m_sql"] = "\"IdReciclador\"";
-$proto6["m_srcTableName"] = "public.Recicladores";
+$proto6["m_sql"] = "id_reciclador";
+$proto6["m_srcTableName"] = "public.recicladores";
 $proto6["m_expr"]=$obj;
 $proto6["m_alias"] = "";
 $obj = new SQLFieldListItem($proto6);
@@ -1482,13 +1918,13 @@ $obj = new SQLFieldListItem($proto6);
 $proto0["m_fieldlist"][]=$obj;
 						$proto8=array();
 			$obj = new SQLField(array(
-	"m_strName" => "FotoReciclador",
-	"m_strTable" => "public.Recicladores",
-	"m_srcTableName" => "public.Recicladores"
+	"m_strName" => "foto_reciclador",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
 ));
 
-$proto8["m_sql"] = "\"FotoReciclador\"";
-$proto8["m_srcTableName"] = "public.Recicladores";
+$proto8["m_sql"] = "foto_reciclador";
+$proto8["m_srcTableName"] = "public.recicladores";
 $proto8["m_expr"]=$obj;
 $proto8["m_alias"] = "";
 $obj = new SQLFieldListItem($proto8);
@@ -1496,13 +1932,13 @@ $obj = new SQLFieldListItem($proto8);
 $proto0["m_fieldlist"][]=$obj;
 						$proto10=array();
 			$obj = new SQLField(array(
-	"m_strName" => "CIReciclador",
-	"m_strTable" => "public.Recicladores",
-	"m_srcTableName" => "public.Recicladores"
+	"m_strName" => "ci_reciclador",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
 ));
 
-$proto10["m_sql"] = "\"CIReciclador\"";
-$proto10["m_srcTableName"] = "public.Recicladores";
+$proto10["m_sql"] = "ci_reciclador";
+$proto10["m_srcTableName"] = "public.recicladores";
 $proto10["m_expr"]=$obj;
 $proto10["m_alias"] = "";
 $obj = new SQLFieldListItem($proto10);
@@ -1510,13 +1946,13 @@ $obj = new SQLFieldListItem($proto10);
 $proto0["m_fieldlist"][]=$obj;
 						$proto12=array();
 			$obj = new SQLField(array(
-	"m_strName" => "NomReciclador",
-	"m_strTable" => "public.Recicladores",
-	"m_srcTableName" => "public.Recicladores"
+	"m_strName" => "nombre_reciclador",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
 ));
 
-$proto12["m_sql"] = "\"NomReciclador\"";
-$proto12["m_srcTableName"] = "public.Recicladores";
+$proto12["m_sql"] = "nombre_reciclador";
+$proto12["m_srcTableName"] = "public.recicladores";
 $proto12["m_expr"]=$obj;
 $proto12["m_alias"] = "";
 $obj = new SQLFieldListItem($proto12);
@@ -1524,13 +1960,13 @@ $obj = new SQLFieldListItem($proto12);
 $proto0["m_fieldlist"][]=$obj;
 						$proto14=array();
 			$obj = new SQLField(array(
-	"m_strName" => "ApeReciclador",
-	"m_strTable" => "public.Recicladores",
-	"m_srcTableName" => "public.Recicladores"
+	"m_strName" => "apellido_reciclador",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
 ));
 
-$proto14["m_sql"] = "\"ApeReciclador\"";
-$proto14["m_srcTableName"] = "public.Recicladores";
+$proto14["m_sql"] = "apellido_reciclador";
+$proto14["m_srcTableName"] = "public.recicladores";
 $proto14["m_expr"]=$obj;
 $proto14["m_alias"] = "";
 $obj = new SQLFieldListItem($proto14);
@@ -1538,13 +1974,13 @@ $obj = new SQLFieldListItem($proto14);
 $proto0["m_fieldlist"][]=$obj;
 						$proto16=array();
 			$obj = new SQLField(array(
-	"m_strName" => "DirReciclador",
-	"m_strTable" => "public.Recicladores",
-	"m_srcTableName" => "public.Recicladores"
+	"m_strName" => "direc_reciclador",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
 ));
 
-$proto16["m_sql"] = "\"DirReciclador\"";
-$proto16["m_srcTableName"] = "public.Recicladores";
+$proto16["m_sql"] = "direc_reciclador";
+$proto16["m_srcTableName"] = "public.recicladores";
 $proto16["m_expr"]=$obj;
 $proto16["m_alias"] = "";
 $obj = new SQLFieldListItem($proto16);
@@ -1552,13 +1988,13 @@ $obj = new SQLFieldListItem($proto16);
 $proto0["m_fieldlist"][]=$obj;
 						$proto18=array();
 			$obj = new SQLField(array(
-	"m_strName" => "TelReciclador",
-	"m_strTable" => "public.Recicladores",
-	"m_srcTableName" => "public.Recicladores"
+	"m_strName" => "tel_reciclador",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
 ));
 
-$proto18["m_sql"] = "\"TelReciclador\"";
-$proto18["m_srcTableName"] = "public.Recicladores";
+$proto18["m_sql"] = "tel_reciclador";
+$proto18["m_srcTableName"] = "public.recicladores";
 $proto18["m_expr"]=$obj;
 $proto18["m_alias"] = "";
 $obj = new SQLFieldListItem($proto18);
@@ -1566,61 +2002,76 @@ $obj = new SQLFieldListItem($proto18);
 $proto0["m_fieldlist"][]=$obj;
 						$proto20=array();
 			$obj = new SQLField(array(
-	"m_strName" => "LogoASO",
-	"m_strTable" => "public.Recicladores",
-	"m_srcTableName" => "public.Recicladores"
+	"m_strName" => "logo_aso",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
 ));
 
-$proto20["m_sql"] = "\"LogoASO\"";
-$proto20["m_srcTableName"] = "public.Recicladores";
+$proto20["m_sql"] = "logo_aso";
+$proto20["m_srcTableName"] = "public.recicladores";
 $proto20["m_expr"]=$obj;
 $proto20["m_alias"] = "";
 $obj = new SQLFieldListItem($proto20);
 
 $proto0["m_fieldlist"][]=$obj;
-$proto0["m_fromlist"] = array();
-												$proto22=array();
-$proto22["m_link"] = "SQLL_MAIN";
-			$proto23=array();
-$proto23["m_strName"] = "public.Recicladores";
-$proto23["m_srcTableName"] = "public.Recicladores";
-$proto23["m_columns"] = array();
-$proto23["m_columns"][] = "IdReciclador";
-$proto23["m_columns"][] = "FotoReciclador";
-$proto23["m_columns"][] = "CIReciclador";
-$proto23["m_columns"][] = "NomReciclador";
-$proto23["m_columns"][] = "ApeReciclador";
-$proto23["m_columns"][] = "DirReciclador";
-$proto23["m_columns"][] = "TelReciclador";
-$proto23["m_columns"][] = "LogoASO";
-$obj = new SQLTable($proto23);
+						$proto22=array();
+			$obj = new SQLField(array(
+	"m_strName" => "id_residuo",
+	"m_strTable" => "public.recicladores",
+	"m_srcTableName" => "public.recicladores"
+));
 
-$proto22["m_table"] = $obj;
-$proto22["m_sql"] = "\"public\".\"Recicladores\"";
+$proto22["m_sql"] = "id_residuo";
+$proto22["m_srcTableName"] = "public.recicladores";
+$proto22["m_expr"]=$obj;
 $proto22["m_alias"] = "";
-$proto22["m_srcTableName"] = "public.Recicladores";
-$proto24=array();
-$proto24["m_sql"] = "";
-$proto24["m_uniontype"] = "SQLL_UNKNOWN";
+$obj = new SQLFieldListItem($proto22);
+
+$proto0["m_fieldlist"][]=$obj;
+$proto0["m_fromlist"] = array();
+												$proto24=array();
+$proto24["m_link"] = "SQLL_MAIN";
+			$proto25=array();
+$proto25["m_strName"] = "public.recicladores";
+$proto25["m_srcTableName"] = "public.recicladores";
+$proto25["m_columns"] = array();
+$proto25["m_columns"][] = "id_reciclador";
+$proto25["m_columns"][] = "foto_reciclador";
+$proto25["m_columns"][] = "ci_reciclador";
+$proto25["m_columns"][] = "nombre_reciclador";
+$proto25["m_columns"][] = "apellido_reciclador";
+$proto25["m_columns"][] = "direc_reciclador";
+$proto25["m_columns"][] = "tel_reciclador";
+$proto25["m_columns"][] = "logo_aso";
+$proto25["m_columns"][] = "id_residuo";
+$obj = new SQLTable($proto25);
+
+$proto24["m_table"] = $obj;
+$proto24["m_sql"] = "\"public\".recicladores";
+$proto24["m_alias"] = "";
+$proto24["m_srcTableName"] = "public.recicladores";
+$proto26=array();
+$proto26["m_sql"] = "";
+$proto26["m_uniontype"] = "SQLL_UNKNOWN";
 	$obj = new SQLNonParsed(array(
 	"m_sql" => ""
 ));
 
-$proto24["m_column"]=$obj;
-$proto24["m_contained"] = array();
-$proto24["m_strCase"] = "";
-$proto24["m_havingmode"] = false;
-$proto24["m_inBrackets"] = false;
-$proto24["m_useAlias"] = false;
-$obj = new SQLLogicalExpr($proto24);
+$proto26["m_column"]=$obj;
+$proto26["m_contained"] = array();
+$proto26["m_strCase"] = "";
+$proto26["m_havingmode"] = false;
+$proto26["m_inBrackets"] = false;
+$proto26["m_useAlias"] = false;
+$obj = new SQLLogicalExpr($proto26);
 
-$proto22["m_joinon"] = $obj;
-$obj = new SQLFromListItem($proto22);
+$proto24["m_joinon"] = $obj;
+$obj = new SQLFromListItem($proto24);
 
 $proto0["m_fromlist"][]=$obj;
 $proto0["m_groupby"] = array();
 $proto0["m_orderby"] = array();
-$proto0["m_srcTableName"]="public.Recicladores";		
+$proto0["m_srcTableName"]="public.recicladores";		
 $obj = new SQLQuery($proto0);
 
 	return $obj;
@@ -1631,11 +2082,13 @@ $queryData_recicladores = createSqlQuery_recicladores();
 	
 		;
 
-								
+									
 
 $tdatarecicladores[".sqlquery"] = $queryData_recicladores;
 
-$tableEvents["public.Recicladores"] = new eventsBase;
+
+
+$tableEvents["public.recicladores"] = new eventsBase;
 $tdatarecicladores[".hasEvents"] = false;
 
 ?>

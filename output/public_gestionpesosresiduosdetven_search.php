@@ -30,10 +30,6 @@ if(!$accessGranted)
 }
 
 
-
-
-
-
 require_once('include/xtempl.php');
 require_once('classes/searchpage.php');
 require_once('classes/searchpage_dash.php');
@@ -71,6 +67,10 @@ if( $pageMode == SEARCH_DASHBOARD )
 
 // e.g. crosstable params
 $params["extraPageParams"] = SearchPage::getExtraPageParams();
+
+$params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 
 
 $pageObject = new SearchPage($params);

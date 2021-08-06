@@ -4,8 +4,10 @@ class ViewHTMLField extends ViewControl
 
 	public function getPdfValue(&$data, $keylink = "")
 	{
+
 		return my_json_encode( array(
-			"text" => $this->showDBValue($data, $keylink),
+			"text" => $this->processText( $this->refineHTMLValue( $data[ $this->field ] ), $keylink ),
+//			"text" => $this->showDBValue($data, $keylink),
 			"isHtml" => true
 		) );
 	}
@@ -13,7 +15,7 @@ class ViewHTMLField extends ViewControl
 	public function showDBValue( &$data, $keylink, $html = true )
 	{
 		$value = $this->refineHTMLValue( $data[ $this->field ] );
-		return "<table><tr><td>".$this->processText( $value, $keylink )."</td></tr></table>";
+		return "<table class=\"r-html-container\"><tbody><tr><td>".$this->processText( $value, $keylink )."</td></tr></tbody></table>";
 	}
 
 	/**
@@ -22,7 +24,7 @@ class ViewHTMLField extends ViewControl
 	 * @prarm String keylink
 	 * @return String
 	 */
-	public function getExportValue(&$data, $keylink = "")
+	public function getExportValue(&$data, $keylink = "", $html = false )
 	{
 		return $this->refineHTMLValue( $data[ $this->field ] );
 	}	

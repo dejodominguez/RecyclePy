@@ -3,20 +3,15 @@
 $tdataGLOBAL = array();
 
 
-$allPages = my_json_decode( "{\"login\":[\"login\"],\"menu\":[\"menuinicio\"]}" );
-$pages = array();
+$tdataGLOBAL[".pagesByType"] = my_json_decode( "{\"changepwd\":[\"changepwd\"],\"changepwd_success\":[\"changepwd_success\"],\"login\":[\"login\"],\"menu\":[\"menuinicio\"],\"userinfo\":[\"userinfo\"]}" );
+$tdataGLOBAL[".originalPagesByType"] = $tdataGLOBAL[".pagesByType"];
+$tdataGLOBAL[".pages"] = types2pages( my_json_decode( "{\"changepwd\":[\"changepwd\"],\"changepwd_success\":[\"changepwd_success\"],\"login\":[\"login\"],\"menu\":[\"menuinicio\"],\"userinfo\":[\"userinfo\"]}" ) );
+$tdataGLOBAL[".originalPages"] = $tdataGLOBAL[".pages"];
+$tdataGLOBAL[".defaultPages"] = my_json_decode( "{\"changepwd\":\"changepwd\",\"changepwd_success\":\"changepwd_success\",\"login\":\"login\",\"menu\":\"menuinicio\",\"userinfo\":\"userinfo\"}" );
+$tdataGLOBAL[".originalDefaultPages"] = $tdataGLOBAL[".defaultPages"];
 
-foreach( $allPages as $ptype => $pids ) {
-	foreach(  $pids as $pid ) {
-		$pages[$pid] = $ptype;
-	}
-}
-
-$defaultPages = my_json_decode( "{\"login\":\"login\",\"menu\":\"menuinicio\"}" );
-
-$tdataGLOBAL[".pages"] = $pages;
-$tdataGLOBAL[".defaultPages"] = $defaultPages;
 $tables_data["<global>"] =& $tdataGLOBAL;
+
 
 $detailsTablesData["<global>"] = array();
 $masterTablesData["<global>"] = array();

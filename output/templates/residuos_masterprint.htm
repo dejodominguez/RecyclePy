@@ -10,13 +10,24 @@
 	
 ">
 		 
-		<h3 class="panel-title" data-itemtype="masterprint_header" data-itemid="masterprint_header" {$item_masterprint_header} data-pageid="{$pageid}" >{$pagetitlelabel public_Residuos masterprint}</h3>
+		<h3 class="panel-title" data-itemtype="masterprint_header" data-itemid="masterprint_header" {$item_masterprint_header} data-pageid="{$pageid}" >{$pagetitlelabel public_residuos masterprint}</h3>
 		</div>			</div>		
 {END top_block}
 			</div>
 		<div class="panel-body">
 							{BEGIN above-grid_block}
 <div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="panel-only" {$form_above-grid} data-pageid="{$pageid}" >		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="above-grid_c1" data-pageid="{$pageid}"	{$cell_above-grid_c1}
+	class=" r-ori-vert			col-md-12
+	
+">
+		{BEGIN firstAboveGridCell}
+				{END firstAboveGridCell}	
+	</div>					</div>
 	</div>		
 {END above-grid_block}
 								{BEGIN grid_block}
@@ -27,7 +38,7 @@
 {END grid_tabs}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -47,20 +58,20 @@
 	{$cell_grid_headcell_field}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdResiduo_class}
+		 r-ori-vert				{$id_residuo_class}
 			"
 
-			data-field="IdResiduo"
+			data-field="id_residuo"
 	
 	data-cellId="grid_headcell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdResiduo_fieldheadercolumn}
+		{BEGIN id_residuo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdResiduo">
-	{$label public_Residuos IdResiduo }	</span>
-{END IdResiduo_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_residuo" data-fieldname="id_residuo">
+	{$label public_residuos id_residuo }	</span>
+{END id_residuo_fieldheadercolumn}
 
 	
 	</th>
@@ -72,20 +83,20 @@
 	{$cell_grid_headcell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$DescriResiduo_class}
+		 r-ori-vert				{$descri_residuo_class}
 			"
 
-			data-field="DescriResiduo"
+			data-field="descri_residuo"
 	
 	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN DescriResiduo_fieldheadercolumn}
+		{BEGIN descri_residuo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriResiduo">
-	{$label public_Residuos DescriResiduo }	</span>
-{END DescriResiduo_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="descri_residuo" data-fieldname="descri_residuo">
+	{$label public_residuos descri_residuo }	</span>
+{END descri_residuo_fieldheadercolumn}
 
 	
 	</th>
@@ -112,20 +123,20 @@
 	{$cell_grid_cell_field}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdResiduo_class}
+		 r-ori-vert				{$id_residuo_class}
 			"
 
-			data-field="IdResiduo"
+			data-field="id_residuo"
 	
 	data-cellId="grid_cell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdResiduo" data-default-width >
-{$IdResiduo_value}
+		{BEGIN id_residuo_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_residuo" data-fieldname="id_residuo" data-default-width >
+{$id_residuo_value}
 </span>
-{END IdResiduo_fieldcolumn}	
+{END id_residuo_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field}
 				 
@@ -135,20 +146,20 @@
 	{$cell_grid_cell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$DescriResiduo_class}
+		 r-ori-vert				{$descri_residuo_class}
 			"
 
-			data-field="DescriResiduo"
+			data-field="descri_residuo"
 	
 	data-cellId="grid_cell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN DescriResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriResiduo" data-default-width >
-{$DescriResiduo_value}
+		{BEGIN descri_residuo_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="descri_residuo" data-fieldname="descri_residuo" data-default-width >
+{$descri_residuo_value}
 </span>
-{END DescriResiduo_fieldcolumn}	
+{END descri_residuo_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field1}
 							</tr>

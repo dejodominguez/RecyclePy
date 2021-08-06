@@ -59,6 +59,9 @@ class FilterPanel
 		{			
 			$filterFieldName = $fieldName;
 			$filterControl = FilterControl::getFilterControl($filterFieldName, $this->pageObj, $this->id, $this->viewControls);			
+			if( !$filterControl ) {
+				continue;
+			}
 
 			if( $filterControl->hasDependentFilter() )
 				continue;
@@ -72,7 +75,10 @@ class FilterPanel
 			{
 				$filterFieldName = $filterControl->parentFilterName;			
 				$filterControl = FilterControl::getFilterControl($filterFieldName, $this->pageObj, $this->id, $this->viewControls);
-					
+				if( !$filterControl ) {
+					continue;
+				}
+						
 				$filterCtrlBlocks = $filterControl->buildFilterCtrlBlockArray( $this->pageObj, $filterCtrlBlocks );		
 				$filterButtonParams = $filterControl->getFilterButtonParams( $filterButtonParams );
 				$filterExtraControls = $filterControl->getFilterExtraControls( $filterExtraControls );
@@ -120,7 +126,7 @@ class FilterPanel
 		$this->xt->assign("selectAll_attrs".$postfix, $filterExtraControls["selectAllAttrs"]);
 		
 		$this->xt->assign("filter_button_showmore".$postfix, $filterState["truncated"]);
-		$this->xt->assign("show_n_more".$postfix, str_replace( "%n%", $filterExtraControls["numberOfExtraItemsToShow"], "Mostrar más %n%" ) );
+		$this->xt->assign("show_n_more".$postfix, str_replace( "%n%", $filterExtraControls["numberOfExtraItemsToShow"], "Mostrar %n% más" ) );
 		
 		if( $filterState["showMoreHidden"] )
 			$this->xt->assign("showMoreBtnClass".$postfix, "show-more-hidden");

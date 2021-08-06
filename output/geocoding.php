@@ -41,7 +41,8 @@ if( $_SERVER['PHP_SELF'] == '/'.GetTableLink("geocoding") )
 
 if( postvalue("geocoding") )
 {
-	global $cman, $gSettings, $strTableName, $strOriginalTableName;
+	global $cman, $strTableName, $strOriginalTableName;
+	$gSettings = new ProjectSettings( $strTableName );
 
 	$_connection = $cman->byTable( $strTableName );
 	$origTableName = $strOriginalTableName;

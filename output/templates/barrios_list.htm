@@ -21,16 +21,16 @@
 		{$containerCss}
 		</style>
 		<div class="r-vbar-page">
-			<div data-width="" data-fixed class="r-left clearfix {$leftbar_class}" >
+			<div data-width="300px"  class="r-left clearfix {$leftbar_class}" >
 								<div data-location="left" id="form_left_{$pageid}" data-makeup="leftbar" {$form_left} data-pageid="{$pageid}">
 {BEGIN left_block}
  
      
          
 
-			<div data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell class="clearfix " data-itemid="logo1" {$item_logo1}>
+			<div data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell class="clearfix " data-itemid="logo" {$item_logo}>
 				{BEGIN logo_block}
-	<A data-itemtype="logo" data-itemid="logo1" {$item_logo1} data-pageid="{$pageid}" class="navbar-brand" href="{$home_link}" data-pageid="{$pageid}" {$logo_hiddenattr}>
+	<A data-itemtype="logo" data-itemid="logo" {$item_logo} data-pageid="{$pageid}" class="navbar-brand" href="{$home_link}" data-pageid="{$pageid}" {$logo_hiddenattr}>
 		{$logo}
 	</A>
 {END logo_block}
@@ -44,7 +44,7 @@
 
 			<div class="clearfix " data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
 				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Expand" class="btn btn-link   
+	<a type="button" title="Expandir" class="btn btn-link   
 	" href="#" >
 					<span class="glyphicon glyphicon-triangle-right"></span>
 										</a>
@@ -66,14 +66,14 @@
 
 	<div class="panel-heading">
 		<div class="btn-group" id="addSearchFieldButton{$id}">
-			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle btn-sm )" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Búsqueda			<span class="caret"></span>
 			</button>
 		</div>
 
 
 		<div class="btn-group searchpanel-options" id="searchPanelOptions{$id}">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="glyphicon glyphicon glyphicon-option-vertical"></span>
 			</button>
 			<ul class="dropdown-menu dropdown-left">
@@ -100,46 +100,47 @@
 				<span class="rnr-searchcontrol">{$searchcontrol1}</span>
 		</div>
 		{END searchCtrlBlock}
-																		{BEGIN searchCtrlBlock_DescriBarrio}
+																		{BEGIN searchCtrlBlock_descri_barrio}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_DescriBarrio}" {$filterRow_attrs_DescriBarrio}>
-			<label>{$label public_Barrios DescriBarrio }</label>
-
-							{$delCtrlButt}
-			
-								<span class="rnr-searchtype">{$searchtype_DescriBarrio}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_DescriBarrio}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_DescriBarrio}</span>
-						</div>
-		{END searchCtrlBlock_DescriBarrio}
-																{BEGIN searchCtrlBlock_IdBarrio}
-
-
-		<div class="form-group srchPanelRow {$filterRow_class_IdBarrio}" {$filterRow_attrs_IdBarrio}>
-			<label>{$label public_Barrios IdBarrio }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_descri_barrio}" {$filterRow_attrs_descri_barrio}>
+			<label>{$label public_barrios descri_barrio }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_IdBarrio}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_IdBarrio}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_IdBarrio}</span>
+								<span class="rnr-searchtype">{$searchtype_descri_barrio}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_descri_barrio}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_descri_barrio}</span>
 						</div>
-		{END searchCtrlBlock_IdBarrio}
+		{END searchCtrlBlock_descri_barrio}
+																{BEGIN searchCtrlBlock_id_barrio}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_id_barrio}" {$filterRow_attrs_id_barrio}>
+			<label>{$label public_barrios id_barrio }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_id_barrio}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_id_barrio}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_id_barrio}</span>
+						</div>
+		{END searchCtrlBlock_id_barrio}
 		
 
 	</div>
 
 	<div class="panel-footer bottomSearchButt" {$bottomSearchButt_attrs}>
-		<button class="btn btn-primary" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
-		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
+		<button class="btn btn-primary btn-sm" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
+
+				<button class="btn btn-default btn-sm" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
 	</div>
 </div>
 <!-- End Search panel content -->
 			</div>
 		
     {END left_block}
-</div>				</div>	
+</div>				</div>
 			<div class="r-content-col" data-resize-left="leftbar">
 				<div  class="r-topheader" data-resize-name="topbar">
 									{BEGIN supertop_block}
@@ -147,9 +148,18 @@
 	data-location="supertop" id="form_supertop_{$pageid}" data-makeup="leftbar" {$form_supertop} data-pageid="{$pageid}" >
 			 
 							 
-				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
+				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="expand_menu_button" {$item_expand_menu_button} data-topcell-item-type="expand_menu_button" >
+				<span data-itemtype="expand_menu_button" data-itemid="expand_menu_button" {$item_expand_menu_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Encubrir" class="btn-link   
+	 glyphicon glyphicon-menu-hamburger" href="#" >		
+				
+								</a>
+</span>
+			</span>
+		 
+				<span class="navbar-form  navbar-collapse" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
 				<span data-itemtype="collapse_button" data-itemid="collapse_button" {$item_collapse_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Collapse" class="btn-link   
+	<a type="button" title="Muestrame el menu" class="btn-link   
 	 glyphicon glyphicon-triangle-left" href="#" >		
 				
 								</a>
@@ -184,10 +194,11 @@
 {END searchform_text}
 	<span class="input-group-btn">
 	{BEGIN searchform_showall}
-		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
+				<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
 			<span class="glyphicon glyphicon-remove"></span>
 		</button>
 	{END searchform_showall}
+
 	{BEGIN searchform_search}
 	<button {$searchbutton_attrs} class="btn btn-primary" >
 		<span class="glyphicon glyphicon-search"></span>
@@ -202,8 +213,8 @@
 				<span data-itemtype="list_options" data-itemid="list_options" {$item_list_options} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-cog"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-cog"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN exportselected_link}
@@ -223,7 +234,7 @@
 	</li>
 {END deleteselected_link}
 							<li role="separator" class="divider"></li>								<li data-itemtype="advsearch_link" data-itemid="advsearch_link" {$item_advsearch_link} data-pageid="{$pageid}" data-small >
-				<a   href="barrios_search.php" {$advsearchlink_attrs}  title="" >
+				<a   href="barrios_search.php{$stateLink_full}" {$advsearchlink_attrs}  title="" >
 				
 		Búsqueda avanzada		
 		</a>
@@ -254,7 +265,7 @@
 {END export_link}
 							<li role="separator" class="divider"></li>							{BEGIN import_link}
 	<li data-itemtype="import" data-itemid="import" {$item_import} data-pageid="{$pageid}" data-small >
-				<a  {$importlink_attrs} href="barrios_import.php?{$crosstable_attrs}"  title="" >
+				<a  {$importlink_attrs} href="barrios_import.php{$stateLink_full}"  title="" >
 				
 		Importar		
 		</a>
@@ -280,10 +291,18 @@
 <span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-user"></span>
-						{$username}			<span class="caret"></span>
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
 							{BEGIN logoutbutton}
 	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
 				<a  href="#" {$logoutlink_attrs}  title="" >
@@ -292,6 +311,14 @@
 		</a>
 	</li>
 {END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
 					</ul>
 	</span>
 </span>
@@ -325,7 +352,7 @@
 		{BEGIN add_link}
 <span data-itemtype="add" data-itemid="add" {$item_add} data-pageid="{$pageid}" data-small data-button-item>
 	<a type="button" title="" class="btn btn-primary   
-	" {$addlink_attrs} href="barrios_add.php" >
+	" {$addlink_attrs} href="barrios_add.php{$stateLink_full}" >
 							Añadir nuevo			</a>
 </span>
 {END add_link}
@@ -367,15 +394,16 @@
 		<div class="col-md-4">
 			Rango:		</div>
 
+			 
 		{BEGIN print_friendly_all}
 		<div class="col-md-8">
 			<label for="printAll{$id}">
-				<input type="radio" id="printAll{$id}" data-href="barrios_print.php?all=1&amp;{$crosstable_attrs}" name="printScope">
+				<input type="radio" id="printAll{$id}" data-href="barrios_print.php?all=1&amp;{$crosstable_attrs}" name="printScope" >
 									Imprimir todas las páginas							</label>
 		</div>
 		{END print_friendly_all}
-	</div>
-	<div class="row">
+		</div>
+		<div class="row">
 		<div class="col-md-4">&nbsp;</div>
 		<div class="col-md-8">
 			<label for="printPage{$id}">
@@ -383,18 +411,20 @@
 				Imprimir esta página			</label>
 		</div>
 	</div>
-	
-		<div class="row">
+		
+		 
+	<div class="row">
 		<div class="col-md-4">
 			&nbsp;
 		</div>
 		<div class="col-md-8">
 			<label style="color: gray;" for="printSelection{$id}">
-			<input name="printScope" disabled="disabled" id="printSelection{$id}" type="radio">
+			<input name="printScope" disabled="disabled" id="printSelection{$id}" type="radio" >
 			Imprimir la selección			</label>
 		</div>
 	</div>
-	</div>				 
+	</div>
+				 
 					</li>
 											<li class="divider" role="separator"></li>
 																				 
@@ -462,17 +492,15 @@
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
 {END message_block}	<style>
 @media screen and (max-width: 767px) {
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="IdBarrio"]:before {
-		content: "{$label public_Barrios IdBarrio}";
+		[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="id_barrio"]:before {
+		content: "{$label public_barrios id_barrio}";
 	}
-	
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="DescriBarrio"]:before {
-		content: "{$label public_Barrios DescriBarrio}";
+			[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="descri_barrio"]:before {
+		content: "{$label public_barrios descri_barrio}";
 	}
-	
-}
+	}
 </style>
-<table data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  r-flexgrid rnr-b-grid rnr-gridtable" 
+<table data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  r-flexgrid rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -532,22 +560,22 @@
 	{$cell_grid_headcell_field}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdBarrio_class}
+		r-align-center r-ori-vert				{$id_barrio_class}
 			"
 
-			data-field="IdBarrio"
+			data-field="id_barrio"
 	
-	data-cellId="grid_headcell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	data-cellId="grid_headcell_field" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="barrios_list"	
 	>
 
 	 
-		{BEGIN IdBarrio_fieldheadercolumn}
-	{BEGIN IdBarrio_fieldheader}
-	<SPAN {$IdBarrio_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdBarrio">
-	{$label public_Barrios IdBarrio }	{$arrow_icon_IdBarrio}
+		{BEGIN id_barrio_fieldheadercolumn}
+	{BEGIN id_barrio_fieldheader}
+	<SPAN {$id_barrio_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_barrio" data-fieldname="id_barrio">
+	{$label public_barrios id_barrio }	{$arrow_icon_id_barrio}
 	</SPAN>
-	{END IdBarrio_fieldheader}
-{END IdBarrio_fieldheadercolumn}
+	{END id_barrio_fieldheader}
+{END id_barrio_fieldheadercolumn}
 
 	
 	</th>
@@ -559,22 +587,22 @@
 	{$cell_grid_headcell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$DescriBarrio_class}
+		r-align-center r-ori-vert				{$descri_barrio_class}
 			"
 
-			data-field="DescriBarrio"
+			data-field="descri_barrio"
 	
-	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="barrios_list"	
 	>
 
 	 
-		{BEGIN DescriBarrio_fieldheadercolumn}
-	{BEGIN DescriBarrio_fieldheader}
-	<SPAN {$DescriBarrio_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriBarrio">
-	{$label public_Barrios DescriBarrio }	{$arrow_icon_DescriBarrio}
+		{BEGIN descri_barrio_fieldheadercolumn}
+	{BEGIN descri_barrio_fieldheader}
+	<SPAN {$descri_barrio_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="descri_barrio" data-fieldname="descri_barrio">
+	{$label public_barrios descri_barrio }	{$arrow_icon_descri_barrio}
 	</SPAN>
-	{END DescriBarrio_fieldheader}
-{END DescriBarrio_fieldheadercolumn}
+	{END descri_barrio_fieldheader}
+{END descri_barrio_fieldheadercolumn}
 
 	
 	</th>
@@ -651,7 +679,8 @@
 	 
 		{BEGIN checkbox_column}
 <span data-itemtype="grid_checkbox" data-itemid="grid_checkbox" {$item_grid_checkbox} data-pageid="{$pageid}" data-record-id="{$recId}" >
-	<input type="checkbox" {$checkbox_attrs}>
+	<input type="checkbox" {$checkbox_attrs}
+		>
 </span>	
 {END checkbox_column}
 	
@@ -664,20 +693,20 @@
 	{$cell_grid_cell_field}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$IdBarrio_class}
+		 r-ori-vert				{$id_barrio_class}
 			"
 
-			data-field="IdBarrio"
+			data-field="id_barrio"
 	
 	data-cellId="grid_cell_field" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN IdBarrio_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdBarrio" data-default-width >
-{$IdBarrio_value}
+		{BEGIN id_barrio_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="id_barrio" data-fieldname="id_barrio" data-default-width >
+{$id_barrio_value}
 </span>
-{END IdBarrio_fieldcolumn}	
+{END id_barrio_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field}
 				 
@@ -687,20 +716,20 @@
 	{$cell_grid_cell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$DescriBarrio_class}
+		 r-ori-vert				{$descri_barrio_class}
 			"
 
-			data-field="DescriBarrio"
+			data-field="descri_barrio"
 	
 	data-cellId="grid_cell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN DescriBarrio_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriBarrio" data-default-width >
-{$DescriBarrio_value}
+		{BEGIN descri_barrio_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="descri_barrio" data-fieldname="descri_barrio" data-default-width >
+{$descri_barrio_value}
 </span>
-{END DescriBarrio_fieldcolumn}	
+{END descri_barrio_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field1}
 							</tr>
@@ -812,6 +841,8 @@
 					{$footer}
 				</div>	
 			</div>	
+			<div class="r-body-shadow">
+			</div>
 		</div>
 	{END body}
 	</body>

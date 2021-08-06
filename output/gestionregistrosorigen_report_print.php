@@ -18,11 +18,6 @@ if( !Security::processPageSecurity( $strTableName, 'P' ) )
 require_once('classes/reportpage.php');
 require_once('classes/reportprintpage.php');	
 	
-
-
-
-
-
 $xt = new Xtempl();
 
 // an array of ReportPrintPage constructor params
@@ -36,9 +31,7 @@ $params["pageName"] = postvalue("page");
 
 $params["allPagesMode"] = postvalue("all");
 $params["pdfMode"] = postvalue("pdf");
-$params["exportPdf"] = postvalue("exportPdf");
-$params["pdfContent"] = postvalue("htmlPdfContent");
-$params["pdfWidth"] = postvalue("width");
+
 $params["format"] = postvalue("format");
 $params["splitByGroups"] = postvalue("records");
 
@@ -53,6 +46,11 @@ $params["yType"] = postvalue("ytype");
 //
 
 $params["pdfBackgroundImage"] = postvalue("pdfBackgroundImage");
+
+$params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
+
 
 $pageObject = new ReportPrintPage($params);
 $pageObject->init();

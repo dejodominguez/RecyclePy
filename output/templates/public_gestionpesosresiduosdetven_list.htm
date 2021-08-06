@@ -21,7 +21,7 @@
 		{$containerCss}
 		</style>
 		<div class="r-vbar-page">
-			<div data-width="" data-fixed class="r-left clearfix {$leftbar_class}" >
+			<div data-width="300px"  class="r-left clearfix {$leftbar_class}" >
 								<div data-location="left" id="form_left_{$pageid}" data-makeup="leftbar" {$form_left} data-pageid="{$pageid}">
 {BEGIN left_block}
  
@@ -44,7 +44,7 @@
 
 			<div class="clearfix " data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
 				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Expand" class="btn btn-link   
+	<a type="button" title="Expandir" class="btn btn-link   
 	" href="#" >
 					<span class="glyphicon glyphicon-triangle-right"></span>
 										</a>
@@ -66,14 +66,14 @@
 
 	<div class="panel-heading">
 		<div class="btn-group" id="addSearchFieldButton{$id}">
-			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button id="showHideControlChooseMenu{$id}" type="button" class="btn btn-default dropdown-toggle btn-sm )" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Búsqueda			<span class="caret"></span>
 			</button>
 		</div>
 
 
 		<div class="btn-group searchpanel-options" id="searchPanelOptions{$id}">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="glyphicon glyphicon glyphicon-option-vertical"></span>
 			</button>
 			<ul class="dropdown-menu dropdown-left">
@@ -113,19 +113,19 @@
 								<span class="rnr-searchcontrol">{$searchcontrol1_IdGesPesResiduo}</span>
 						</div>
 		{END searchCtrlBlock_IdGesPesResiduo}
-																{BEGIN searchCtrlBlock_concat}
+																{BEGIN searchCtrlBlock_Estado}
 
 
-		<div class="form-group srchPanelRow {$filterRow_class_concat}" {$filterRow_attrs_concat}>
-			<label>{$label public_GestionPesosResiduosDetVen concat }</label>
+		<div class="form-group srchPanelRow {$filterRow_class_Estado}" {$filterRow_attrs_Estado}>
+			<label>{$label public_GestionPesosResiduosDetVen Estado }</label>
 
 							{$delCtrlButt}
 			
-								<span class="rnr-searchtype">{$searchtype_concat}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol_concat}</span>
-								<span class="rnr-searchcontrol">{$searchcontrol1_concat}</span>
+								<span class="rnr-searchtype">{$searchtype_Estado}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_Estado}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_Estado}</span>
 						</div>
-		{END searchCtrlBlock_concat}
+		{END searchCtrlBlock_Estado}
 																{BEGIN searchCtrlBlock_KilosResiduos}
 
 
@@ -139,20 +139,34 @@
 								<span class="rnr-searchcontrol">{$searchcontrol1_KilosResiduos}</span>
 						</div>
 		{END searchCtrlBlock_KilosResiduos}
+																{BEGIN searchCtrlBlock_concat}
+
+
+		<div class="form-group srchPanelRow {$filterRow_class_concat}" {$filterRow_attrs_concat}>
+			<label>{$label public_GestionPesosResiduosDetVen concat }</label>
+
+							{$delCtrlButt}
+			
+								<span class="rnr-searchtype">{$searchtype_concat}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol_concat}</span>
+								<span class="rnr-searchcontrol">{$searchcontrol1_concat}</span>
+						</div>
+		{END searchCtrlBlock_concat}
 		
 
 	</div>
 
 	<div class="panel-footer bottomSearchButt" {$bottomSearchButt_attrs}>
-		<button class="btn btn-primary" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
-		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
+		<button class="btn btn-primary btn-sm" id="searchButton{$id}" {$searchbutton_attrs}>Buscar</button>
+
+				<button class="btn btn-default btn-sm" {$showAllCont_attrs} {$showallbutton_attrs}>Mostrar todo</button>
 	</div>
 </div>
 <!-- End Search panel content -->
 			</div>
 		
     {END left_block}
-</div>				</div>	
+</div>				</div>
 			<div class="r-content-col" data-resize-left="leftbar">
 				<div  class="r-topheader" data-resize-name="topbar">
 									{BEGIN supertop_block}
@@ -160,9 +174,18 @@
 	data-location="supertop" id="form_supertop_{$pageid}" data-makeup="leftbar" {$form_supertop} data-pageid="{$pageid}" >
 			 
 							 
-				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
+				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="expand_menu_button" {$item_expand_menu_button} data-topcell-item-type="expand_menu_button" >
+				<span data-itemtype="expand_menu_button" data-itemid="expand_menu_button" {$item_expand_menu_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Encubrir" class="btn-link   
+	 glyphicon glyphicon-menu-hamburger" href="#" >		
+				
+								</a>
+</span>
+			</span>
+		 
+				<span class="navbar-form  navbar-collapse" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
 				<span data-itemtype="collapse_button" data-itemid="collapse_button" {$item_collapse_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="Collapse" class="btn-link   
+	<a type="button" title="Muestrame el menu" class="btn-link   
 	 glyphicon glyphicon-triangle-left" href="#" >		
 				
 								</a>
@@ -197,10 +220,11 @@
 {END searchform_text}
 	<span class="input-group-btn">
 	{BEGIN searchform_showall}
-		<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
+				<button class="btn btn-default" {$showAllCont_attrs} {$showallbutton_attrs} title="Mostrar todo">
 			<span class="glyphicon glyphicon-remove"></span>
 		</button>
 	{END searchform_showall}
+
 	{BEGIN searchform_search}
 	<button {$searchbutton_attrs} class="btn btn-primary" >
 		<span class="glyphicon glyphicon-search"></span>
@@ -215,8 +239,8 @@
 				<span data-itemtype="list_options" data-itemid="list_options" {$item_list_options} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-cog"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-cog"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN exportselected_link}
@@ -236,7 +260,7 @@
 	</li>
 {END deleteselected_link}
 							<li role="separator" class="divider"></li>							<li role="separator" class="divider"></li>								<li data-itemtype="advsearch_link" data-itemid="advsearch_link" {$item_advsearch_link} data-pageid="{$pageid}" data-small >
-				<a   href="public_gestionpesosresiduosdetven_search.php" {$advsearchlink_attrs}  title="" >
+				<a   href="public_gestionpesosresiduosdetven_search.php{$stateLink_full}" {$advsearchlink_attrs}  title="" >
 				
 		Búsqueda avanzada		
 		</a>
@@ -267,7 +291,7 @@
 {END export_link}
 							<li role="separator" class="divider"></li>							{BEGIN import_link}
 	<li data-itemtype="import" data-itemid="import" {$item_import} data-pageid="{$pageid}" data-small >
-				<a  {$importlink_attrs} href="public_gestionpesosresiduosdetven_import.php?{$crosstable_attrs}"  title="" >
+				<a  {$importlink_attrs} href="public_gestionpesosresiduosdetven_import.php{$stateLink_full}"  title="" >
 				
 		Importar		
 		</a>
@@ -293,10 +317,18 @@
 <span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown ">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-user"></span>
-						{$username}			<span class="caret"></span>
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
 							{BEGIN logoutbutton}
 	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
 				<a  href="#" {$logoutlink_attrs}  title="" >
@@ -305,6 +337,14 @@
 		</a>
 	</li>
 {END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
 					</ul>
 	</span>
 </span>
@@ -352,7 +392,7 @@
 		{BEGIN add_link}
 <span data-itemtype="add" data-itemid="add" {$item_add} data-pageid="{$pageid}" data-small data-button-item>
 	<a type="button" title="" class="btn btn-primary   
-	" {$addlink_attrs} href="public_gestionpesosresiduosdetven_add.php" >
+	" {$addlink_attrs} href="public_gestionpesosresiduosdetven_add.php{$stateLink_full}" >
 							Añadir nuevo			</a>
 </span>
 {END add_link}
@@ -394,15 +434,16 @@
 		<div class="col-md-4">
 			Rango:		</div>
 
+			 
 		{BEGIN print_friendly_all}
 		<div class="col-md-8">
 			<label for="printAll{$id}">
-				<input type="radio" id="printAll{$id}" data-href="public_gestionpesosresiduosdetven_print.php?all=1&amp;{$crosstable_attrs}" name="printScope">
+				<input type="radio" id="printAll{$id}" data-href="public_gestionpesosresiduosdetven_print.php?all=1&amp;{$crosstable_attrs}" name="printScope" >
 									Imprimir todas las páginas							</label>
 		</div>
 		{END print_friendly_all}
-	</div>
-	<div class="row">
+		</div>
+		<div class="row">
 		<div class="col-md-4">&nbsp;</div>
 		<div class="col-md-8">
 			<label for="printPage{$id}">
@@ -410,18 +451,20 @@
 				Imprimir esta página			</label>
 		</div>
 	</div>
-	
-		<div class="row">
+		
+		 
+	<div class="row">
 		<div class="col-md-4">
 			&nbsp;
 		</div>
 		<div class="col-md-8">
 			<label style="color: gray;" for="printSelection{$id}">
-			<input name="printScope" disabled="disabled" id="printSelection{$id}" type="radio">
+			<input name="printScope" disabled="disabled" id="printSelection{$id}" type="radio" >
 			Imprimir la selección			</label>
 		</div>
 	</div>
-	</div>				 
+	</div>
+				 
 					</li>
 											<li class="divider" role="separator"></li>
 																				 
@@ -466,21 +509,21 @@
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
 {END message_block}	<style>
 @media screen and (max-width: 767px) {
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="IdGesPesResiduo"]:before {
+		[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="IdGesPesResiduo"]:before {
 		content: "{$label public_GestionPesosResiduosDetVen IdGesPesResiduo}";
 	}
-	
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="concat"]:before {
+			[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="concat"]:before {
 		content: "{$label public_GestionPesosResiduosDetVen concat}";
 	}
-	
-	[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="KilosResiduos"]:before {
+			[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="KilosResiduos"]:before {
 		content: "{$label public_GestionPesosResiduosDetVen KilosResiduos}";
 	}
-	
-}
+			[data-pageid="{$pageid}"][data-itemtype="grid_field"][data-field="Estado"]:before {
+		content: "{$label public_GestionPesosResiduosDetVen Estado}";
+	}
+	}
 </style>
-<table data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  r-flexgrid rnr-b-grid rnr-gridtable" 
+<table data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  r-flexgrid rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -551,7 +594,7 @@
 	 
 		{BEGIN IdGesPesResiduo_fieldheadercolumn}
 	{BEGIN IdGesPesResiduo_fieldheader}
-	<SPAN {$IdGesPesResiduo_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo">
+	<SPAN {$IdGesPesResiduo_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo">
 	{$label public_GestionPesosResiduosDetVen IdGesPesResiduo }	{$arrow_icon_IdGesPesResiduo}
 	</SPAN>
 	{END IdGesPesResiduo_fieldheader}
@@ -560,33 +603,6 @@
 	
 	</th>
 	{END cellblock_grid_headcell_field}
-				 
-					{BEGIN cellblock_grid_headcell_field4}
-	<th
-	
-	{$cell_grid_headcell_field4}
-	{$recordattrs}
-	class="
-		r-align-center r-ori-vert				{$KilosResiduos_class}
-			"
-
-			data-field="KilosResiduos"
-	
-	data-cellId="grid_headcell_field4" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="public_gestionpesosresiduosdetven_list"	
-	>
-
-	 
-		{BEGIN KilosResiduos_fieldheadercolumn}
-	{BEGIN KilosResiduos_fieldheader}
-	<SPAN {$KilosResiduos_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos">
-	{$label public_GestionPesosResiduosDetVen KilosResiduos }	{$arrow_icon_KilosResiduos}
-	</SPAN>
-	{END KilosResiduos_fieldheader}
-{END KilosResiduos_fieldheadercolumn}
-
-	
-	</th>
-	{END cellblock_grid_headcell_field4}
 				 
 					{BEGIN cellblock_grid_headcell_field1}
 	<th
@@ -605,13 +621,67 @@
 	 
 		{BEGIN concat_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="grid_field_label" {$item_grid_field_label} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="concat">
+	<span data-itemtype="grid_field_label" data-itemid="grid_field_label" {$item_grid_field_label} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="concat" data-fieldname="concat">
 	{$label public_GestionPesosResiduosDetVen concat }	</span>
 {END concat_fieldheadercolumn}
 
 	
 	</th>
 	{END cellblock_grid_headcell_field1}
+				 
+					{BEGIN cellblock_grid_headcell_field3}
+	<th
+	
+	{$cell_grid_headcell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$KilosResiduos_class}
+			"
+
+			data-field="KilosResiduos"
+	
+	data-cellId="grid_headcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN KilosResiduos_fieldheadercolumn}
+	{BEGIN KilosResiduos_fieldheader}
+	<SPAN {$KilosResiduos_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="grid_field_label2" {$item_grid_field_label2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-fieldname="KilosResiduos">
+	{$label public_GestionPesosResiduosDetVen KilosResiduos }	{$arrow_icon_KilosResiduos}
+	</SPAN>
+	{END KilosResiduos_fieldheader}
+{END KilosResiduos_fieldheadercolumn}
+
+	
+	</th>
+	{END cellblock_grid_headcell_field3}
+				 
+					{BEGIN cellblock_grid_headcell_field2}
+	<th
+	
+	{$cell_grid_headcell_field2}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$Estado_class}
+			"
+
+			data-field="Estado"
+	
+	data-cellId="grid_headcell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN Estado_fieldheadercolumn}
+	{BEGIN Estado_fieldheader}
+	<SPAN {$Estado_orderlinkattrs} data-itemtype="grid_field_label" data-itemid="grid_field_label1" {$item_grid_field_label1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Estado" data-fieldname="Estado">
+	{$label public_GestionPesosResiduosDetVen Estado }	{$arrow_icon_Estado}
+	</SPAN>
+	{END Estado_fieldheader}
+{END Estado_fieldheadercolumn}
+
+	
+	</th>
+	{END cellblock_grid_headcell_field2}
 							</tr>
 					 
 					 
@@ -684,7 +754,8 @@
 	 
 		{BEGIN checkbox_column}
 <span data-itemtype="grid_checkbox" data-itemid="grid_checkbox" {$item_grid_checkbox} data-pageid="{$pageid}" data-record-id="{$recId}" >
-	<input type="checkbox" {$checkbox_attrs}>
+	<input type="checkbox" {$checkbox_attrs}
+		>
 </span>	
 {END checkbox_column}
 	
@@ -707,35 +778,12 @@
 
 	 
 		{BEGIN IdGesPesResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" data-default-width >
 {$IdGesPesResiduo_value}
 </span>
 {END IdGesPesResiduo_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field}
-				 
-					{BEGIN cellblock_grid_cell_field4}
-	<td
-	
-	{$cell_grid_cell_field4}
-	{$recordattrs}
-	class="
-		r-align-left r-ori-vert				{$KilosResiduos_class}
-			"
-
-			data-field="KilosResiduos"
-	
-	data-cellId="grid_cell_field4" data-pageid="{$pageid}" data-record-id="{$recId}"	
-	>
-
-	 
-		{BEGIN KilosResiduos_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-default-width >
-{$KilosResiduos_value}
-</span>
-{END KilosResiduos_fieldcolumn}	
-	</td>
-	{END cellblock_grid_cell_field4}
 				 
 					{BEGIN cellblock_grid_cell_field1}
 	<td
@@ -753,12 +801,58 @@
 
 	 
 		{BEGIN concat_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="grid_field" {$item_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="concat" data-default-width >
+<span data-itemtype="grid_field" data-itemid="grid_field" {$item_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="concat" data-fieldname="concat" data-default-width >
 {$concat_value}
 </span>
 {END concat_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field1}
+				 
+					{BEGIN cellblock_grid_cell_field3}
+	<td
+	
+	{$cell_grid_cell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$KilosResiduos_class}
+			"
+
+			data-field="KilosResiduos"
+	
+	data-cellId="grid_cell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN KilosResiduos_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="grid_field2" {$item_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-fieldname="KilosResiduos" data-default-width >
+{$KilosResiduos_value}
+</span>
+{END KilosResiduos_fieldcolumn}	
+	</td>
+	{END cellblock_grid_cell_field3}
+				 
+					{BEGIN cellblock_grid_cell_field2}
+	<td
+	
+	{$cell_grid_cell_field2}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$Estado_class}
+			"
+
+			data-field="Estado"
+	
+	data-cellId="grid_cell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN Estado_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="grid_field1" {$item_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Estado" data-fieldname="Estado" data-default-width >
+{$Estado_value}
+</span>
+{END Estado_fieldcolumn}	
+	</td>
+	{END cellblock_grid_cell_field2}
 							</tr>
 					 
 					
@@ -823,22 +917,6 @@
 	</td>
 	{END cellblock_grid_footcell_field}
 				 
-					{BEGIN cellblock_grid_footcell_field4}
-	<td
-	
-	{$cell_grid_footcell_field4}
-	{$recordattrs}
-	class="
-		 r-ori-vert			"
-
-	
-	data-cellId="grid_footcell_field4" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="public_gestionpesosresiduosdetven_list"	
-	>
-
-	
-	</td>
-	{END cellblock_grid_footcell_field4}
-				 
 					{BEGIN cellblock_grid_footcell_field1}
 	<td
 	
@@ -854,6 +932,38 @@
 	
 	</td>
 	{END cellblock_grid_footcell_field1}
+				 
+					{BEGIN cellblock_grid_footcell_field3}
+	<td
+	
+	{$cell_grid_footcell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert			"
+
+	
+	data-cellId="grid_footcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="public_gestionpesosresiduosdetven_list"	
+	>
+
+	
+	</td>
+	{END cellblock_grid_footcell_field3}
+				 
+					{BEGIN cellblock_grid_footcell_field2}
+	<td
+	
+	{$cell_grid_footcell_field2}
+	{$recordattrs}
+	class="
+		 r-ori-vert			"
+
+	
+	data-cellId="grid_footcell_field2" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="public_gestionpesosresiduosdetven_list"	
+	>
+
+	
+	</td>
+	{END cellblock_grid_footcell_field2}
 							</tr>
 					
 					</tfoot>
@@ -884,6 +994,8 @@
 					{$footer}
 				</div>	
 			</div>	
+			<div class="r-body-shadow">
+			</div>
 		</div>
 	{END body}
 	</body>

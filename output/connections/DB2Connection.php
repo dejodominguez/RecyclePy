@@ -151,19 +151,6 @@ class DB2Connection extends Connection
 		return db2_field_name($qHandle, $offset);
 	}
 
-	/**
-	 * @param Mixed qHandle
-	 * @param Number pageSize
-	 * @param Number page
-	 */
-	public function seekPage($qHandle, $pageSize, $page)
-	{
-		$row = ($page - 1) * $pageSize;
-		for($i = 0; $i < $row; $i++)
-		{
-			$this->fetch_array( $qHandle );
-		}		
-	}
 
 	/**
 	 * Execute an SQL query with blob fields processing

@@ -48,7 +48,56 @@
 				<span data-cellId="supertop_c2" data-pageid="{$pageid}" class=" r-ori-vert navbar-collapse" data-itemtype="menu" data-itemid="menu" {$item_menu} data-pageid="{$pageid}">
 				{$menu main horizontal}			</span>
 							 
-													</nav>
+							 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c3" data-pageid="{$pageid}" data-itemid="loginform_login" {$item_loginform_login} data-topcell-item-type="loginform_login" >
+				{BEGIN guestloginbutton}
+<span data-itemtype="loginform_login" data-itemid="loginform_login" {$item_loginform_login} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" href="#" {$guestloginlink_attrs} >
+							Conectar			</a>
+</span>
+{END guestloginbutton}
+			</span>
+		 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c3" data-pageid="{$pageid}" data-itemid="username_button" {$item_username_button} data-topcell-item-type="username_button" >
+				{BEGIN loggedas_message}
+<span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
+	<span class="dropdown ">
+		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
+							{BEGIN logoutbutton}
+	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
+				<a  href="#" {$logoutlink_attrs}  title="" >
+				
+		Desconectarse		
+		</a>
+	</li>
+{END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
+					</ul>
+	</span>
+</span>
+{END loggedas_message}
+			</span>
+								</nav>
 {END supertop_block}
 					{$locking}
 			</div>	
@@ -65,7 +114,7 @@
 	
 ">
 		 
-		<h2 data-itemtype="view_header" data-itemid="view_header" {$item_view_header} data-pageid="{$pageid}" >{$pagetitlelabel public_Usuarios view}</h2>
+		<h2 data-itemtype="view_header" data-itemid="view_header" {$item_view_header} data-pageid="{$pageid}" >{$pagetitlelabel public_usuarios view}</h2>
 		</div>					</div>
 	</div>		
 {END top_block}
@@ -84,23 +133,7 @@
 	
 ">
 		{BEGIN firstAboveGridCell}
-		 
-		{BEGIN breadcrumb}
-<ol class="breadcrumb" data-itemtype="breadcrumb" data-itemid="breadcrumb" {$item_breadcrumb} data-pageid="{$pageid}">
-<li ><a href="{$crumb_home_link}"><span class="glyphicon glyphicon-home"></span></a>{$crumb_dropdown}</li>
-{BEGIN crumb}
-  <li class="{$crumb_item_class}">
-{BEGIN crumb_title_link}
-	<a {$crumb_attrs}>{$crumb_title}</a>
-{END crumb_title_link}
-{BEGIN crumb_title_span}
-	<span {$crumb_attrs}>{$crumb_title}</span>
-{END crumb_title_span}	
-	{$crumb_dropdown}
-  </li>
-{END crumb}
-</ol>
-{END breadcrumb}			{END firstAboveGridCell}	
+				{END firstAboveGridCell}	
 	</div>					</div>
 	</div>		
 {END above-grid_block}
@@ -113,7 +146,11 @@
 
  
 	 
-												<table 
+												{BEGIN mastertable_block}
+<div data-itemtype="master_info" data-itemid="master_info" {$item_master_info} data-pageid="{$pageid}">
+	{$showmasterfile}
+</div>
+{END mastertable_block}											<table 
 	data-body-align="left"
 	data-location="grid" id="form_grid_{$pageid}" data-makeup="topbar" {$form_grid} data-pageid="{$pageid}" 
 	class="r-edit-form" cellpadding="0" cellspacing="0" 
@@ -123,7 +160,7 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -139,53 +176,53 @@
 >
 	<div edit-form-cell class="clearfix">
 				
-{BEGIN ID_fieldblock}
+{BEGIN id_usuario_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_ID}  r-vertical-field" data-fieldname="ID" data-signal-error-for="ID{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="ID" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_usuario}  r-vertical-field" data-fieldname="id_usuario" data-signal-error-for="id_usuario{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="id_usuario" data-fieldname="id_usuario" >
 
 	
-	<label class="col-md-offset-3 col-md-6" for="{$labelfor_ID}">
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_id_usuario}">
 		
-		{BEGIN ID_label}{$label public_Usuarios ID }{END ID_label}
+		{BEGIN id_usuario_label}{$label public_usuarios id_usuario }{END id_usuario_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
-		{$ID_value}	</div>
+		{$id_usuario_value}	</div>
 
 		
 </div>
 
 
-{END ID_fieldblock}
+{END id_usuario_fieldblock}
 											
-{BEGIN username_fieldblock}
+{BEGIN nombre_usuario_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_username}  r-vertical-field" data-fieldname="username" data-signal-error-for="username{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="username" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_nombre_usuario}  r-vertical-field" data-fieldname="nombre_usuario" data-signal-error-for="nombre_usuario{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="nombre_usuario" data-fieldname="nombre_usuario" >
 
 	
-	<label class="col-md-offset-3 col-md-6" for="{$labelfor_username}">
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_nombre_usuario}">
 		
-		{BEGIN username_label}{$label public_Usuarios username }{END username_label}
+		{BEGIN nombre_usuario_label}{$label public_usuarios nombre_usuario }{END nombre_usuario_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
-		{$username_value}	</div>
+		{$nombre_usuario_value}	</div>
 
 		
 </div>
 
 
-{END username_fieldblock}
+{END nombre_usuario_fieldblock}
 											
 {BEGIN password_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_password}  r-vertical-field" data-fieldname="password" data-signal-error-for="password{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="password" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_password}  r-vertical-field" data-fieldname="password" data-signal-error-for="password{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="password" data-fieldname="password" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_password}">
 		
-		{BEGIN password_label}{$label public_Usuarios password }{END password_label}
+		{BEGIN password_label}{$label public_usuarios password }{END password_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
 		{$password_value}	</div>
@@ -199,12 +236,12 @@
 {BEGIN email_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_email}  r-vertical-field" data-fieldname="email" data-signal-error-for="email{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="email" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_email}  r-vertical-field" data-fieldname="email" data-signal-error-for="email{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="email" data-fieldname="email" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_email}">
 		
-		{BEGIN email_label}{$label public_Usuarios email }{END email_label}
+		{BEGIN email_label}{$label public_usuarios email }{END email_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
 		{$email_value}	</div>
@@ -215,53 +252,53 @@
 
 {END email_fieldblock}
 											
-{BEGIN fullname_fieldblock}
+{BEGIN nombre_completo_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_fullname}  r-vertical-field" data-fieldname="fullname" data-signal-error-for="fullname{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field4" {$item_integrated_edit_field4} data-pageid="{$pageid}" data-field="fullname" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_nombre_completo}  r-vertical-field" data-fieldname="nombre_completo" data-signal-error-for="nombre_completo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field4" {$item_integrated_edit_field4} data-pageid="{$pageid}" data-field="nombre_completo" data-fieldname="nombre_completo" >
 
 	
-	<label class="col-md-offset-3 col-md-6" for="{$labelfor_fullname}">
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_nombre_completo}">
 		
-		{BEGIN fullname_label}{$label public_Usuarios fullname }{END fullname_label}
+		{BEGIN nombre_completo_label}{$label public_usuarios nombre_completo }{END nombre_completo_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
-		{$fullname_value}	</div>
+		{$nombre_completo_value}	</div>
 
 		
 </div>
 
 
-{END fullname_fieldblock}
+{END nombre_completo_fieldblock}
 											
-{BEGIN groupid_fieldblock}
+{BEGIN id_tipo_usu_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_groupid}  r-vertical-field" data-fieldname="groupid" data-signal-error-for="groupid{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field5" {$item_integrated_edit_field5} data-pageid="{$pageid}" data-field="groupid" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_tipo_usu}  r-vertical-field" data-fieldname="id_tipo_usu" data-signal-error-for="id_tipo_usu{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field5" {$item_integrated_edit_field5} data-pageid="{$pageid}" data-field="id_tipo_usu" data-fieldname="id_tipo_usu" >
 
 	
-	<label class="col-md-offset-3 col-md-6" for="{$labelfor_groupid}">
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_id_tipo_usu}">
 		
-		{BEGIN groupid_label}{$label public_Usuarios groupid }{END groupid_label}
+		{BEGIN id_tipo_usu_label}{$label public_usuarios id_tipo_usu }{END id_tipo_usu_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
-		{$groupid_value}	</div>
+		{$id_tipo_usu_value}	</div>
 
 		
 </div>
 
 
-{END groupid_fieldblock}
+{END id_tipo_usu_fieldblock}
 											
 {BEGIN active_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_active}  r-vertical-field" data-fieldname="active" data-signal-error-for="active{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field6" {$item_integrated_edit_field6} data-pageid="{$pageid}" data-field="active" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_active}  r-vertical-field" data-fieldname="active" data-signal-error-for="active{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field6" {$item_integrated_edit_field6} data-pageid="{$pageid}" data-field="active" data-fieldname="active" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_active}">
 		
-		{BEGIN active_label}{$label public_Usuarios active }{END active_label}
+		{BEGIN active_label}{$label public_usuarios active }{END active_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
 		{$active_value}	</div>
@@ -275,12 +312,12 @@
 {BEGIN ext_security_id_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_ext_security_id}  r-vertical-field" data-fieldname="ext_security_id" data-signal-error-for="ext_security_id{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field7" {$item_integrated_edit_field7} data-pageid="{$pageid}" data-field="ext_security_id" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_ext_security_id}  r-vertical-field" data-fieldname="ext_security_id" data-signal-error-for="ext_security_id{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field7" {$item_integrated_edit_field7} data-pageid="{$pageid}" data-field="ext_security_id" data-fieldname="ext_security_id" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_ext_security_id}">
 		
-		{BEGIN ext_security_id_label}{$label public_Usuarios ext_security_id }{END ext_security_id_label}
+		{BEGIN ext_security_id_label}{$label public_usuarios ext_security_id }{END ext_security_id_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
 		{$ext_security_id_value}	</div>
@@ -290,6 +327,120 @@
 
 
 {END ext_security_id_fieldblock}
+											
+{BEGIN direc_usuario_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_direc_usuario}  r-vertical-field" data-fieldname="direc_usuario" data-signal-error-for="direc_usuario{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field8" {$item_integrated_edit_field8} data-pageid="{$pageid}" data-field="direc_usuario" data-fieldname="direc_usuario" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_direc_usuario}">
+		
+		{BEGIN direc_usuario_label}{$label public_usuarios direc_usuario }{END direc_usuario_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$direc_usuario_value}	</div>
+
+		
+</div>
+
+
+{END direc_usuario_fieldblock}
+											
+{BEGIN id_barrio_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_barrio}  r-vertical-field" data-fieldname="id_barrio" data-signal-error-for="id_barrio{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field9" {$item_integrated_edit_field9} data-pageid="{$pageid}" data-field="id_barrio" data-fieldname="id_barrio" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_id_barrio}">
+		
+		{BEGIN id_barrio_label}{$label public_usuarios id_barrio }{END id_barrio_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$id_barrio_value}	</div>
+
+		
+</div>
+
+
+{END id_barrio_fieldblock}
+											
+{BEGIN tel_usuario_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_tel_usuario}  r-vertical-field" data-fieldname="tel_usuario" data-signal-error-for="tel_usuario{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field10" {$item_integrated_edit_field10} data-pageid="{$pageid}" data-field="tel_usuario" data-fieldname="tel_usuario" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_tel_usuario}">
+		
+		{BEGIN tel_usuario_label}{$label public_usuarios tel_usuario }{END tel_usuario_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$tel_usuario_value}	</div>
+
+		
+</div>
+
+
+{END tel_usuario_fieldblock}
+											
+{BEGIN two_factor_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_two_factor}  r-vertical-field" data-fieldname="two_factor" data-signal-error-for="two_factor{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field11" {$item_integrated_edit_field11} data-pageid="{$pageid}" data-field="two_factor" data-fieldname="two_factor" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_two_factor}">
+		
+		{BEGIN two_factor_label}{$label public_usuarios two_factor }{END two_factor_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$two_factor_value}	</div>
+
+		
+</div>
+
+
+{END two_factor_fieldblock}
+											
+{BEGIN totp_secret_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_totp_secret}  r-vertical-field" data-fieldname="totp_secret" data-signal-error-for="totp_secret{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field12" {$item_integrated_edit_field12} data-pageid="{$pageid}" data-field="totp_secret" data-fieldname="totp_secret" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_totp_secret}">
+		
+		{BEGIN totp_secret_label}{$label public_usuarios totp_secret }{END totp_secret_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$totp_secret_value}	</div>
+
+		
+</div>
+
+
+{END totp_secret_fieldblock}
+											
+{BEGIN userpic_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_userpic}  r-vertical-field" data-fieldname="userpic" data-signal-error-for="userpic{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field13" {$item_integrated_edit_field13} data-pageid="{$pageid}" data-field="userpic" data-fieldname="userpic" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_userpic}">
+		
+		{BEGIN userpic_label}{$label public_usuarios userpic }{END userpic_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$userpic_value}	</div>
+
+		
+</div>
+
+
+{END userpic_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}
@@ -334,13 +485,13 @@
 		<span data-itemtype="hamburger" data-itemid="hamburger" {$item_hamburger} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown dropup">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-menu-hamburger"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN edit_page_button}
 	<li data-itemtype="view_edit" data-itemid="view_edit" {$item_view_edit} data-pageid="{$pageid}" data-small >
-				<a  href="#" {$edit_page_button_attrs}  title="" >
+				<a  href="usuarios_edit.php?{$editlink}" {$edit_page_button_attrs}  title="" >
 				
 		Editar		
 		</a>

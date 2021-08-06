@@ -69,7 +69,7 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -88,7 +88,7 @@
 {BEGIN IdMedTipOrigen_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdMedTipOrigen}  r-vertical-field" data-fieldname="IdMedTipOrigen" data-signal-error-for="IdMedTipOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdMedTipOrigen" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdMedTipOrigen}  r-vertical-field" data-fieldname="IdMedTipOrigen" data-signal-error-for="IdMedTipOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdMedTipOrigen" data-fieldname="IdMedTipOrigen" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdMedTipOrigen}">
@@ -107,7 +107,7 @@
 {BEGIN DescriMedTipOrigen_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_DescriMedTipOrigen}  r-vertical-field" data-fieldname="DescriMedTipOrigen" data-signal-error-for="DescriMedTipOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="DescriMedTipOrigen" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_DescriMedTipOrigen}  r-vertical-field" data-fieldname="DescriMedTipOrigen" data-signal-error-for="DescriMedTipOrigen{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="DescriMedTipOrigen" data-fieldname="DescriMedTipOrigen" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_DescriMedTipOrigen}">
@@ -166,13 +166,13 @@
 		<span data-itemtype="hamburger" data-itemid="hamburger" {$item_hamburger} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown dropup">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-menu-hamburger"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN edit_page_button}
 	<li data-itemtype="view_edit" data-itemid="view_edit" {$item_view_edit} data-pageid="{$pageid}" data-small >
-				<a  href="#" {$edit_page_button_attrs}  title="" >
+				<a  href="medtipoorigen_edit.php?{$editlink}" {$edit_page_button_attrs}  title="" >
 				
 		Editar		
 		</a>

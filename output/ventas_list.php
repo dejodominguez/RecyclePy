@@ -2,7 +2,7 @@
 @ini_set("display_errors","1");
 @ini_set("display_startup_errors","1");
 
-$requestTable = "public.Ventas";
+$requestTable = "public.ventas";
 $requestPage = "list";
 
 require_once("include/dbcommon.php");
@@ -26,11 +26,6 @@ if( !ListPage::processListPageSecurity( $strTableName ) )
 
 if( ListPage::processSaveParams( $strTableName ) )
 	return;
-
-
-
-
-
 
 $options = array();
 //array of params for classes
@@ -99,15 +94,21 @@ $xt = new Xtempl( $mode != LIST_SIMPLE ); //#9607 1. Temporary fix
 $options["pageName"] = postvalue("page");
 $options["pageType"] = PAGE_LIST;
 $options["id"] = postvalue_number("id") ? postvalue_number("id") : 1;
-$options["flyId"] = postvalue("recordId") + 0;
+$options["flyId"] = (int)postvalue("recordId");
 $options["mode"] = $mode;
-$options['xt'] = &$xt;
-$options['masterPageType'] = postvalue("masterpagetype");
-$options["masterTable"] = postvalue("mastertable");
+$options["xt"] = &$xt;
+$options["firstTime"] = postvalue("firstTime");
+$options["sortBy"] = postvalue("sortby");
+$options["requestGoto"] = postvalue_number("goto");
+
+
+$options["masterPageType"] = postvalue("masterpagetype");
 $options["masterPage"] = postvalue("masterpage");
 $options["masterId"] = postvalue("masterid");
-$options["firstTime"] = postvalue("firsttime");
-$options["sortBy"] = postvalue("sortby");
+
+$options["masterTable"] = postvalue("mastertable");
+if( $options["masterTable"] )
+	$options["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 
 
 if( $mode == LIST_DASHBOARD && postvalue("nodata") && strlen($options["masterTable"]) )
@@ -123,25 +124,20 @@ if(	postvalue("mapRefresh") )
 {
 	$options["mapRefresh"] = true;
 	$options["vpCoordinates"] = my_json_decode( postvalue("vpCoordinates") );
-}	
-
-$i = 1;
-while(isset($_REQUEST["masterkey".$i])) 
-{
-	if($i == 1)
-	{
-		$options["masterKeysReq"] = array();
-	}
-	$options["masterKeysReq"][$i] = $_REQUEST["masterkey".$i];
-	$i++;
 }
+
+if(	postvalue("firstTime") )
+	$options["firstTime"] = true;
+
 //	Create $pageObject
 $pageObject = ListPage::createListPage($strTableName, $options);
 
 if( $pageObject->processSaveSearch() )
 	exit();
 
-$gQuery->ReplaceFieldsWithDummies( $pageObject->getNotListBlobFieldsIndices() );
+if( $pageObject->updateRowOrder() )
+	exit();
+
 
 
 if( $mode != LIST_DETAILS && $mode != MAP_DASHBOARD && $mode != LIST_DASHBOARD ) 

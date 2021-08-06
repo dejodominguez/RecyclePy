@@ -154,26 +154,23 @@ class PDOConnection extends Connection
 	
 	/**
 	 * @param Mixed qHandle
-	 * @param Number pageSize
-	 * @param Number page
+	 * @param Number n
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
-		if( $page == 1 )
+		if( !$n )
 			return;
 			
-		$rowNum = $pageSize * ($page - 1);
-		
 		if( $this->conn->setAttribute( PDO::ATTR_CURSOR, PDO::CURSOR_SCROLL ) )
 		{
 			// db supports CURSOR_SCROLL ??
-			$qHandle->fetch( PDO::FETCH_ASSOC, PDO::FETCH_ORI_ABS, $rowNum );
+			$qHandle->fetch( PDO::FETCH_ASSOC, PDO::FETCH_ORI_ABS, $n );
 			return;
 		}
 		
 		//scroll fwd doesn't work
 		$i = 0;
-		while( $i < $rowNum )
+		while( $i < $n )
 		{
 			$qHandle->fetch();
 			$i++;

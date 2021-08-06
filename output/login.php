@@ -8,10 +8,7 @@ require_once('classes/loginpage.php');
 add_nocache_headers();
 
 
-
-
-
-$xt = new Xtempl();
+$xt = new XTempl();
 
 //an array of LoginPage constructor's params
 $params = array();
@@ -19,23 +16,28 @@ $params["id"] = postvalue_number("id");
 $params["xt"] = &$xt;
 $params["pageType"] = PAGE_LOGIN;
 $params["pageTable"] = GLOBAL_PAGES;
+$params["pageName"] = postvalue("page"); 
 $params["needSearchClauseObj"] = false;
 
 $params["captchaValue"] = postvalue("value_captcha_1");
-$params["notRedirect"] = postvalue("notRedirect");
 
 $params["rememberPassword"] = postvalue("remember_password");
+$params["rememberMachine"] = postvalue("remember_machine");
  
 $params["mode"] = LoginPage::readLoginModeFromRequest(); 
 $params["action"] = LoginPage::readActionFromRequest();
  
-$params["message"] = postvalue("message"); 
+//	$pageObj->message will accept HTML values, so no htmlspecialchars will be called before output
+$params["message"] = runner_htmlspecialchars( postvalue("message") ); 
 $params["var_pUsername"] = postvalue("username");
 $params["var_pPassword"] = postvalue("password");
 $params["redirectAfterLogin"] = postvalue("return");
  
+$params["twoFactorCode"] = postvalue("2fcode");
 
 $params["tName"] = GLOBAL_PAGES;
+
+$params["restore"] = postvalue("restore");
  
 $pageObject = new LoginPage( $params ); 
 $pageObject->init();

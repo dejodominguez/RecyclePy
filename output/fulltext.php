@@ -31,8 +31,9 @@ if( !Security::userHasFieldPermissions( $table, $field, $pageType, $pageName, fa
 $pSet = new ProjectSettings( $table , $pageType, $pageName );
 $cipherer = new RunnerCipherer( $table, $pSet);
 $_connection = $cman->byTable( $table );
-$gQuery = $pSet->getSQLQuery();
+/*
 
+$gQuery = $pSet->getSQLQuery();
 
 if(!$gQuery->HasGroupBy())
 {
@@ -41,20 +42,20 @@ if(!$gQuery->HasGroupBy())
 	// Just don't do anything in that case.
 	$gQuery->RemoveAllFieldsExcept($pSet->getFieldIndex($field));
 }
-
+*/
 $keysArr = $pSet->getTableKeys();
 $keys = array();
 foreach ($keysArr as $ind=>$k)
 	$keys[$k] = postvalue("key".($ind+1));
 
-$where = KeyWhere($keys, $table);
+$dc = new DsCommand();
+$dc->filter = Security::SelectCondition( "S", $pSet );
+$dc->keys = $keys;
 
-if ($pSet->getAdvancedSecurityType() == ADVSECURITY_VIEW_OWN)
-	$where = whereAdd($where,SecuritySQL("Search", $table));	
 
-$sql = $gQuery->gSQLWhere($where);
+$dataSource = getDataSource( $table, $pSet, $_connection );
+$qResult = $dataSource->getSingle( $dc );
 
-$qResult = $_connection->query( $sql );
 if(!$qResult || !($data = $cipherer->DecryptFetchedArray( $qResult->fetchAssoc() )))
 {
 	$returnJSON = array("success"=>false, "error"=>'Error: Wrong SQL query');

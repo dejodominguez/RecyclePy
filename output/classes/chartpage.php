@@ -1,7 +1,6 @@
 <?php
 class ChartPage extends RunnerPage
 {
-	
 	/**
 	 * show message block
 	 */
@@ -20,7 +19,8 @@ class ChartPage extends RunnerPage
 		} 
 	
 		$this->jsSettings['tableSettings'][ $this->tName ]['simpleSearchActive'] = $this->searchClauseObj->simpleSearchActive;
-		$this->jsSettings['tableSettings'][ $this->tName ]['startMasterKeys'] = $this->getStartMasterKeys();
+		
+		$this->pageData['detailsMasterKeys'] = $this->getStartMasterKeys();
 	}
 
 	/**
@@ -79,74 +79,34 @@ class ChartPage extends RunnerPage
 		$this->showPage();		
 	}
 
-	
-	protected function getRowCountByTab($tab)
-	{
-		$sql = $this->getTabSQLComponents( $tab );
-		
-		//	build SQL
-		$strSQL = SQLQuery::buildSQL( $sql["sqlParts"], $sql["mandatoryWhere"], $sql["mandatoryHaving"], $sql["optionalWhere"], $sql["optionalHaving"] );
-		$countSQL = $strSQL;
-				
-		
-		if( $this->eventsObject->exists("BeforeQueryChart") )
-		{
-			//	do Before SQL Query event
-			$strSQLbak = $strSQL;
-			$sqlModifiedInEvent = false;
-			$whereModifiedInEvent = false;
-
-			$tstrWhereClause = SQLQuery::combineCases( array( 
-					SQLQuery::combineCases( $sql["mandatoryWhere"], "and" ),
-					SQLQuery::combineCases( $sql["optionalWhere"], "or" )
-				), "and" );
-				
-			$strWhereBak = $tstrWhereClause;
-			$tOrderBy = $this->getOrderByClause();
-			$this->eventsObject->BeforeQueryChart( $strSQL, $tstrWhereClause, $tOrderBy );
-			$whereModifiedInEvent = ( $tstrWhereClause != $strWhereBak );
-			$sqlModifiedInEvent = ( $strSQL != $strSQLbak );
-		
-			//	Rebuild SQL if needed
-			if( $sqlModifiedInEvent ) 
-			{
-				return $this->limitRowCount( GetRowCount($strSQL, $this->connection) );
-			}
-			
-			if( $whereModifiedInEvent )
-			{
-				$countSQL = SQLQuery::buildSQL($sql["sqlParts"], array( $tstrWhereClause ), $sql["mandatoryHaving"] );
-			}
+	function callBeforeQueryEvent( $dc ) {
+		if( !$this->eventsObject->exists("BeforeQueryChart") ) {
+			return;
 		}
+		$prep = $this->dataSource->prepareSQL( $dc );
+		$where = $prep["where"];
+		$order = $prep["order"];
+		$sql = $prep["sql"];
+		$this->eventsObject->BeforeQueryChart($sql, $where, $order );
 
-		//	normal mode row count
-		return $this->limitRowCount( $this->connection->getFetchedRowsNumber( $countSQL ) );
-	}
+		if( $sql != $prep["sql"] )
+			$this->dataSource->overrideSQL( $dc, $sql );
+		else {
+			if( $where != $prep["where"] )
+				$this->dataSource->overrideWhere( $dc, $where );
+			if( $order != $prep["order"] ) 
+				$this->dataSource->overrideOrder( $dc, $order );
+		}
+	} 
 
-	/**
-	 * Get where clause for an active master-detail relationship
-	 * @return string
-	 */
-	public function getMasterTableSQLClause( $basedOnProp = false ) 
-	{
+
+
+	function getMasterCondition() {
 		if( $this->mode == CHART_DASHBOARD )
-			return "";		
-		return parent::getMasterTableSQLClause(); 
-	}	
-
-	protected function getSubsetSQLComponents() {
-
-		$sql = parent::getSubsetSQLComponents();
+			return null;
 		
-		if( $this->connection->dbType == nDATABASE_DB2 ) 
-			$sql["sqlParts"]["head"] .= ", ROW_NUMBER() over () as DB2_ROW_NUMBER ";
-		
-		//	security
-		$sql["mandatoryWhere"][] = $this->SecuritySQL("Search", $this->tName);
-		
-		return $sql;
+		return parent::getMasterCondition();
 	}
-	
 	
 	/**
 	 * Get started master keys
@@ -154,20 +114,22 @@ class ChartPage extends RunnerPage
 	 */
 	public function getStartMasterKeys()
 	{		
-		$sql = $this->getSubsetSQLComponents();
-		$strSQL = SQLQuery::buildSQL( $sql["sqlParts"], $sql["mandatoryWhere"], $sql["mandatoryHaving"], $sql["optionalWhere"], $sql["optionalHaving"] );
-		$strSQL .= $this->getOrderByClause();
-		$rs = $this->connection->queryPage( $strSQL, 1, 1, true );
+		$dc = $this->getSubsetDataCommand();
+		
+		$dc->reccount = 1;
 
-		$fetchedArray = $rs->fetchAssoc();
-		$data = $this->cipherer->DecryptFetchedArray( $fetchedArray );
+		$rs = $this->dataSource->getList( $dc );
+		if( !$rs ) {
+			showError( $this->dataSource->lastError() );
+		}
+
+		$data = $this->cipherer->DecryptFetchedArray( $rs->fetchAssoc() );
 
 		$detailTablesData = $this->pSet->getDetailTablesArr();
+		
 		$masterKeysArr = array();
-		foreach ( $detailTablesData as $detailId => $detail )
-		{
-			foreach( $detail['masterKeys'] as $idx => $mk ) 
-			{
+		foreach ( $detailTablesData as $detailId => $detail ) {
+			foreach( $detail['masterKeys'] as $idx => $mk ) {
 				$masterKeysArr[ $detail['dDataSourceTable'] ] = array( 'masterkey'.($idx + 1) => $data[$mk] );
 			}
 		}
@@ -178,7 +140,7 @@ class ChartPage extends RunnerPage
 	/**
 	 *
 	 */
-	public function doCommonAssignments() // TODO: make it protected
+	public function doCommonAssignments()
 	{
 		$this->xt->assign("id", $this->id);		
 		
@@ -383,7 +345,8 @@ class ChartPage extends RunnerPage
 		$chartXtParams =  array( 
 			"id" => $this->id,
 			// it shows if chart show details
-			"chartPreview" => $this->mode !== CHART_SIMPLE && $this->mode != CHART_DASHBOARD
+			"chartPreview" => $this->mode !== CHART_SIMPLE && $this->mode != CHART_DASHBOARD,
+			"stateLink" => $this->getStateUrlParams()
 		);
 		
 		if( $this->dashTName && $this->mode == CHART_DASHBOARD )
@@ -394,7 +357,21 @@ class ChartPage extends RunnerPage
 		}
 		
 		$this->xt->assign_function("chart", "xt_showpdchart", $chartXtParams);
-	}	
+	}
 
+	public static function readChartModeFromRequest()
+	{
+		$mode = postvalue("mode");
+		if( $mode == "listdetails" )
+			return CHART_DETAILS;
+		elseif( $mode == "listdetailspopup" )
+			return CHART_POPUPDETAILS;
+		elseif( $mode == "dashchart" )
+			return CHART_DASHBOARD;
+		elseif( $mode == "dashdetails" )
+			return CHART_DASHDETAILS;
+		else
+			return CHART_SIMPLE;
+	}
 }
 ?>

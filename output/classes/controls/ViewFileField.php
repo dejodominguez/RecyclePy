@@ -59,13 +59,13 @@ class ViewFileField extends ViewControl
 		{
 			require_once getabspath("classes/uploadhandler.php");
 			$this->upload_handler = new UploadHandler(getOptionsForMultiUpload($this->container->pSet, $this->field));
-			if(!is_null($this->pageObject))
-				$this->upload_handler->pSet = $this->pageObject->pSetEdit;
-			else
-				$this->upload_handler->pSet = $this->container->pSet;
+			//	container->pSet should have all data needed
+			$this->upload_handler->pSet = $this->container->pSet;
 			$this->upload_handler->field = $this->field;
 			$this->upload_handler->table = $this->container->pSet->_table;
 			$this->upload_handler->pageType = $this->container->pageType;
+			//	container->pSet should have all data needed
+			$this->upload_handler->pageName = $this->upload_handler->pSet->pageName();
 		}
 	}
 	

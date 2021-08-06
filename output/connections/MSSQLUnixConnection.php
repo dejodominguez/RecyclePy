@@ -142,11 +142,10 @@ class MSSQLUnixConnection extends Connection
 	 * @param Number pageSize
 	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
-		$row = ($page - 1) * $pageSize;
-		if( $row > 0 )
-			mssql_data_seek($qHandle, $row);
+		if( $n > 0 )
+			mssql_data_seek( $qHandle, $n );
 	}
 	
 	/**

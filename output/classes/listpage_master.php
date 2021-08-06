@@ -15,7 +15,6 @@ class ListPage_Master extends ListPage
 	{
 		// call parent constructor
 		parent::__construct($params);	
-		//$this->pageType = "masterlist";
 		$this->masterPageType = $params["masterPageType"];
 	}
 	/**
@@ -24,8 +23,6 @@ class ListPage_Master extends ListPage
 	function commonAssign() 
 	{
 		parent::commonAssign();
-		
-		
 	}
 	
 	protected function createOrderByObject() {
@@ -35,7 +32,6 @@ class ListPage_Master extends ListPage
 	
 	public function getMasterHeading() 
 	{
-			
 		$this->xt->assign( "masterlist_title", true );
 		return $this->xt->fetch_loaded( "masterlist_title" );
 	}
@@ -78,6 +74,7 @@ class ListPage_Master extends ListPage
 			$this->xt->assign( GoodFieldName( $f ) . "_fieldcolumn", true );
 			$this->xt->assign( GoodFieldName( $f ) . "_fieldheadercolumn", true );
 		}
+		
 		$this->xt->assign("grid_header", true );
 		$this->xt->assign("grid_row", true );
 		$this->xt->assign("grid_record", true );
@@ -86,8 +83,8 @@ class ListPage_Master extends ListPage
 		if( $this->pageLayout )
 			$this->xt->assign("pageattrs", 'class="'.$this->pageLayout->style." page-".$this->pageLayout->name.'"');
 		
-		if( !$this->pdfJsonMode() ) 
-			$this->xt->load_template( GetTemplateName($this->shortTableName, "master".$this->masterPageType) );
+		/*if( !$this->pdfJsonMode() ) 
+			$this->xt->load_template( GetTemplateName($this->shortTableName, "master".$this->masterPageType) );*/				
 	}
 	
 	public function showMaster( $params ) 
@@ -106,7 +103,10 @@ class ListPage_Master extends ListPage
 			echo  $this->xt->fetch_loadedJSON("body");
 		}
 		else
+		{
+			$this->xt->load_template( $this->templatefile );
 			$this->xt->display_loaded();
+		}
 	}
 
 	function pdfJsonMode() 

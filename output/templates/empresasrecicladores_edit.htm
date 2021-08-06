@@ -65,7 +65,7 @@
 			<button class="btn btn-sm btn-default" {$backbutton_attrs}>Volver a la lista</button>
 	{END back_button}
 {BEGIN view_page_button}
-	<button class="btn btn-sm btn-default" {$view_page_button_attrs}>Ver</button>
+		<a class="btn btn-sm btn-default" href="empresasrecicladores_view.php?{$editlink}" {$view_page_button_attrs}>Ver</a>
 {END view_page_button}
 </div>
 </div>
@@ -89,7 +89,7 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -109,10 +109,8 @@
 
 
 <div class="r-integrated-field form-group clearfix {$fielddispclass_RUCEmpre}  r-vertical-field" 
-	data-fieldname="RUCEmpre" 
 	data-signal-error-for="RUCEmpre{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="RUCEmpre" >
-
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="RUCEmpre" data-fieldname="RUCEmpre" >
 
 	<label class="r-edit-label control-label" for="{$labelfor_RUCEmpre}">
 		{BEGIN RUCEmpre_label}{$label public_EmpresasRecicladores RUCEmpre }{END RUCEmpre_label}
@@ -121,7 +119,7 @@
 		{$RUCEmpre_editcontrol}	</div>
 	<div class="r-edit-tooltip" data-helpfor="RUCEmpre">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_EmpresasRecicladores RUCEmpre }		</div>
 	</div>
 </div>
 
@@ -132,10 +130,8 @@
 
 
 <div class="r-integrated-field form-group clearfix {$fielddispclass_NombreEmpre}  r-vertical-field" 
-	data-fieldname="NombreEmpre" 
 	data-signal-error-for="NombreEmpre{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="NombreEmpre" >
-
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="NombreEmpre" data-fieldname="NombreEmpre" >
 
 	<label class="r-edit-label control-label" for="{$labelfor_NombreEmpre}">
 		{BEGIN NombreEmpre_label}{$label public_EmpresasRecicladores NombreEmpre }{END NombreEmpre_label}
@@ -144,7 +140,7 @@
 		{$NombreEmpre_editcontrol}	</div>
 	<div class="r-edit-tooltip" data-helpfor="NombreEmpre">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_EmpresasRecicladores NombreEmpre }		</div>
 	</div>
 </div>
 
@@ -155,10 +151,8 @@
 
 
 <div class="r-integrated-field form-group clearfix {$fielddispclass_DirecEmpre}  r-vertical-field" 
-	data-fieldname="DirecEmpre" 
 	data-signal-error-for="DirecEmpre{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="DirecEmpre" >
-
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="DirecEmpre" data-fieldname="DirecEmpre" >
 
 	<label class="r-edit-label control-label" for="{$labelfor_DirecEmpre}">
 		{BEGIN DirecEmpre_label}{$label public_EmpresasRecicladores DirecEmpre }{END DirecEmpre_label}
@@ -167,7 +161,7 @@
 		{$DirecEmpre_editcontrol}	</div>
 	<div class="r-edit-tooltip" data-helpfor="DirecEmpre">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_EmpresasRecicladores DirecEmpre }		</div>
 	</div>
 </div>
 
@@ -178,10 +172,8 @@
 
 
 <div class="r-integrated-field form-group clearfix {$fielddispclass_TelEmpre}  r-vertical-field" 
-	data-fieldname="TelEmpre" 
 	data-signal-error-for="TelEmpre{$id}" 
-	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="TelEmpre" >
-
+	data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="TelEmpre" data-fieldname="TelEmpre" >
 
 	<label class="r-edit-label control-label" for="{$labelfor_TelEmpre}">
 		{BEGIN TelEmpre_label}{$label public_EmpresasRecicladores TelEmpre }{END TelEmpre_label}
@@ -190,7 +182,7 @@
 		{$TelEmpre_editcontrol}	</div>
 	<div class="r-edit-tooltip" data-helpfor="TelEmpre">
 		<div class="text-muted" >
-				</div>
+		{$tooltip public_EmpresasRecicladores TelEmpre }		</div>
 	</div>
 </div>
 
@@ -248,8 +240,8 @@
 		<span data-itemtype="hamburger" data-itemid="hamburger" {$item_hamburger} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown dropup">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-menu-hamburger"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 								<li data-itemtype="edit_reset" data-itemid="edit_reset" {$item_edit_reset} data-pageid="{$pageid}" data-small >
@@ -260,7 +252,7 @@
 	</li>
 							{BEGIN view_page_button}
 	<li data-itemtype="edit_view" data-itemid="edit_view" {$item_edit_view} data-pageid="{$pageid}" data-small >
-				<a  {$view_page_button_attrs}  title="" >
+				<a  href="empresasrecicladores_view.php?{$editlink}" {$view_page_button_attrs}  title="" >
 				
 		Ver		
 		</a>

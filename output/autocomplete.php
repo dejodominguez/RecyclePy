@@ -31,10 +31,12 @@ $contextParams = array();
 $contextParams["data"] = my_json_decode( postvalue('data') );
 
 $masterTable = postvalue('masterTable');
-if ( $masterTable != "" && isset($_SESSION[ $masterTable . "_masterRecordData" ]) )
+if ( $masterTable != "" &&  isset($_SESSION[ $masterTable . "_masterRecordData" ] ) || postvalue('masterData') )
 {
 	$masterData = $_SESSION[ $masterTable . "_masterRecordData" ];
-
+	if( !is_array($masterData) ) {
+		$masterData = array();
+	}
 	$masterControlsData = my_json_decode( postvalue('masterData') );
 	foreach( $masterControlsData as $mField => $mValue )
 	{

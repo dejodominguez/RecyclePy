@@ -18,10 +18,6 @@ if( !Security::processPageSecurity( $strtablename, 'P' ) )
 	return;
 
 
-
-
-
-
 $xt = new Xtempl();
 
 //array of params for classes
@@ -38,6 +34,9 @@ $params["splitByRecords"] = postvalue("records");
 $params["mode"] = postvalue( "pdfjson" ) ? PRINT_PDFJSON : PRINT_SIMPLE;
 $params["pdfBackgroundImage"] = postvalue("pdfBackgroundImage");
 
+$params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 
 $pageObject = new PrintPage($params);
 $pageObject->init();

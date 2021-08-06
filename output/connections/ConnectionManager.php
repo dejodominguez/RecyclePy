@@ -1,154 +1,9 @@
 <?php
-class ConnectionManager
+
+include_once(getabspath("connections/ConnectionManager_base.php"));
+
+class ConnectionManager extends ConnectionManager_Base
 {
-	/**
-	 * Cached Connection objects
-	 * @type Array
-	 */
-	protected $cache = array();
-
-	/**
-	 * Project connections data
-	 * @type Array
-	 */
-	protected $_connectionsData;
-
-	/**
-	 * Project connections data
-	 * @type Array
-	 */
-	protected $_connectionsIdByName = array();
-
-	
-	/**
-	 * An array storing the correspondence between project
-	 * datasource tables names and connections ids
-	 * @type Array
-	 */	
-	protected $_tablesConnectionIds;
-	
-	
-	/**
-	 * @constructor
-	 */
-	function __construct()
-	{
-		$this->_setConnectionsData();
-		$this->_setTablesConnectionIds();
-	}
-	
-	/**
-	 * Get connection object by the table name
-	 * @param String tName
-	 * @return Connection
-	 */
-	public function byTable( $tName )
-	{
-		$connId = $this->_tablesConnectionIds[ $tName ];
-		if( !$connId )
-			return $this->getDefault();
-		return $this->byId( $connId );
-	}
-
-	/**
-	 * Get connection object by the connection name
-	 * @param String connName
-	 * @return Connection
-	 */	
-	public function byName( $connName )
-	{
-		$connId = $this->getIdByName( $connName );
-		if( !$connId )
-			return $this->getDefault();
-		return $this->byId( $connId );
-	}
-	
-	/**
-	 * Get connection id by the connection name
-	 * @param String connName
-	 * @return String
-	 */	
-	protected function getIdByName( $connName )
-	{
-		return $this->_connectionsIdByName[ $connName ];
-	}
-	
-	/**
-	 * Get connection object by the connection id 
-	 * @param String connId
-	 * @return Connection
-	 */	
-	public function byId( $connId )
-	{
-		if( !isset( $this->cache[ $connId ] ) )
-			$this->cache[ $connId ] = $this->getConnection( $connId );
-
-		return $this->cache[ $connId ];
-	}
-	
-	/**
-	 * Get the default db connection class
-	 * @return Connection
-	 */
-	public function getDefault()
-	{
-		return $this->byId( "RealEstate_at_localhost" );
-	}
-
-	/**
-	 * Get the users table db connection 
-	 * @return Connection
-	 */	
-	public function getForLogin()
-	{
-		return $this->byId( "RealEstate_at_localhost" );
-	}
-	
-	/**
-	 * Get the log table db connection 
-	 * @return Connection
-	 */	
-	public function getForAudit()
-	{
-		return $this->getDefault();
-	}
-	
-	/**
-	 * Get the locking table db connection 
-	 * @return Connection
-	 */		
-	public function getForLocking()
-	{
-		return $this->getDefault();
-	}	
-	
-	/**
-	 * Get the 'ug_groups' table db connection 
-	 * @return Connection
-	 */	
-	public function getForUserGroups()
-	{
-		return $this->getDefault();
-	}		
-
-	/**
-	 * Get the saved searches table db connection 
-	 * @return Connection
-	 */	
-	public function getForSavedSearches()
-	{
-		return $this->getDefault();
-	}
-
-	/**
-	 * Get the webreports tables db connection 
-	 * @return Connection
-	 */		
-	public function getForWebReports()
-	{
-		return $this->getDefault();
-	}
-	
 	/**
 	 * @param String connId
 	 * @return Connection
@@ -156,8 +11,8 @@ class ConnectionManager
 	protected function getConnection( $connId )
 	{
 		include_once getabspath("connections/Connection.php");
-		
-		$data = $this->_connectionsData[ $connId ];	
+
+		$data = $this->_connectionsData[ $connId ];
 		switch( $data["connStringType"] )
 		{
 			case "mysql":
@@ -166,9 +21,9 @@ class ConnectionManager
 					include_once getabspath("connections/MySQLiConnection.php");
 					return new MySQLiConnection( $data );
 				}
-				
-				include_once getabspath("connections/MySQLConnection.php");	
-				return new MySQLConnection( $data );	
+
+				include_once getabspath("connections/MySQLConnection.php");
+				return new MySQLConnection( $data );
 
 			case "mssql":
 			case "compact":
@@ -179,13 +34,13 @@ class ConnectionManager
 				}
 				if( isSqlsrvExtLoaded() )
 				{
-					include_once getabspath("connections/MSSQLSrvConnection.php");	
+					include_once getabspath("connections/MSSQLSrvConnection.php");
 					return new MSSQLSrvConnection( $data );
 				}
-				
+
 				if( function_exists("mssql_connect") ) {
 					include_once getabspath("connections/MSSQLUnixConnection.php");
-					return new MSSQLUnixConnection( $data );			
+					return new MSSQLUnixConnection( $data );
 				}
 
 				if( class_exists("PDO") ) {
@@ -196,14 +51,14 @@ class ConnectionManager
 						$data["PDOString"] = "sqlsrv:Server=" . $data["connInfo"][0] . ";Database=" . $data["connInfo"][3];
 						$data["PDOUser"] = $data["connInfo"][1];
 						$data["PDOPass"] = $data["connInfo"][2];
-						return new PDOConnection( $data );			
+						return new PDOConnection( $data );
 					}
 					if( in_array( "dblib", $drivers) )
 					{
 						$data["PDOString"] = "dblib:host=" . $data["connInfo"][0] . ";dbname=" . $data["connInfo"][3];
 						$data["PDOUser"] = $data["connInfo"][1];
 						$data["PDOPass"] = $data["connInfo"][2];
-						return new PDOConnection( $data );			
+						return new PDOConnection( $data );
 					}
 				}
 				echo "No SQL Server driver found in your PHP settings.";
@@ -223,10 +78,10 @@ class ConnectionManager
 					include_once getabspath("connections/ADOConnection.php");
 					return new ADOConnection( $data );
 				}
-				
+
 				include_once getabspath("connections/ODBCConnection.php");
 				return new ODBCConnection( $data );
-			
+
 			case "oracle":
 				include_once getabspath("connections/OracleConnection.php");
 				return new OracleConnection( $data );
@@ -252,53 +107,46 @@ class ConnectionManager
 		}
 	}
 
-	public function getConectionsIds()
-	{
-		$connectionsIds = array();
-		foreach ($this->_connectionsData as $connId => $data) {
-			$connectionsIds[] = $connId;
-		}
-
-		return $connectionsIds;
-	}
-
 	/**
-	 * Set the data representing the project's 
+	 * Set the data representing the project's
 	 * db connection properties
-	 */	 
+	 */
 	protected function _setConnectionsData()
 	{
 		// content of this function can be modified on demo account
 		// variable names $data and $connectionsData are important
 
 		$connectionsData = array();
-		
+
 		$data = array();
 		$data["dbType"] = 4;
 		$data["connId"] = "RealEstate_at_localhost";
-		$data["connName"] = "RecyclePy at localhost";
+		$data["connName"] = "recyclepy at localhost";
 		$data["connStringType"] = "postgre";
-		$data["connectionString"] = "postgre;localhost;postgres;3846173;;RecyclePy;;1;5433"; //currently unused
+		$data["connectionString"] = "postgre;localhost;postgres;3846173;;recyclepy;;1;5432"; //currently unused
 
-		$this->_connectionsIdByName["RecyclePy at localhost"] = "RealEstate_at_localhost";
-		
+		$this->_connectionsIdByName["recyclepy at localhost"] = "RealEstate_at_localhost";
+
 		$data["connInfo"] = array();
 		$data["ODBCUID"] = "postgres";
 		$data["ODBCPWD"] = "3846173";
 		$data["leftWrap"] = "\"";
 		$data["rightWrap"] = "\"";
-		
-		$data["DBPath"] = "db"; //currently unused	
+
+		$data["DBPath"] = "db"; //currently unused
 		$data["useServerMapPath"] = 1; //currently unused
+
 		
+		//	Don't change any of these lines manually!
+		//	Use 'Server database connections' feature on the Output screen in PHPRunner instead.
 		$data["connInfo"][0] = "localhost";
 		$data["connInfo"][1] = "postgres";
 		$data["connInfo"][2] = "3846173";
-		$data["connInfo"][3] = " port=5433";
-		$data["connInfo"][4] = "RecyclePy";
+		$data["connInfo"][3] = " port=5432";
+		$data["connInfo"][4] = "recyclepy";
 		$data["connInfo"][5] = ""; //currently unused
 		$data["connInfo"][6] = "1"; //currently unused
-		$data["ODBCString"] = "Driver={PostgreSQL Unicode};Server=localhost;Database=RecyclePy;Uid=postgres;Pwd=3846173;";
+		$data["ODBCString"] = "Driver={PostgreSQL ODBC Driver(ANSI)};Server=localhost;Database=recyclepy;Uid=postgres;Pwd=3846173;Port=5432";
 		// encription set
 		$data["EncryptInfo"] = array();
 		$data["EncryptInfo"]["mode"] = 0;
@@ -306,63 +154,16 @@ class ConnectionManager
 		$data["EncryptInfo"]["key"]  = "";
 
 		$connectionsData["RealEstate_at_localhost"] = $data;
-		$this->_connectionsData = $connectionsData;
+		$this->_connectionsData = &$connectionsData;
 	}
-	
-	/**
-	 * Set the data representing the correspondence between 
-	 * the project's table names and db connections
-	 */	 
-	protected function _setTablesConnectionIds()
-	{
-		$connectionsIds = array();
-		$connectionsIds["public.Recicladores"] = "RealEstate_at_localhost";
-		$connectionsIds["public.GestionPesosResiduos"] = "RealEstate_at_localhost";
-		$connectionsIds["public.Residuos"] = "RealEstate_at_localhost";
-		$connectionsIds["public.Usuarios"] = "RealEstate_at_localhost";
-		$connectionsIds["public.MedTipoOrigen"] = "RealEstate_at_localhost";
-		$connectionsIds["public.EmpresasRecicladores"] = "RealEstate_at_localhost";
-		$connectionsIds["public.DetalleVentas"] = "RealEstate_at_localhost";
-		$connectionsIds["public.Ventas"] = "RealEstate_at_localhost";
-		$connectionsIds["public.GestionPesosResiduosDetVen"] = "RealEstate_at_localhost";
-		$connectionsIds["public.Barrios"] = "RealEstate_at_localhost";
-		$connectionsIds["public.GestionRegistrosOrigen"] = "RealEstate_at_localhost";
-		$connectionsIds["public.GestionRegistrosOrigen Report"] = "RealEstate_at_localhost";
-		$this->_tablesConnectionIds = $connectionsIds;
-	}
-	
-	/**
-	 * Check if It's possible to add to one table's sql query 
-	 * an sql subquery to another table.
-	 * Access doesn't support subqueries from the same table as main.
-	 * @param String dataSourceTName1
-	 * @param String dataSourceTName2
-	 * @return Boolean
-	 */
-	public function checkTablesSubqueriesSupport( $dataSourceTName1, $dataSourceTName2 )
-	{
-		$connId1 = $this->_tablesConnectionIds[ $dataSourceTName1 ];
-		$connId2 = $this->_tablesConnectionIds[ $dataSourceTName2 ];
-		
-		if( $connId1 != $connId2 )
-			return false;
 
-		if( $this->_connectionsData[ $connId1 ]["dbType"] == nDATABASE_Access && $dataSourceTName1 == $dataSourceTName2 )
-			return false;
-			
-		return true;	
-	}
-	
 	/**
 	 * Close db connections
 	 * @destructor
 	 */
-	function __desctruct() 
+	function __desctruct()
 	{
-		foreach( $this->cache as $connection )
-		{
-			$connection->close();
-		}
+		$this->CloseConnections();
 	}
 }
 ?>

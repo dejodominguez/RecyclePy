@@ -1,0 +1,2 @@
+
+Runner.pages.PageSettings.addPageEvent('public.detalles_ventas',Runner.pages.constants.PAGE_ADD,"afterPageReady",function(pageObj,proxy,pageid,inlineRow,inlineObject,row){var ctrcantidad=Runner.getControl(pageid,'cantidad_venta');var ctrprecio=Runner.getControl(pageid,'precio_venta');var ctrsubtotal=Runner.getControl(pageid,'sub_total');function funcCalc(){ctrsubtotal.setValue((+ctrcantidad.getValue())*(+ctrprecio.getValue()));};ctrcantidad.on('keyup',funcCalc);ctrprecio.on('keyup',funcCalc);;});

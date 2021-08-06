@@ -69,7 +69,7 @@
 		data-v-width="6"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -87,12 +87,9 @@
 				
 {BEGIN ID_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_ID}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="ID" 
-	
+<div class="r-integrated-field form-group clearfix {$fielddispclass_ID}  r-horizontal-field form-horizontal" 	
 	data-signal-error-for="ID{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="ID" >
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="ID" data-fieldname="ID" >
 
 
 	<label class="r-search-label control-label" for="{$labelfor_ID}">
@@ -112,12 +109,9 @@
 											
 {BEGIN Cantidad_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_Cantidad}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="Cantidad" 
-	
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Cantidad}  r-horizontal-field form-horizontal" 	
 	data-signal-error-for="Cantidad{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="Cantidad" >
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="Cantidad" data-fieldname="Cantidad" >
 
 
 	<label class="r-search-label control-label" for="{$labelfor_Cantidad}">
@@ -137,12 +131,9 @@
 											
 {BEGIN Precio_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_Precio}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="Precio" 
-	
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Precio}  r-horizontal-field form-horizontal" 	
 	data-signal-error-for="Precio{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="Precio" >
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="Precio" data-fieldname="Precio" >
 
 
 	<label class="r-search-label control-label" for="{$labelfor_Precio}">
@@ -160,55 +151,49 @@
 
 {END Precio_fieldblock}
 											
-{BEGIN IDVenta_fieldblock}
+{BEGIN IdVenta_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IDVenta}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="IDVenta" 
-	
-	data-signal-error-for="IDVenta{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="IDVenta" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdVenta}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="IdVenta{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="IdVenta" data-fieldname="IdVenta" >
 
 
-	<label class="r-search-label control-label" for="{$labelfor_IDVenta}">
-		{$label public_DetalleVentas IDVenta }	</label>
+	<label class="r-search-label control-label" for="{$labelfor_IdVenta}">
+		{$label public_DetalleVentas IdVenta }	</label>
 	<div class="r-search-option">
-		{$searchtype_IDVenta}
+		{$searchtype_IdVenta}
 	</div>
 	<div class="r-search-field">
-		{$IDVenta_editcontrol}	</div>
+		{$IdVenta_editcontrol}	</div>
 	<div class="r-search-field">
-		{$IDVenta_editcontrol1}
+		{$IdVenta_editcontrol1}
 	</div>
 	
 </div>
 
-{END IDVenta_fieldblock}
+{END IdVenta_fieldblock}
 											
-{BEGIN IdFGesPesResiduo_fieldblock}
+{BEGIN IdGesPesResiduo_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdFGesPesResiduo}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="IdFGesPesResiduo" 
-	
-	data-signal-error-for="IdFGesPesResiduo{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field4" {$item_integrated_search_field4} data-pageid="{$pageid}" data-field="IdFGesPesResiduo" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="IdGesPesResiduo{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field4" {$item_integrated_search_field4} data-pageid="{$pageid}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" >
 
 
-	<label class="r-search-label control-label" for="{$labelfor_IdFGesPesResiduo}">
-		{$label public_DetalleVentas IdFGesPesResiduo }	</label>
+	<label class="r-search-label control-label" for="{$labelfor_IdGesPesResiduo}">
+		{$label public_DetalleVentas IdGesPesResiduo }	</label>
 	<div class="r-search-option">
-		{$searchtype_IdFGesPesResiduo}
+		{$searchtype_IdGesPesResiduo}
 	</div>
 	<div class="r-search-field">
-		{$IdFGesPesResiduo_editcontrol}	</div>
+		{$IdGesPesResiduo_editcontrol}	</div>
 	<div class="r-search-field">
-		{$IdFGesPesResiduo_editcontrol1}
+		{$IdGesPesResiduo_editcontrol1}
 	</div>
 	
 </div>
 
-{END IdFGesPesResiduo_fieldblock}
+{END IdGesPesResiduo_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}

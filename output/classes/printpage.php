@@ -2,14 +2,7 @@
 class PrintPage extends RunnerPage
 {
 	public $allPagesMode = false;
-	public $masterKeys = array();
-	public $masterTable = "";
 	public $recordset = null;
-
-	// @deprecated
-	public $pdfWidth = PDF_PAGE_WIDTH;
-	public $pdfContent = "";
-	//
 
 	public $fetchedRecordCount = 0;
 	public $splitByRecords = 0;
@@ -17,8 +10,6 @@ class PrintPage extends RunnerPage
 
 	public $pageBody = array();
 
-	public $querySQL = "";
-	public $countSQL = "";
 
 	protected $recordsRenderData = array();
 
@@ -55,12 +46,15 @@ class PrintPage extends RunnerPage
 
 	protected $_notEmptyFieldColumns = array();
 
+	protected $queryCommand = null;
+
 	/**
 	 * @constructor
 	 */
 	function __construct(&$params = "")
 	{
 		parent::__construct($params);
+		$this->pSetEdit = new ProjectSettings($this->tName, PAGE_SEARCH);
 
 		if( $this->selection )
 			$this->allPagesMode = true;
@@ -81,12 +75,6 @@ class PrintPage extends RunnerPage
 		if ( !$this->recsPerRowPrint )
 			$this->recsPerRowPrint = 1;
 
-		for($i = 0; $i < count($this->detailKeysByM); $i++)
-		{
-			$this->masterKeys[] = $_SESSION[ $this->sessionPrefix . "_masterkey" . ( $i + 1 ) ];
-		}
-
-		$this->masterTable = $_SESSION[$this->sessionPrefix . "_mastertable"];
 		$this->totalsFields = $this->pSet->getTotalsFields();
 
 		if( !$this->splitByRecords )
@@ -114,14 +102,14 @@ class PrintPage extends RunnerPage
 	 */
 	public static function readSelectedRecordsFromRequest( $table )
 	{
-		if( !$_REQUEST["selection"] )
+		if( !postvalue( "selection" ) )
 			return array();
 
 		$pSet = new ProjectSettings( $table );
 		$keyFields = $pSet->getTableKeys();
 
 		$selected_recs = array();
-		foreach(@$_REQUEST["selection"] as $keyblock)
+		foreach( postvalue( "selection" ) as $keyblock)
 		{
 			$arr = explode("&", refine($keyblock));
 			if( count($arr) < count($keyFields) )
@@ -136,28 +124,6 @@ class PrintPage extends RunnerPage
 		}
 
 		return $selected_recs;
-	}
-
-	/**
-	 *
-	 */
-	protected function calcRowCount()
-	{
-//	custom GetRowCount event:
-		$rowcount = false;
-
-		if($this->eventExists("ListGetRowCount"))
-		{
-			$rowcount = $this->eventsObject->ListGetRowCount($this->searchClauseObj, $this->masterTable, $this->masterKeysReq, null, $this);
-			if( $rowcount !== false )
-			{
-				$this->totalRowCount = $rowcount;
-				return;
-			}
-		}
-
-//	normal mode row count
-		$this->totalRowCount = $this->connection->getFetchedRowsNumber( $this->countSQL );
 	}
 
 	/**
@@ -204,44 +170,6 @@ class PrintPage extends RunnerPage
 	/**
 	 *
 	 */
-	protected function openQuery()
-	{
-		$this->prepareCustomListQueryLegacySorting();
-		$this->calcPageSizeAndNumber();
-
-		$listarray = false;
-		if( $this->eventsObject->exists("ListQuery") )
-		{
-			$listarray = $this->eventsObject->ListQuery($this->searchClauseObj,
-				$this->customFieldForSort,
-				$this->customHowFieldSort,
-				$this->masterTable,
-				$this->masterKeys,
-				$this->selection,
-				$this->queryPageSize,
-				$this->queryPageNo,
-				$this);
-		}
-
-		if( $listarray !== false )
-		{
-			$this->recordset = $listarray;
-		}
-		else
-		{
-			if( $this->allPagesMode )
-				$this->recordset = $this->connection->query( $this->querySQL );
-			else
-				$this->recordset = $this->connection->queryPage( $this->querySQL,
-					$this->queryPageNo,
-					$this->queryPageSize,
-					$this->totalRowCount );
-		}
-	}
-
-	/**
-	 *
-	 */
 	protected function setMapParams()
 	{
 		$fieldsArr = array();
@@ -264,13 +192,21 @@ class PrintPage extends RunnerPage
 		//	prepare maps
 		loadMaps( $this->pSet );
 
-		$this->buildSQL();
 
 		// build tabs
 		$this->processGridTabs();
 
-		$this->calcRowCount();
-		$this->openQuery();
+		$this->setMapParams();
+
+		RunnerContext::pushSearchContext( $this->searchClauseObj );
+		//	call SQL events, calculate record count
+		$this->calcPageSizeAndNumber();
+		$this->calculateRecordCount();
+
+		$this->recordset = $this->dataSource->getList( $this->queryCommand );
+		if( !$this->recordset ) {
+			showError( $this->dataSource->lastError() );
+		}
 
 		$this->doFirstPageAssignments();
 		if( !$this->splitByRecords )
@@ -321,7 +257,8 @@ class PrintPage extends RunnerPage
 		$this->addCommonJs();
 
 		$this->commonAssign();
-		$this->setMapParams();
+		$this->fillAdvancedMapData();
+
 
 		$this->doCommonAssignments();
 		$this->addCustomCss();
@@ -594,6 +531,8 @@ class PrintPage extends RunnerPage
 		$col = 0;
 		while( $data = $this->readNextRecord() )
 		{
+			RunnerContext::pushRecordContext( $data, $this );
+
 			$row["details"] = array();
 			if( !$col )
 			{
@@ -678,6 +617,8 @@ class PrintPage extends RunnerPage
 					}
 				}
 			}
+
+			RunnerContext::pop();
 
 			// hide group fields
 			if ( $prevData )
@@ -814,9 +755,7 @@ class PrintPage extends RunnerPage
 	function createMap( &$params )
 	{
 		$provider = getMapProvider();
-		if ( $provider !== GOOGLE_MAPS && $provider !== OPEN_STREET_MAPS && $provider !== BING_MAPS )
-			return;
-
+		
 		$mapId = $params['mapId'];
 
 		$apiKey = $this->googleMapCfg["APIcode"];
@@ -861,7 +800,7 @@ class PrintPage extends RunnerPage
 				if( !count( $markers ) )
 					$src.= "center=0,0&zoom=".( $zoom ? $zoom : 5 );
 				else
-					$src.= ( $zoom ? "zoom=".$zoom."&" : "" )."markers=".urlencode( implode( '|', $locations ) );
+					$src.= ( $zoom ? "zoom=".$zoom."&" : "" )."markers=".rawurlencode( implode( '|', $locations ) );
 			break;
 			case OPEN_STREET_MAPS:
 				$src = 'https://staticmap.openstreetmap.de/staticmap.php?size='.$width.'x'.$height.'&';
@@ -869,7 +808,7 @@ class PrintPage extends RunnerPage
 				if( !count( $markers ) )
 					$src.= "center=0,0&zoom=".( $zoom ? $zoom : 3 );
 				else
-					$src.= "center=".$locations[0]."&zoom=".( $zoom ? $zoom : 3 )."&markers=".urlencode( implode( '|', $locations ) );
+					$src.= "center=".$locations[0]."&zoom=".( $zoom ? $zoom : 3 )."&markers=".rawurlencode( implode( '|', $locations ) );
 			break;
 			case BING_MAPS:
 				if( !count( $markers ) )
@@ -878,12 +817,32 @@ class PrintPage extends RunnerPage
 				else
 				{
 					// You can specify up to 18 pushpins within a URL
-					$mParams = 'pp='.urlencode( implode( '&pp=',  array_slice( $locations, 0, 17 ) ));
+					$mParams = 'pp='.rawurlencode( implode( '&pp=',  array_slice( $locations, 0, 17 ) ));
 					$src = 'https://dev.virtualearth.net/REST/v1/Imagery/Map/Road?'.$mParams
 						.'&key='.$apiKey.'&mapSize='.$width.','.$height;
 					if( $zoom )
 						$src.= '&zoomLevel='.$zoom;
 				}
+			break;
+			case HERE_MAPS:
+				$src = 'https://image.maps.ls.hereapi.com/mia/1.6/mapview?'
+					.'apiKey='.$apiKey
+					.'&w='.$width
+					.'&h='.$height
+					.'&poi='.rawurlencode( implode( ',', $locations ) );
+
+				if( $zoom )
+					$src.= '&z='.$zoom;
+
+			case MAPQUEST_MAPS:
+				$src = 'https://www.mapquestapi.com/staticmap/v5/map?'
+					.'key='.$apiKey
+					.'&locations='.rawurlencode( implode( '||', $locations ) )
+					.'&size='.$width.','.$height;
+
+				if( $zoom )
+					$src.= '&zoom='.$zoom;		
+				
 			break;
 			default:
 				$src = '';
@@ -1075,33 +1034,28 @@ class PrintPage extends RunnerPage
 		if ( $this->getLayoutVersion() === PD_BS_LAYOUT )
 			$dtableArrParams["pageName"] = $this->pSet->detailsPageId( $dTable );
 
+		$dtableArrParams["masterTable"] = $this->tName;
+		$dtableArrParams["masterKeysReq"] = array();
+		$i = 0;
+		foreach( $mkeys as $mkey )
+		{
+			$i++;
+			$dtableArrParams["masterKeysReq"][$i] = $data[$mkey] ;
+		}
+
 		if ( $tType == PAGE_REPORT )
 		{
 			$dtableArrParams["pageType"] = PAGE_RPRINT;
 			$dtableArrParams["isDetail"] = true;
-			$dtableArrParams["masterTable"] = $this->tName;
-			$dtableArrParams["masterKeysReq"] = array();
-			$i = 0;
-			foreach( $mkeys as $mkey )
-			{
-				$i++;
-				$dtableArrParams["masterKeysReq"][$i] = $data[$mkey] ;
-			}
 		}
 		else
 		{
 			$dtableArrParams["pageType"] = PAGE_PRINT;
-			$dtableArrParams["printMasterTable"] = $this->tName;
-			$dtableArrParams["printMasterKeys"] = array();
-			foreach( $mkeys as $mkey )
-			{
-				$dtableArrParams["printMasterKeys"][] = $data[ $mkey ];
-			}
 		}
 
 		if( $this->pdfJsonMode() )
-			$dtableArrParams["mode"] = PRINT_PDFJSON;		
-		
+			$dtableArrParams["mode"] = PRINT_PDFJSON;
+
 		return XTempl::create_method_assignment( "showDetails", $this, $dtableArrParams );
 	}
 
@@ -1141,93 +1095,68 @@ class PrintPage extends RunnerPage
 		return $ret;
 	}
 
-	protected function getSubsetSQLComponents()
+	function getDataSourceFilterCriteria( $ignoreFilterField = "" )
 	{
-		$sql = array();
-
+		$filter = parent::getDataSourceFilterCriteria();
 		$selectedRecords = $this->getSelectedRecords();
-		if( $selectedRecords !== null )
-		{
-			//	export selected mode. Export only selected records, ignore search & filter
-			$sql["sqlParts"] = $this->gQuery->getSqlComponents();
+		if( $selectedRecords !== null ) {
 
-			$selectedWhereParts = array();
-			foreach( $selectedRecords as $keys )
-				$selectedWhereParts[] = KeyWhere( $keys, $this->tName );
+			$keyFields = $this->pSet->getTableKeys();
+			$recConditions = array();
+			foreach( $selectedRecords as $keys ) {
+				$recConditions[] = DataCondition::FieldsEqual( $keyFields, $keys );
+			}
+			$filter = DataCondition::_And( array(
+				$filter,
+				DataCondition::_Or( $recConditions )
+			));
 
-			$sql["mandatoryWhere"][] = implode(" or ", $selectedWhereParts );
-			if( 0 == count( $selectedRecords ) )
-				$sql["mandatoryWhere"][] = "1=0";
 		}
-		else
-		{
-			//	add search, filter and master clauses
-			$sql = parent::getSubsetSQLComponents();
-		}
-
-		if( $this->connection->dbType == nDATABASE_DB2 )
-			$sql["sqlParts"]["head"] .= ", ROW_NUMBER() over () as DB2_ROW_NUMBER ";
-
-		//	security
-		$sql["mandatoryWhere"][] = $this->SecuritySQL("Export", $this->tName);
-
-		return $sql;
+		return $filter;
 	}
 
-	/**
-	 * Builds SQL query for retrieving data from DB
-	 * @return String
-	 */
-	protected function buildSQL()
-	{
-		$sql = $this->getSubsetSQLComponents();
-		$orderClause = $this->getOrderByClause();
-
-		//	build SQL
-		$strSQL = SQLQuery::buildSQL( $sql["sqlParts"], $sql["mandatoryWhere"], $sql["mandatoryHaving"], $sql["optionalWhere"], $sql["optionalHaving"] );
-		$this->countSQL = $strSQL;
-		$strSQL.= $orderClause;
-
-		//	do Before SQL Query event
-		$strSQLbak = $strSQL;
-		$whereModifiedInEvent = false;
-		$orderbyModifiedInEvent = false;
-
-		if( $this->eventsObject->exists("BeforeQueryPrint") )
-		{
-			$tstrWhereClause = SQLQuery::combineCases( array(
-					SQLQuery::combineCases( $sql["mandatoryWhere"], "and" ),
-					SQLQuery::combineCases( $sql["optionalWhere"], "or" )
-				), "and" );
-
-			$strWhereBak = $tstrWhereClause;
-			$tstrOrderBy = $orderClause;
-
-			$this->eventsObject->BeforeQueryPrint($strSQL, $tstrWhereClause, $tstrOrderBy, $this);
-
-			$whereModifiedInEvent = $tstrWhereClause != $strWhereBak;
-			$orderbyModifiedInEvent = $tstrOrderBy != $orderClause;
-			$orderClause = $tstrOrderBy;
-
-
-			//	Rebuild SQL if needed
-			if( $whereModifiedInEvent )
-			{
-				$strSQL = SQLQuery::buildSQL( $sql["sqlParts"], array( $tstrWhereClause ), $sql["mandatoryHaving"] );
-				$this->countSQL = $strSQL;
-				$strSQL .= $orderClause;
-			}
-			else if( $orderbyModifiedInEvent )
-			{
-				$strSQL = SQLQuery::buildSQL( $sql["sqlParts"], $sql["mandatoryWhere"], $sql["mandatoryHaving"], $sql["optionalWhere"], $sql["optionalHaving"] );
-				$this->countSQL = $strSQL;
-				$strSQL.= $orderClause;
-			}
+	function callBeforeQueryEvent( $dc ) {
+		if( !$this->eventsObject->exists("BeforeQueryPrint") ) {
+			return;
 		}
+		$prep = $this->dataSource->prepareSQL( $dc );
+		$where = $prep["where"];
+		$order = $prep["order"];
+		$sql = $prep["sql"];
+		$this->eventsObject->BeforeQueryPrint($sql, $where, $order, $this);
 
-		LogInfo($strSQL);
-		$this->querySQL = $strSQL;
- 	}
+		if( $sql != $prep["sql"] )
+			$this->dataSource->overrideSQL( $dc, $sql );
+		else {
+			if( $where != $prep["where"] )
+				$this->dataSource->overrideWhere( $dc, $where );
+			if( $order != $prep["order"] ) 
+				$this->dataSource->overrideOrder( $dc, $order );
+		}
+	} 
+
+	function calculateRecordCount()
+	{
+		$this->queryCommand = $this->getSubsetDataCommand();
+		$this->callBeforeQueryEvent( $this->queryCommand );
+		$this->totalRowCount = $this->dataSource->getCount( $this->queryCommand );
+
+	}
+
+	public function getSubsetDataCommand( $ignoreFilterField = "" ) {
+
+		$dc = parent::getSubsetDataCommand( $ignoreFilterField );
+		
+		$this->reoderCommandForReoderedRows( $this->getListPSet(), $dc );
+		
+		if( !$this->allPagesMode ) {
+			$dc->reccount = $this->queryPageSize;
+			$dc->startRecord = $this->queryPageSize * ( $this->queryPageNo - 1 );
+		}
+		return $dc;
+	}
+
+
 
 	function pdfJsonMode() {
 		return $this->mode == PRINT_PDFJSON;
@@ -1236,5 +1165,10 @@ class PrintPage extends RunnerPage
 	function &findRecordAssigns( $recordId ) {
 		return $this->recordsRenderData[ $recordId ];
 	}
+
+	public function getSecurityCondition() {
+		return Security::SelectCondition( "P", $this->pSet );
+	}
+
 }
 ?>

@@ -19,17 +19,6 @@ EditPage::handleBrokenRequest();
 //	render all necessary layouts
 
 
-
-
-
-
-
-
-	
-					
-
-
-
 // parse control parameters
 $pageMode = EditPage::readEditModeFromRequest();
 
@@ -41,7 +30,7 @@ $id = intval($id) == 0 ? 1 : $id;
 
 // $keys could not be set properly if editid params were no passed
 $keys = array();
-$keys["IdBarrio"] = postvalue("editid1");
+$keys["id_barrio"] = postvalue("editid1");
 
 //array of params for classes
 $params = array();
@@ -59,8 +48,11 @@ $params["selectedFields"] = postvalue("fields");
 $params["captchaName"] = "captcha_1209xre";
 $params["captchaValue"] = postvalue("value_captcha_1209xre_" . $id);
 $params["selection"] = postvalue("selection");
-$params["rowIds"] = my_json_decode( postvalue("rowIds") ); 
+$params["rowIds"] = my_json_decode( postvalue("rowIds") );
+
 $params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 
 //	locking parameters
 $params["lockingAction"] = postvalue("action");
@@ -93,10 +85,8 @@ if(( $pageMode == EDIT_POPUP || $pageMode == EDIT_INLINE ) && postvalue("dashTNa
 	$params["dashElementName"] = postvalue("dashelement");
 }
 
-if( $params["masterTable"] )
-{
-	$params["masterKeysReq"] = EditPage::processMasterKeys();
-}
+$params["forSpreadsheetGrid"] = postvalue("spreadsheetGrid");
+$params["hostPageName"] = postvalue("hostPageName");
 
 $pageObject = EditPage::EditPageFactory($params);
 

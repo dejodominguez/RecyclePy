@@ -63,7 +63,7 @@ class ViewImageDownloadField extends ViewFileField
 	}
 
 	/**
-	 * It returns makePdf image notation { image: ..., width: ..., height: ... }
+	 * It returns pdfmake image notation { image: ..., width: ..., height: ... }
 	 */
 	public function getPdfValue(&$data, $keylink = "")
 	{
@@ -77,25 +77,17 @@ class ViewImageDownloadField extends ViewFileField
 		$width = $this->imageWidth ? $this->imageWidth : $defWidth;
 		$thumbWidth = $this->thumbWidth ? $this->thumbWidth : 72;
 
-		if ( $this->isImageURL )
-		{
-			$content = myurl_get_contents_binary( $data[ $this->field ] );
-			$imageType = SupposeImageType( $content );
-			if( $imageType == "image/jpeg" || $imageType == "image/png" )
-			{
-				return '{
-					image: "' . jsreplace( 'data:'. $imageType . ';base64,' . base64_bin2str( $content ) ) . '",
-					width: ' . $width  . ',
-					height: ' . $this->imageHeight . '
-				}';
-			}
-			return '""';
+		if ($this->isImageURL) {
+			return '{
+				image: "' . $data[$this->field] . '",
+				width: ' . $width . ',
+				height: ' . $this->imageHeight . '
+			}';
 		}
 
 		$this->upload_handler->tkeys = $keylink;
 
 		$resultValues = array();
-
 		$filesArray = $this->getFilesArray( $data[ $this->field ] );
 
 		$pSet = $this->pSettings();
@@ -104,9 +96,8 @@ class ViewImageDownloadField extends ViewFileField
 
 		foreach( $filesArray as $imageFile )
 		{
-			if( $maxImages > 0 && $imgCount++ > $maxImages ) {
+			if( $maxImages > 0 && $imgCount++ > $maxImages )
 				break;
-			}
 
 			if( !CheckImageExtension( $imageFile["name"] ) )
 			{
@@ -115,55 +106,32 @@ class ViewImageDownloadField extends ViewFileField
 			}
 
 			$imagePath = $this->getImagePath( $imageFile["name"] ) ;
-			$hasBigImage = myfile_exists( $imagePath );
-
-			if( !$hasBigImage )
+			if( !myfile_exists( $imagePath ) )
 				continue;
 
 			if( !$this->showThumbnails )
-			{
-				$content = myfile_get_contents_binary( $imagePath );
-				$imageType = SupposeImageType( $content );
-				if( $imageType == "image/jpeg" || $imageType == "image/png" )
-				{
+			{				
+				$_image = $this->getImagePdfString( $imagePath, $data, $keylink );
+				if( $_image ) {
 					$resultValues[] = '{
-						image: "' . jsreplace( 'data:'. $imageType. ';base64,' . base64_bin2str( $content ) ) . '",
+						image: "' . jsreplace( $_image ) . '",
 						width: ' . $width  . ',
 						height: ' . $this->imageHeight . '
 					}';
 				}
-
 				continue;
 			}
 
 			$thumbPath = $this->getImagePath( $imageFile["thumbnail"] );
-			$hasThumbnail = myfile_exists( $thumbPath );
-
-			if( $hasThumbnail )
-			{
-				$content = myfile_get_contents_binary( $thumbPath );
-				$imageType = SupposeImageType( $content );
-				if( $imageType == "image/jpeg" || $imageType == "image/png" )
-				{
-					$resultValues[] = '{
-						image: "' . jsreplace( 'data:'. $imageType. ';base64,' . base64_bin2str( $content ) ) . '",
-						width: ' . $thumbWidth . ',
-						height: ' . $this->thumbHeight . '
-					}';
-				}
-			}
-			else
-			{
-				$content = myfile_get_contents_binary( $imagePath );
-				$imageType = SupposeImageType( $content );
-				if( $imageType == "image/jpeg" || $imageType == "image/png" )
-				{
-					$resultValues[] = '{
-						image: "' . jsreplace( 'data:'. $imageType . ';base64,' . base64_bin2str( $content ) ) . '",
-						width: ' . $thumbWidth . ',
-						height: ' . $this->thumbHeight . '
-					}';
-				}
+			$_thumbPath = myfile_exists( $thumbPath ) ? $thumbPath : $imagePath;
+			$_image = $this->getImagePdfString( $_thumbPath, $data, $keylink );	
+			
+			if( $_image ) {	
+				$resultValues[] = '{
+					image: "' . jsreplace( $_image ) . '",
+					width: ' . $thumbWidth . ',
+					height: ' . $this->thumbHeight . '
+				}';
 			}
 		}
 
@@ -171,6 +139,21 @@ class ViewImageDownloadField extends ViewFileField
 			return '[' . implode( ',', $resultValues ) . ']';
 
 		return '""';
+	}
+	
+	protected function getImagePdfString( $imgPath, &$data, $keylink ) 
+	{
+		$content = myfile_get_contents_binary( $imgPath );
+		$imageType = SupposeImageType( $content );
+		
+		if( $imageType == "image/jpeg" || $imageType == "image/png" )
+			return 'data:'. $imageType. ';base64,' . base64_bin2str( $content );
+
+		$urls = $this->getFileURLs( $data, $keylink );
+		if( $urls )
+			return $urls[0]["image"];
+		
+		return '';
 	}
 
 	public function getFileURLs(&$data, $keylink)
@@ -238,7 +221,7 @@ class ViewImageDownloadField extends ViewFileField
 		}
 		if( $pSet->getImageBorder( $this->field ) )
 			$attrs["border"] = "true";
-		if( $pSet->getImageFullWidth( $this->field ) ) 
+		if( $pSet->getImageFullWidth( $this->field ) )
 			$attrs["fullwidth"] = "true";
 
 		$htmlAttrs = array();

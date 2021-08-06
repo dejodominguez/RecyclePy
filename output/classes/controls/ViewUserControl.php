@@ -11,6 +11,17 @@ class ViewUserControl extends ViewControl
 	{		
 	}
 	
+
+	public function addViewPluginJSControl($name)
+	{
+		if($this->viewFormat == $name)
+		{
+			$this->AddJSFile("include/runnerJS/controls/".$name.".js", 'include/runnerJS/viewControls/ViewControl.js');
+			$this->getJSControl();
+			foreach ($this->settings as $settingName => $settingValue)
+				$this->addJSControlSetting($settingName, $settingValue);
+		}
+	}
 	/**
 	 * Control settings filling
 	 */
@@ -30,7 +41,7 @@ class ViewUserControl extends ViewControl
 	 * @prarm String keylink
 	 * @return String
 	 */
-	public function getExportValue(&$data, $keylink = "")
+	public function getExportValue(&$data, $keylink = "", $html = false )
 	{
 		return $data[ $this->field ];
 	}

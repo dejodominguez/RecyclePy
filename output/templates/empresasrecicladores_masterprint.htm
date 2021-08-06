@@ -27,7 +27,7 @@
 {END grid_tabs}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="panel-only" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -58,7 +58,7 @@
 	 
 		{BEGIN IdEmpreRecicladora_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdEmpreRecicladora">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdEmpreRecicladora" data-fieldname="IdEmpreRecicladora">
 	{$label public_EmpresasRecicladores IdEmpreRecicladora }	</span>
 {END IdEmpreRecicladora_fieldheadercolumn}
 
@@ -83,7 +83,7 @@
 	 
 		{BEGIN RUCEmpre_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="RUCEmpre">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="RUCEmpre" data-fieldname="RUCEmpre">
 	{$label public_EmpresasRecicladores RUCEmpre }	</span>
 {END RUCEmpre_fieldheadercolumn}
 
@@ -108,7 +108,7 @@
 	 
 		{BEGIN NombreEmpre_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="NombreEmpre">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="NombreEmpre" data-fieldname="NombreEmpre">
 	{$label public_EmpresasRecicladores NombreEmpre }	</span>
 {END NombreEmpre_fieldheadercolumn}
 
@@ -133,7 +133,7 @@
 	 
 		{BEGIN DirecEmpre_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DirecEmpre">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field8" {$item_simple_grid_field8} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DirecEmpre" data-fieldname="DirecEmpre">
 	{$label public_EmpresasRecicladores DirecEmpre }	</span>
 {END DirecEmpre_fieldheadercolumn}
 
@@ -158,7 +158,7 @@
 	 
 		{BEGIN TelEmpre_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="TelEmpre">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field9" {$item_simple_grid_field9} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="TelEmpre" data-fieldname="TelEmpre">
 	{$label public_EmpresasRecicladores TelEmpre }	</span>
 {END TelEmpre_fieldheadercolumn}
 
@@ -197,7 +197,7 @@
 
 	 
 		{BEGIN IdEmpreRecicladora_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdEmpreRecicladora" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdEmpreRecicladora" data-fieldname="IdEmpreRecicladora" data-default-width >
 {$IdEmpreRecicladora_value}
 </span>
 {END IdEmpreRecicladora_fieldcolumn}	
@@ -220,7 +220,7 @@
 
 	 
 		{BEGIN RUCEmpre_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="RUCEmpre" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="RUCEmpre" data-fieldname="RUCEmpre" data-default-width >
 {$RUCEmpre_value}
 </span>
 {END RUCEmpre_fieldcolumn}	
@@ -243,7 +243,7 @@
 
 	 
 		{BEGIN NombreEmpre_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="NombreEmpre" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="NombreEmpre" data-fieldname="NombreEmpre" data-default-width >
 {$NombreEmpre_value}
 </span>
 {END NombreEmpre_fieldcolumn}	
@@ -266,7 +266,7 @@
 
 	 
 		{BEGIN DirecEmpre_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DirecEmpre" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DirecEmpre" data-fieldname="DirecEmpre" data-default-width >
 {$DirecEmpre_value}
 </span>
 {END DirecEmpre_fieldcolumn}	
@@ -289,7 +289,7 @@
 
 	 
 		{BEGIN TelEmpre_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="TelEmpre" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="TelEmpre" data-fieldname="TelEmpre" data-default-width >
 {$TelEmpre_value}
 </span>
 {END TelEmpre_fieldcolumn}	

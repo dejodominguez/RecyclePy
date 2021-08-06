@@ -26,9 +26,7 @@ class ListPage_DPDash extends ListPage_Dashboard
 		$this->showEditInPopup = $dashDetails["edit"];
 		$this->showViewInPopup = $dashDetails["view"];		
 
-		if($this->mobileTemplateMode())
-			$this->pageSize = -1;
-		
+	
 		$this->searchClauseObj->clearSearch();
 		
 		$this->jsSettings['tableSettings'][$this->tName]['masterTable'] = $this->masterTable;

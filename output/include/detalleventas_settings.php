@@ -1,7 +1,4 @@
 <?php
-
-
-
 $tdatadetalleventas = array();
 $tdatadetalleventas[".searchableFields"] = array();
 $tdatadetalleventas[".ShortName"] = "detalleventas";
@@ -9,11 +6,12 @@ $tdatadetalleventas[".OwnerID"] = "";
 $tdatadetalleventas[".OriginalTable"] = "public.DetalleVentas";
 
 
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
-
-$tdatadetalleventas[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
-$tdatadetalleventas[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdatadetalleventas[".defaultPages"] = $defaultPages;
+$tdatadetalleventas[".pagesByType"] = my_json_decode( "{\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"]}" );
+$tdatadetalleventas[".originalPagesByType"] = $tdatadetalleventas[".pagesByType"];
+$tdatadetalleventas[".pages"] = types2pages( my_json_decode( "{\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"masterlist\":[\"masterlist\"],\"masterprint\":[\"masterprint\"],\"print\":[\"print\"],\"search\":[\"search\"]}" ) );
+$tdatadetalleventas[".originalPages"] = $tdatadetalleventas[".pages"];
+$tdatadetalleventas[".defaultPages"] = my_json_decode( "{\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"masterlist\":\"masterlist\",\"masterprint\":\"masterprint\",\"print\":\"print\",\"search\":\"search\"}" );
+$tdatadetalleventas[".originalDefaultPages"] = $tdatadetalleventas[".defaultPages"];
 
 //	field labels
 $fieldLabelsdetalleventas = array();
@@ -36,12 +34,12 @@ if(mlang_getcurrentlang()=="Spanish")
 	$fieldLabelsdetalleventas["Spanish"]["Precio"] = "Precio";
 	$fieldToolTipsdetalleventas["Spanish"]["Precio"] = "";
 	$placeHoldersdetalleventas["Spanish"]["Precio"] = "";
-	$fieldLabelsdetalleventas["Spanish"]["IDVenta"] = "IDVenta";
-	$fieldToolTipsdetalleventas["Spanish"]["IDVenta"] = "";
-	$placeHoldersdetalleventas["Spanish"]["IDVenta"] = "";
-	$fieldLabelsdetalleventas["Spanish"]["IdFGesPesResiduo"] = "GESTIÓN PESOS RESIDUOS";
-	$fieldToolTipsdetalleventas["Spanish"]["IdFGesPesResiduo"] = "";
-	$placeHoldersdetalleventas["Spanish"]["IdFGesPesResiduo"] = "";
+	$fieldLabelsdetalleventas["Spanish"]["IdVenta"] = "IDVenta";
+	$fieldToolTipsdetalleventas["Spanish"]["IdVenta"] = "";
+	$placeHoldersdetalleventas["Spanish"]["IdVenta"] = "";
+	$fieldLabelsdetalleventas["Spanish"]["IdGesPesResiduo"] = "Gestión Pesos Residuos";
+	$fieldToolTipsdetalleventas["Spanish"]["IdGesPesResiduo"] = "";
+	$placeHoldersdetalleventas["Spanish"]["IdGesPesResiduo"] = "";
 	if (count($fieldToolTipsdetalleventas["Spanish"]))
 		$tdatadetalleventas[".isUseToolTips"] = true;
 }
@@ -56,6 +54,8 @@ $tdatadetalleventas[".nSecOptions"] = 0;
 
 $tdatadetalleventas[".mainTableOwnerID"] = "";
 $tdatadetalleventas[".entityType"] = 0;
+$tdatadetalleventas[".connId"] = "RealEstate_at_localhost";
+
 
 $tdatadetalleventas[".strOriginalTableName"] = "public.DetalleVentas";
 
@@ -69,14 +69,9 @@ $tdatadetalleventas[".showEditInPopup"] = false;
 
 $tdatadetalleventas[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdatadetalleventas[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdatadetalleventas[".listAjax"] = false;
 //	temporary
-$tdatadetalleventas[".listAjax"] = false;
+//$tdatadetalleventas[".listAjax"] = false;
 
 	$tdatadetalleventas[".audit"] = false;
 
@@ -87,7 +82,7 @@ $pages = $tdatadetalleventas[".defaultPages"];
 
 if( $pages[PAGE_EDIT] ) {
 	$tdatadetalleventas[".edit"] = true;
-	$tdatadetalleventas[".afterEditAction"] = 1;
+	$tdatadetalleventas[".afterEditAction"] = 0;
 	$tdatadetalleventas[".closePopupAfterEdit"] = 1;
 	$tdatadetalleventas[".afterEditActionDetTable"] = "";
 }
@@ -144,7 +139,7 @@ $tdatadetalleventas[".rowHighlite"] = true;
 
 
 
-						
+			
 
 $tdatadetalleventas[".ajaxCodeSnippetAdded"] = false;
 
@@ -167,8 +162,8 @@ $tdatadetalleventas[".googleLikeFields"] = array();
 $tdatadetalleventas[".googleLikeFields"][] = "ID";
 $tdatadetalleventas[".googleLikeFields"][] = "Cantidad";
 $tdatadetalleventas[".googleLikeFields"][] = "Precio";
-$tdatadetalleventas[".googleLikeFields"][] = "IDVenta";
-$tdatadetalleventas[".googleLikeFields"][] = "IdFGesPesResiduo";
+$tdatadetalleventas[".googleLikeFields"][] = "IdVenta";
+$tdatadetalleventas[".googleLikeFields"][] = "IdGesPesResiduo";
 
 
 
@@ -196,20 +191,28 @@ $tdatadetalleventas[".warnLeavingPages"] = true;
 
 
 
-$tstrOrderBy = "ORDER BY \"IdFGesPesResiduo\" DESC";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
+$tstrOrderBy = "";
 $tdatadetalleventas[".strOrderBy"] = $tstrOrderBy;
 
 $tdatadetalleventas[".orderindexes"] = array();
-	$tdatadetalleventas[".orderindexes"][] = array(5, (0 ? "ASC" : "DESC"), "\"IdFGesPesResiduo\"");
 
 
-$tdatadetalleventas[".sqlHead"] = "SELECT \"ID\",  \"Cantidad\",  \"Precio\",  \"IDVenta\",  \"IdFGesPesResiduo\"";
+$tdatadetalleventas[".sqlHead"] = "SELECT \"ID\",  	\"Cantidad\",  	\"Precio\",  	\"IdVenta\",  	\"IdGesPesResiduo\"";
 $tdatadetalleventas[".sqlFrom"] = "FROM \"public\".\"DetalleVentas\"";
 $tdatadetalleventas[".sqlWhereExpr"] = "";
 $tdatadetalleventas[".sqlTail"] = "";
 
+//fill array of tabs for list page
+$arrGridTabs = array();
+$arrGridTabs[] = array(
+	'tabId' => "",
+	'name' => "All data",
+	'nameType' => 'Text',
+	'where' => "",
+	'showRowCount' => 0,
+	'hideEmpty' => 0,
+);
+$tdatadetalleventas[".arrGridTabs"] = $arrGridTabs;
 
 
 
@@ -244,7 +247,6 @@ $tdatadetalleventas[".arrGroupsPerPage"] = $arrGPP;
 $tdatadetalleventas[".highlightSearchResults"] = true;
 
 $tableKeysdetalleventas = array();
-$tableKeysdetalleventas[] = "ID";
 $tdatadetalleventas[".Keys"] = $tableKeysdetalleventas;
 
 
@@ -263,13 +265,15 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_DetalleVentas","ID");
 	$fdata["FieldType"] = 3;
 
-	
+
 		$fdata["AutoInc"] = true;
 
 	
 			
 
 		$fdata["strField"] = "ID";
+
+		$fdata["sourceSingle"] = "ID";
 
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"ID\"";
@@ -294,6 +298,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -401,12 +406,14 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_DetalleVentas","Cantidad");
 	$fdata["FieldType"] = 14;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "Cantidad";
+
+		$fdata["sourceSingle"] = "Cantidad";
 
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"Cantidad\"";
@@ -432,6 +439,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -454,6 +462,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -476,6 +485,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -498,6 +508,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -506,50 +517,6 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	$vdata["NumberOfChars"] = 80;
 
 	$fdata["ViewFormats"]["export"] = $vdata;
-	$vdata = array("ViewFormat" => "Number");
-
-	
-	
-	
-	
-	
-	
-		$vdata["DecimalDigits"] = 0;
-
-	
-	
-	
-	
-	
-		$vdata["NeedEncode"] = true;
-
-	
-		$vdata["truncateText"] = true;
-	$vdata["NumberOfChars"] = 80;
-
-	$fdata["ViewFormats"]["masterlist"] = $vdata;
-	$vdata = array("ViewFormat" => "Number");
-
-	
-	
-	
-	
-	
-	
-		$vdata["DecimalDigits"] = 0;
-
-	
-	
-	
-	
-	
-		$vdata["NeedEncode"] = true;
-
-	
-		$vdata["truncateText"] = true;
-	$vdata["NumberOfChars"] = 80;
-
-	$fdata["ViewFormats"]["masterprint"] = $vdata;
 //  End View Formats
 
 //	Begin Edit Formats
@@ -612,8 +579,9 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 
 // Begin Lookup settings
-				$edata["LookupType"] = 2;
-	$edata["LookupTable"] = "public.GestionPesosResiduos";
+				$edata["LookupType"] = 1;
+	$edata["LookupTable"] = "";
+	$edata["LookupConnId"] = "";
 		$edata["listPageId"] = "list";
 		$edata["autoCompleteFieldsOnEdit"] = 0;
 	$edata["autoCompleteFields"] = array();
@@ -623,7 +591,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 		
 	$edata["LinkField"] = "IdGesPesResiduo";
 	$edata["LinkFieldType"] = 0;
-	$edata["DisplayField"] = "KilosResiduos";
+	$edata["DisplayField"] = "IdGesPesResiduo";
 
 	
 
@@ -633,10 +601,11 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 		$edata["UseCategory"] = true;
 	$edata["categoryFields"] = array();
-	$edata["categoryFields"][] = array( "main" => "IdFGesPesResiduo", "lookup" => "IdGesPesResiduo" );
+	$edata["categoryFields"][] = array( "main" => "IdGesPesResiduo", "lookup" => "IdGesPesResiduo" );
 
 	
-	
+		$edata["SimpleAdd"] = true;
+
 
 	
 	
@@ -767,12 +736,14 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_DetalleVentas","Precio");
 	$fdata["FieldType"] = 14;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "Precio";
+
+		$fdata["sourceSingle"] = "Precio";
 
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "\"Precio\"";
@@ -798,6 +769,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -820,6 +792,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -842,6 +815,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -864,6 +838,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -872,50 +847,6 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	$vdata["NumberOfChars"] = 80;
 
 	$fdata["ViewFormats"]["export"] = $vdata;
-	$vdata = array("ViewFormat" => "Number");
-
-	
-	
-	
-	
-	
-	
-		$vdata["DecimalDigits"] = 0;
-
-	
-	
-	
-	
-	
-		$vdata["NeedEncode"] = true;
-
-	
-		$vdata["truncateText"] = true;
-	$vdata["NumberOfChars"] = 80;
-
-	$fdata["ViewFormats"]["masterlist"] = $vdata;
-	$vdata = array("ViewFormat" => "Number");
-
-	
-	
-	
-	
-	
-	
-		$vdata["DecimalDigits"] = 0;
-
-	
-	
-	
-	
-	
-		$vdata["NeedEncode"] = true;
-
-	
-		$vdata["truncateText"] = true;
-	$vdata["NumberOfChars"] = 80;
-
-	$fdata["ViewFormats"]["masterprint"] = $vdata;
 //  End View Formats
 
 //	Begin Edit Formats
@@ -1095,25 +1026,27 @@ $tdatadetalleventas[".hideMobileList"] = array();
 
 	$tdatadetalleventas["Precio"] = $fdata;
 		$tdatadetalleventas[".searchableFields"][] = "Precio";
-//	IDVenta
+//	IdVenta
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 4;
-	$fdata["strName"] = "IDVenta";
-	$fdata["GoodName"] = "IDVenta";
+	$fdata["strName"] = "IdVenta";
+	$fdata["GoodName"] = "IdVenta";
 	$fdata["ownerTable"] = "public.DetalleVentas";
-	$fdata["Label"] = GetFieldLabel("public_DetalleVentas","IDVenta");
+	$fdata["Label"] = GetFieldLabel("public_DetalleVentas","IdVenta");
 	$fdata["FieldType"] = 3;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "IDVenta";
+		$fdata["strField"] = "IdVenta";
+
+		$fdata["sourceSingle"] = "IdVenta";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"IDVenta\"";
+	$fdata["FullName"] = "\"IdVenta\"";
 
 	
 	
@@ -1135,6 +1068,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1228,27 +1162,29 @@ $tdatadetalleventas[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatadetalleventas["IDVenta"] = $fdata;
-		$tdatadetalleventas[".searchableFields"][] = "IDVenta";
-//	IdFGesPesResiduo
+	$tdatadetalleventas["IdVenta"] = $fdata;
+		$tdatadetalleventas[".searchableFields"][] = "IdVenta";
+//	IdGesPesResiduo
 //	Custom field settings
 	$fdata = array();
 	$fdata["Index"] = 5;
-	$fdata["strName"] = "IdFGesPesResiduo";
-	$fdata["GoodName"] = "IdFGesPesResiduo";
+	$fdata["strName"] = "IdGesPesResiduo";
+	$fdata["GoodName"] = "IdGesPesResiduo";
 	$fdata["ownerTable"] = "public.DetalleVentas";
-	$fdata["Label"] = GetFieldLabel("public_DetalleVentas","IdFGesPesResiduo");
+	$fdata["Label"] = GetFieldLabel("public_DetalleVentas","IdGesPesResiduo");
 	$fdata["FieldType"] = 3;
 
-	
+
 	
 	
 			
 
-		$fdata["strField"] = "IdFGesPesResiduo";
+		$fdata["strField"] = "IdGesPesResiduo";
+
+		$fdata["sourceSingle"] = "IdGesPesResiduo";
 
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"IdFGesPesResiduo\"";
+	$fdata["FullName"] = "\"IdGesPesResiduo\"";
 
 	
 	
@@ -1270,6 +1206,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1291,6 +1228,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1312,6 +1250,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1333,6 +1272,7 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -1341,48 +1281,6 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	$vdata["NumberOfChars"] = 80;
 
 	$fdata["ViewFormats"]["export"] = $vdata;
-	$vdata = array("ViewFormat" => "");
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		$vdata["NeedEncode"] = true;
-
-	
-		$vdata["truncateText"] = true;
-	$vdata["NumberOfChars"] = 80;
-
-	$fdata["ViewFormats"]["masterlist"] = $vdata;
-	$vdata = array("ViewFormat" => "");
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		$vdata["NeedEncode"] = true;
-
-	
-		$vdata["truncateText"] = true;
-	$vdata["NumberOfChars"] = 80;
-
-	$fdata["ViewFormats"]["masterprint"] = $vdata;
 //  End View Formats
 
 //	Begin Edit Formats
@@ -1445,8 +1343,9 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 
 // Begin Lookup settings
-				$edata["LookupType"] = 2;
+				$edata["LookupType"] = 1;
 	$edata["LookupTable"] = "public.GestionPesosResiduosDetVen";
+	$edata["LookupConnId"] = "RealEstate_at_localhost";
 			$edata["autoCompleteFieldsOnEdit"] = 0;
 	$edata["autoCompleteFields"] = array();
 		$edata["LCType"] = 0;
@@ -1465,7 +1364,8 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	
 	
 	
-	
+		$edata["SimpleAdd"] = true;
+
 				//dependent dropdowns @deprecated data ?
 	$edata["DependentLookups"] = array();
 	$edata["DependentLookups"][] = "Cantidad";
@@ -1498,14 +1398,17 @@ $tdatadetalleventas[".hideMobileList"] = array();
 	$edata["validateAs"] = array();
 	$edata["validateAs"]["basicValidate"] = array();
 	$edata["validateAs"]["customMessages"] = array();
-							
+								$edata["validateAs"]["basicValidate"][] = "DenyDuplicated";
+	$edata["validateAs"]["customMessages"]["DenyDuplicated"] = array("message" => "Value %value% already exists", "messageType" => "Text");
+
 	
 	//	End validation
 
 	
 			
 	
-	
+		$edata["denyDuplicates"] = true;
+
 	
 	$fdata["EditFormats"]["add"] = $edata;
 	$edata = array("EditFormat" => "Text field");
@@ -1588,8 +1491,8 @@ $tdatadetalleventas[".hideMobileList"] = array();
 //end of Filters settings
 
 
-	$tdatadetalleventas["IdFGesPesResiduo"] = $fdata;
-		$tdatadetalleventas[".searchableFields"][] = "IdFGesPesResiduo";
+	$tdatadetalleventas["IdGesPesResiduo"] = $fdata;
+		$tdatadetalleventas[".searchableFields"][] = "IdGesPesResiduo";
 
 
 $tables_data["public.DetalleVentas"]=&$tdatadetalleventas;
@@ -1600,62 +1503,23 @@ $page_titles["public_DetalleVentas"] = &$pageTitlesdetalleventas;
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
+
+//if !@TABLE.bReportCrossTab
+
 $detailsTablesData["public.DetalleVentas"] = array();
-//	public.GestionPesosResiduos
-	
-	
-
-		$dIndex = 0;
-	$detailsParam = array();
-	$detailsParam["dDataSourceTable"]="public.GestionPesosResiduos";
-		$detailsParam["dOriginalTable"] = "public.GestionPesosResiduos";
-
-
-
-				$detailsParam["dType"]=PAGE_LIST;
-	$detailsParam["dShortTable"] = "gestionpesosresiduos";
-	$detailsParam["dCaptionTable"] = GetTableCaption("public_GestionPesosResiduos");
-	$detailsParam["masterKeys"] =array();
-	$detailsParam["detailKeys"] =array();
-
-
-		
-	$detailsTablesData["public.DetalleVentas"][$dIndex] = $detailsParam;
-
-	
-		$detailsTablesData["public.DetalleVentas"][$dIndex]["masterKeys"] = array();
-
-	$detailsTablesData["public.DetalleVentas"][$dIndex]["masterKeys"][]="IdFGesPesResiduo";
-
-				$detailsTablesData["public.DetalleVentas"][$dIndex]["detailKeys"] = array();
-
-	$detailsTablesData["public.DetalleVentas"][$dIndex]["detailKeys"][]="IdGesPesResiduo";
+//endif
 
 // tables which are master tables for current table (detail)
 $masterTablesData["public.DetalleVentas"] = array();
 
 
 
-	
-				$strOriginalDetailsTable="public.Ventas";
-	$masterParams = array();
-	$masterParams["mDataSourceTable"]="public.Ventas";
-	$masterParams["mOriginalTable"]= $strOriginalDetailsTable;
-	$masterParams["mShortTable"]= "ventas";
-	$masterParams["masterKeys"]= array();
-	$masterParams["detailKeys"]= array();
-
-	$masterParams["type"] = PAGE_LIST;
-					$masterTablesData["public.DetalleVentas"][0] = $masterParams;
-				$masterTablesData["public.DetalleVentas"][0]["masterKeys"] = array();
-	$masterTablesData["public.DetalleVentas"][0]["masterKeys"][]="IdVenta";
-				$masterTablesData["public.DetalleVentas"][0]["detailKeys"] = array();
-	$masterTablesData["public.DetalleVentas"][0]["detailKeys"][]="IDVenta";
-		
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -1670,10 +1534,10 @@ function createSqlQuery_detalleventas()
 {
 $proto0=array();
 $proto0["m_strHead"] = "SELECT";
-$proto0["m_strFieldList"] = "\"ID\",  \"Cantidad\",  \"Precio\",  \"IDVenta\",  \"IdFGesPesResiduo\"";
+$proto0["m_strFieldList"] = "\"ID\",  	\"Cantidad\",  	\"Precio\",  	\"IdVenta\",  	\"IdGesPesResiduo\"";
 $proto0["m_strFrom"] = "FROM \"public\".\"DetalleVentas\"";
 $proto0["m_strWhere"] = "";
-$proto0["m_strOrderBy"] = "ORDER BY \"IdFGesPesResiduo\" DESC";
+$proto0["m_strOrderBy"] = "";
 	
 		;
 			$proto0["cipherer"] = null;
@@ -1754,12 +1618,12 @@ $obj = new SQLFieldListItem($proto10);
 $proto0["m_fieldlist"][]=$obj;
 						$proto12=array();
 			$obj = new SQLField(array(
-	"m_strName" => "IDVenta",
+	"m_strName" => "IdVenta",
 	"m_strTable" => "public.DetalleVentas",
 	"m_srcTableName" => "public.DetalleVentas"
 ));
 
-$proto12["m_sql"] = "\"IDVenta\"";
+$proto12["m_sql"] = "\"IdVenta\"";
 $proto12["m_srcTableName"] = "public.DetalleVentas";
 $proto12["m_expr"]=$obj;
 $proto12["m_alias"] = "";
@@ -1768,12 +1632,12 @@ $obj = new SQLFieldListItem($proto12);
 $proto0["m_fieldlist"][]=$obj;
 						$proto14=array();
 			$obj = new SQLField(array(
-	"m_strName" => "IdFGesPesResiduo",
+	"m_strName" => "IdGesPesResiduo",
 	"m_strTable" => "public.DetalleVentas",
 	"m_srcTableName" => "public.DetalleVentas"
 ));
 
-$proto14["m_sql"] = "\"IdFGesPesResiduo\"";
+$proto14["m_sql"] = "\"IdGesPesResiduo\"";
 $proto14["m_srcTableName"] = "public.DetalleVentas";
 $proto14["m_expr"]=$obj;
 $proto14["m_alias"] = "";
@@ -1790,8 +1654,8 @@ $proto17["m_columns"] = array();
 $proto17["m_columns"][] = "ID";
 $proto17["m_columns"][] = "Cantidad";
 $proto17["m_columns"][] = "Precio";
-$proto17["m_columns"][] = "IDVenta";
-$proto17["m_columns"][] = "IdFGesPesResiduo";
+$proto17["m_columns"][] = "IdVenta";
+$proto17["m_columns"][] = "IdGesPesResiduo";
 $obj = new SQLTable($proto17);
 
 $proto16["m_table"] = $obj;
@@ -1819,19 +1683,6 @@ $obj = new SQLFromListItem($proto16);
 $proto0["m_fromlist"][]=$obj;
 $proto0["m_groupby"] = array();
 $proto0["m_orderby"] = array();
-												$proto20=array();
-						$obj = new SQLField(array(
-	"m_strName" => "IdFGesPesResiduo",
-	"m_strTable" => "public.DetalleVentas",
-	"m_srcTableName" => "public.DetalleVentas"
-));
-
-$proto20["m_column"]=$obj;
-$proto20["m_bAsc"] = 0;
-$proto20["m_nColumn"] = 0;
-$obj = new SQLOrderByItem($proto20);
-
-$proto0["m_orderby"][]=$obj;					
 $proto0["m_srcTableName"]="public.DetalleVentas";		
 $obj = new SQLQuery($proto0);
 
@@ -1847,7 +1698,10 @@ $queryData_detalleventas = createSqlQuery_detalleventas();
 
 $tdatadetalleventas[".sqlquery"] = $queryData_detalleventas;
 
-$tableEvents["public.DetalleVentas"] = new eventsBase;
-$tdatadetalleventas[".hasEvents"] = false;
+
+
+include_once(getabspath("include/detalleventas_events.php"));
+$tableEvents["public.DetalleVentas"] = new eventclass_detalleventas;
+$tdatadetalleventas[".hasEvents"] = true;
 
 ?>

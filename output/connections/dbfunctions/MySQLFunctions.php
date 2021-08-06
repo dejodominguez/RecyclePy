@@ -60,20 +60,6 @@ class MySQLFunctions extends DBFunctions
 
 
 	/**
-	 * adds wrappers to field name if required
-	 * @param String strName
-	 * @return String
-	 */
-	public function addFieldWrappers( $strName )
-	{		
-		if( substr($strName, 0, 1) == $this->strLeftWrapper )
-			return $strName;
-			
-		return $this->strLeftWrapper.$strName.$this->strRightWrapper;
-	}
-	
-
-	/**
 	 * @param String dbval
 	 * @return String	 
 	 */
@@ -91,7 +77,7 @@ class MySQLFunctions extends DBFunctions
 	 */
 	public function field2char($value, $type = 3)
 	{
-		return $value;
+		return "CAST( " .$value .' AS CHAR )';
 	}
 	
 	/**
@@ -137,10 +123,11 @@ class MySQLFunctions extends DBFunctions
 	{
 		return 'binary ' . $val1 . ' = ' . $val2;
 	}
-	public function queryPage( $connection, $strSQL, $pageStart, $pageSize, $applyLimit ) 
+	
+	public function limitedQuery( $connection, $strSQL, $skip, $total, $applyLimit ) 
 	{
-		if( $applyLimit ) 
-			$strSQL.= " limit ".(($pageStart - 1) * $pageSize).",".$pageSize;
+		if( $applyLimit && ( $skip || $total > 0 ) ) 
+			$strSQL.= " limit ". $skip . ", " . ( $total >=0 ? $total : 2000000000 );
 		return $connection->query( $strSQL );
 	}
 

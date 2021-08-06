@@ -69,7 +69,7 @@
 		data-v-width="4"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -88,7 +88,7 @@
 {BEGIN IdGesPesResiduo_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-vertical-field" data-fieldname="IdGesPesResiduo" data-signal-error-for="IdGesPesResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdGesPesResiduo" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_IdGesPesResiduo}  r-vertical-field" data-fieldname="IdGesPesResiduo" data-signal-error-for="IdGesPesResiduo{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field" {$item_integrated_edit_field} data-pageid="{$pageid}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_IdGesPesResiduo}">
@@ -104,10 +104,29 @@
 
 {END IdGesPesResiduo_fieldblock}
 											
+{BEGIN concat_fieldblock}
+
+
+<div class="r-integrated-field form-group clearfix {$fielddispclass_concat}  r-vertical-field" data-fieldname="concat" data-signal-error-for="concat{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="concat" data-fieldname="concat" >
+
+	
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_concat}">
+		
+		{BEGIN concat_label}{$label public_GestionPesosResiduosDetVen concat }{END concat_label}
+	</label>
+	<div class="col-md-offset-3 col-md-6" >
+		{$concat_value}	</div>
+
+		
+</div>
+
+
+{END concat_fieldblock}
+											
 {BEGIN KilosResiduos_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_KilosResiduos}  r-vertical-field" data-fieldname="KilosResiduos" data-signal-error-for="KilosResiduos{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field4" {$item_integrated_edit_field4} data-pageid="{$pageid}" data-field="KilosResiduos" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_KilosResiduos}  r-vertical-field" data-fieldname="KilosResiduos" data-signal-error-for="KilosResiduos{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field3" {$item_integrated_edit_field3} data-pageid="{$pageid}" data-field="KilosResiduos" data-fieldname="KilosResiduos" >
 
 	
 	<label class="col-md-offset-3 col-md-6" for="{$labelfor_KilosResiduos}">
@@ -123,24 +142,24 @@
 
 {END KilosResiduos_fieldblock}
 											
-{BEGIN concat_fieldblock}
+{BEGIN Estado_fieldblock}
 
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_concat}  r-vertical-field" data-fieldname="concat" data-signal-error-for="concat{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field1" {$item_integrated_edit_field1} data-pageid="{$pageid}" data-field="concat" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_Estado}  r-vertical-field" data-fieldname="Estado" data-signal-error-for="Estado{$id}" data-itemtype="integrated_edit_field" data-itemid="integrated_edit_field2" {$item_integrated_edit_field2} data-pageid="{$pageid}" data-field="Estado" data-fieldname="Estado" >
 
 	
-	<label class="col-md-offset-3 col-md-6" for="{$labelfor_concat}">
+	<label class="col-md-offset-3 col-md-6" for="{$labelfor_Estado}">
 		
-		{BEGIN concat_label}{$label public_GestionPesosResiduosDetVen concat }{END concat_label}
+		{BEGIN Estado_label}{$label public_GestionPesosResiduosDetVen Estado }{END Estado_label}
 	</label>
 	<div class="col-md-offset-3 col-md-6" >
-		{$concat_value}	</div>
+		{$Estado_value}	</div>
 
 		
 </div>
 
 
-{END concat_fieldblock}
+{END Estado_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}
@@ -185,13 +204,13 @@
 		<span data-itemtype="hamburger" data-itemid="hamburger" {$item_hamburger} data-pageid="{$pageid}" data-small data-button-item>
 	<span class="dropdown dropup">
 		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
-							<span class="glyphicon glyphicon-menu-hamburger"></span>
-									<span class="caret"></span>
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+												<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 							{BEGIN edit_page_button}
 	<li data-itemtype="view_edit" data-itemid="view_edit" {$item_view_edit} data-pageid="{$pageid}" data-small >
-				<a  href="#" {$edit_page_button_attrs}  title="" >
+				<a  href="public_gestionpesosresiduosdetven_edit.php?{$editlink}" {$edit_page_button_attrs}  title="" >
 				
 		Editar		
 		</a>

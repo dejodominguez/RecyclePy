@@ -82,7 +82,7 @@
 									{BEGIN grid_block}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="1"
 >
@@ -113,7 +113,7 @@
 	 
 		{BEGIN IdGesPesResiduo_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo">
 	{$label public_GestionPesosResiduosDetVen IdGesPesResiduo }	</span>
 {END IdGesPesResiduo_fieldheadercolumn}
 
@@ -127,20 +127,20 @@
 	{$cell_grid_headcell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$KilosResiduos_class}
+		 r-ori-vert				{$concat_class}
 			"
 
-			data-field="KilosResiduos"
+			data-field="concat"
 	
 	data-cellId="grid_headcell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN KilosResiduos_fieldheadercolumn}
+		{BEGIN concat_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos">
-	{$label public_GestionPesosResiduosDetVen KilosResiduos }	</span>
-{END KilosResiduos_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field5" {$item_simple_grid_field5} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="concat" data-fieldname="concat">
+	{$label public_GestionPesosResiduosDetVen concat }	</span>
+{END concat_fieldheadercolumn}
 
 	
 	</th>
@@ -152,24 +152,49 @@
 	{$cell_grid_headcell_field2}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$concat_class}
+		 r-ori-vert				{$KilosResiduos_class}
 			"
 
-			data-field="concat"
+			data-field="KilosResiduos"
 	
 	data-cellId="grid_headcell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN concat_fieldheadercolumn}
+		{BEGIN KilosResiduos_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="concat">
-	{$label public_GestionPesosResiduosDetVen concat }	</span>
-{END concat_fieldheadercolumn}
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field6" {$item_simple_grid_field6} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-fieldname="KilosResiduos">
+	{$label public_GestionPesosResiduosDetVen KilosResiduos }	</span>
+{END KilosResiduos_fieldheadercolumn}
 
 	
 	</th>
 	{END cellblock_grid_headcell_field2}
+				 
+					{BEGIN cellblock_grid_headcell_field3}
+	<th
+	
+	{$cell_grid_headcell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$Estado_class}
+			"
+
+			data-field="Estado"
+	
+	data-cellId="grid_headcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN Estado_fieldheadercolumn}
+ 
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field7" {$item_simple_grid_field7} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Estado" data-fieldname="Estado">
+	{$label public_GestionPesosResiduosDetVen Estado }	</span>
+{END Estado_fieldheadercolumn}
+
+	
+	</th>
+	{END cellblock_grid_headcell_field3}
 							</tr>
 					 
 					 
@@ -202,7 +227,7 @@
 
 	 
 		{BEGIN IdGesPesResiduo_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdGesPesResiduo" data-fieldname="IdGesPesResiduo" data-default-width >
 {$IdGesPesResiduo_value}
 </span>
 {END IdGesPesResiduo_fieldcolumn}	
@@ -215,20 +240,20 @@
 	{$cell_grid_cell_field1}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$KilosResiduos_class}
+		 r-ori-vert				{$concat_class}
 			"
 
-			data-field="KilosResiduos"
+			data-field="concat"
 	
 	data-cellId="grid_cell_field1" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN KilosResiduos_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field4" {$item_simple_grid_field4} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-default-width >
-{$KilosResiduos_value}
+		{BEGIN concat_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="concat" data-fieldname="concat" data-default-width >
+{$concat_value}
 </span>
-{END KilosResiduos_fieldcolumn}	
+{END concat_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field1}
 				 
@@ -238,22 +263,45 @@
 	{$cell_grid_cell_field2}
 	{$recordattrs}
 	class="
-		 r-ori-vert				{$concat_class}
+		 r-ori-vert				{$KilosResiduos_class}
 			"
 
-			data-field="concat"
+			data-field="KilosResiduos"
 	
 	data-cellId="grid_cell_field2" data-pageid="{$pageid}" data-record-id="{$recId}"	
 	>
 
 	 
-		{BEGIN concat_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="concat" data-default-width >
-{$concat_value}
+		{BEGIN KilosResiduos_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="KilosResiduos" data-fieldname="KilosResiduos" data-default-width >
+{$KilosResiduos_value}
 </span>
-{END concat_fieldcolumn}	
+{END KilosResiduos_fieldcolumn}	
 	</td>
 	{END cellblock_grid_cell_field2}
+				 
+					{BEGIN cellblock_grid_cell_field3}
+	<td
+	
+	{$cell_grid_cell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert				{$Estado_class}
+			"
+
+			data-field="Estado"
+	
+	data-cellId="grid_cell_field3" data-pageid="{$pageid}" data-record-id="{$recId}"	
+	>
+
+	 
+		{BEGIN Estado_fieldcolumn}
+<span data-itemtype="grid_field" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="Estado" data-fieldname="Estado" data-default-width >
+{$Estado_value}
+</span>
+{END Estado_fieldcolumn}	
+	</td>
+	{END cellblock_grid_cell_field3}
 							</tr>
 					 
 					
@@ -317,6 +365,22 @@
 	
 	</td>
 	{END cellblock_grid_footcell_field2}
+				 
+					{BEGIN cellblock_grid_footcell_field3}
+	<td
+	
+	{$cell_grid_footcell_field3}
+	{$recordattrs}
+	class="
+		 r-ori-vert			"
+
+	
+	data-cellId="grid_footcell_field3" data-pageid="{$pageid}" data-record-id="{$recId}" data-page="public_gestionpesosresiduosdetven_print"	
+	>
+
+	
+	</td>
+	{END cellblock_grid_footcell_field3}
 							</tr>
 					
 					</tfoot>

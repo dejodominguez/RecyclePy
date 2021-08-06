@@ -270,7 +270,7 @@ class ADOConnection extends Connection
 	 * @param Number pageSize
 	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n )
 	{
 		if( $page == 1 ) 
 			return;
@@ -278,7 +278,7 @@ class ADOConnection extends Connection
 		if( $qHandle->EOF() )
 			return;
 			
-	   $qHandle->Move( $pageSize * ($page - 1) );
+	   $qHandle->Move( $n );
 	}
 	
 	/**

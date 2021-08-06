@@ -17,42 +17,165 @@
 
 	<body class="{$stylename} function-search" {$bodyattrs}>
 	{BEGIN body}
-		{$header}
 		<style>
-			{$containerCss}
+		{$containerCss}
 		</style>
-		{$locking}
-		<div class="r-small-page" 
-			data-body-align="center"
-			data-body-width="standard"
-		>
-							{BEGIN top_block}
-<div class="r-form" data-location="top" id="form_top_{$pageid}" data-makeup="small" {$form_top} data-pageid="{$pageid}"
-		data-v-width="6"
-	data-v-margin="1"
-	
->		
+		<div class="r-vbar-page">
+			<div data-width="300px"  class="r-left clearfix {$leftbar_class}" >
+								<div data-location="left" id="form_left_{$pageid}" data-makeup="leftbar" {$form_left} data-pageid="{$pageid}">
+{BEGIN left_block}
+ 
+     
+         
+
+			<div data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell class="clearfix " data-itemid="logo" {$item_logo}>
+				{BEGIN logo_block}
+	<A data-itemtype="logo" data-itemid="logo" {$item_logo} data-pageid="{$pageid}" class="navbar-brand" href="{$home_link}" data-pageid="{$pageid}" {$logo_hiddenattr}>
+		{$logo}
+	</A>
+{END logo_block}
+				<button data-pageid="1" type="button" class="navbar-toggle collapsed" data-runner-toggle="collapse" data-target="[data-mobile-controlled]">	
+					<span class="sr-only">Toggle navigation</span>	
+					<span class="icon-bar"></span>					
+				</button>				
+			</div>
+		
+ 
+
+			<div class="clearfix " data-cellId="left_c0" data-pageid="{$pageid}" data-logo-cell data-itemid="expand_button" {$item_expand_button} data-topcell-item-type="expand_button" >
+				<span data-itemtype="expand_button" data-itemid="expand_button" {$item_expand_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Expandir" class="btn btn-link   
+	" href="#" >
+					<span class="glyphicon glyphicon-triangle-right"></span>
+										</a>
+</span>
+			</div>
+		
+     
+     
+         
+
+			<div data-cellId="left_c1" data-pageid="{$pageid}" class="clearfix  r-ori-vert " data-itemtype="menu" data-itemid="menu" {$item_menu} data-pageid="{$pageid}">
+				{$menu main}			</div>
+		
+    {END left_block}
+</div>				</div>
+			<div class="r-content-col" data-resize-left="leftbar">
+				<div  class="r-topheader" data-resize-name="topbar">
+									{BEGIN supertop_block}
+<nav class="navbar navbar-default" 
+	data-location="supertop" id="form_supertop_{$pageid}" data-makeup="leftbar" {$form_supertop} data-pageid="{$pageid}" >
+			 
+							 
+				<span class="navbar-form  navbar-header" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="expand_menu_button" {$item_expand_menu_button} data-topcell-item-type="expand_menu_button" >
+				<span data-itemtype="expand_menu_button" data-itemid="expand_menu_button" {$item_expand_menu_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Encubrir" class="btn-link   
+	 glyphicon glyphicon-menu-hamburger" href="#" >		
+				
+								</a>
+</span>
+			</span>
+		 
+				<span class="navbar-form  navbar-collapse" data-cellId="supertop_c1" data-pageid="{$pageid}" data-itemid="collapse_button" {$item_collapse_button} data-topcell-item-type="collapse_button" >
+				<span data-itemtype="collapse_button" data-itemid="collapse_button" {$item_collapse_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="Muestrame el menu" class="btn-link   
+	 glyphicon glyphicon-triangle-left" href="#" >		
+				
+								</a>
+</span>
+			</span>
+							 
+							 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="loginform_login" {$item_loginform_login} data-topcell-item-type="loginform_login" >
+				{BEGIN guestloginbutton}
+<span data-itemtype="loginform_login" data-itemid="loginform_login" {$item_loginform_login} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" href="#" {$guestloginlink_attrs} >
+							Conectar			</a>
+</span>
+{END guestloginbutton}
+			</span>
+		 
+				<span class="navbar-form r-align-right navbar-collapse" data-cellId="supertop_c2" data-pageid="{$pageid}" data-itemid="username_button" {$item_username_button} data-topcell-item-type="username_button" >
+				{BEGIN loggedas_message}
+<span data-itemtype="username_button" data-itemid="username_button" {$item_username_button} data-pageid="{$pageid}" data-small data-button-item>
+	<span class="dropdown ">
+		<button type="button" title="" class="btn btn-default   dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">		
+			{BEGIN userbutton_icon}							<span class="glyphicon glyphicon-user"></span>
+						{END userbutton_icon}{$userbutton_image}			{$username}			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+							{BEGIN logoutbutton}
+	<li data-itemtype="userinfo_link" data-itemid="userinfo_link" {$item_userinfo_link} data-pageid="{$pageid}" data-small >
+				<a  href="userinfo.php"  title="" >
+				
+		Perfil del usuario		
+		</a>
+	</li>
+{END logoutbutton}
+							{BEGIN logoutbutton}
+	<li data-itemtype="logout_link" data-itemid="logout_link" {$item_logout_link} data-pageid="{$pageid}" data-small >
+				<a  href="#" {$logoutlink_attrs}  title="" >
+				
+		Desconectarse		
+		</a>
+	</li>
+{END logoutbutton}
+							{BEGIN changepwd_link}
+	<li data-itemtype="changepassword_link" data-itemid="changepassword_link" {$item_changepassword_link} data-pageid="{$pageid}" data-small >
+				<a  href="changepwd.php" {$changepwdlink_attrs} id="changePasswordButton{$id}"  title="" >
+				
+		Cambiar contraseña		
+		</a>
+	</li>
+{END changepwd_link}
+					</ul>
+	</span>
+</span>
+{END loggedas_message}
+			</span>
+								</nav>
+{END supertop_block}
+						{$locking}
+				</div>	
+				<div class="r-body" data-resize-top="topbar" data-body-width="standard">
+					{$header}
+					<div class="r-top">
+									{BEGIN top_block}
+<div class="r-form" data-location="top" id="form_top_{$pageid}" data-makeup="leftbar" {$form_top} data-pageid="{$pageid}" >		
 	 
 		<div class="row">
 			 
 				<div 
 	data-cellId="top_c1" data-pageid="{$pageid}"	{$cell_top_c1}
 	class=" r-ori-vert			col-md-12
-	">
-	 
-		<h2 data-itemtype="search_header" data-itemid="search_header" {$item_search_header} data-pageid="{$pageid}" >{$pagetitlelabel public_Ventas search}</h2>
-	</div>					</div>
+	
+">
+		 
+		<h2 data-itemtype="search_header" data-itemid="search_header" {$item_search_header} data-pageid="{$pageid}" >{$pagetitlelabel public_ventas search}</h2>
+		</div>					</div>
 	</div>		
 {END top_block}
-									{BEGIN above-grid_block}
-<div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="small" {$form_above-grid} data-pageid="{$pageid}"
-		data-v-width="6"
-	data-v-margin="1"
+						</div>
+					<div class="r-above">
+										{BEGIN above-grid_block}
+<div class="r-form" data-location="above-grid" id="form_above-grid_{$pageid}" data-makeup="leftbar" {$form_above-grid} data-pageid="{$pageid}" >		
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="above-grid_c1" data-pageid="{$pageid}"	{$cell_above-grid_c1}
+	class=" r-ori-vert			col-md-12
 	
->		
+">
+		{BEGIN firstAboveGridCell}
+				{END firstAboveGridCell}	
+	</div>					</div>
 	</div>		
 {END above-grid_block}
-									{BEGIN grid_block}
+						</div>
+					<div class="r-grid">
+										{BEGIN grid_block}
 
 
 
@@ -60,8 +183,8 @@
  
 	 
 												<table 
-	data-body-align="center"
-	data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" 
+	data-body-align="left"
+	data-location="grid" id="form_grid_{$pageid}" data-makeup="leftbar" {$form_grid} data-pageid="{$pageid}" 
 	class="r-edit-form" cellpadding="0" cellspacing="0" 
 	{$grid_hiddenattr} 
 		data-form-width="1"
@@ -69,7 +192,7 @@
 		data-v-width="6"
 	>
 	<tbody>
-										<tr>
+										<tr {$row_grid_0} >
 										
 
 {BEGIN cellblock_grid_c3}
@@ -85,125 +208,112 @@
 >
 	<div edit-form-cell class="clearfix">
 				
-{BEGIN IdVenta_fieldblock}
+{BEGIN id_venta_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdVenta}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="IdVenta" 
-	
-	data-signal-error-for="IdVenta{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="IdVenta" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_venta}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="id_venta{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field" {$item_integrated_search_field} data-pageid="{$pageid}" data-field="id_venta" data-fieldname="id_venta" >
 
 
-	<label class="r-search-label control-label" for="{$labelfor_IdVenta}">
-		{$label public_Ventas IdVenta }	</label>
+	<label class="r-search-label control-label" for="{$labelfor_id_venta}">
+		{$label public_ventas id_venta }	</label>
 	<div class="r-search-option">
-		{$searchtype_IdVenta}
+		{$searchtype_id_venta}
 	</div>
 	<div class="r-search-field">
-		{$IdVenta_editcontrol}	</div>
+		{$id_venta_editcontrol}	</div>
 	<div class="r-search-field">
-		{$IdVenta_editcontrol1}
+		{$id_venta_editcontrol1}
 	</div>
 	
 </div>
 
-{END IdVenta_fieldblock}
+{END id_venta_fieldblock}
 											
-{BEGIN FechaVenta_fieldblock}
+{BEGIN fecha_venta_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_FechaVenta}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="FechaVenta" 
-	
-	data-signal-error-for="FechaVenta{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="FechaVenta" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_fecha_venta}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="fecha_venta{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field1" {$item_integrated_search_field1} data-pageid="{$pageid}" data-field="fecha_venta" data-fieldname="fecha_venta" >
 
 
-	<label class="r-search-label control-label" for="{$labelfor_FechaVenta}">
-		{$label public_Ventas FechaVenta }	</label>
+	<label class="r-search-label control-label" for="{$labelfor_fecha_venta}">
+		{$label public_ventas fecha_venta }	</label>
 	<div class="r-search-option">
-		{$searchtype_FechaVenta}
+		{$searchtype_fecha_venta}
 	</div>
 	<div class="r-search-field">
-		{$FechaVenta_editcontrol}	</div>
+		{$fecha_venta_editcontrol}	</div>
 	<div class="r-search-field">
-		{$FechaVenta_editcontrol1}
+		{$fecha_venta_editcontrol1}
 	</div>
 	
 </div>
 
-{END FechaVenta_fieldblock}
+{END fecha_venta_fieldblock}
 											
-{BEGIN Observaci_n_fieldblock}
+{BEGIN observacion_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_Observaci_n}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="Observación" 
-	
-	data-signal-error-for="Observaci_n{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="Observaci_n" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_observacion}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="observacion{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field2" {$item_integrated_search_field2} data-pageid="{$pageid}" data-field="observacion" data-fieldname="observacion" >
 
 
-	<label class="r-search-label control-label" for="{$labelfor_Observaci_n}">
-		{$label public_Ventas Observaci_n }	</label>
+	<label class="r-search-label control-label" for="{$labelfor_observacion}">
+		{$label public_ventas observacion }	</label>
 	<div class="r-search-option">
-		{$searchtype_Observaci_n}
+		{$searchtype_observacion}
 	</div>
 	<div class="r-search-field">
-		{$Observaci_n_editcontrol}	</div>
+		{$observacion_editcontrol}	</div>
 	<div class="r-search-field">
-		{$Observaci_n_editcontrol1}
+		{$observacion_editcontrol1}
 	</div>
 	
 </div>
 
-{END Observaci_n_fieldblock}
+{END observacion_fieldblock}
 											
-{BEGIN IdEmpreRecicladora_fieldblock}
+{BEGIN id_empre_recichadora_fieldblock}
 
-<div class="r-integrated-field form-group clearfix {$fielddispclass_IdEmpreRecicladora}  r-horizontal-field form-horizontal" 
-	
-		data-fieldname="IdEmpreRecicladora" 
-	
-	data-signal-error-for="IdEmpreRecicladora{$id}" 
-	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="IdEmpreRecicladora" >
+<div class="r-integrated-field form-group clearfix {$fielddispclass_id_empre_recichadora}  r-horizontal-field form-horizontal" 	
+	data-signal-error-for="id_empre_recichadora{$id}" 
+	data-itemtype="integrated_search_field" data-itemid="integrated_search_field3" {$item_integrated_search_field3} data-pageid="{$pageid}" data-field="id_empre_recichadora" data-fieldname="id_empre_recichadora" >
 
 
-	<label class="r-search-label control-label" for="{$labelfor_IdEmpreRecicladora}">
-		{$label public_Ventas IdEmpreRecicladora }	</label>
+	<label class="r-search-label control-label" for="{$labelfor_id_empre_recichadora}">
+		{$label public_ventas id_empre_recichadora }	</label>
 	<div class="r-search-option">
-		{$searchtype_IdEmpreRecicladora}
+		{$searchtype_id_empre_recichadora}
 	</div>
 	<div class="r-search-field">
-		{$IdEmpreRecicladora_editcontrol}	</div>
+		{$id_empre_recichadora_editcontrol}	</div>
 	<div class="r-search-field">
-		{$IdEmpreRecicladora_editcontrol1}
+		{$id_empre_recichadora_editcontrol1}
 	</div>
 	
 </div>
 
-{END IdEmpreRecicladora_fieldblock}
+{END id_empre_recichadora_fieldblock}
 	
 								</td>
 			{END cellblock_grid_c3}
 								</tr>
 			</tbody></table>
 {END grid_block}
-									{BEGIN below-grid_block}
-<div class="r-form" data-location="below-grid" id="form_below-grid_{$pageid}" data-makeup="small" {$form_below-grid} data-pageid="{$pageid}"
-		data-v-width="6"
-	data-v-margin="1"
-	
->		
+						</div>
+					<div class="r-below">
+										{BEGIN below-grid_block}
+<div class="r-form" data-location="below-grid" id="form_below-grid_{$pageid}" data-makeup="leftbar" {$form_below-grid} data-pageid="{$pageid}" >		
 	 
 		<div class="row">
 			 
 				<div 
 	data-cellId="below-grid_c1" data-pageid="{$pageid}"	{$cell_below-grid_c1}
 	class="			col-md-12
-	">
-	 
+	
+">
+		 
 		<span data-itemtype="search_search" data-itemid="search_search" {$item_search_search} data-pageid="{$pageid}" data-small data-button-item>
 	<a type="button" title="" class="btn btn-primary   
 	" {$searchbutton_attrs} >
@@ -231,11 +341,16 @@
 							Cancelar			</a>
 </span>
 {END cancel_button}
-	</div>					</div>
+		</div>					</div>
 	</div>		
 {END below-grid_block}
+						</div>
+					{$footer}
+				</div>	
+			</div>	
+			<div class="r-body-shadow">
 			</div>
-		{$footer}
+		</div>
 	{END body}
 	</body>
 </html>

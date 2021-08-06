@@ -10,7 +10,7 @@ class RightsPage extends ListPage
 	 * @var array
 	 */
 	var $tables = array();
-	
+
 	/**
 	 * Array of all pages
 	 *
@@ -91,9 +91,9 @@ class RightsPage extends ListPage
 		);
 
 		// Set language params, if have more than one language
-		
+
 		$this->initLogin();
-		
+
 		$this->setLangParams();
 
 		$this->sortTables();
@@ -127,11 +127,11 @@ class RightsPage extends ListPage
 		$this->groups[-2] = "<"."Por defecto".">";
 		$this->groups[-3] = "<"."Invitado".">";
 
-		$sql = "select ". 
-			$grConnection->addFieldWrappers( "" ) .", ". 
-			$grConnection->addFieldWrappers( "" ) 
-			." from ". 
-			$grConnection->addTableWrappers( "public.recyclepy_uggroups" ) .
+		$sql = "select ".
+			$grConnection->addFieldWrappers( "" ) .", ".
+			$grConnection->addFieldWrappers( "" )
+			." from ".
+			$grConnection->addTableWrappers( "uggroups" ) .
 			" order by ". $grConnection->addFieldWrappers( "" );
 
 		$qResult = $grConnection->query( $sql );
@@ -156,7 +156,7 @@ class RightsPage extends ListPage
 			{
 				$sg["group_class"] = "active";
 				$first = false;
-			}		
+			}
 			$sg["groupname"] = runner_htmlspecialchars($name);
 			$this->smartyGroups[] = $sg;
 		}
@@ -173,7 +173,7 @@ class RightsPage extends ListPage
 			.", ". $this->connection->addFieldWrappers( "" )
 			.", ". $this->connection->addFieldWrappers( "" )
 			.", ". $this->connection->addFieldWrappers( "" )
-			." from ". $this->connection->addTableWrappers( "public.recyclepy_ugrights" )
+			." from ". $this->connection->addTableWrappers( "ugrights" )
 			." order by ". $this->connection->addFieldWrappers( "" );
 
 		$qResult = $this->connection->query( $sql );
@@ -260,9 +260,9 @@ class RightsPage extends ListPage
 		// The user might rewrite $_SESSION["UserName"] value with HTML code in an event, so no encoding will be performed while printing this value.
 		$this->xt->assign("username", $_SESSION["UserName"]);
 		if ($this->createLoginPage)
-			$this->xt->assign("userid", runner_htmlspecialchars($_SESSION["UserID"]));
-			
-		$this->hideElement("message");	
+			$this->xt->assign("userid", runner_htmlspecialchars( Security::getUserName() ));
+
+		$this->hideElement("message");
 	}
 
 	function getBreadcrumbMenuId() {
@@ -296,11 +296,11 @@ class RightsPage extends ListPage
 		$addedTables = array();
 		$groupsMap = array();
 		$allTables = GetTablesListWithoutSecurity();
-		
+
 		foreach($menu as $m)
 		{
 			$arr = array();
-			if ( $m["pageType"] == "WebReports" || $m["type"] == "Separator" )
+			if ( $m["pageType"] == "webreports" || $m["type"] == "Separator" )
 				continue;
 
 			if( $m["table"] && !$addedTables[ $m["table"] ] && array_search( $m["table"], $allTables ) !== FALSE )
@@ -375,10 +375,30 @@ class RightsPage extends ListPage
 		$editlink = "";
 		$copylink = "";
 		$parentStack = array();
+
+		$hasGroupsToExpand = false;
+
 		foreach($this->menuOrderedTables as $idx => $tbl)
 		{
 			$table = @$tbl["table"];
 			$parent = @$tbl["parent"];
+
+			// update menu structure
+			if(!isset($parent))
+			{
+				$parentStack = array();
+			}
+			else
+			{
+				$stackPos = array_search( $parent, $parentStack );
+				if( $stackPos === FALSE )
+					$parentStack[] = $parent;
+				else
+				{
+					$parentStack = array_slice( $parentStack, 0, $stackPos + 1);
+				}
+			}
+
 			if( strlen($table) )
 			{
 				$caption = $this->tables[$table][1];
@@ -406,7 +426,7 @@ class RightsPage extends ListPage
 
 				$row["hide_pages_attrs"] .= 'data-hide-pages data-hidden data-table="'.$shortTable.'"';
 				$row["show_pages_attrs"] .= 'data-show-pages data-table="'.$shortTable.'"';
-				$this->fillPageRows( $table, $shortTable, $row );
+				$this->fillPageRows( $table, $shortTable, $row, count( $parentStack ) );
 
 			}
 			else
@@ -420,26 +440,13 @@ class RightsPage extends ListPage
 				$row["hide_pages_attrs"] .= 'data-hidden';
 				$row["show_pages_attrs"] .= 'data-hidden';
 			}
-			if(!isset($parent))
-			{
-			//	clear stack
-				$parentStack = array();
-			}
-			else
-			{
-				$stackPos = array_search( $parent, $parentStack );
-				if( $stackPos === FALSE )
-					$parentStack[] = $parent;
-				else
-				{
-					$parentStack = array_slice( $parentStack, 0, $stackPos + 1);
-				}
-				$row["tblrowclass"] .= "rightsindent" . count($parentStack);
-			}
+			if( $parent )
+				$row["table_row_attrs"] .= ' data-level="' . count($parentStack) . '"';
 
 			$childrenCount = $this->getItemsCount($idx);
 			if( isset($tbl["items"]) && $childrenCount )
 			{
+				$hasGroupsToExpand = true;
 				$row["tablename"] .= "<span class='tablecount' dir='LTR'>&nbsp;(".$this->getItemsCount($idx).")</span>";
 				$row["table_row_attrs"] .= " data-groupid=\"".$idx."\"";
 				$row["groupControl"] = true;
@@ -466,9 +473,12 @@ class RightsPage extends ListPage
 
 			$rowInfoArr[] = $row;
 		}
+
+		if ( !$hasGroupsToExpand )
+			$this->hideItemType("rights_expand_all");
 	}
 
-	function fillPageRows($table, $shortTable, &$row ) {
+	function fillPageRows($table, $shortTable, &$row, $level ) {
 		$allPages = tablePages( $table );
 		$pages = array();
 		foreach( $allPages as $ptype => $pids ) {
@@ -482,7 +492,7 @@ class RightsPage extends ListPage
 		$pageRows = array();
 		foreach( $pages as $pageId => $pageType ) {
 			$pageRow = array();
-			
+
 			$perm = Security::pageType2permission( $pageType );
 			$pageRow[$perm."_pagebox"] = true;
 			$pageRow["pagebox"] = true;
@@ -490,11 +500,12 @@ class RightsPage extends ListPage
 			$pageRow["pagecheckbox"] = "data-permission=\"".$perm."\" data-table=\"".$shortTable."\" data-page=\"".$pageId."\" id=\"wholepagebox_".$shortTable.'_'.$pageId."\" data-checked=0";
 			$pageRow[$perm."_cell"] = " id=\"pagecell".$perm.$shortTable.'_'.$pageId."\"";
 			$pageRow["rights_page"] = runner_htmlspecialchars($pageId);
-			$pageRow["page_row_attrs"] = 'data-hidden data-table="'.$shortTable.'" data-page="'.$pageId.'"';
+			$pageRow["page_row_attrs"] = 'data-hidden data-table="'.$shortTable.'" data-page="'.$pageId.'" data-level="'.$level.'"';
 			$pageRows[] = $pageRow;
 		}
 
-		$row["page_row"] = array("data" => &$pageRows );
+		$row["page_row"] = array();
+		$row["page_row"]["data"] = &$pageRows;
 	}
 
 	/**
@@ -604,7 +615,7 @@ class RightsPage extends ListPage
 	 * This is required when using the same permission tables in several projects
 	 * @param String table
 	 * @param Number group
-	 * @param Array tableRights array( 
+	 * @param Array tableRights array(
 	 * 						"permissions" => "<mask>",
 	 * 						"pages" => array( <restricted pages> => true )
 	 * 					)
@@ -612,12 +623,12 @@ class RightsPage extends ListPage
 	function updateTablePermissions( $table, $group, $tableRights )
 	{
 		$mask = $tableRights["permissions"];
-		$rightWTableName = $this->connection->addTableWrappers( "public.recyclepy_ugrights" );
+		$rightWTableName = $this->connection->addTableWrappers( "ugrights" );
 		$accessMaskWFieldName = $this->connection->addFieldWrappers( "" );
 		$groupisWFieldName = $this->connection->addFieldWrappers( "" );
 		$pageWFieldName = $this->connection->addFieldWrappers( "" );
 		$tableNameWFieldName = $this->connection->addFieldWrappers( "" );
-		$groupWhere = $groupisWFieldName."=". $group 
+		$groupWhere = $groupisWFieldName."=". $group
 			." and ". $tableNameWFieldName ."=". $this->connection->prepareString( $table );
 
 		$strPages = "";
@@ -626,7 +637,7 @@ class RightsPage extends ListPage
 			$strPages = my_json_encode( $pages );
 		}
 		// It's expected that $this->tName is equal to 'admin_right' so the page's db connection is used #9875
-		$sql = "select ". $accessMaskWFieldName ." from ". $rightWTableName. "where" . $groupWhere;
+		$sql = "select ". $accessMaskWFieldName ." from ". $rightWTableName. " where " . $groupWhere;
 		// select rights from the database
 		$data = $this->connection->query( $sql )->fetchNumeric();
 		if( $data )
@@ -654,7 +665,7 @@ class RightsPage extends ListPage
 			if( strlen($mask) )
 			{
 				//	update the table name as well to address table renaming ( uppercase/lowercase ) issues
-				$sql = "update ". $rightWTableName ." set ". 
+				$sql = "update ". $rightWTableName ." set ".
 					$accessMaskWFieldName ."='". $mask ."',".
 					$tableNameWFieldName."=".$this->connection->prepareString( $table ).
 					"," . $pageWFieldName . "=" . $this->connection->prepareString( $strPages ).

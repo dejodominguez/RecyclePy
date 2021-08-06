@@ -1,7 +1,4 @@
 <?php
-
-
-
 $tdatapublic_gestionpesosresiduosdetven = array();
 $tdatapublic_gestionpesosresiduosdetven[".searchableFields"] = array();
 $tdatapublic_gestionpesosresiduosdetven[".ShortName"] = "public_gestionpesosresiduosdetven";
@@ -9,11 +6,12 @@ $tdatapublic_gestionpesosresiduosdetven[".OwnerID"] = "";
 $tdatapublic_gestionpesosresiduosdetven[".OriginalTable"] = "public.GestionPesosResiduos";
 
 
-$defaultPages = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
-
 $tdatapublic_gestionpesosresiduosdetven[".pagesByType"] = my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" );
+$tdatapublic_gestionpesosresiduosdetven[".originalPagesByType"] = $tdatapublic_gestionpesosresiduosdetven[".pagesByType"];
 $tdatapublic_gestionpesosresiduosdetven[".pages"] = types2pages( my_json_decode( "{\"add\":[\"add\"],\"edit\":[\"edit\"],\"export\":[\"export\"],\"import\":[\"import\"],\"list\":[\"list\"],\"print\":[\"print\"],\"search\":[\"search\"],\"view\":[\"view\"]}" ) );
-$tdatapublic_gestionpesosresiduosdetven[".defaultPages"] = $defaultPages;
+$tdatapublic_gestionpesosresiduosdetven[".originalPages"] = $tdatapublic_gestionpesosresiduosdetven[".pages"];
+$tdatapublic_gestionpesosresiduosdetven[".defaultPages"] = my_json_decode( "{\"add\":\"add\",\"edit\":\"edit\",\"export\":\"export\",\"import\":\"import\",\"list\":\"list\",\"print\":\"print\",\"search\":\"search\",\"view\":\"view\"}" );
+$tdatapublic_gestionpesosresiduosdetven[".originalDefaultPages"] = $tdatapublic_gestionpesosresiduosdetven[".defaultPages"];
 
 //	field labels
 $fieldLabelspublic_gestionpesosresiduosdetven = array();
@@ -36,6 +34,9 @@ if(mlang_getcurrentlang()=="Spanish")
 	$fieldLabelspublic_gestionpesosresiduosdetven["Spanish"]["KilosResiduos"] = "Kilos Residuos";
 	$fieldToolTipspublic_gestionpesosresiduosdetven["Spanish"]["KilosResiduos"] = "";
 	$placeHolderspublic_gestionpesosresiduosdetven["Spanish"]["KilosResiduos"] = "";
+	$fieldLabelspublic_gestionpesosresiduosdetven["Spanish"]["Estado"] = "Estado";
+	$fieldToolTipspublic_gestionpesosresiduosdetven["Spanish"]["Estado"] = "";
+	$placeHolderspublic_gestionpesosresiduosdetven["Spanish"]["Estado"] = "";
 	if (count($fieldToolTipspublic_gestionpesosresiduosdetven["Spanish"]))
 		$tdatapublic_gestionpesosresiduosdetven[".isUseToolTips"] = true;
 }
@@ -50,6 +51,8 @@ $tdatapublic_gestionpesosresiduosdetven[".nSecOptions"] = 0;
 
 $tdatapublic_gestionpesosresiduosdetven[".mainTableOwnerID"] = "";
 $tdatapublic_gestionpesosresiduosdetven[".entityType"] = 1;
+$tdatapublic_gestionpesosresiduosdetven[".connId"] = "RealEstate_at_localhost";
+
 
 $tdatapublic_gestionpesosresiduosdetven[".strOriginalTableName"] = "public.GestionPesosResiduos";
 
@@ -63,14 +66,9 @@ $tdatapublic_gestionpesosresiduosdetven[".showEditInPopup"] = false;
 
 $tdatapublic_gestionpesosresiduosdetven[".showViewInPopup"] = false;
 
-//page's base css files names
-$popupPagesLayoutNames = array();
-$tdatapublic_gestionpesosresiduosdetven[".popupPagesLayoutNames"] = $popupPagesLayoutNames;
-
-
 $tdatapublic_gestionpesosresiduosdetven[".listAjax"] = false;
 //	temporary
-$tdatapublic_gestionpesosresiduosdetven[".listAjax"] = false;
+//$tdatapublic_gestionpesosresiduosdetven[".listAjax"] = false;
 
 	$tdatapublic_gestionpesosresiduosdetven[".audit"] = false;
 
@@ -81,7 +79,7 @@ $pages = $tdatapublic_gestionpesosresiduosdetven[".defaultPages"];
 
 if( $pages[PAGE_EDIT] ) {
 	$tdatapublic_gestionpesosresiduosdetven[".edit"] = true;
-	$tdatapublic_gestionpesosresiduosdetven[".afterEditAction"] = 1;
+	$tdatapublic_gestionpesosresiduosdetven[".afterEditAction"] = 0;
 	$tdatapublic_gestionpesosresiduosdetven[".closePopupAfterEdit"] = 1;
 	$tdatapublic_gestionpesosresiduosdetven[".afterEditActionDetTable"] = "";
 }
@@ -161,6 +159,7 @@ $tdatapublic_gestionpesosresiduosdetven[".googleLikeFields"] = array();
 $tdatapublic_gestionpesosresiduosdetven[".googleLikeFields"][] = "IdGesPesResiduo";
 $tdatapublic_gestionpesosresiduosdetven[".googleLikeFields"][] = "concat";
 $tdatapublic_gestionpesosresiduosdetven[".googleLikeFields"][] = "KilosResiduos";
+$tdatapublic_gestionpesosresiduosdetven[".googleLikeFields"][] = "Estado";
 
 
 
@@ -189,17 +188,27 @@ $tdatapublic_gestionpesosresiduosdetven[".warnLeavingPages"] = true;
 
 
 $tstrOrderBy = "";
-if(strlen($tstrOrderBy) && strtolower(substr($tstrOrderBy,0,8))!="order by")
-	$tstrOrderBy = "order by ".$tstrOrderBy;
 $tdatapublic_gestionpesosresiduosdetven[".strOrderBy"] = $tstrOrderBy;
 
 $tdatapublic_gestionpesosresiduosdetven[".orderindexes"] = array();
 
-$tdatapublic_gestionpesosresiduosdetven[".sqlHead"] = "SELECT g.\"IdGesPesResiduo\",  concat(\"IdGesPesResiduo\", ' | ', r.\"NomReciclador\", ' | ', re.\"DescriResiduo\", ' | ', \"FechaGestion\"),  \"KilosResiduos\"";
+
+$tdatapublic_gestionpesosresiduosdetven[".sqlHead"] = "SELECT g.\"IdGesPesResiduo\",  concat(\"IdGesPesResiduo\", ' | ', r.\"NomReciclador\", ' | ', re.\"DescriResiduo\", ' | ', \"FechaGestion\", ' | ', \"Estado\"),  g.\"KilosResiduos\",  \"Estado\"";
 $tdatapublic_gestionpesosresiduosdetven[".sqlFrom"] = "FROM \"public\".\"GestionPesosResiduos\" AS g  , \"public\".\"Recicladores\" AS r  , \"public\".\"Residuos\" AS re";
-$tdatapublic_gestionpesosresiduosdetven[".sqlWhereExpr"] = "g.\"IdReciclador\"=r.\"IdReciclador\" and g.\"IdResiduo\"=re.\"IdResiduo\"";
+$tdatapublic_gestionpesosresiduosdetven[".sqlWhereExpr"] = "(g.\"IdReciclador\" =r.\"IdReciclador\") AND (g.\"IdResiduo\" =re.\"IdResiduo\") and g.\"Estado\" = 1";
 $tdatapublic_gestionpesosresiduosdetven[".sqlTail"] = "";
 
+//fill array of tabs for list page
+$arrGridTabs = array();
+$arrGridTabs[] = array(
+	'tabId' => "",
+	'name' => "All data",
+	'nameType' => 'Text',
+	'where' => "",
+	'showRowCount' => 0,
+	'hideEmpty' => 0,
+);
+$tdatapublic_gestionpesosresiduosdetven[".arrGridTabs"] = $arrGridTabs;
 
 
 
@@ -253,7 +262,7 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionPesosResiduosDetVen","IdGesPesResiduo");
 	$fdata["FieldType"] = 3;
 
-	
+
 		$fdata["AutoInc"] = true;
 
 	
@@ -261,6 +270,7 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 
 		$fdata["strField"] = "IdGesPesResiduo";
 
+	
 		$fdata["isSQLExpression"] = true;
 	$fdata["FullName"] = "g.\"IdGesPesResiduo\"";
 
@@ -284,6 +294,7 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -391,15 +402,16 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionPesosResiduosDetVen","concat");
 	$fdata["FieldType"] = 201;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "concat";
 
+	
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "concat(\"IdGesPesResiduo\", ' | ', r.\"NomReciclador\", ' | ', re.\"DescriResiduo\", ' | ', \"FechaGestion\")";
+	$fdata["FullName"] = "concat(\"IdGesPesResiduo\", ' | ', r.\"NomReciclador\", ' | ', re.\"DescriResiduo\", ' | ', \"FechaGestion\", ' | ', \"Estado\")";
 
 	
 	
@@ -421,6 +433,7 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -525,15 +538,17 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	$fdata["Label"] = GetFieldLabel("public_GestionPesosResiduosDetVen","KilosResiduos");
 	$fdata["FieldType"] = 5;
 
-	
+
 	
 	
 			
 
 		$fdata["strField"] = "KilosResiduos";
 
+		$fdata["sourceSingle"] = "KilosResiduos";
+
 		$fdata["isSQLExpression"] = true;
-	$fdata["FullName"] = "\"KilosResiduos\"";
+	$fdata["FullName"] = "g.\"KilosResiduos\"";
 
 	
 	
@@ -556,6 +571,7 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -578,6 +594,7 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -600,6 +617,7 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -622,6 +640,7 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 	
 	
 	
+		
 	
 		$vdata["NeedEncode"] = true;
 
@@ -809,6 +828,306 @@ $tdatapublic_gestionpesosresiduosdetven[".hideMobileList"] = array();
 
 	$tdatapublic_gestionpesosresiduosdetven["KilosResiduos"] = $fdata;
 		$tdatapublic_gestionpesosresiduosdetven[".searchableFields"][] = "KilosResiduos";
+//	Estado
+//	Custom field settings
+	$fdata = array();
+	$fdata["Index"] = 4;
+	$fdata["strName"] = "Estado";
+	$fdata["GoodName"] = "Estado";
+	$fdata["ownerTable"] = "public.GestionPesosResiduos";
+	$fdata["Label"] = GetFieldLabel("public_GestionPesosResiduosDetVen","Estado");
+	$fdata["FieldType"] = 14;
+
+
+	
+	
+			
+
+		$fdata["strField"] = "Estado";
+
+		$fdata["sourceSingle"] = "Estado";
+
+		$fdata["isSQLExpression"] = true;
+	$fdata["FullName"] = "\"Estado\"";
+
+	
+	
+				$fdata["UploadFolder"] = "files";
+
+//  Begin View Formats
+	$fdata["ViewFormats"] = array();
+
+	$vdata = array("ViewFormat" => "Number");
+
+	
+	
+	
+	
+	
+	
+		$vdata["DecimalDigits"] = 0;
+
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["view"] = $vdata;
+	$vdata = array("ViewFormat" => "Number");
+
+	
+	
+	
+	
+	
+	
+		$vdata["DecimalDigits"] = 0;
+
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["list"] = $vdata;
+	$vdata = array("ViewFormat" => "Number");
+
+	
+	
+	
+	
+	
+	
+		$vdata["DecimalDigits"] = 0;
+
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["print"] = $vdata;
+	$vdata = array("ViewFormat" => "Number");
+
+	
+	
+	
+	
+	
+	
+		$vdata["DecimalDigits"] = 0;
+
+	
+	
+	
+	
+		
+	
+		$vdata["NeedEncode"] = true;
+
+	
+		$vdata["truncateText"] = true;
+	$vdata["NumberOfChars"] = 80;
+
+	$fdata["ViewFormats"]["export"] = $vdata;
+//  End View Formats
+
+//	Begin Edit Formats
+	$fdata["EditFormats"] = array();
+
+	$edata = array("EditFormat" => "Text field");
+
+	
+		$edata["weekdayMessage"] = array("message" => "", "messageType" => "Text");
+	$edata["weekdays"] = "[]";
+
+
+	
+	
+
+
+
+	
+	
+	
+	
+			$edata["acceptFileTypes"] = ".+$";
+		$edata["acceptFileTypesHtml"] = "";
+
+		$edata["maxNumberOfFiles"] = 1;
+
+	
+	
+	
+	
+			$edata["HTML5InuptType"] = "text";
+
+		$edata["EditParams"] = "";
+		
+		$edata["controlWidth"] = 200;
+
+//	Begin validation
+	$edata["validateAs"] = array();
+	$edata["validateAs"]["basicValidate"] = array();
+	$edata["validateAs"]["customMessages"] = array();
+				$edata["validateAs"]["basicValidate"][] = getJsValidatorName("Number");
+							
+	
+	//	End validation
+
+	
+			
+	
+	
+	
+	$fdata["EditFormats"]["edit"] = $edata;
+	$edata = array("EditFormat" => "Text field");
+
+	
+		$edata["weekdayMessage"] = array("message" => "", "messageType" => "Text");
+	$edata["weekdays"] = "[]";
+
+
+	
+	
+
+
+
+	
+	
+	
+	
+			$edata["acceptFileTypes"] = ".+$";
+		$edata["acceptFileTypesHtml"] = "";
+
+		$edata["maxNumberOfFiles"] = 1;
+
+	
+	
+	
+	
+			$edata["HTML5InuptType"] = "text";
+
+		$edata["EditParams"] = "";
+		
+		$edata["controlWidth"] = 200;
+
+//	Begin validation
+	$edata["validateAs"] = array();
+	$edata["validateAs"]["basicValidate"] = array();
+	$edata["validateAs"]["customMessages"] = array();
+				$edata["validateAs"]["basicValidate"][] = getJsValidatorName("Number");
+							
+	
+	//	End validation
+
+	
+			
+	
+	
+	
+	$fdata["EditFormats"]["add"] = $edata;
+	$edata = array("EditFormat" => "Text field");
+
+	
+		$edata["weekdayMessage"] = array("message" => "", "messageType" => "Text");
+	$edata["weekdays"] = "[]";
+
+
+	
+	
+
+
+
+	
+	
+	
+	
+			$edata["acceptFileTypes"] = ".+$";
+		$edata["acceptFileTypesHtml"] = "";
+
+		$edata["maxNumberOfFiles"] = 1;
+
+	
+	
+	
+	
+			$edata["HTML5InuptType"] = "text";
+
+		$edata["EditParams"] = "";
+		
+		$edata["controlWidth"] = 200;
+
+//	Begin validation
+	$edata["validateAs"] = array();
+	$edata["validateAs"]["basicValidate"] = array();
+	$edata["validateAs"]["customMessages"] = array();
+				$edata["validateAs"]["basicValidate"][] = getJsValidatorName("Number");
+							
+	
+	//	End validation
+
+	
+			
+	
+	
+	
+	$fdata["EditFormats"]["search"] = $edata;
+//	End Edit Formats
+
+
+	$fdata["isSeparate"] = true;
+
+
+
+
+// the field's search options settings
+		$fdata["defaultSearchOption"] = "Contains";
+
+			// the default search options list
+				$fdata["searchOptionsList"] = array("Contains", "Equals", "Starts with", "More than", "Less than", "Between", "Empty", NOT_EMPTY);
+// the end of search options settings
+
+
+//Filters settings
+	$fdata["filterTotals"] = 0;
+		$fdata["filterMultiSelect"] = 0;
+			$fdata["filterFormat"] = "Values list";
+		$fdata["showCollapsed"] = false;
+
+		$fdata["sortValueType"] = 0;
+		$fdata["numberOfVisibleItems"] = 10;
+
+		$fdata["filterBy"] = 0;
+
+	
+
+	
+	
+//end of Filters settings
+
+
+	$tdatapublic_gestionpesosresiduosdetven["Estado"] = $fdata;
+		$tdatapublic_gestionpesosresiduosdetven[".searchableFields"][] = "Estado";
 
 
 $tables_data["public.GestionPesosResiduosDetVen"]=&$tdatapublic_gestionpesosresiduosdetven;
@@ -819,7 +1138,11 @@ $page_titles["public_GestionPesosResiduosDetVen"] = &$pageTitlespublic_gestionpe
 
 // -----------------start  prepare master-details data arrays ------------------------------//
 // tables which are detail tables for current table (master)
+
+//if !@TABLE.bReportCrossTab
+
 $detailsTablesData["public.GestionPesosResiduosDetVen"] = array();
+//endif
 
 // tables which are master tables for current table (detail)
 $masterTablesData["public.GestionPesosResiduosDetVen"] = array();
@@ -829,7 +1152,9 @@ $masterTablesData["public.GestionPesosResiduosDetVen"] = array();
 // -----------------end  prepare master-details data arrays ------------------------------//
 
 
+
 require_once(getabspath("classes/sql.php"));
+
 
 
 
@@ -844,24 +1169,24 @@ function createSqlQuery_public_gestionpesosresiduosdetven()
 {
 $proto0=array();
 $proto0["m_strHead"] = "SELECT";
-$proto0["m_strFieldList"] = "g.\"IdGesPesResiduo\",  concat(\"IdGesPesResiduo\", ' | ', r.\"NomReciclador\", ' | ', re.\"DescriResiduo\", ' | ', \"FechaGestion\"),  \"KilosResiduos\"";
+$proto0["m_strFieldList"] = "g.\"IdGesPesResiduo\",  concat(\"IdGesPesResiduo\", ' | ', r.\"NomReciclador\", ' | ', re.\"DescriResiduo\", ' | ', \"FechaGestion\", ' | ', \"Estado\"),  g.\"KilosResiduos\",  \"Estado\"";
 $proto0["m_strFrom"] = "FROM \"public\".\"GestionPesosResiduos\" AS g  , \"public\".\"Recicladores\" AS r  , \"public\".\"Residuos\" AS re";
-$proto0["m_strWhere"] = "g.\"IdReciclador\"=r.\"IdReciclador\" and g.\"IdResiduo\"=re.\"IdResiduo\"";
+$proto0["m_strWhere"] = "(g.\"IdReciclador\" =r.\"IdReciclador\") AND (g.\"IdResiduo\" =re.\"IdResiduo\") and g.\"Estado\" = 1";
 $proto0["m_strOrderBy"] = "";
 	
 		;
 			$proto0["cipherer"] = null;
 $proto2=array();
-$proto2["m_sql"] = "g.\"IdReciclador\"=r.\"IdReciclador\" and g.\"IdResiduo\"=re.\"IdResiduo\"";
+$proto2["m_sql"] = "(g.\"IdReciclador\" =r.\"IdReciclador\") AND (g.\"IdResiduo\" =re.\"IdResiduo\") and g.\"Estado\" = 1";
 $proto2["m_uniontype"] = "SQLL_AND";
 	$obj = new SQLNonParsed(array(
-	"m_sql" => "g.\"IdReciclador\"=r.\"IdReciclador\" and g.\"IdResiduo\"=re.\"IdResiduo\""
+	"m_sql" => "(g.\"IdReciclador\" =r.\"IdReciclador\") AND (g.\"IdResiduo\" =re.\"IdResiduo\") and g.\"Estado\" = 1"
 ));
 
 $proto2["m_column"]=$obj;
 $proto2["m_contained"] = array();
 						$proto4=array();
-$proto4["m_sql"] = "g.\"IdReciclador\"=r.\"IdReciclador\"";
+$proto4["m_sql"] = "g.\"IdReciclador\" =r.\"IdReciclador\"";
 $proto4["m_uniontype"] = "SQLL_UNKNOWN";
 						$obj = new SQLField(array(
 	"m_strName" => "IdReciclador",
@@ -873,13 +1198,13 @@ $proto4["m_column"]=$obj;
 $proto4["m_contained"] = array();
 $proto4["m_strCase"] = "=r.\"IdReciclador\"";
 $proto4["m_havingmode"] = false;
-$proto4["m_inBrackets"] = false;
+$proto4["m_inBrackets"] = true;
 $proto4["m_useAlias"] = false;
 $obj = new SQLLogicalExpr($proto4);
 
 			$proto2["m_contained"][]=$obj;
 						$proto6=array();
-$proto6["m_sql"] = "g.\"IdResiduo\"=re.\"IdResiduo\"";
+$proto6["m_sql"] = "g.\"IdResiduo\" =re.\"IdResiduo\"";
 $proto6["m_uniontype"] = "SQLL_UNKNOWN";
 						$obj = new SQLField(array(
 	"m_strName" => "IdResiduo",
@@ -891,9 +1216,27 @@ $proto6["m_column"]=$obj;
 $proto6["m_contained"] = array();
 $proto6["m_strCase"] = "=re.\"IdResiduo\"";
 $proto6["m_havingmode"] = false;
-$proto6["m_inBrackets"] = false;
+$proto6["m_inBrackets"] = true;
 $proto6["m_useAlias"] = false;
 $obj = new SQLLogicalExpr($proto6);
+
+			$proto2["m_contained"][]=$obj;
+						$proto8=array();
+$proto8["m_sql"] = "g.\"Estado\" = 1";
+$proto8["m_uniontype"] = "SQLL_UNKNOWN";
+						$obj = new SQLField(array(
+	"m_strName" => "Estado",
+	"m_strTable" => "g",
+	"m_srcTableName" => "public.GestionPesosResiduosDetVen"
+));
+
+$proto8["m_column"]=$obj;
+$proto8["m_contained"] = array();
+$proto8["m_strCase"] = "= 1";
+$proto8["m_havingmode"] = false;
+$proto8["m_inBrackets"] = false;
+$proto8["m_useAlias"] = false;
+$obj = new SQLLogicalExpr($proto8);
 
 			$proto2["m_contained"][]=$obj;
 $proto2["m_strCase"] = "";
@@ -903,207 +1246,232 @@ $proto2["m_useAlias"] = false;
 $obj = new SQLLogicalExpr($proto2);
 
 $proto0["m_where"] = $obj;
-$proto8=array();
-$proto8["m_sql"] = "";
-$proto8["m_uniontype"] = "SQLL_UNKNOWN";
+$proto10=array();
+$proto10["m_sql"] = "";
+$proto10["m_uniontype"] = "SQLL_UNKNOWN";
 	$obj = new SQLNonParsed(array(
 	"m_sql" => ""
 ));
 
-$proto8["m_column"]=$obj;
-$proto8["m_contained"] = array();
-$proto8["m_strCase"] = "";
-$proto8["m_havingmode"] = false;
-$proto8["m_inBrackets"] = false;
-$proto8["m_useAlias"] = false;
-$obj = new SQLLogicalExpr($proto8);
+$proto10["m_column"]=$obj;
+$proto10["m_contained"] = array();
+$proto10["m_strCase"] = "";
+$proto10["m_havingmode"] = false;
+$proto10["m_inBrackets"] = false;
+$proto10["m_useAlias"] = false;
+$obj = new SQLLogicalExpr($proto10);
 
 $proto0["m_having"] = $obj;
 $proto0["m_fieldlist"] = array();
-						$proto10=array();
+						$proto12=array();
 			$obj = new SQLField(array(
 	"m_strName" => "IdGesPesResiduo",
 	"m_strTable" => "g",
 	"m_srcTableName" => "public.GestionPesosResiduosDetVen"
 ));
 
-$proto10["m_sql"] = "g.\"IdGesPesResiduo\"";
-$proto10["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
-$proto10["m_expr"]=$obj;
-$proto10["m_alias"] = "";
-$obj = new SQLFieldListItem($proto10);
-
-$proto0["m_fieldlist"][]=$obj;
-						$proto12=array();
-			$proto13=array();
-$proto13["m_functiontype"] = "SQLF_CUSTOM";
-$proto13["m_arguments"] = array();
-						$obj = new SQLNonParsed(array(
-	"m_sql" => "\"IdGesPesResiduo\""
-));
-
-$proto13["m_arguments"][]=$obj;
-						$obj = new SQLNonParsed(array(
-	"m_sql" => "' | '"
-));
-
-$proto13["m_arguments"][]=$obj;
-						$obj = new SQLNonParsed(array(
-	"m_sql" => "r.\"NomReciclador\""
-));
-
-$proto13["m_arguments"][]=$obj;
-						$obj = new SQLNonParsed(array(
-	"m_sql" => "' | '"
-));
-
-$proto13["m_arguments"][]=$obj;
-						$obj = new SQLNonParsed(array(
-	"m_sql" => "re.\"DescriResiduo\""
-));
-
-$proto13["m_arguments"][]=$obj;
-						$obj = new SQLNonParsed(array(
-	"m_sql" => "' | '"
-));
-
-$proto13["m_arguments"][]=$obj;
-						$obj = new SQLNonParsed(array(
-	"m_sql" => "\"FechaGestion\""
-));
-
-$proto13["m_arguments"][]=$obj;
-$proto13["m_strFunctionName"] = "concat";
-$obj = new SQLFunctionCall($proto13);
-
-$proto12["m_sql"] = "concat(\"IdGesPesResiduo\", ' | ', r.\"NomReciclador\", ' | ', re.\"DescriResiduo\", ' | ', \"FechaGestion\")";
+$proto12["m_sql"] = "g.\"IdGesPesResiduo\"";
 $proto12["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
 $proto12["m_expr"]=$obj;
 $proto12["m_alias"] = "";
 $obj = new SQLFieldListItem($proto12);
 
 $proto0["m_fieldlist"][]=$obj;
-						$proto21=array();
+						$proto14=array();
+			$proto15=array();
+$proto15["m_functiontype"] = "SQLF_CUSTOM";
+$proto15["m_arguments"] = array();
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "\"IdGesPesResiduo\""
+));
+
+$proto15["m_arguments"][]=$obj;
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "' | '"
+));
+
+$proto15["m_arguments"][]=$obj;
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "r.\"NomReciclador\""
+));
+
+$proto15["m_arguments"][]=$obj;
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "' | '"
+));
+
+$proto15["m_arguments"][]=$obj;
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "re.\"DescriResiduo\""
+));
+
+$proto15["m_arguments"][]=$obj;
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "' | '"
+));
+
+$proto15["m_arguments"][]=$obj;
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "\"FechaGestion\""
+));
+
+$proto15["m_arguments"][]=$obj;
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "' | '"
+));
+
+$proto15["m_arguments"][]=$obj;
+						$obj = new SQLNonParsed(array(
+	"m_sql" => "\"Estado\""
+));
+
+$proto15["m_arguments"][]=$obj;
+$proto15["m_strFunctionName"] = "concat";
+$obj = new SQLFunctionCall($proto15);
+
+$proto14["m_sql"] = "concat(\"IdGesPesResiduo\", ' | ', r.\"NomReciclador\", ' | ', re.\"DescriResiduo\", ' | ', \"FechaGestion\", ' | ', \"Estado\")";
+$proto14["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto14["m_expr"]=$obj;
+$proto14["m_alias"] = "";
+$obj = new SQLFieldListItem($proto14);
+
+$proto0["m_fieldlist"][]=$obj;
+						$proto25=array();
 			$obj = new SQLField(array(
 	"m_strName" => "KilosResiduos",
 	"m_strTable" => "g",
 	"m_srcTableName" => "public.GestionPesosResiduosDetVen"
 ));
 
-$proto21["m_sql"] = "\"KilosResiduos\"";
-$proto21["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
-$proto21["m_expr"]=$obj;
-$proto21["m_alias"] = "";
-$obj = new SQLFieldListItem($proto21);
+$proto25["m_sql"] = "g.\"KilosResiduos\"";
+$proto25["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto25["m_expr"]=$obj;
+$proto25["m_alias"] = "";
+$obj = new SQLFieldListItem($proto25);
+
+$proto0["m_fieldlist"][]=$obj;
+						$proto27=array();
+			$obj = new SQLField(array(
+	"m_strName" => "Estado",
+	"m_strTable" => "g",
+	"m_srcTableName" => "public.GestionPesosResiduosDetVen"
+));
+
+$proto27["m_sql"] = "\"Estado\"";
+$proto27["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto27["m_expr"]=$obj;
+$proto27["m_alias"] = "";
+$obj = new SQLFieldListItem($proto27);
 
 $proto0["m_fieldlist"][]=$obj;
 $proto0["m_fromlist"] = array();
-												$proto23=array();
-$proto23["m_link"] = "SQLL_MAIN";
-			$proto24=array();
-$proto24["m_strName"] = "public.GestionPesosResiduos";
-$proto24["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
-$proto24["m_columns"] = array();
-$proto24["m_columns"][] = "IdGesPesResiduo";
-$proto24["m_columns"][] = "IdReciclador";
-$proto24["m_columns"][] = "IdResiduo";
-$proto24["m_columns"][] = "FechaGestion";
-$proto24["m_columns"][] = "KilosResiduos";
-$obj = new SQLTable($proto24);
+												$proto29=array();
+$proto29["m_link"] = "SQLL_MAIN";
+			$proto30=array();
+$proto30["m_strName"] = "public.GestionPesosResiduos";
+$proto30["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto30["m_columns"] = array();
+$proto30["m_columns"][] = "IdGesPesResiduo";
+$proto30["m_columns"][] = "IdReciclador";
+$proto30["m_columns"][] = "IdResiduo";
+$proto30["m_columns"][] = "FechaGestion";
+$proto30["m_columns"][] = "KilosResiduos";
+$proto30["m_columns"][] = "Estado";
+$obj = new SQLTable($proto30);
 
-$proto23["m_table"] = $obj;
-$proto23["m_sql"] = "\"public\".\"GestionPesosResiduos\" AS g";
-$proto23["m_alias"] = "g";
-$proto23["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
-$proto25=array();
-$proto25["m_sql"] = "";
-$proto25["m_uniontype"] = "SQLL_UNKNOWN";
+$proto29["m_table"] = $obj;
+$proto29["m_sql"] = "\"public\".\"GestionPesosResiduos\" AS g";
+$proto29["m_alias"] = "g";
+$proto29["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto31=array();
+$proto31["m_sql"] = "";
+$proto31["m_uniontype"] = "SQLL_UNKNOWN";
 	$obj = new SQLNonParsed(array(
 	"m_sql" => ""
 ));
 
-$proto25["m_column"]=$obj;
-$proto25["m_contained"] = array();
-$proto25["m_strCase"] = "";
-$proto25["m_havingmode"] = false;
-$proto25["m_inBrackets"] = false;
-$proto25["m_useAlias"] = false;
-$obj = new SQLLogicalExpr($proto25);
+$proto31["m_column"]=$obj;
+$proto31["m_contained"] = array();
+$proto31["m_strCase"] = "";
+$proto31["m_havingmode"] = false;
+$proto31["m_inBrackets"] = false;
+$proto31["m_useAlias"] = false;
+$obj = new SQLLogicalExpr($proto31);
 
-$proto23["m_joinon"] = $obj;
-$obj = new SQLFromListItem($proto23);
+$proto29["m_joinon"] = $obj;
+$obj = new SQLFromListItem($proto29);
 
 $proto0["m_fromlist"][]=$obj;
-												$proto27=array();
-$proto27["m_link"] = "SQLL_CROSSJOIN";
-			$proto28=array();
-$proto28["m_strName"] = "public.Recicladores";
-$proto28["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
-$proto28["m_columns"] = array();
-$proto28["m_columns"][] = "IdReciclador";
-$proto28["m_columns"][] = "FotoReciclador";
-$proto28["m_columns"][] = "CIReciclador";
-$proto28["m_columns"][] = "NomReciclador";
-$proto28["m_columns"][] = "ApeReciclador";
-$proto28["m_columns"][] = "DirReciclador";
-$proto28["m_columns"][] = "TelReciclador";
-$proto28["m_columns"][] = "LogoASO";
-$obj = new SQLTable($proto28);
+												$proto33=array();
+$proto33["m_link"] = "SQLL_CROSSJOIN";
+			$proto34=array();
+$proto34["m_strName"] = "public.Recicladores";
+$proto34["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto34["m_columns"] = array();
+$proto34["m_columns"][] = "IdReciclador";
+$proto34["m_columns"][] = "FotoReciclador";
+$proto34["m_columns"][] = "CIReciclador";
+$proto34["m_columns"][] = "NomReciclador";
+$proto34["m_columns"][] = "ApeReciclador";
+$proto34["m_columns"][] = "DirReciclador";
+$proto34["m_columns"][] = "TelReciclador";
+$proto34["m_columns"][] = "LogoASO";
+$obj = new SQLTable($proto34);
 
-$proto27["m_table"] = $obj;
-$proto27["m_sql"] = "\"public\".\"Recicladores\" AS r";
-$proto27["m_alias"] = "r";
-$proto27["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
-$proto29=array();
-$proto29["m_sql"] = "";
-$proto29["m_uniontype"] = "SQLL_UNKNOWN";
+$proto33["m_table"] = $obj;
+$proto33["m_sql"] = "\"public\".\"Recicladores\" AS r";
+$proto33["m_alias"] = "r";
+$proto33["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto35=array();
+$proto35["m_sql"] = "";
+$proto35["m_uniontype"] = "SQLL_UNKNOWN";
 	$obj = new SQLNonParsed(array(
 	"m_sql" => ""
 ));
 
-$proto29["m_column"]=$obj;
-$proto29["m_contained"] = array();
-$proto29["m_strCase"] = "";
-$proto29["m_havingmode"] = false;
-$proto29["m_inBrackets"] = false;
-$proto29["m_useAlias"] = false;
-$obj = new SQLLogicalExpr($proto29);
+$proto35["m_column"]=$obj;
+$proto35["m_contained"] = array();
+$proto35["m_strCase"] = "";
+$proto35["m_havingmode"] = false;
+$proto35["m_inBrackets"] = false;
+$proto35["m_useAlias"] = false;
+$obj = new SQLLogicalExpr($proto35);
 
-$proto27["m_joinon"] = $obj;
-$obj = new SQLFromListItem($proto27);
+$proto33["m_joinon"] = $obj;
+$obj = new SQLFromListItem($proto33);
 
 $proto0["m_fromlist"][]=$obj;
-												$proto31=array();
-$proto31["m_link"] = "SQLL_CROSSJOIN";
-			$proto32=array();
-$proto32["m_strName"] = "public.Residuos";
-$proto32["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
-$proto32["m_columns"] = array();
-$proto32["m_columns"][] = "IdResiduo";
-$proto32["m_columns"][] = "DescriResiduo";
-$obj = new SQLTable($proto32);
+												$proto37=array();
+$proto37["m_link"] = "SQLL_CROSSJOIN";
+			$proto38=array();
+$proto38["m_strName"] = "public.Residuos";
+$proto38["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto38["m_columns"] = array();
+$proto38["m_columns"][] = "IdResiduo";
+$proto38["m_columns"][] = "DescriResiduo";
+$obj = new SQLTable($proto38);
 
-$proto31["m_table"] = $obj;
-$proto31["m_sql"] = "\"public\".\"Residuos\" AS re";
-$proto31["m_alias"] = "re";
-$proto31["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
-$proto33=array();
-$proto33["m_sql"] = "";
-$proto33["m_uniontype"] = "SQLL_UNKNOWN";
+$proto37["m_table"] = $obj;
+$proto37["m_sql"] = "\"public\".\"Residuos\" AS re";
+$proto37["m_alias"] = "re";
+$proto37["m_srcTableName"] = "public.GestionPesosResiduosDetVen";
+$proto39=array();
+$proto39["m_sql"] = "";
+$proto39["m_uniontype"] = "SQLL_UNKNOWN";
 	$obj = new SQLNonParsed(array(
 	"m_sql" => ""
 ));
 
-$proto33["m_column"]=$obj;
-$proto33["m_contained"] = array();
-$proto33["m_strCase"] = "";
-$proto33["m_havingmode"] = false;
-$proto33["m_inBrackets"] = false;
-$proto33["m_useAlias"] = false;
-$obj = new SQLLogicalExpr($proto33);
+$proto39["m_column"]=$obj;
+$proto39["m_contained"] = array();
+$proto39["m_strCase"] = "";
+$proto39["m_havingmode"] = false;
+$proto39["m_inBrackets"] = false;
+$proto39["m_useAlias"] = false;
+$obj = new SQLLogicalExpr($proto39);
 
-$proto31["m_joinon"] = $obj;
-$obj = new SQLFromListItem($proto31);
+$proto37["m_joinon"] = $obj;
+$obj = new SQLFromListItem($proto37);
 
 $proto0["m_fromlist"][]=$obj;
 $proto0["m_groupby"] = array();
@@ -1119,9 +1487,11 @@ $queryData_public_gestionpesosresiduosdetven = createSqlQuery_public_gestionpeso
 	
 		;
 
-			
+				
 
 $tdatapublic_gestionpesosresiduosdetven[".sqlquery"] = $queryData_public_gestionpesosresiduosdetven;
+
+
 
 $tableEvents["public.GestionPesosResiduosDetVen"] = new eventsBase;
 $tdatapublic_gestionpesosresiduosdetven[".hasEvents"] = false;

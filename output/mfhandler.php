@@ -19,20 +19,37 @@ $table = postvalue("table");
 $field = postvalue("field");
 $thumb = postvalue( "thumb" );
 $pageType = postvalue("pageType");
-$outputAsAttachment = ( postvalue("nodisp") != 1 );
+$outputAsAttachment = postvalue("nodisp") != 1;
 $pageName = postvalue("page");
+$userpicMode = false;
 
-if (!GetTableURL($table))
-{
-	exit(0);
+if( postvalue("userpic") ) {
+	if( !Security::showUserPic() )
+		exit();
+	$userData =& Security::currentUserData();
+	global $cUserpicField;
+	$value =& $userData[ $cUserpicField ];
+	$ftype = SupposeImageType($value);
+	if( !$ftype ) {
+		$ftype = "image/png";		
+	}
+	header("Cache-Control: max-age=0");
+	header("Content-Type: ".$ftype);
+	echoBinary( $value );
+	exit();
 }
 
-$requestAction = $_REQUEST['_action'];
+if( !$userpicMode ) {
+	if ( !GetTableURL($table) ) {
+		exit(0);
+	}
 
-if( !Security::userHasFieldPermissions( $table, $field, $pageType, $pageName, $requestAction == "POST" || postvalue("fkey") ) ) {
-	exit(0);
+	$requestAction = $_REQUEST['_action'];
+	$showField = $requestAction == "POST" || postvalue("fkey") || $requestAction == "DELETE";
+	if( !Security::userHasFieldPermissions( $table, $field, $pageType, $pageName, $showField ) ) {
+		exit(0);
+	}
 }
-
 
 
 global $cman;	
@@ -48,6 +65,7 @@ $upload_handler->pSet = $pSet;
 $upload_handler->field = $field;
 $upload_handler->table = $table;
 $upload_handler->pageType = $pageType;	
+$upload_handler->pageName = $pageName;	
 
 switch ($requestAction) {
     case 'DELETE':
@@ -71,9 +89,15 @@ switch ($requestAction) {
 		$isDBFile = postvalue("filename") != ""; 
 		$fileName = postvalue("file") != "" ? postvalue("file") : postvalue("filename");
 		$formStamp = postvalue("fkey");
-    	if($fileName == "")
+		
+		if( postvalue("userpic") ) {
+			$isDBFile = true;
+		}
+		
+		if($fileName == "")
     		exit();
-    	$sessionFile = null;
+    	
+		$sessionFile = null;
     	$fsFileName = "";
     	if(!$isDBFile && $formStamp != "" )
     	{
@@ -82,43 +106,37 @@ switch ($requestAction) {
     	else
     	{
     		$keys = array();
-	    	$tKeys = $pSet->getTableKeys();
-			for($i = 0; $i < count($tKeys); $i++)
-			{
-				$keys[$tKeys[$i]] = postvalue("key".($i+1));
-			}
-			$strWhereClause = KeyWhere($keys, $table);
-			if($pSet->getAdvancedSecurityType()!=ADVSECURITY_ALL)
-				$strWhereClause = whereAdd($strWhereClause, SecuritySQL("Search"));
-			$queryObj = $pSet->getSQLQuery()->CloneObject();
-			$imgFieldIndices = array( $pSet->getFieldIndex($field) );
-
-			if( $thumb ) {
-				$thumbField = $pSet->getStrThumbnail( $field );
-				$thumbIdx = $pSet->getFieldIndex( $thumbField );
-				$imgFieldIndices[] = $thumbIdx;
+			foreach( $pSet->getTableKeys() as $ind => $k ) {
+				$keys[ $k ] = postvalue("key".($ind + 1));
 			}
 
-			if( !$queryObj->HasGroupBy() )
-			{
-				// Do not select any fields except current (file) field.
-				// If query has 'group by' clause then other fields are used in it and we may not simply cut 'em off.
-				// Just don't do anything in that case.
-				$queryObj->RemoveAllFieldsExceptList($pSet->getFieldIndex($field));
+			$dc = new DsCommand();
+
+			if( Security::fieldIsUserpic( $table, $field ) && $pageType == PAGE_USERINFO ) {
+				$dc->filter = Security::usernameCondition();
+			} else {
+				$dc->filter = Security::SelectCondition( "S", $pSet );
+				$dc->keys = $keys;			
 			}
 			
-			$qResult = $_connection->query( $queryObj->gSQLWhere($strWhereClause) );
-			if($isDBFile)
+			$dataSource = getDataSource( $table, $pSet, $_connection );
+			$qResult = $dataSource->getSingle( $dc );
+			
+			if( $isDBFile )
 			{
 				if( $qResult )
 				{
 					$data = $qResult->fetchAssoc();
 					if( $data ) {
 						$value = "";
-						if( $thumb && $thumbField ) {
+
+						if( $thumb ) {
+							$thumbField = $pSet->getStrThumbnail( $field );
+							
 							if( $data[ $thumbField ] )
 								$value = $_connection->stripSlashesBinary( $data[ $thumbField ] );
 						}
+						
 						if( !$value )
 							$value = $_connection->stripSlashesBinary( $data[ $field ] );
 					}
@@ -126,28 +144,25 @@ switch ($requestAction) {
 			}
 			else 
 			{
-				$cipherer = new RunnerCipherer($table, $pSet);
+				$cipherer = new RunnerCipherer( $table, $pSet );
 				$row =  $cipherer->DecryptFetchedArray( $qResult->fetchAssoc() );
-				if( $row )
-				{
-					$filesArray = my_json_decode($row[$field]);
-					if(!is_array($filesArray) || count($filesArray) == 0)
+				
+				if( $row ) {
+					$filesArray = my_json_decode( $row[ $field ] );
+					if( !is_array( $filesArray ) || count( $filesArray ) == 0 )
 					{
-						if($row[$field] == "")
-							$filesArray = array();
-						else 
-						{
-							$uploadedFile = $upload_handler->get_file_object($row[$field]);
-							if(is_null($uploadedFile))
-								$filesArray =  array();
-							else
-								$filesArray = array(my_json_decode(my_json_encode($uploadedFile)));
+						$filesArray =  array();
+				
+						if( $row[ $field ] != "" ) {
+							$uploadedFile = $upload_handler->get_file_object( $row[ $field ] );
+							
+							if( !is_null( $uploadedFile ) )
+								$filesArray = array( my_json_decode( my_json_encode( $uploadedFile ) ) );
 						}
 					}
-					foreach ($filesArray as $uploadedFile)
-					{
-						if($uploadedFile["usrName"] == $fileName)
-						{
+					
+					foreach( $filesArray as $uploadedFile ) {
+						if( $uploadedFile["usrName"] == $fileName ) {
 							$sessionFile = $uploadedFile;
 							break;
 						}
@@ -155,6 +170,7 @@ switch ($requestAction) {
 				}
 			}
     	}
+		
     	$iconShowed = false;
     	if($isDBFile)
     	{
@@ -223,7 +239,8 @@ switch ($requestAction) {
 		
 			$norange = ( postvalue('norange') == 1 );
 		
-			if(postvalue('norange') == 1)
+			$httpRange = $_SERVER['HTTP_RANGE'];
+			if( postvalue('norange') == 1 || $httpRange == "" )
     		{
 				header('Accept-Ranges: none');
 				header("Cache-Control: private");
@@ -243,7 +260,6 @@ switch ($requestAction) {
 			{
 				$size_unit = "";
 				$range_orig = "";
-				$httpRange = $_SERVER['HTTP_RANGE'];
 				if(preg_match('/^bytes=((\d*-\d*,? ?)+)$/', $httpRange))
 				{
 		        	$tmparr = explode('=', $httpRange);
@@ -274,10 +290,7 @@ switch ($requestAction) {
 			    $seek_start = (strlen($seek_start) == 0 || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)),0);
 				
 				//	print headers
-				if ($seek_start > 0 || $seek_end < ($fsize - 1))
-				{
-					header('HTTP/1.1 206 Partial Content');
-				}
+				header('HTTP/1.1 206 Partial Content');
 				header('Accept-Ranges: bytes');
 				header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$fsize);
 

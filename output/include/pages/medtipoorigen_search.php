@@ -47,11 +47,13 @@
 'width' => 1,
 'height' => 1 ) ) ),
 'loginForm' => array( 'loginForm' => 3 ),
-'page' => array( 'labeledButtons' => array( 'update_records' => array(  ),
+'page' => array( 'verticalBar' => false,
+'labeledButtons' => array( 'update_records' => array(  ),
 'print_pages' => array(  ),
 'register_activate_message' => array(  ),
 'details_found' => array(  ) ),
-'hasCustomButtons' => false ),
+'hasCustomButtons' => false,
+'customButtons' => array(  ) ),
 'misc' => array( 'type' => 'search',
 'breadcrumb' => false ),
 'events' => array( 'maps' => array(  ),
@@ -115,5 +117,5 @@
 'orientation' => 0,
 'required' => false ) ),
 'dbProps' => array(  ),
-'version' => 4 );
+'version' => 7 );
 		?>

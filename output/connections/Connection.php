@@ -353,9 +353,12 @@ class Connection
 	 * @param Number pageSize
 	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
-		//db_pageseek
+		for($i = 0; $i < $n; $i++)
+		{
+			$this->fetch_array( $qHandle );
+		}		
 	}
 	
 	/**
@@ -549,9 +552,21 @@ class Connection
 	 */
 	public function queryPage($strSQL, $pageStart, $pageSize, $applyLimit)
 	{
-		return $this->_functions->queryPage( $this, $strSQL, $pageStart, $pageSize, $applyLimit );
+		return $this->limitedQuery( $strSQL, ($pageStart - 1) * $pageSize, $pageSize, $applyLimit );
+	}
+
+	/**
+	 * @param String sql
+	 * @param Number skip - how many records to skip
+	 * @param Number total - how many records to return
+	 * @param Boolean applyLimit - modify SQL to accomodate for skip & total
+	 */
+	public function limitedQuery($strSQL, $skip, $total, $applyLimit)
+	{
+		return $this->_functions->limitedQuery( $this, $strSQL, $skip, $total, $applyLimit );
 	}
 	
+
 	/**
 	 * An interface stub	
 	 * Execute an SQL query with blob fields processing
@@ -678,6 +693,24 @@ class Connection
 	{
 		return $this->_functions->intervalExpressionDate( $expr, $interval );
 	}
+
+	public function execMultiple( $sqls ) 
+	{
+		foreach( $sqls as $sql ) {
+			if( !$this->execSilent( $sql ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public function dbBased() {
+		return true;
+	}
+
+	public function clearResultBuffer() {
+	}
+
 	
 }
 ?>

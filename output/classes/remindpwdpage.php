@@ -17,7 +17,7 @@ class RemindPasswordPage extends RunnerPage
 
 		$this->passwordFiled = GetPasswordField();
 		$this->usernameFiled = GetUserNameField();		
-		$this->emailField = "email";
+		$this->emailField = "Email";
 		
 		if( $this->getLayoutVersion() === PD_BS_LAYOUT ) 
 		{
@@ -45,16 +45,6 @@ class RemindPasswordPage extends RunnerPage
 	protected function assignCipherer()
 	{
 		$this->cipherer = RunnerCipherer::getForLogin();
-	}
-	
-	/**
-	 * Check is captcha exists on current page
-	 *
-	 * @intellisense
-	 */	
-	function captchaExists()
-	{
-		return $this->pSet->hasCaptcha();
 	}
 
 	function getCaptchaId() 
@@ -189,7 +179,7 @@ class RemindPasswordPage extends RunnerPage
 	protected function sendRemindEmail( $username, $password, $email, $token, $dbPassword )
 	{
 		$data = array();
-		$url = GetSiteUrl().$_SERVER["SCRIPT_NAME"];
+		$url = projectURL() . GetTableLink( "remind" ) ;
 		
 
 		$userData = Security::getUserData($username);
@@ -351,7 +341,7 @@ class RemindPasswordPage extends RunnerPage
 			</script>\r\n";
 
 		echo "<script language=\"JavaScript\" src=\""
-			.GetRootPathForResources("include/runnerJS/RunnerAll.js?33793")."\"></script>\r\n";
+			.GetRootPathForResources("include/runnerJS/RunnerAll.js?37251")."\"></script>\r\n";
 		
 		echo "<script>".$this->PrepareJS()."</script>";
 	}	

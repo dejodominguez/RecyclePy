@@ -16,18 +16,19 @@ class MapPage_Dashboard extends ListPage_Dashboard
 		
 		$this->gridBased = !$this->dashElementData["updateMoved"] && $this->hasTableDashGridElement();
 	}
-
 	
-	protected function getSubsetSQLComponents() {
-
-		$sql = parent::getSubsetSQLComponents();
-		
-		if( $this->mapRefresh )
-			$sql["mandatoryWhere"][] = $this->getLatLngWhere( $this->dashElementData['latF'], $this->dashElementData['lonF'] );
-
-		return $sql;
+	public function getSubsetDataCommand( $ignoreFilterField = "" ) {
+		$dc = parent::getSubsetDataCommand();
+	
+		if( $this->mapRefresh ) {
+			$dc->filter = DataCondition::_And( array(
+				$dc->filter,
+				$this->getLatLngCondition( $this->dashElementData['latF'], $this->dashElementData['lonF'] )
+			));
+		}
+				
+		return $dc;
 	}
-	
 	
 	/**
 	 *
@@ -45,7 +46,7 @@ class MapPage_Dashboard extends ListPage_Dashboard
 		$this->googleMapCfg['mapsData'][ $mapId ]['type'] = 'DASH_MAP';
 		$this->googleMapCfg['mapsData'][ $mapId ]['latField'] = $this->dashElementData['latF'];
 		$this->googleMapCfg['mapsData'][ $mapId ]['lngField'] = $this->dashElementData['lonF'];
-		$this->googleMapCfg['mapsData'][ $mapId ]['descField'] =  $this->dashElementData['descF'];
+		$this->googleMapCfg['mapsData'][ $mapId ]['descField'] = $this->dashElementData['descF'];
 		$this->googleMapCfg['mapsData'][ $mapId ]['addressField'] = $this->dashElementData['addressF'];
 		
 		$this->googleMapCfg['mapsData'][ $mapId ]['dashMap'] = true;
@@ -64,7 +65,6 @@ class MapPage_Dashboard extends ListPage_Dashboard
 
 		if( $this->dashElementData['clustering'] )
 			$this->AddJSFile("include/markerclusterer.js");
-		
 	}	
 	
 	/**
@@ -80,7 +80,7 @@ class MapPage_Dashboard extends ListPage_Dashboard
 		
 		$recNum = $this->hasTableDashGridElement() || strlen($this->masterTable)? $this->pageSize : $this->dashElementData["mapMarkerCount"];
 		
-		if( !$this->mapRefresh && ( $this->dashElementData['clustering'] || $this->dashElementData['heatMap'] )  )
+		if( !$this->mapRefresh && ( $this->dashElementData['clustering'] || $this->dashElementData['heatMap'] ) )
 		{
 			//	fetch as much records as we can
 			$recNum = 10000;
@@ -104,8 +104,7 @@ class MapPage_Dashboard extends ListPage_Dashboard
 			
 			$data = $this->beforeProccessRow();
 			$this->recNo ++;
-		}
-		
+		}	
 	}	
 	
 	/**
@@ -125,10 +124,10 @@ class MapPage_Dashboard extends ListPage_Dashboard
 	protected function getMapDiv()
 	{
 		$mapId = GoodFieldName($this->dashTName).'_'.$this->dashElementName.'_dashMap';
-		$width = $this->dashElementData['width'] ? $this->dashElementData['width'] : 600; //600?
-		$height =  $this->dashElementData['height'] ? $this->dashElementData['height'] : 400; //400?
-		
-		return '<div id="'.$mapId.'" style="width: '.$width.'px; height: '.$height.'px;"></div>';
+		$width = $this->dashElementData['width'] ? $this->dashElementData['width'] : 600;
+		$height = $this->dashElementData['height'] ? $this->dashElementData['height'] : 400;
+		$style = "@media print, (min-width: 768px) { #".$mapId." { width: ".$width."px; } }";
+		return '<style>'.$style.'</style><div id="'.$mapId.'" style="height: '.$height.'px;"></div>';
 	}
 	
 	/**
@@ -165,7 +164,7 @@ class MapPage_Dashboard extends ListPage_Dashboard
 	}
 	
 	function deleteAvailable() {
-		return ListPage_Embed::deleteAvailable() &&  $this->dashElementData["details"][$this->tName]["delete"];
+		return ListPage_Embed::deleteAvailable() && $this->dashElementData["details"][$this->tName]["delete"];
 	}
 
 	function editAvailable() {
@@ -210,12 +209,21 @@ class MapPage_Dashboard extends ListPage_Dashboard
 	/**
 	 * A stub
 	 */	
-	function buildPagination()  {}	
+	function buildPagination() {}	
 	
 	function fetchMapMarkersInSeparateQuery( $mapId )
 	{
 		return false;
 	}
+
+	protected function hasBigMap()
+	{
+		return true;
+	}
 	
+	public function fillAdvancedMapData() 
+	{
+	}
+
 }
 ?>

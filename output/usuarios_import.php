@@ -14,18 +14,12 @@ if( !Security::processPageSecurity( $strtablename, 'I' ) )
 	return;
 
 
-
-
-
 require_once('include/xtempl.php');
 $xt = new Xtempl();
 
-$id = postvalue_number("id");
-$id = $id != "" ? $id : 1;
-
 //an array of params for ImportPage constructor
 $params = array();
-$params["id"] = $id;
+$params["id"] = postvalue_number("id");
 $params["xt"] = &$xt;
 $params["tName"] = $strTableName;
 $params["action"] = postvalue("a");
@@ -44,6 +38,10 @@ elseif( $params["action"] == "importData" )
 {
 	$params["importData"] = my_json_decode( postvalue("importData") );
 }
+
+$params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 
 $pageObject = new ImportPage($params);
 $pageObject->init();

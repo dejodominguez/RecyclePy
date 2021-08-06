@@ -165,10 +165,13 @@ class SearchPanel
 		}
 		else 
 		{
-			if( !$this->pSet->noRecordsOnFirstPage() ) 
-			{
+			if( !$this->pSet->noRecordsOnFirstPage() || $this->searchClauseObj->isSearchFunctionalityActivated() || $this->pageObj->listAjax ) {
 				$this->xt->assign("searchform_showall", true);
 				$this->xt->assign("searchform_clear_search", true);
+			}
+			
+			if( $this->pSet->noRecordsOnFirstPage() && $this->pageObj->listAjax ) {
+				$this->xt->displayItemHidden('searchform_showall');
 			}
 		}
 		

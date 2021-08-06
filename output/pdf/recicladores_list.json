@@ -1,0 +1,916 @@
+
+pdfDocument = {
+{BEGIN backgroundImage}
+	background: {
+		image: {$backgroundImage},
+		{BEGIN bgWidth}
+		imgWidth: {$bgWidth},
+		imgHeight: {$bgHeight},
+		{END bgWidth}
+	},
+{END backgroundImage}
+	styles: {
+				bodycell: {
+			fontSize:12,
+		},
+		headcell: {
+			fontSize:12,
+			bold: true
+		},
+
+	
+			},
+	defaultStyle: {
+		fontSize: 14,
+	},
+	"content": [
+		{BEGIN body}
+		{BEGIN embedded_grid}
+		{
+			text: '{$jscaption public_recicladores}',
+		},
+		{END embedded_grid}
+		{ 
+			{BEGIN standalone_page}
+			pageBreak: 'before',
+			{END standalone_page}
+			{BEGIN embedded_grid}
+			embeddedPage: true,
+			{END embedded_grid}
+			layout: {
+				hLineWidth: function(i, node) { return 0; },
+				vLineWidth: function(i, node) { 
+					if( node.table.embeddedPage ) {
+						return (i === 0 || i === node.table.widths.length) ? 0 : 0;
+					} else  {
+						return 0; 
+					}
+				},
+				hLineColor: function(i, node) { return 'gray'; },
+				vLineColor: function(i, node) { return 'gray'; },
+			},
+			table: {
+				{BEGIN embedded_grid}
+				embeddedPage: true,
+				{END embedded_grid}
+				
+				tableForm: true,
+				headerRows: 0 + 1 {BEGIN embedded_grid} -1 {END embedded_grid} ,
+
+				widths: [
+														"*",
+															],
+							
+				body: [
+				{BEGIN standalone_page}
+					[
+						{
+							colSpan: 1,
+							border:[false, false,false,false],
+							stack: [
+
+																										
+{
+	table: {
+	
+				
+		location: 'top',
+		
+		
+		widths: [
+								"*", 
+					 ],	
+		
+	
+		body: [
+				
+				[
+																{
+	cellId: 'c2',
+	col:0,
+	row:0,
+		
+		
+	//	static colspan/rowspan
+		
+			
+	
+	
+			"text": [
+		
+				
+			{BEGIN mastertable_block}
+			{$showmasterfile}
+		{END mastertable_block},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+											],
+		
+		]
+	}
+}
+,
+								
+																										
+{
+	table: {
+	
+				
+		location: 'above-grid',
+		
+		
+		widths: [
+								"*", 
+											"*", 
+					 ],	
+		
+	
+		body: [
+				
+				[
+																{
+	cellId: 'c1',
+	col:0,
+	row:0,
+		
+		
+	//	static colspan/rowspan
+		
+			
+	
+	
+			"text": [
+		
+				
+			{"text":"","hidden":"{$item_hide_add}"},
+				
+				
+			{"text":"","hidden":"{$item_hide_inline_add}"},
+				
+				
+			{"text":"","hidden":"{$item_hide_delete}"},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+																							{
+	cellId: 'c2',
+	col:0,
+	row:0,
+		
+		
+	//	static colspan/rowspan
+		
+			
+	
+	
+			"text": [
+		
+				
+			{"text":"Mostrando %first% - %last% de %total%","hidden":"{$item_hide_details_found}","isHtml":true,"page_indicator":true},
+				
+				
+			{"text":"","hidden":"{$item_hide_page_size}"},
+				
+				
+			{"text":"","hidden":"{$item_hide_print_panel}"},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'right',
+  },
+
+											],
+		
+		]
+	}
+}
+,
+															]
+						},
+					],
+				{END standalone_page}
+
+																	
+	{BEGIN grid_row}
+	[ 
+	
+	{BEGIN grid_record}
+	{BEGIN grid_vrecord}
+	
+		{ 
+			layout: 'vrecord',
+			table: {
+				widths: ['*'],
+				body: [[
+					{
+						
+						table: {
+							tableForm: true,
+							widths: [
+																{BEGIN col_grid_0}
+								"*",
+								{END col_grid_0}
+																{BEGIN col_grid_1}
+								"*",
+								{END col_grid_1}
+																{BEGIN col_grid_2}
+								"*",
+								{END col_grid_2}
+																{BEGIN col_grid_3}
+								"*",
+								{END col_grid_3}
+															],
+													heights: [
+															{BEGIN row_grid_0}			
+								"%",
+								{END row_grid_0}
+															{BEGIN row_grid_1}			
+								"%",
+								{END row_grid_1}
+															{BEGIN row_grid_2}			
+								"%",
+								{END row_grid_2}
+															{BEGIN row_grid_3}			
+								"%",
+								{END row_grid_3}
+															{BEGIN row_grid_4}			
+								"%",
+								{END row_grid_4}
+															{BEGIN row_grid_5}			
+								"%",
+								{END row_grid_5}
+															{BEGIN row_grid_6}			
+								"%",
+								{END row_grid_6}
+															{BEGIN row_grid_7}			
+								"%",
+								{END row_grid_7}
+														],
+													
+							body: [
+									
+				{BEGIN row_grid_0}
+				[
+																{BEGIN cellblock_grid_cell_top}
+{
+	cellId: 'cell_top',
+	col:0,
+	row:0,
+			style: 'headcell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_recicladores id_reciclador }","color":"#80f087","hidden":"{$item_hide_simple_grid_field9}","italics":true,"fontSize":24,"bold":true},
+				
+				
+			{"text":{$id_reciclador_pdfvalue},"hidden":"{$item_hide_simple_grid_field}","fontSize":24,"bold":true},
+				
+				
+			{"text":"","hidden":"{$item_hide_grid_inline_cancel}"},
+				
+				
+			{"text":"","hidden":"{$item_hide_grid_alldetails_link}"},
+				
+				
+			{"text":"","hidden":"{$item_hide_grid_details_link}"},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$id_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_top}
+																							{BEGIN cellblock_grid_cell_top1}
+{
+	cellId: 'cell_top1',
+	col:0,
+	row:0,
+			style: 'headcell',
+		
+		
+	//	dynamic colspan/rowspan
+
+					{BEGIN colspan_grid_cell_top1}
+			colSpan: {$colspan_grid_cell_top1},
+			{END colspan_grid_cell_top1}
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"Seleccionar Registro","hidden":"{$item_hide_text2}","fontSize":18,"isHtml":true},
+				
+				
+			{"text":"","hidden":"{$item_hide_grid_checkbox}","fontSize":18},
+				
+				
+			{"text":"Ver Registro","hidden":"{$item_hide_text}","fontSize":18,"isHtml":true},
+				
+				
+			{"text":"","hidden":"{$item_hide_grid_view}"},
+				
+				
+			{"text":"Editar Registro","hidden":"{$item_hide_text1}","fontSize":18,"isHtml":true},
+				
+				
+			{"text":"","hidden":"{$item_hide_grid_edit}"},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_cell_top1}
+																		{ 
+				cellId: 'cell_top1',
+				row:  0,
+				col:  1,
+				text: ''
+			},
+																			{BEGIN cellblock_grid_cell_top3}
+{
+	cellId: 'cell_top3',
+	col:0,
+	row:0,
+			style: 'headcell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				'',
+	  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_cell_top3}
+											],
+				{END row_grid_0}
+						{BEGIN row_grid_1}
+				[
+																{BEGIN cellblock_grid_cell_label4}
+{
+	cellId: 'cell_label4',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+					{BEGIN rowspan_grid_cell_label4}
+			rowSpan: {$rowspan_grid_cell_label4},
+			{END rowspan_grid_cell_label4}
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$foto_reciclador_pdfvalue},"hidden":"{$item_hide_simple_grid_field1}"},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'right',
+  },
+
+{END cellblock_grid_cell_label4}
+																							{BEGIN cellblock_grid_cell_field8}
+{
+	cellId: 'cell_field8',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_recicladores ci_reciclador }","hidden":"{$item_hide_simple_grid_field11}","fontSize":18,"bold":true},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_cell_field8}
+																							{BEGIN cellblock_grid_cell_field18}
+{
+	cellId: 'cell_field18',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$ci_reciclador_pdfvalue},"hidden":"{$item_hide_simple_grid_field2}","fontSize":18},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_cell_field18}
+																							{BEGIN cellblock_grid_cell_field10}
+{
+	cellId: 'cell_field10',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+					{BEGIN rowspan_grid_cell_field10}
+			rowSpan: {$rowspan_grid_cell_field10},
+			{END rowspan_grid_cell_field10}
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$logo_aso_pdfvalue},"hidden":"{$item_hide_simple_grid_field7}"},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$logo_aso_align}',
+  },
+
+{END cellblock_grid_cell_field10}
+											],
+				{END row_grid_1}
+						{BEGIN row_grid_2}
+				[
+											{ 
+				cellId: 'cell_label4',
+				row:  1,
+				col:  0,
+				text: ''
+			},
+																			{BEGIN cellblock_grid_cell_field9}
+{
+	cellId: 'cell_field9',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_recicladores nombre_reciclador }","hidden":"{$item_hide_simple_grid_field12}","fontSize":18,"bold":true},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$nombre_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_field9}
+																							{BEGIN cellblock_grid_cell_field17}
+{
+	cellId: 'cell_field17',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$nombre_reciclador_pdfvalue},"hidden":"{$item_hide_simple_grid_field3}","fontSize":18},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$nombre_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_field17}
+																		{ 
+				cellId: 'cell_field10',
+				row:  1,
+				col:  0,
+				text: ''
+			},
+							],
+				{END row_grid_2}
+						{BEGIN row_grid_3}
+				[
+											{ 
+				cellId: 'cell_label4',
+				row:  2,
+				col:  0,
+				text: ''
+			},
+																			{BEGIN cellblock_grid_cell_field12}
+{
+	cellId: 'cell_field12',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_recicladores apellido_reciclador }","hidden":"{$item_hide_simple_grid_field13}","fontSize":18,"bold":true},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$apellido_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_field12}
+																							{BEGIN cellblock_grid_cell_field14}
+{
+	cellId: 'cell_field14',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$apellido_reciclador_pdfvalue},"hidden":"{$item_hide_simple_grid_field4}","fontSize":18},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$apellido_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_field14}
+																		{ 
+				cellId: 'cell_field10',
+				row:  2,
+				col:  0,
+				text: ''
+			},
+							],
+				{END row_grid_3}
+						{BEGIN row_grid_4}
+				[
+											{ 
+				cellId: 'cell_label4',
+				row:  3,
+				col:  0,
+				text: ''
+			},
+																			{BEGIN cellblock_grid_cell_field15}
+{
+	cellId: 'cell_field15',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_recicladores direc_reciclador }","hidden":"{$item_hide_simple_grid_field14}","fontSize":18,"bold":true},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$direc_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_field15}
+																							{BEGIN cellblock_grid_cell_field16}
+{
+	cellId: 'cell_field16',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$direc_reciclador_pdfvalue},"hidden":"{$item_hide_simple_grid_field5}","fontSize":18},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$direc_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_field16}
+																		{ 
+				cellId: 'cell_field10',
+				row:  3,
+				col:  0,
+				text: ''
+			},
+							],
+				{END row_grid_4}
+						{BEGIN row_grid_5}
+				[
+											{ 
+				cellId: 'cell_label4',
+				row:  4,
+				col:  0,
+				text: ''
+			},
+																			{BEGIN cellblock_grid_cell_field}
+{
+	cellId: 'cell_field',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_recicladores tel_reciclador }","hidden":"{$item_hide_simple_grid_field15}","fontSize":18,"bold":true},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$tel_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_field}
+																							{BEGIN cellblock_grid_cell_field1}
+{
+	cellId: 'cell_field1',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$tel_reciclador_pdfvalue},"hidden":"{$item_hide_simple_grid_field6}","fontSize":18},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$tel_reciclador_align}',
+  },
+
+{END cellblock_grid_cell_field1}
+																		{ 
+				cellId: 'cell_field10',
+				row:  4,
+				col:  0,
+				text: ''
+			},
+							],
+				{END row_grid_5}
+						{BEGIN row_grid_6}
+				[
+																{BEGIN cellblock_grid_cell_field11}
+{
+	cellId: 'cell_field11',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":"{$jslabel public_recicladores id_residuo }","hidden":"{$item_hide_simple_grid_field17}","fontSize":18,"bold":true},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'right',
+  },
+
+{END cellblock_grid_cell_field11}
+																							{BEGIN cellblock_grid_cell_field13}
+{
+	cellId: 'cell_field13',
+	col:0,
+	row:0,
+			style: 'bodycell',
+		
+		
+	//	dynamic colspan/rowspan
+
+					{BEGIN colspan_grid_cell_field13}
+			colSpan: {$colspan_grid_cell_field13},
+			{END colspan_grid_cell_field13}
+		
+						
+	
+	
+	
+			"text": [
+		
+				
+			{"text":{$id_residuo_pdfvalue},"hidden":"{$item_hide_simple_grid_field8}","fontSize":18},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": '{$id_residuo_align}',
+  },
+
+{END cellblock_grid_cell_field13}
+																		{ 
+				cellId: 'cell_field13',
+				row:  0,
+				col:  1,
+				text: ''
+			},
+														{ 
+				cellId: 'cell_field13',
+				row:  0,
+				col:  2,
+				text: ''
+			},
+							],
+				{END row_grid_6}
+						{BEGIN row_grid_7}
+				[
+																{BEGIN cellblock_grid_cell_dpreview}
+{
+	cellId: 'cell_dpreview',
+	col:0,
+	row:0,
+			style: 'footcell',
+		
+		
+	//	dynamic colspan/rowspan
+
+					{BEGIN colspan_grid_cell_dpreview}
+			colSpan: {$colspan_grid_cell_dpreview},
+			{END colspan_grid_cell_dpreview}
+		
+						
+	
+	
+	
+			"stack": [
+		
+				
+			 {BEGIN details_gestion_pesos_residuos}
+			{$displayDetailTable_gestion_pesos_residuos }
+		{END details_gestion_pesos_residuos},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+{END cellblock_grid_cell_dpreview}
+																		{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  1,
+				text: ''
+			},
+														{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  2,
+				text: ''
+			},
+														{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  3,
+				text: ''
+			},
+														{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  4,
+				text: ''
+			},
+														{ 
+				cellId: 'cell_dpreview',
+				row:  0,
+				col:  5,
+				text: ''
+			},
+							],
+				{END row_grid_7}
+		
+							]
+						}
+					}
+				]]
+			}
+		},
+	{END grid_vrecord}
+	{END grid_record}
+	]
+,
+	{END grid_row}
+	
+									]
+			
+			}
+		},
+		{END body}
+	]
+}

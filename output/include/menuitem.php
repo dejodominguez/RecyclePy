@@ -1,6 +1,6 @@
 <?php
 class MenuItem
-{	
+{
 	/**
 	 * Element depth
 	 *
@@ -31,12 +31,12 @@ class MenuItem
 	 * @var string
 	 */
 	var $type;
-		
+
 	// for separator
 	var $name;
-	var $nameType;		
+	var $nameType;
 	var $style;
-		
+
 	/**
 	 * source table name
 	 *
@@ -66,13 +66,13 @@ class MenuItem
 	 *
 	 * @var bool
 	 */
-	var $showAsLink;		
+	var $showAsLink;
 	/**
 	 * Show as group or not
 	 *
 	 * @var bool
 	 */
-	var $showAsGroup;	
+	var $showAsGroup;
 	/**
 	 * Collection of all pageTypes of menu links for this table
 	 *
@@ -83,7 +83,7 @@ class MenuItem
 	 * tag a title attr
 	 *
 	 * @var string
-	 */	
+	 */
 	var $title;
 	/**
 	 * Open in new window or not attr
@@ -99,40 +99,40 @@ class MenuItem
 	var $children=array();
 
 	var $parentItem = null;
-	
+
 	var $pageName = "";
-	
+
 	var $menuTableMap;
-	
+
 	var $pageObject;
-	
+
 	/**
 	 * Current (selected) item flag
 	 *
 	 * @var bool
 	 */
 	var $currentItem = false;
-	
+
 	var $menuId = "";
-	
+
 	/*
 	 *	Menu mode - MENU_VERTICAL, MENU_HORIZONTAL or MENU_QUICKJUMP
 	 */
 	var $menuMode = "";
 
 	/* welcome menu attributes */
-	
+
 	var $comments;
 	var $icon;
 	var $iconType;
-	
+
 	/**
 	 * 0 - always, 1 - only in collapsed column
 	 */
 	var $iconShow;
 	var $color;
-	
-	
+
+
 	/**
 	 * Constructor, builds tree structure with item attributes
 	 *
@@ -141,26 +141,26 @@ class MenuItem
 	 * @param obj $menuParent
 	 * @return MenuItem
 	 */
-	
+
 	function __construct(&$menuItemInfo, &$menuNodes, &$menuParent, &$menuTableMap, $pageObject, $menuId, $menuMode )
-	{	
+	{
 		$this->pageObject = $pageObject;
 		global $menuNodesIndex;
-		
+
 		$this->menuId = $menuId;
 		$this->menuMode = $menuMode;
 		$this->menuTableMap =& $menuTableMap;
-		
+
 		// calculate menu depth
 		if ($menuItemInfo['id'] == 0)
 		{
-			$this->depth = 0;	
+			$this->depth = 0;
 		}
 		else
 		{
 			$this->depth = $menuParent->depth+1;
 		}
-			
+
 		// simple attributes
 		$this->id = $menuItemInfo['id'];
 		$this->name = $menuItemInfo['name'];
@@ -174,19 +174,19 @@ class MenuItem
 		$this->params = $menuItemInfo['params'];
 		$this->linkType = $menuItemInfo['linkType'];
 		$this->nameType = $menuItemInfo['nameType'];
-		$this->pageType = $menuItemInfo['pageType'];			
+		$this->pageType = $menuItemInfo['pageType'];
 		$this->pageId = $menuItemInfo['pageId'];
 		$this->openType = $menuItemInfo['openType'];
 		$this->icon = $menuItemInfo['icon'];
 		$this->iconType = $menuItemInfo['iconType'];
 		$this->iconShow = $menuItemInfo['iconShow'];
-		
+
 		// show as link attribute
 		$this->showAsLink = $this->checkLinkShowStatus();
-		
+
 		//build tree structure
 		$this->buildTreeMenuStructure($menuNodes);
-		
+
 		if( $this->type != 'Separator' && $this->table )
 		{
 			$pageType = strtolower( $this->pageType );
@@ -195,13 +195,13 @@ class MenuItem
 				$this->menuTableMap[ $this->table ] = array();
 			}
 			$this->menuTableMap[ $this->table ] [ $pageType ] ++;
-		
+
 		}
-		
+
 		// show as group attribute
 		$this->showAsGroup = $this->checkGroupShowStatus();
 	}
-	
+
 	/**
 	 * Adds child
 	 *
@@ -214,70 +214,70 @@ class MenuItem
 		if($globalEvents->exists('ModifyMenuItem'))
 		{
 			$res = $globalEvents->ModifyMenuItem($child);
-		}			 
+		}
 		if ($res)
 		{
 			$this->children[] = $child;
 			$child->parentItem = $this;
 		}
 	}
-	
-	function setUrl($href) 
+
+	function setUrl($href)
 	{
 		$this->href = $href;
 		if ($this->linkType == 'Internal')
-		{		
+		{
 			$this->linkType = 'External';
 		}
 	}
-	
-	function getUrl() 
+
+	function getUrl()
 	{
 		return $this->href;
 	}
-	
-	function setParams($params) 
+
+	function setParams($params)
 	{
 		$this->params = $params;
 	}
-	
-	function getParams() 
+
+	function getParams()
 	{
 		return $this->params;
 	}
-	function setTitle($title) 
+	function setTitle($title)
 	{
 		$this->title = $title;
 	}
-	
-	function getTitle() 
+
+	function getTitle()
 	{
 		return $this->title;
 	}
-	
-	function setTable($table) 
+
+	function setTable($table)
 	{
 		$this->table = $table;
 	}
-	
+
 	function getTable() {
 		return $this->table;
 	}
-	
+
 	function setPageType($pType)
 	{
 		$this->pageType = $pType;
 	}
-	
-	function getPageType() 
+
+	function getPageType()
 	{
 		return $this->pageType;
 	}
-	
+
 	function getLinkType() {
 		return $this->linkType;
 	}
-	/** 
+	/**
 	 * Recursively build tree menu structure
 	 *
 	 * @param array $menuNodes all nodes
@@ -285,7 +285,7 @@ class MenuItem
 	 * @param object $menuRoot parent obj
 	 */
 	function buildTreeMenuStructure(&$menuNodes)
-	{			
+	{
 		global $menuNodesIndex;
 		// for all menuItems
 		while( $menuNodesIndex < count( $menuNodes ) )
@@ -296,9 +296,9 @@ class MenuItem
 			// adds to parent
 			++$menuNodesIndex;
 			$this->AddChild( new MenuItem($menuNodes[$i], $menuNodes, $this, $this->menuTableMap, $this->pageObject, $this->menuId, $this->menuMode ) );
-		
+
 		}
-	}		
+	}
 	/**
 	 * Checks link show status
 	 *
@@ -333,12 +333,12 @@ class MenuItem
 	 *
 	 * @return bool
 	 */
-	function checkGroupShowStatus() 
+	function checkGroupShowStatus()
 	{
 		// if this element not group
 		if (!$this->isGroup())
 			return false;
-		
+
 		// for all children
 		for($i=0;$i<count($this->children);$i++)
 		{
@@ -347,18 +347,18 @@ class MenuItem
 				return true;
 			// if we should show this descendant, not include separators
 			elseif ($this->children[$i]->isShowAsLink() && !$this->children[$i]->isSeparator())
-				return true;					
+				return true;
 		}
 		// if no descendants to show
 		return false;
-		
+
 	}
 	/**
 	 * Getter, show status as group
 	 *
 	 * @return bool
 	 */
-	function isShowAsGroup() 
+	function isShowAsGroup()
 	{
 		return $this->showAsGroup;
 	}
@@ -367,7 +367,7 @@ class MenuItem
 	 *
 	 * @return bool
 	 */
-	function isShowAsLink() 
+	function isShowAsLink()
 	{
 		return $this->showAsLink;
 	}
@@ -376,7 +376,7 @@ class MenuItem
 	 *
 	 * @return bool
 	 */
-	function isGroup() 
+	function isGroup()
 	{
 		return $this->type=="Group";
 	}
@@ -385,7 +385,7 @@ class MenuItem
 	 *
 	 * @return bool
 	 */
-	function isSeparator() 
+	function isSeparator()
 	{
 		return $this->type=="Separator";
 	}
@@ -400,31 +400,35 @@ class MenuItem
 		$nbsps='';
 		for($i=0;$i<$depth;$i++)
 			$nbsps.='&nbsp;&nbsp;';
-		return $nbsps;	
+		return $nbsps;
 	}
-	
-	function getIconHTML() 
+
+	function getIconHTML()
 	{
 		if( !$this->isBootstrap() || !$this->icon )
 			return "";
 		if( $this->iconType == ICON_BOOTSTRAP_GLYPH )
 		{
 			return '<span class="menu-icon glyphicon '.$this->icon.'"></span>';
-		} 
+		}
+		else if( $this->iconType == ICON_FONT_AWESOME )
+		{
+			return '<span class="menu-icon fa '.$this->icon.'"></span>';
+		}
 		else if ( $this->iconType == ICON_FILE )
 		{
 			return '<img class="menu-icon" src="'.GetRootPathForResources( "images/menuicons/".$this->icon ) .'">';
 		}
 	}
-	
-	function prepareWelcomeMenuItem( &$xt ) 
+
+	function prepareWelcomeMenuItem( &$xt )
 	{
 		if( !$this->isWelcome() )
 			return;
 		//	header color
 		if( $this->color != '' )
 			$xt->assign( "item".$this->id."_menulink_style", 'style="background-color:' . $this->color . '"');
-		
+
 		if( strlen($this->comments) )
 		{
 			$xt->assign( "item".$this->id."_comments", true);
@@ -438,7 +442,7 @@ class MenuItem
 	 * @param link $xt
 	 * @param array $elements - assign attributes only for elements in the list
 	 */
-	function assignMenuAttrsToTempl(&$xt, $visibleElementIds = array()) 
+	function assignMenuAttrsToTempl(&$xt, $visibleElementIds = array())
 	{
 		$this->prepareWelcomeMenuItem( $xt );
 		// assign separator
@@ -459,7 +463,7 @@ class MenuItem
 			$xt->assign("item".$this->id."_groupimage", true);
 			$xt->assign("item".$this->id."_groupclass", "group");
 		}
-			
+
 		// show element
 		$displayElement = true;
 		$showSubmenu = true;
@@ -470,13 +474,13 @@ class MenuItem
 			//	Don't display submenu if element's parent is also displayed
 			if( !$this->parentItem )
 				$showSubmenu = true;
-			else 
+			else
 				$showSubmenu = !isset( $visibleElementIds[ $this->parentItem->id ] );
 		}
-		
+
 		if( $displayElement )
-			$xt->assign("item".$this->id."_menulink",true);		
-		//making offset	
+			$xt->assign("item".$this->id."_menulink",true);
+		//making offset
 		$xt->assign("item".$this->id."_nbsps",$this->makeOffset($this->depth));
 		// if show as links
 		if ($this->isShowAsLink() || $this->isShowAsGroup())
@@ -485,13 +489,13 @@ class MenuItem
 		// recursively call for all children
 		for($i=0;$i<count($this->children);$i++)
 		{
-			// call children 
+			// call children
 			$this->children[$i]->assignMenuAttrsToTempl( $xt, $visibleElementIds );
 		}
 	}
-	
+
 	/* returns current element */
-	 
+
 	function getFirstLinkedChild()
 	{
 		if( $this->isShowAsLink() )
@@ -506,9 +510,9 @@ class MenuItem
 		}
 		return null;
 	}
-	
-	function getCurrentItem( $menuItemId ) 
-	{	
+
+	function getCurrentItem( $menuItemId )
+	{
 		if( $this->pageObject->getPageType() && $this->pageObject->tName == $this->table && ( $this->pageType == 'AdminArea' || $this->id != 0 ))
 		{
 			if(  $this->menuTableMap[ $this->table ][ strtolower($this->pageType) ] > 1 )
@@ -565,7 +569,7 @@ class MenuItem
 				return $this;
 			}
 		}
-		
+
 		// recursively call for all children
 		for( $i=0; $i < count( $this->children ); $i++ )
 		{
@@ -575,9 +579,9 @@ class MenuItem
 				return $currentChild;
 			}
 		}
-		
-		return null;		
-	}	
+
+		return null;
+	}
 
 	/**
 	 * Sets selected element. Need to call after all parame
@@ -585,12 +589,12 @@ class MenuItem
 	 * @param link $xt
 	 * @return bool
 	 */
-	 function setCurrMenuElem(&$xt) 
-	{		
+	 function setCurrMenuElem(&$xt)
+	{
 		// if we have no page name, or table name differs with menu item, we can't identify menu link
 		if( $this->pageObject->tName == $this->table && ($this->pageType == 'AdminArea' || $this->id != 0) )
 		{
-			if(isset( $_SESSION['menuItemId'] ) 
+			if(isset( $_SESSION['menuItemId'] )
 				&& $this->menuTableMap[ $this->table ][ strtolower($this->pageType) ] > 1)
 				{
 					if ($_SESSION['menuItemId'] == $this->id)
@@ -613,14 +617,14 @@ class MenuItem
 		// recursively call for all children
 		for($i=0;$i<count($this->children);$i++)
 		{
-			// If anyone from children assigned as current, we close recursion 
-			if($this->children[$i]->setCurrMenuElem($xt))	
+			// If anyone from children assigned as current, we close recursion
+			if($this->children[$i]->setCurrMenuElem($xt))
 			{
 				if( $this->isBootstrap() )
 					$xt->assign("submenu".$this->id."_class", "in");
 				else
 					$this->setAsCurrMenuElem($xt);
-			
+
 				return true;
 			}
 		}
@@ -631,7 +635,7 @@ class MenuItem
 	 * Assign Menu link elem as current
 	 *
 	 * @param link $xt
-	 */	
+	 */
 	function setAsCurrMenuElem(&$xt){
 		// cancel not current assignment
 		//$xt->assign("item".$this->id."_notcurrent",false);
@@ -639,29 +643,30 @@ class MenuItem
 		if( $this->isBootstrap() )
 			$xt->assign("item".$this->id."_current","active");
 	}
-	
 
 
 
-	public function getMenuItemAttributes( $showSubmenu = true ) 
+
+	public function getMenuItemAttributes( $showSubmenu = true )
 	{
 		$attrs = array();
-		if( $this->isBootstrap() && $this->isShowAsGroup() && $showSubmenu )
+		if( $this->isShowAsGroup() && $showSubmenu )
 		{
+			//$attrs["class"] = "r-menugroup";
 			if( $this->isTreelike() )
 			{
 				$attrs["data-toggle"] = "menu-collapse";
 				$attrs["data-target"] = "#submenu" . $this->id;
 			}
-			else 
+			else
 			{
-				$attrs["class"] = "dropdown-toggle";
+				//$attrs["class"] .= " dropdown-toggle";
 				$attrs["data-toggle"] = "nested-dropdown";
 				$attrs["aria-haspopup"] = "true";
 				$attrs["aria-expanded"] = "false";
 			}
 		}
-		
+
 		$attrs["id"] = 'itemlink' . $this->id;
 		$attrs["itemtitle"] = $this->title;
 		if( $this->style != "" )
@@ -672,8 +677,8 @@ class MenuItem
 			$attrs["target"] = "_blank";
 			$attrs["link"] = "External";
 		}
-		
-		if( $this->linkType == "Internal" && $this->pageType == "WebReports" )
+
+		if( $this->linkType == "Internal" && $this->pageType == "webreports" )
 		{
 			$attrs["href"] = GetTableLink("webreport");
 			$attrs["value"] = GetTableLink("webreport");
@@ -684,9 +689,9 @@ class MenuItem
 
 			if ( $this->pageId != "" )
 			{
-				$params[] = 'page=' . $this->pageId; 
+				$params[] = 'page=' . $this->pageId;
 			}
-				
+
 
 			// add menu id param. Used for setting current menu element
 			if ( $this->menuTableMap[ $this->table ][ strtolower($this->pageType) ] > 1 )
@@ -696,11 +701,11 @@ class MenuItem
 				$params[] = $this->params;
 
 			$getParams = implode("&", $params);
-			
-			$attrs["href"] = GetTableLink(GetTableURL($this->table), strtolower($this->pageType), $getParams);	
+
+			$attrs["href"] = GetTableLink(GetTableURL($this->table), strtolower($this->pageType), $getParams);
 			$attrs["value"] = GetTableLink(GetTableURL($this->table), strtolower($this->pageType), $getParams);
-				
-		}  
+
+		}
 		elseif( $this->linkType == "External" )
 		{
 			$attrs["href"] = $this->href;
@@ -714,8 +719,8 @@ class MenuItem
 	 *
 	 * @param link $xt
 	 */
-	function assignLinks(&$xt, $showSubmenu = true ) 
-	{	
+	function assignLinks(&$xt, $showSubmenu = true )
+	{
 		// assign title between tag a
 		$title = $this->title;
 		$arrowIcon = "glyphicon-triangle-right";
@@ -723,6 +728,8 @@ class MenuItem
 			$arrowIcon = "glyphicon-triangle-left";
 		if( $this->isBootstrap() && $this->isShowAsGroup() && !$this->isWelcome() )
 		{
+			$xt->assign("item".$this->id."_expand_icon", true );
+			/*
 			if( !$this->isTreelike() )
 			{
 				if( $showSubmenu )
@@ -734,6 +741,7 @@ class MenuItem
 			{
 					$title = '<span class="menu-triangle glyphicon '.$arrowIcon.'"></span> ' . $title;
 			}
+			*/
 		}
 		$icon = $this->getIconHTML();
 		if( $icon ) {
@@ -741,13 +749,13 @@ class MenuItem
 				$xt->assign("item".$this->id."_icon", $icon.' ' );
 			$xt->assign("item".$this->id."_collicon", $icon.' ' );
 		}
-		else 
+		else
 			$xt->assign("item".$this->id."_firstcap", substr( trim( $this->title ), 0, 1 ) );
 			$xt->assign("item".$this->id."_tooltip", runner_htmlspecialchars( $this->title )) ;
 			$xt->assign("item".$this->id."_title", $title );
 
 		$attrs = $this->getMenuItemAttributes( $showSubmenu );
-		
+
 		$groupOnlyAttrs = array();
 		$groupOnlyAttrs["id"] = true;
 		$groupOnlyAttrs["title"] = true;
@@ -759,7 +767,7 @@ class MenuItem
 		$groupOnlyAttrs["aria-expanded"] = true;
 
 		$groupOnlyMode = !$this->isShowAsLink() && $this->isShowAsGroup();
-		
+
 		if( $this->isBootstrap() && $groupOnlyMode && !$this->isTreelike() )
 		{
 			$childWithLink = $this->getFirstChildWithLink();
@@ -784,17 +792,17 @@ class MenuItem
 			else
 				$link_attrs .= ' ' . $key . '="' . $value . '"';
 		}
-		
-		
+
+
 		if( $groupOnlyMode )
 		{
 			$option_attrs = "disabled";
 		}
 		$xt->assign( "item".$this->id."_menulink_attrs", $link_attrs );
 		$xt->assign( "item".$this->id."_optionattrs", $option_attrs );
-		
+
 	}
-	
+
 	/**
 	 * Find a menu descendant with a link
 	 *
@@ -803,12 +811,12 @@ class MenuItem
 	{
 		if( $this->isShowAsLink() )
 			return $this;
-		foreach( $this->children as $child ) 
+		foreach( $this->children as $child )
 		{
 			if( $child->isShowAsLink() )
 				return $child;
 		}
-		foreach( $this->children as $child ) 
+		foreach( $this->children as $child )
 		{
 			$childWithLink = $child->getFirstChildWithLink();
 			if( $childWithLink )
@@ -827,7 +835,7 @@ class MenuItem
 		$xt->assign("item".$this->id."_title", $this->title);
 		// assign common attr
 		$attrForAssign = ' id="itemlink'.$this->id.'" itemtitle="'.$this->title.'" '.($this->style ? ' style="cursor:default;text-decoration:none; '.$this->style.'"' : '');
-		
+
 		$xt->assign("item".$this->id."_menulink_attrs", $attrForAssign);
 		$xt->assign("item".$this->id."_optionattrs","disabled");
 	}
@@ -837,30 +845,30 @@ class MenuItem
 	 *
 	 * @return bool
 	 */
-	function isSetParentElem() 
-	{		
+	function isSetParentElem()
+	{
 		// different page types, in List->Chart->Report->Search->Add->Print priority
 		//$pageTypes = array('List', 'Chart', 'Report', 'Search', 'Add', 'Print');
 		if( !isset( $this->menuTableMap[ $this->table ] ) )
 			return false;
-			
+
 		$pageTypes = array('list', 'chart', 'report', 'search', 'add', 'print');
-		
+
 		$pageTypesInLowCase = array_keys( $this->menuTableMap[ $this->table ] );
-		
-		
-		switch (strtolower($this->pageType)) 
-		{			
+
+
+		switch (strtolower($this->pageType))
+		{
 			case 'list':
 				// do nothing, because list has highest priority
 				return false;
 				break;
 			case 'chart':
 				/*
-				 * count elements of inner join between parent pageTypes of this pageType 
+				 * count elements of inner join between parent pageTypes of this pageType
 				 * and all menu link types of this table represented in this menu
 				 * array_intersect(array_slice($pageTypes, 0, 1), $this->pageTypesInMenuForThisTable) returns all elements
-				 * with higher priority than this pageType, same code for all cases. 
+				 * with higher priority than this pageType, same code for all cases.
 				 */
 				if (count(array_intersect(array_slice($pageTypes, 0, 1), $pageTypesInLowCase)))
 					return true;
@@ -894,21 +902,21 @@ class MenuItem
 			default:
 				// not supported type, check not to show as current
 				break;
-				
+
 		}
 	}
-	
+
 	/**
 	 * Check if current page, that we want to show, isset in menu elements collection
 	 *
 	 * @param string $pageName
 	 * @return bool
 	 */
-	function isThisPageInMenu() 
+	function isThisPageInMenu()
 	{
 		return isset( $this->menuTableMap[ $this->table ][ $this->pageObject->getPageType() ] );
 	}
-	
+
 	/**
 	 * Returns array of keys in lower case
 	 *
@@ -930,7 +938,7 @@ class MenuItem
 	{
 		if (isset($_SESSION['menuItemId']))
 			unset($_SESSION['menuItemId']);
-		
+
 	}
 	/**
 	 * Set session params before start
@@ -939,9 +947,9 @@ class MenuItem
 	static function setMenuSession()
 	{
 		if (postvalue("menuItemId"))
-			$_SESSION['menuItemId'] = postvalue("menuItemId");	
+			$_SESSION['menuItemId'] = postvalue("menuItemId");
 	}
-	
+
 	function getItemDescendants( &$descendants, $level = 0 )
 	{
 		foreach( $this->children as $child )
@@ -951,18 +959,18 @@ class MenuItem
 				$child->getItemDescendants( $descendants, $level - 1 );
 		}
 	}
-	
-	function isBootstrap() 
+
+	function isBootstrap()
 	{
 		return ( $this->pageObject->isBootstrap() );
 	}
 
-	function isWelcome() 
+	function isWelcome()
 	{
 		return ( $this->menuId == WELCOME_MENU );
 	}
-	
-	function isTreelike() 
+
+	function isTreelike()
 	{
 		return MENU_VERTICAL == $this->menuMode && ProjectSettings::isMenuTreelike( $this->menuId );
 	}

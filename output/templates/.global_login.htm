@@ -164,9 +164,94 @@
 			<div edit-form-cell class="clearfix">
 								<div class="checkbox r-edit-field" data-itemtype="remember_password" data-itemid="remember_password" {$item_remember_password} data-pageid="{$pageid}" >
 	<label>
-		<input type="checkbox" {$rememberbox_attrs}> {BEGIN remember_password_label}<span>Recordarme</span>{END remember_password_label}
-	</label>
+		<input type="checkbox" id="remember_password{$id}" name="remember_password" value="1" {$rememberbox_attrs}> Recordarme	</label>
 </div>					</div>
+		</td>
+				<td class="col-md-2"></td>
+		</tr>
+ 
+	<tr>
+	 
+				<td
+			class=" r-ori-vert							col-md-4						"
+			
+							data-single
+			
+									data-cellId="grid_c8" data-pageid="{$pageid}"		>
+			<div edit-form-cell class="clearfix">
+					</div>
+		</td>
+	 
+				<td
+			class="						"
+			
+			
+			colspan="2"						data-cellId="grid_c13" data-pageid="{$pageid}"		>
+			<div edit-form-cell class="clearfix">
+								{BEGIN signin_button}
+<span data-itemtype="login_button" data-itemid="login_button" {$item_login_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" {$loginlink_attrs} >
+							Aceptar			</a>
+</span>
+{END signin_button}
+								{BEGIN continue_button}
+<span data-itemtype="continue_login_button" data-itemid="continue_login_button" {$item_continue_login_button} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-primary   
+	" {$continuebutton_attrs} >
+							Continuar			</a>
+</span>
+{END continue_button}
+								{BEGIN guestlink_block}
+<span data-itemtype="guest_login" data-itemid="guest_login" {$item_guest_login} data-pageid="{$pageid}" data-small data-button-item>
+	<a type="button" title="" class="btn btn-link   
+	" {$guestlink_attrs} >
+							Conectar como invitado			</a>
+</span>
+{END guestlink_block}
+					</div>
+		</td>
+				<td class="col-md-2"></td>
+		</tr>
+ 
+	<tr>
+	 
+				<td
+			class=" r-ori-vert							col-md-4						"
+			
+							data-single
+			
+			colspan="3"						data-cellId="grid_c12" data-pageid="{$pageid}"		>
+			<div edit-form-cell class="clearfix">
+					</div>
+		</td>
+				<td class="col-md-2"></td>
+		</tr>
+ 
+	<tr>
+	 
+				<td
+			class=" r-ori-vert							col-md-4						"
+			
+							data-single
+			
+			colspan="3"						data-cellId="grid_c11" data-pageid="{$pageid}"		>
+			<div edit-form-cell class="clearfix">
+					</div>
+		</td>
+				<td class="col-md-2"></td>
+		</tr>
+ 
+	<tr>
+	 
+				<td
+			class=" r-ori-vert							col-md-4						"
+			
+							data-single
+			
+			colspan="3"						data-cellId="grid_c" data-pageid="{$pageid}" data-page=".global_login"		>
+			<div edit-form-cell class="clearfix">
+					</div>
 		</td>
 				<td class="col-md-2"></td>
 		</tr>
@@ -186,34 +271,43 @@
 			</div>			 
 				<div 
 	data-cellId="footer_c2" data-pageid="{$pageid}" data-page=".global_login"	{$cell_footer_c2}
-	class="			col-md-6
+	class=" r-ori-vert			col-md-6
+	
+">
+			</div>					</div>
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="footer_c4" data-pageid="{$pageid}" data-page=".global_login"	{$cell_footer_c4}
+	class=" r-ori-vert			col-md-6
+	
+">
+			</div>			 
+				<div 
+	data-cellId="footer_c5" data-pageid="{$pageid}" data-page=".global_login"	{$cell_footer_c5}
+	class=" r-ori-vert			col-md-6
+	
+">
+			</div>					</div>
+	 
+		<div class="row">
+			 
+				<div 
+	data-cellId="footer_c" data-pageid="{$pageid}" data-page=".global_login"	{$cell_footer_c}
+	class=" r-ori-vert			col-md-6
 	
 ">
 		 
-		{BEGIN signin_button}
-<span data-itemtype="login_button" data-itemid="login_button" {$item_login_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-primary   
-	" {$loginlink_attrs} >
-							Aceptar			</a>
-</span>
-{END signin_button}
-	 
-		{BEGIN continue_button}
-<span data-itemtype="continue_login_button" data-itemid="continue_login_button" {$item_continue_login_button} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-primary   
-	" {$continuebutton_attrs} >
-							Continuar			</a>
-</span>
-{END continue_button}
-	 
-		{BEGIN guestlink_block}
-<span data-itemtype="guest_login" data-itemid="guest_login" {$item_guest_login} data-pageid="{$pageid}" data-small data-button-item>
-	<a type="button" title="" class="btn btn-link   
-	" {$guestlink_attrs} >
-							Conectar como invitado			</a>
-</span>
-{END guestlink_block}
-		</div>					</div>
+		<span data-itemtype="text" data-itemid="text1" {$item_text1} data-pageid="{$pageid}" data-small > 
+	<h1><em class="ql-size-huge" style="">Auspician</em><em class="ql-size-huge"><span class="ql-cursor">﻿</span></em></h1></span>
+		</div>			 
+				<div 
+	data-cellId="footer_c3" data-pageid="{$pageid}" data-page=".global_login"	{$cell_footer_c3}
+	class=" r-ori-vert			col-md-6
+	
+">
+			</div>					</div>
 	</div>		
 {END footer_block}
 						</div>

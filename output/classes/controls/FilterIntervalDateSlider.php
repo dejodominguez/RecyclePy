@@ -82,25 +82,28 @@ class FilterIntervalDateSlider extends FilterIntervalSlider
 	 */
 	protected function assignKnobsValues() 
 	{
-		$filterValues = $this->filteredFields[ $this->fName ]['values'];	
-		$value1 = prepare_for_db($this->fName, $filterValues[0], "");
+		$filterData = $this->filteredFields[ $this->fName ];
+		
+		$filterValues = array();
+		$filterValues[] = $filterData['values'][0];
+		$filterValues[] = $filterData['sValues'][0];
+		
+		$value1 = prepare_for_db( $this->fName, $filterValues[0], "" );
 				
-		if($this->knobsType == FS_MIN_ONLY) 
-		{
+		if( $this->knobsType == FS_MIN_ONLY ) {
 			$this->minKnobValue = $value1;
 			$this->minKnobFormatValue = $filterValues[0];
 			return;	
 		}
 		
-		if($this->knobsType == FS_MAX_ONLY) 
-		{		
+		if( $this->knobsType == FS_MAX_ONLY ) {		
 			$this->maxKnobValue = $value1;
 			$this->maxKnobFormatValue = $filterValues[0];
 			return;
 		}
 		
 		$this->minKnobValue = $value1;
-		$this->maxKnobValue = prepare_for_db($this->fName, $filterValues[1], "");
+		$this->maxKnobValue = prepare_for_db( $this->fName, $filterValues[1], "" );
 		
 		$this->minKnobFormatValue = $filterValues[0];
 		$this->maxKnobFormatValue = $filterValues[1];
@@ -708,49 +711,48 @@ class FilterIntervalDateSlider extends FilterIntervalSlider
 		
 		$ctrlsMap['stepType'] = $this->stepType;		
 
-		if( $this->stepType == FSST_SECONDS || $this->stepType == FSST_MINUTES )
-		{		
-			$ctrlsMap['realMinValue'] = $this->getAdjustedRealDate($this->minValue);
-			$ctrlsMap['realMaxValue'] = $this->getAdjustedRealDate($this->maxValue);	
+		if( $this->stepType == FSST_SECONDS || $this->stepType == FSST_MINUTES ) {		
+			$ctrlsMap['realMinValue'] = $this->getAdjustedRealDate( $this->minValue );
+			$ctrlsMap['realMaxValue'] = $this->getAdjustedRealDate( $this->maxValue );	
 		}
 		
 		//the min, max formated dates
-		$ctrlsMap['minValue'] = $this->getRoundedDate($this->minValue, true);
-		$ctrlsMap['maxValue'] = $this->getRoundedDate($this->maxValue, false);
+		$ctrlsMap['minValue'] = $this->getRoundedDate( $this->minValue, true );
+		$ctrlsMap['maxValue'] = $this->getRoundedDate( $this->maxValue, false );
 
 		//the min, max slider values (numbers)		
 		$ctrlsMap['roundedMin'] = 0;
-		$ctrlsMap['roundedMax'] = $this->round( $this->maxValue, false);
+		$ctrlsMap['roundedMax'] = $this->round( $this->maxValue, false );
 				
 		$ctrlsMap['roundedMinKnobValue'] = $this->round( $this->minKnobValue, true, true );
 		$ctrlsMap['roundedMaxKnobValue'] = $this->round( $this->maxKnobValue, false, true );
-		if($this->filtered)
-		{
-			$ctrlsMap['defaultValuesArray'] = $this->filteredFields[ $this->fName ]["values"];
+		
+		if( $this->filtered ) {
+			//$ctrlsMap['defaultValuesArray'] = array( $this->minKnobFormatValue, $this->maxKnobFormatValue );
 			$ctrlsMap['minKnobValue'] = $ctrlsMap['minValue'];
 			$ctrlsMap['maxKnobValue'] = $ctrlsMap['maxValue'];
 			
-			if($this->knobsType != FS_MAX_ONLY) 
+			if( $this->knobsType != FS_MAX_ONLY )
 				$ctrlsMap['minKnobValue'] = $this->getRoundedDate( $this->minKnobFormatValue, true, true );
 			
-			if($this->knobsType != FS_MIN_ONLY) 
+			if( $this->knobsType != FS_MIN_ONLY )
 				$ctrlsMap['maxKnobValue'] = $this->getRoundedDate( $this->maxKnobFormatValue, false, true );
 		}	
-		date_default_timezone_set($timeZone);
+		date_default_timezone_set( $timeZone );
 		
-		if($this->stepType == FSST_SECONDS)
+		if( $this->stepType == FSST_SECONDS )
 			$ctrlsMap['showSeconds'] = true;
 			
-		if($this->stepType == FSST_SECONDS || $this->stepType == FSST_MINUTES || $this->stepType == FSST_HOURS )
-		{
+		if( $this->stepType == FSST_SECONDS || $this->stepType == FSST_MINUTES || $this->stepType == FSST_HOURS ) {
 			global $locale_info;
 			$ctrlsMap['showTime'] = true;
 			$ctrlsMap['timeDelimiter'] = $locale_info["LOCALE_STIME"];
 			$ctrlsMap['timeFormat'] = $locale_info["LOCALE_STIMEFORMAT"];
 			$ctrlsMap['is24hoursFormat'] = $locale_info["LOCALE_ITIME"] == "1";
 			$ctrlsMap['leadingZero'] = $locale_info["LOCALE_ITLZERO"] == "1";
-			if($locale_info["LOCALE_ITIME"] == "0")
-				$ctrlsMap['designators'] = array("am" => $locale_info["LOCALE_S1159"], "pm" => $locale_info["LOCALE_S2359"]);
+			
+			if( $locale_info["LOCALE_ITIME"] == "0" )
+				$ctrlsMap['designators'] = array( "am" => $locale_info["LOCALE_S1159"], "pm" => $locale_info["LOCALE_S2359"] );
 		}	
 		
 		return $ctrlsMap;
@@ -767,86 +769,5 @@ class FilterIntervalDateSlider extends FilterIntervalSlider
 		
 		$pageObj->controlsMap["filters"]["controls"][] = $ctrlsMap;	
 	}
-	
-	/**
-	 * Get the date slider's where
-	 * @return string
-	 */
-	static function getDateSliderWhere($fName, $pSet, $cipherer, $table, $SearchFor, $SearchFor2, $strSearchOption, $fullFieldName) 
-	{
-		$firstDelimPos = strpos($SearchFor, "-");
-		$lastDelimPos = strrpos($SearchFor, "-");
-		if($firstDelimPos === FALSE || $firstDelimPos == $lastDelimPos)
-			return "";
-		
-		$stepType = $pSet->getFilterStepType($fName);
-		$timeValueEnvolved = false;
-		if( $stepType == FSST_SECONDS || $stepType == FSST_MINUTES || $stepType == FSST_HOURS ) 
-			$timeValueEnvolved = true;
-		
-		$value1 = $cipherer->MakeDBValue($fName, $SearchFor, "", true);		
-		
-		switch($strSearchOption)
-		{
-			case "slider":	
-				$firstDelimPos = strpos($SearchFor2, "-");
-				$lastDelimPos = strrpos($SearchFor2, "-");
-				if($firstDelimPos === FALSE || $firstDelimPos == $lastDelimPos)
-					return "";
-								
-				$cleanvalue2 = prepare_for_db($fName, $SearchFor2, "");
-				$timeArr = db2time($cleanvalue2);
-				
-				if(!$timeValueEnvolved)
-				{
-					// for dates without time, add one day	
-					$timeArr = adddays($timeArr, 1);
-					$value2 = $timeArr[0]."-".$timeArr[1]."-".$timeArr[2];
-				}
-				else
-				{
-					if($stepType == FSST_SECONDS)	
-						$timeArr = addSeconds($timeArr, 1);
-					else
-						$timeArr = addMinutes($timeArr, 1);							
-					
-					$dateString = $timeArr[0]."-".$timeArr[1]."-".$timeArr[2];
-					
-					$hours = $timeArr[3] < 10 ? '0'.$timeArr[3] : $timeArr[3];	
-					$minutes = $timeArr[4] < 10 ? '0'.$timeArr[4] : $timeArr[4];	
-					$seconds = $timeArr[5] < 10 ? '0'.$timeArr[5] : $timeArr[5];		
-					$timeString = $hours.":".$minutes.":".$seconds;
-					
-					$value2 = $dateString." ".$timeString;
-				}
-
-				$value2 = add_db_quotes($fName, $value2, $table);
-				return $fullFieldName.">=".$value1." and ".$fullFieldName."<".$value2;	
-				
-			case 'moreequal':
-				return $fullFieldName.">=".$value1;
-				
-			case 'lessequal':	
-				return $fullFieldName."<=".$value1;
-
-			default: 
-				return "";
-		}
-	}
-	
-	/**
-	 * Get the 'not null' condition to add it to the WHERE clause
-	 * @param String dbfName
-	 * @return String
-	 */
-	protected function getNotNullWhere()
-	{
-		$ret = parent::getNotNullWhere();
-		
-		if( $this->connection->dbType == nDATABASE_MySQL )
-			$ret[] = $this->connection->addFieldWrappers( $this->fName ) . " > 0";
-		
-		return $ret;
-	}	
 }
 ?>

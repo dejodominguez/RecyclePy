@@ -55,7 +55,14 @@ class PostgreConnection extends Connection
 	 */
 	public function connect()
 	{
+		if( GetGlobalData("showDetailedError", true) ) {
+			// there is no other way to display Postgre connection error
+			$errorMode = error_reporting( E_ALL );
+		}
 		$this->conn = pg_connect( $this->connstr );
+		if( GetGlobalData("showDetailedError", true) ) {
+			error_reporting( $errorMode );
+		}
 		if( !$this->conn )
 			$this->triggerError("Unable to connect");
 		
@@ -214,9 +221,9 @@ class PostgreConnection extends Connection
 	 * @param Number pageSize
 	 * @param Number page
 	 */
-	public function seekPage($qHandle, $pageSize, $page)
+	public function seekRecord($qHandle, $n)
 	{
-		pg_result_seek($qHandle, ($page - 1) * $pageSize);
+		pg_result_seek($qHandle, $n );
 	}
 	
 	/**

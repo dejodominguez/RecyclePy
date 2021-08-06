@@ -8,8 +8,10 @@ require_once getabspath("plugins/PHPExcel/IOFactory.php");
  * @param String ext
  * @return PHPExcel			 The file resource
  */
-function openImportExcelFile($uploadfile, $ext)
+function openImportExcelFile( $uploadfile )
 {
+	$ext = getFileExtension( $uploadfile );
+	
 	if( strtoupper($ext) == "XLSX" )
 	{
 		$objPHPExcel = PHPExcel_IOFactory::load($uploadfile);
@@ -60,7 +62,7 @@ function getImportExcelFields($data)
  * @param String dateFormat
  * @return Array
  */
-function ImportDataFromExcel( $fileHandle, $fieldsData, $keys, $importPageObject, $autoinc, $useFirstLine )
+function ImportDataFromExcel( $fileHandle, $fieldsData, $importPageObject, $autoinc, $useFirstLine )
 {
 	global $cCharset;
 	
@@ -122,7 +124,7 @@ function ImportDataFromExcel( $fileHandle, $fieldsData, $keys, $importPageObject
 				$fieldValuesData[ $importFieldName ] = $cellValue;	
 			}			
 			
-			$importPageObject->importRecord( $fieldValuesData, $keys, $autoinc, $addedRecords, $updatedRecords, $errorMessages, $unprocessedData );
+			$importPageObject->importRecord( $fieldValuesData, $autoinc, $addedRecords, $updatedRecords, $errorMessages, $unprocessedData );
 			$metaData["totalRecords"] = $metaData["totalRecords"] + 1;
 		}
 	}
@@ -183,8 +185,10 @@ function getPreviewDataFromExcel( $fileHandle, &$fieldsData )
 					{
 						$cellDateFormat = $fileHandle->getCellXfByIndex( $cell->getXfIndex() )->getNumberFormat()->getFormatCode();
 						$cellTextValue = PHPExcel_Style_NumberFormat::ToFormattedString($cellValue, $cellDateFormat);
-						$cellValue = getTimeStamp($cellTextValue, $cellDateFormat);	
-
+						
+						$refinedDateFormat = ImportPage::getRefinedDateFormat( $cellDateFormat );
+						$cellValue = strtotime( localdatetime2db( $cellTextValue, $refinedDateFormat ) );
+						
 						if( !$columnMatched )
 							$fieldsData[ $col ] = array();
 
@@ -211,106 +215,25 @@ function getPreviewDataFromExcel( $fileHandle, &$fieldsData )
 }
 
 /**
- * Get the uploded file's data from superglobals
- * @param String fileName
- * @return Mixed
- */
-function getImportFileData( $fileName )
-{
-	return $_FILES[ $fileName ];
-}
-
-
-/**
- * @param String fname
+ * Get db prepared dateTime value
+ * @param String textValue
+ * @param String dateFormat
  * @return String
  */
-function getImportFileExtension($fname)
+function getDBDateValue( $textValue, $dateFormat )
 {
-	return getFileExtension( $_FILES[$fname]['name'] );
-}
-
-/**
- * @param String fname
- * @return String
- */
-function getTempImportFileName($fname)
-{
-	return $_FILES[$fname]['tmp_name'];
-}
-
-
-/**
- * Delete am import temp file
- * @param String filePath
- */
-function deleteImportTempFile( $filePath )
-{
-	$error_handler = set_error_handler("empty_error_handler");
+	if( !$textValue )
+		return NULL;
+		
+	// Get timestamp
+	$refinedDateFormat = ImportPage::getRefinedDateFormat( $dateFormat );
+	$timeStamp = strtotime( localdatetime2db( $textValue, $refinedDateFormat ) );
 	
-	runner_delete_file( $filePath );
-	
-	if( $error_handler )
-		set_error_handler($error_handler);
-}
-
-/**
- * Do not touch $table and $isIdentityOffNeeded - they needed for ASP.Net MVC version
- * @param String sql
- * @param Connection connection
- * @param String table
- * @param Boolean isIdentityOffNeeded
- * @return Mixed
- */ 
-function db_exec_import($sql, $connection, $table = "", $isIdentityOffNeeded = false)
-{
-	set_error_handler("import_error_handler");
-	return $connection->exec( $sql );
-}
-
-
-/**
- * A PHP rewind function wrapper
- * @param Mixed handle
- * @param $filePath added for ASP
- * @return Boolean (TRUE | FALSE)
- */
-function rewindFilePointerPosition($handle,$filePath)
-{
-	rewind( $handle );
-	return $handle;
-}
-
-/**
- * Get the list of file names from a particular directory
- * @param String dirPath
- * @return Array
- */
-function getFileNamesFromDir( $dirPath )
-{
-	$fileNames = array();
-	
-	$dirHandle = opendir( $dirPath );
-	if( $dirHandle )
-	{	
-		while( false !== ($fileName = readdir($dirHandle)) )
-		{
-			$fileNames[] = $fileName;									
-		}
-		closedir( $dirHandle );	
-	}
-	
-	return $fileNames;
-}
-
-/**
- * A PHP fgets function wrapper 
- * @param Mixed handle
- * @param Number length
- */
-function getLineFromFile($handle, $length)
-{
-	return fgets($handle, $length);
+	if( $timeStamp === FALSE )
+		return NULL;
+		
+	$time = localtime($timeStamp, true);
+	return ($time["tm_year"] + 1900)."-".($time["tm_mon"] + 1)."-".$time["tm_mday"]." ".$time["tm_hour"].":".$time["tm_min"].":".$time["tm_sec"];
 }
 
 ?>

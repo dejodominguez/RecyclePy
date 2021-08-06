@@ -10,13 +10,6 @@ require_once('include/xtempl.php');
 
 
 
-
-
-
-
-
-
-
 $xt = new Xtempl();
 
 $id = postvalue_number("id");
@@ -28,7 +21,7 @@ $params['xt'] = &$xt;
 $params["tName"] = $strTableName;
 $params["pageTable"] = GLOBAL_PAGES;
 $params["pageType"] = PAGE_REGISTER;
-//$params["templatefile"] = "register.htm";
+$params["pageName"] = postvalue("page"); 
 $params["needSearchClauseObj"] = false;
 $params["captchaValue"] = postvalue("value__register_captcha_" . $id);
 

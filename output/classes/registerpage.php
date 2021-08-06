@@ -31,6 +31,9 @@ class RegisterPage extends RunnerPage
 		$this->usernameFiled = GetUserNameField();
 		$this->emailFiled = GetEmailField();
 
+		if( GetGlobalData("userRequireActivation") ) {
+			$this->sendActivationLink = true;
+		}
 		
 		// fill global password settings
 		$this->pwdStrong = GetGlobalData("pwdStrong", false);
@@ -43,22 +46,13 @@ class RegisterPage extends RunnerPage
 			$this->settingsMap["globalSettings"]["pwdUpperLower"] = GetGlobalData("pwdUpperLower", false);
 		}
 
-		if( $this->getLayoutVersion() === PD_BS_LAYOUT ) 
-		{
-			$this->headerForms = array( "top" );
-			$this->footerForms = array( "below-grid" );
-			
-			if ( $this->isMultistepped() ) 
-				$this->bodyForms = array( "above-grid", "steps" );
-			else				
-				$this->bodyForms = array( "above-grid", "grid" );
-		} 
-		else
-		{
-			$this->formBricks["header"] = "regheader";
-			$this->formBricks["footer"] = "regbuttons";
-			$this->assignFormFooterAndHeaderBricks( true );
-		}
+		$this->headerForms = array( "top" );
+		$this->footerForms = array( "below-grid" );
+		
+		if ( $this->isMultistepped() ) 
+			$this->bodyForms = array( "above-grid", "steps" );
+		else				
+			$this->bodyForms = array( "above-grid", "grid" );
 	}
 
 	/**
@@ -78,6 +72,102 @@ class RegisterPage extends RunnerPage
 		$this->cipherer = new RunnerCipherer( $this->tName );
 	}	
 
+	/**
+	 * Activate user by email link
+	 */
+	protected function activateNewUser()
+	{
+		$username = base64_decode(@$_GET["u"]);
+		$code = @$_GET["code"];
+		
+		if( $this->cipherer->isFieldEncrypted("NombreUsuario") )
+			$strUsername = $this->cipherer->MakeDBValue("NombreUsuario", $username, "", true);
+		else
+			$strUsername = make_db_value("NombreUsuario", $username);
+
+		$sql = "select ".$this->getFieldSQLDecrypt("Password")
+			." from ". $this->connection->addTableWrappers( "public.Usuarios" ) 
+			." where ".
+			$this->connection->comparisonSQL( 
+				$this->getFieldSQLDecrypt("NombreUsuario"), 
+				$strUsername,
+				$this->pSet->isCaseInsensitiveUsername()
+			);
+		
+		$qResult = $this->connection->query( $sql );
+		if( !$qResult )
+		{
+			echo "Codigo de validación no válido";
+			return;
+		}
+		
+		$data = $qResult->fetchNumeric();
+		if( !$data )
+		{
+			echo "Codigo de validación no válido";
+			return;
+		}
+		
+		$dbPassword = $this->cipherer->DecryptField( "Password", $data[0] );
+		$usercode = $username.md5( $dbPassword );
+		
+		
+		if( $code != md5( $usercode ) )
+		{
+			echo "Codigo de validación no válido";
+			return;
+		}
+			
+		$sql = "update ". $this->connection->addTableWrappers( "public.Usuarios" )
+			." set ". $this->connection->addFieldWrappers( "active" )."=1 "
+			." where " . 
+			$this->connection->comparisonSQL( 
+				$this->getFieldSQLDecrypt("NombreUsuario"), 
+				$strUsername,
+				$this->pSet->isCaseInsensitiveUsername()
+			);
+
+		$sessionLevel = Security::userSessionLevel();
+		if( $sessionLevel === LOGGED_ACTIVATION_PENDING ) {
+			//	verify if 2factor activation needed
+			$twofSettings =& Security::twoFactorSettings();
+			if( $twofSettings["available"] && ( $twofSettings["required"] || $twofSettings["enable"] ) ) {
+				Security::elevateSession( LOGGED_2FSETUP_PENDING );
+			}
+			else {
+				Security::elevateSession();
+				Security::auditLoginSuccess();
+				Security::callAfterLogin();
+			}
+			$sessionLevel = Security::userSessionLevel();
+		}
+			
+		$this->connection->exec( $sql );
+
+		$this->switchToSuccessPage();
+		
+		$this->hideItemType('register_activate_message');
+		$this->body["begin"].= "<form method=\"POST\" action=\"".GetTableLink("login")."\" name=\"loginform\">
+		<input type=\"Hidden\" name=\"username\" value=\"".runner_htmlspecialchars($username)."\">";
+		$this->body["begin"].= "</form>";
+		
+		$onClick = "";
+		if( $sessionLevel === LOGGED_2FSETUP_PENDING ) {
+			$continueUrl = GetTableLink("userinfo");
+		} else if( $sessionLevel === LOGGED_FULL ) {
+			//	probably landing page instead of menu
+			$continueUrl = GetTableLink("menu");
+		} else {
+			$continueUrl = GetTableLink("login");
+			$onClick = 'onclick="document.forms.loginform.submit();return false;"';
+		}
+		$this->xt->assign("body", $this->body);
+		//$this->xt->assign("registered_block", true);
+		$this->xt->assign("loginlink_attrs", 'href="' . $continueUrl . '" '.$onClick.' id="ProceedToLogin"');	
+		
+		//	display register_success page
+		$this->display( $this->templatefile );
+	}
 	
 	/**
 	 *
@@ -90,25 +180,27 @@ class RegisterPage extends RunnerPage
 		if( $globalEvents->exists("BeforeProcessRegister") )
 			$globalEvents->BeforeProcessRegister( $this );
 
+		if( $this->action == "activate" && GetGlobalData("userRequireActivation") ) {
+			return $this->activateNewUser();
+		}
 
 		if( $this->action == "Register" )
 		{
 			$this->registerSuccess = $this->registerNewUser();
 			$this->doAfterRegistrationEvent();
 				
-		
-			if( !$this->registerSuccess && $this->mode == REGISTER_POPUP  )
+				if( !$this->registerSuccess && $this->mode == REGISTER_POPUP )
 			{
 				$returnJSON = array();
 				$returnJSON['success'] = false;
 				
 				if( strlen( $this->message ) )
-				{
-					$returnJSON['wrongCaptchaFieldName'] = $this->getCaptchaFieldName();
 					$returnJSON['message'] = $this->message;
-				}	
+			
+				if( !$this->isCaptchaOk )
+					$returnJSON['wrongCaptchaFieldName'] = $this->getCaptchaFieldName();
 				
-				echo printJSON($returnJSON);
+				echo printJSON( $returnJSON );
 				exit();
 			}
 		}
@@ -123,6 +215,7 @@ class RegisterPage extends RunnerPage
 			$this->prepareSteps();
 			$this->prepareReadonlyFields();		
 		}		
+
 	
 		if( $this->registerSuccess && !$this->sendActivationLink || !$this->registerSuccess )
 		{
@@ -133,6 +226,7 @@ class RegisterPage extends RunnerPage
 		
 		if( $this->registerSuccess ) 
 		{
+			$this->tryLoginNewUser();
 			$this->pageName = $this->pSet->getDefaultPage( $this->successPageType() );
 			$this->pSet = new ProjectSettings( $this->tName, $this->pageType, $this->pageName, GLOBAL_PAGES );			
 			$this->xt->assign("supertop_block", true);
@@ -147,6 +241,15 @@ class RegisterPage extends RunnerPage
 		$this->showPage();
 	}
 
+	function addCommonJs() {
+		parent::addCommonJs();
+
+		// users table pSet
+		$pSet = new ProjectSettings( $this->tName, $this->pageType, $this->pageName );
+		if( $pSet->isAddPageEvents() )
+			$this->AddJSFile("include/runnerJS/events/pageevents_".GetTableURL( $this->tName ).".js");	
+	}
+	
 	/**
 	 * Run after registration event
 	 */
@@ -162,6 +265,12 @@ class RegisterPage extends RunnerPage
 	}
 
 
+	protected function getActivateUrl() 
+	{			
+		return projectURL() . GetTableLink( "register" )
+			."?a=activate&u=".rawurlencode( base64_encode($this->regValues["NombreUsuario"]) )
+			."&code=".rawurlencode( $this->prepActivationCode );	
+	}
 	
 	
 	
@@ -192,14 +301,19 @@ class RegisterPage extends RunnerPage
 			$values[ $key ] = $value;
 		}		
 
+	if( GetGlobalData("userRequireActivation") ) {
+		$values[ GetGlobalData("userActivationField") ] = 0;
+	}
 		
-		$this->strUsername = $values["username"];
-		$this->strPassword = $values["password"];
-		$this->strEmail = $values["email"];
+		$this->strUsername = $values["NombreUsuario"];
+		$this->strPassword = $values["Password"];
+		$this->strEmail = $values["Email"];
 		
-		if( !$this->checkRegisterData( $this->strUsername, $this->strPassword, $this->strEmail ) )
+		if( !$this->checkRegisterData( $this->strUsername, $this->strPassword, $this->strEmail ) 
+			|| !$this->checkDeniedDuplicated( $values ) ) {
 			$allow_registration = false;
-
+		}
+		
 		$retval = $allow_registration;
 		if( $retval && $globalEvents->exists("BeforeRegister") )
 			$retval = $globalEvents->BeforeRegister($values, $this->message, $this);
@@ -207,12 +321,15 @@ class RegisterPage extends RunnerPage
 		if( !$retval ) 			
 			return false;
 			
-		$passwordHash = md5( $values["password"] );
-		$originalpassword = $values["password"];
+		$passwordHash = md5( $values["Password"] );
+		$originalpassword = $values["Password"];
 
 		$retval = DoInsertRecord("public.Usuarios", $values, $blobfields, $this);
+		if( GetGlobalData("userRequireActivation") ) {
+			$this->prepActivationCode = md5( $this->strUsername.$passwordHash );
+		}
 		
-		$values["password"] = $originalpassword;
+		$values["Password"] = $originalpassword;
 
 		$this->regValues = $values;
 		
@@ -242,6 +359,17 @@ class RegisterPage extends RunnerPage
 			$ret = false;
 		}
 
+		//	check if entered email already exists
+		if( !strlen($strEmail) )
+		{
+			$this->jsSettings['tableSettings'][ $this->tName ]['msg_emailError'] = "Favor de escribir dirección electrónica válida";
+			$ret = false;
+		}
+		else if( !$this->checkIfEmailUnique( $strEmail ) )
+		{
+			$this->jsSettings['tableSettings'][ $this->tName ]['msg_emailError'] = "Correo electrónico"." <i>". runner_htmlspecialchars( $strEmail )."</i> "."registrado, si olvidó su nombre de usuario o contraseña use la forma de recordador de contraseña";
+			$ret = false;
+		}
 		
 		if( $this->pwdStrong )
 		{
@@ -301,15 +429,15 @@ class RegisterPage extends RunnerPage
 	 */
 	protected function checkIfUsernameUnique( $strUsername )
 	{
-		if( $this->cipherer->isFieldEncrypted("username") )
-			$sUsername = $this->cipherer->MakeDBValue("username", $strUsername, "", true);	
+		if( $this->cipherer->isFieldEncrypted("NombreUsuario") )
+			$sUsername = $this->cipherer->MakeDBValue("NombreUsuario", $strUsername, "", true);	
 		else 
-			$sUsername = add_db_quotes("username", $strUsername);
+			$sUsername = add_db_quotes("NombreUsuario", $strUsername);
 			
 		$strSQL = "select count(*) from ". $this->connection->addTableWrappers( "public.Usuarios" ) 
 			. " where " . 
 			$this->connection->comparisonSQL( 
-				$this->getFieldSQLDecrypt("username"), 
+				$this->getFieldSQLDecrypt("NombreUsuario"), 
 				$sUsername,
 				$this->pSet->isCaseInsensitiveUsername()
 			);
@@ -324,15 +452,15 @@ class RegisterPage extends RunnerPage
 	 */
 	protected function checkIfEmailUnique( $strEmail )
 	{
-		if( $this->cipherer->isFieldEncrypted("email") )
-			$sEmail = $this->cipherer->MakeDBValue("email", $strEmail, "", true);	
+		if( $this->cipherer->isFieldEncrypted("Email") )
+			$sEmail = $this->cipherer->MakeDBValue("Email", $strEmail, "", true);	
 		else 
-			$sEmail = add_db_quotes("email", $strEmail);
+			$sEmail = add_db_quotes("Email", $strEmail);
 			
 		$strSQL = "select count(*) from ". $this->connection->addTableWrappers( "public.Usuarios" ) 
 			." where ".
 			$this->connection->comparisonSQL( 
-				$this->getFieldSQLDecrypt("email"), 
+				$this->getFieldSQLDecrypt("Email"), 
 				$sEmail,
 				true
 			);
@@ -478,16 +606,6 @@ class RegisterPage extends RunnerPage
 				$this->readOnlyFields[ $uf ] = $this->showDBValue( $uf , $this->regValues );
 		}
 	}
-	
-	/**
-	 * Check is captcha exists on current page
-	 *
-	 * @intellisense
-	 */
-	function captchaExists()
-	{
-		return $this->pSet->hasCaptcha();
-	}
 
 	/**
 	 * Get captcha field name
@@ -507,7 +625,7 @@ class RegisterPage extends RunnerPage
 	/**
 	 *
 	 */
-	public function setDatabaseError( $message )
+	public function setDatabaseError( $messageText )
 	{
 		//global $strMessage;
 		$this->message = $messageText;
@@ -551,10 +669,34 @@ class RegisterPage extends RunnerPage
 		
 		$this->xt->assign("submit_attrs", "id=\"saveButton".$this->id."\"" . $addStyle);		
 		
+		if( GetGlobalData("userRequireActivation") && $this->registerSuccess )
+		{
+			$this->xt->assign( "firstAboveGridCell", true );
+			
+			$this->xt->assign("email", $this->strEmail);
+			$this->xt->assign("activation_block", true);
+			
+			$this->xt->assign("activate_message_class", 
+				$this->sendActivationLinkFailedMessage ? "alert-danger" : "alert-success" );				
+			
+			foreach ( $this->pSet->activatonMessages() as $itemId => $mLString )
+			{			
+				if( $this->sendActivationLinkFailedMessage )
+					$label = 'Error sending email.' . $this->sendActivationLinkFailedMessage;
+				else
+					$label = str_replace( "%email%", runner_htmlspecialchars( $this->strEmail ), GetMLString($mLString) );
+				
+				$this->xt->assign("label_".$itemId, $label );
+			}	
+		} 
 		if( $this->registerSuccess )
 		{
 			$this->xt->assign("registered_block", true);
-			$this->xt->assign("loginlink_attrs","onclick=\"document.forms.loginform.submit();return false;\" id=\"ProceedToLogin\"");
+			$continueUrl = GetTableLink("menu");
+			if( Security::userSessionLevel() === LOGGED_2FSETUP_PENDING ) {
+				$continueUrl = GetTableLink("userinfo");
+			}
+			$this->xt->assign("loginlink_attrs",'href="'. $continueUrl .'" id="ProceedToLogin"');
 			if( $this->mode == REGISTER_POPUP )
 			{
 				$this->xt->assign("close_win_btn", true);
@@ -573,12 +715,12 @@ class RegisterPage extends RunnerPage
 	 */
 	protected function assignBody()
 	{
-		if( $this->registerSuccess )
+		if( $this->registerSuccess && !GetGlobalData("userRequireActivation") )
 		{
 			$this->body["begin"].= GetBaseScriptsForPage( false )
 				."<form method=\"POST\" action=\"".GetTableLink("login")."\" name=\"loginform\">
 					<input type=\"Hidden\" name=username value=\"".runner_htmlspecialchars($this->strUsername)."\">".
-					"<input type=\"Hidden\" name=password value=\"".runner_htmlspecialchars($this->strPassword)."\"></form>";
+					"</form>";
 
 			
 			$this->body['end'] = XTempl::create_method_assignment("assignBodyEnd", $this);
@@ -600,6 +742,12 @@ class RegisterPage extends RunnerPage
 		{
 			$this->switchToSuccessPage();
 			$this->bodyForms = array( "above-grid", "grid" );			
+			if( GetGlobalData("userRequireActivation") ) {
+				//	this must happen after switchToSuccessPage call 
+				$this->hideItemType("register_proceed");
+				$this->hideItemType("register_activated_message");
+			}
+
 		}
 		
 		if( $globalEvents->exists("BeforeShowRegister") )
@@ -609,7 +757,7 @@ class RegisterPage extends RunnerPage
 		{
 			$this->xt->assign("footer", false);
 			$this->xt->assign("header", false);
-			$this->xt->assign("body",  $this->body); //?  true fore register success ?
+			$this->xt->assign("body", $this->body); //? true fore register success ?
 			
 			$this->displayAJAX($this->templatefile, $this->id + 1);
 			exit();
@@ -648,5 +796,52 @@ class RegisterPage extends RunnerPage
 		return parent::element2Item( $name );
 	}
 
+
+	/**
+	 * Check if some values are duplicated for the fields not allowing duplicates
+	 * @param Array ( fieldName => fieldValue , ... )
+	 * @return Boolean
+	 */
+	public function checkDeniedDuplicated( $values ) {
+		$usermessage = "";
+		$ret = $this->hasDeniedDuplicateValues( $values, $usermessage );
+		if( $ret )
+			$this->message = $usermessage;
+
+		return !$ret;
+	}	
+	/**
+	 * Try to login the new user.
+	 * Create full or provisional session if possible
+	 */
+	protected function tryLoginNewUser() {
+		if( !$this->registerSuccess ) {
+			return false;
+		}
+		$userData = Security::fetchUserData( $this->strUsername, "", true );
+		if( !$userData ) {
+			return false;
+		}
+		global $cDisplayNameField, $cUserNameField;
+
+		//	always use username from DB to avoid upper/lower case issues
+		$username = $userData[ $cUserNameField ];
+
+		if( GetGlobalData("userRequireActivation") && $userData[ GetGlobalData( "userActivationField" ) ] != 1 ) {
+			//	create 'activation' provisional session
+			Security::createProvisionalSession( LOGGED_ACTIVATION_PENDING, $username, $userData[ $cDisplayNameField ], $userData );
+		} else {
+			// create 2fsetup provisional session or a full one 
+			$twoSettings =& Security::twoFactorSettings();
+			if( $twoSettings["enable"] || $twoSettings["required"] ) {
+				Security::createProvisionalSession( LOGGED_2FSETUP_PENDING, $username, $userData[ $cDisplayNameField ], $userData );
+			} else {
+				Security::createUserSession( $username, $userData[ $cDisplayNameField ], $userData );
+				Security::auditLoginSuccess();
+				Security::callAfterLogin();
+			}
+		}
+		return true;
+	}
 }
 ?>

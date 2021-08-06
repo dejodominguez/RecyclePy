@@ -1,9 +1,6 @@
 <?php
 class PrintPage_Details extends PrintPage
-{
-	public $printMasterTable = array();
-	public $printMasterKeys = array();
-	
+{	
 	public $multipleDetails = false;
 	
 	
@@ -30,9 +27,15 @@ class PrintPage_Details extends PrintPage
 
 		$this->splitByRecords = 0; // show all details in master list print page
 		$this->allPagesMode = true;
-		$this->buildSQL();
-		$this->calcRowCount();
-		$this->openQuery();
+		$this->queryCommand = $this->getSubsetDataCommand();
+		$this->callBeforeQueryEvent( $this->queryCommand );
+		$this->recordset = $this->dataSource->getList( $this->queryCommand );
+		if( !$this->recordset ) {
+			showError( $this->dataSource->lastError() );
+		}
+
+		//	hide details
+		$this->doFirstPageAssignments();
 		
 		$this->fillGridPage();
 		$this->fillRenderedData( $this->pageBody["grid_row"]["data"] );
@@ -75,7 +78,6 @@ class PrintPage_Details extends PrintPage
 		$this->xt->assign( "printheader", $this->multipleDetails );
 
 		$this->xt->load_template($this->templatefile);
-//		$this->xt->prepareContainers();
 
 		if( $this->isPD() ) 
 		{
@@ -109,10 +111,10 @@ class PrintPage_Details extends PrintPage
 	 *
 	 * @return string
 	 */
-	function getMasterTableSQLClause( $basedOnProp = false ) 
+	function getMasterTableSQLClause() 
 	{
 		$where = "";
-		$dKeys = $this->pSet->getDetailKeysByMasterTable( $this->printMasterTable );
+		$dKeys = $this->pSet->getDetailKeysByMasterTable( $this->masterTable );
 		if( !$dKeys )
 			return "1=0";
 		
@@ -122,9 +124,9 @@ class PrintPage_Details extends PrintPage
 				$where.= " and ";
 				
 			if($this->cipherer && $this->cipherer->isEncryptionByPHPEnabled())
-				$mValue = $this->cipherer->MakeDBValue( $key, $this->printMasterKeys[$i] );
+				$mValue = $this->cipherer->MakeDBValue( $key, $this->masterKeysReq[$i + 1] );
 			else 
-				$mValue = make_db_value( $key, $this->printMasterKeys[$i], "", "", $this->tName);
+				$mValue = make_db_value( $key, $this->masterKeysReq[$i + 1], "", "", $this->tName);
 				
 			if(strlen($mValue) != 0)
 				$where.= $this->getFieldSQLDecrypt( $key ) . "=" . $mValue;
@@ -133,6 +135,21 @@ class PrintPage_Details extends PrintPage
 		}
 		return $where;
 	}
+
+	protected function EOF()
+	{
+
+		$recordLimit = $this->pSet->getRecordsLimit();
+		if ( $recordLimit && $this->fetchedRecordCount >= $recordLimit )
+			return true;
+
+		$this->readNextRecordInternal();
+		if( $this->_eof )
+			return true;
+
+		return false;
+	}
+
 	
 	protected function prepareColumnOrderSettings() 
 	{

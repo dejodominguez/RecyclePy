@@ -31,7 +31,6 @@ class ReportField
 	var $_rowsInSummary = 0;
 	var $_rowsInHeader = 0;
 	var $_viewFormat = '';
-	var $_orderBy = 'ASC';
 	var $_oldAlgorithm = false;
 	// Instance of ProjectSettings
 	var $pSet = null;
@@ -56,33 +55,9 @@ class ReportField
 			$this->pSet = new ProjectSettings($table);
 	}
 
-	
-	function getStringSql($forGroupedField = false) { die; }
 
 	
 	function getFieldName($fieldValue, $data = null, $pageObject = null ) { die; }
-
-	
-	function getSelectSql($hasGrouping = false)
-	{
-        return $this->getStringSql(true) . ($this->alias() ? ' as ' . cached_ffn($this->alias()) : '');
-	}
-
-	
-	function getGroupSql()
-	{
-		return $this->getStringSql();
-	}
-
-	
-	function getOrderSql()
-	{
-		//return $this->alias().' ASC';
-		return $this->getStringSql().' '.$this->_orderBy.' ';
-	}
-
-	
-	function getWhereSql($groups) { die; }
 
 	
 	function getGroup($data)
@@ -126,50 +101,6 @@ class ReportField
 	{
 		$this->_caseSensitive = $cs;
 	}
-
-	function cutNull(&$range, $checkEmty = false)
-	{
-		$ret = false;
-		$out = array();
-		for($nCnt = 0; $nCnt < count($range); $nCnt++)
-		{
-			$b = false;
-			if($range[$nCnt] === null)
-			{
-				$b = true;
-				$ret = true;
-			}
-			else
-			{
-				if($checkEmty && (!$range[$nCnt] || strcasecmp($range[$nCnt], 'null') == 0))
-				{
-					$b = true;
-					$ret = true;
-				}
-			}
-
-			if(!$b)
-			{
-				$out []= $range[$nCnt];
-			}
-		}
-		$range = $out;
-		return $ret;
-	}
-
-	function getLtGt(&$lt, &$gt)
-	{
-		if($this->_orderBy != 'ASC')
-		{
-			$lt = ' >= ';
-			$gt = ' <= ';
-		}
-		else
-		{
-			$lt = ' <= ';
-			$gt = ' >= ';
-		}
-	}
 }
 
 
@@ -180,33 +111,15 @@ class ReportNumericField extends ReportField
 		parent::__construct($name, $interval, $alias, $table, $connection, $cipherer);
 	}
 
-	function getStringSql($forGroupedField = false)
-	{
-		$fname = $this->_oldAlgorithm ? RunnerPage::_getFieldSQL($this->_name, $this->_connection, $this->pSet) : cached_ffn($this->_name, true);
-		if($this->_interval > 0)
-		{
-			if( $this->_connection->dbType == nDATABASE_MySQL || $this->_connection->dbType == nDATABASE_MSSQLServer || $this->_connection->dbType == nDATABASE_PostgreSQL )
-				return 'floor('.$fname.'/'.$this->_interval.')*'.$this->_interval;
-
-			if( $this->_connection->dbType == nDATABASE_Access )
-				return 'Int('.$fname.'/'.$this->_interval.')*'.$this->_interval;
-
-			if( $this->_connection->dbType == nDATABASE_Oracle )
-				return '(floor('.$fname.'/'.$this->_interval.')*'.$this->_interval.')';
-		}
-		else
-		{
-			return $fname;
-		}
-	}
-	
 	function getFieldName( $fieldValue, $data = null, $pageObject = null )
 	{
 		$value = $data[$this->_recordBasedRequest ? $this->_name : $this->_sqlname];
-		if($value == null)
+		if($value === null)
 			return 'NULL';
-		if($this->_interval > 0)
-			return intval($value) . ' - ' . (intval($value) + $this->_interval);
+		if($this->_interval > 0) {
+			$start = DataSource::groupValueNumber( $value, $this->_interval );
+			return $start . ' - ' . ( $start + $this->_interval - 1 );
+		}
 		else
 			return $value;
 	}
@@ -216,7 +129,7 @@ class ReportNumericField extends ReportField
 		if($this->_recordBasedRequest)
 		{
 			if($this->_interval > 0)
-				return intval($data[$this->_name]/$this->_interval)*$this->_interval;
+				return DataSource::groupValueNumber( $data[$this->_name], $this->_interval );
 			else
 				return $data[$this->_name];
 		}
@@ -224,27 +137,6 @@ class ReportNumericField extends ReportField
 			return ReportField::getKey($data);
 	}
 
-	function getWhereSql($groups)
-	{
-		$ret = '';
-		$ssql = $this->getStringSql();
-		$hasNull = $this->cutNull($groups);
-
-		if(count($groups) > 0)
-		{
-			$lt = '';
-			$gt = '';
-			$this->getLtGt($lt, $gt);
-			$ret = '('.$ssql.$gt.$groups[0].' AND '.$ssql.$lt.$groups[count($groups) - 1].')';
-		}
-
-		if($hasNull)
-		{
-			$ret .= ($ret ? ' OR ' : '').$ssql.' IS NULL';
-		}
-
-		return $ret ? '('.$ret.')' : '';
-	}
 }
 
 
@@ -255,33 +147,10 @@ class ReportCharField extends ReportField
 		parent::__construct($name, $interval, $alias, $table, $connection, $cipherer);
 	}
 
-	function getStringSql($forGroupedField = false)
-	{
-		$fname = $this->_oldAlgorithm && !$forGroupedField ? RunnerPage::_getFieldSQL($this->_name, $this->_connection, $this->pSet) : cached_ffn($this->_name, $forGroupedField);
-		if($this->_interval > 0)
-		{
-			if( $this->_connection->dbType == nDATABASE_MySQL || $this->_connection->dbType == nDATABASE_PostgreSQL )
-				return 'substr('.$fname.', 1, '.$this->_interval.')';
-
-			if( $this->_connection->dbType == nDATABASE_MSSQLServer	)
-				return 'substring('.$fname.', 1, '.$this->_interval.')';
-
-			if( $this->_connection->dbType == nDATABASE_Access )
-				return 'Mid('.$fname.', 1, '.$this->_interval.')';
-
-			if( $this->_connection->dbType == nDATABASE_Oracle )
-				return 'SUBSTR('.$fname.', 1, '.$this->_interval.')';
-		}
-		else
-		{
-			return $fname;
-		}
-	}
-
 	function getFieldName($fieldValue, $data = null, $pageObject = null )
 	{
 		$value = $data[$this->_recordBasedRequest ? $this->_name : $this->_sqlname];
-		if($value == null)
+		if($value === null)
 			return 'NULL';
 		if($this->_interval > 0)
 	        return substr($value, 0, $this->_interval);
@@ -317,34 +186,6 @@ class ReportCharField extends ReportField
 		}
 	}
 
-	function getWhereSql($groups)
-	{
-		$ret = '';
-		$ssql = $this->getStringSql();
-		$hasNull = $this->cutNull($groups);
-
-		if(count($groups) > 0)
-		{
-			$gr = array();
-			foreach($groups as $g)
-				$gr []= '\''.$g.'\'';
-
-			$lt = '';
-			$gt = '';
-			$this->getLtGt($lt, $gt);
-
-			$ret = "(".$ssql.$gt.$this->_connection->prepareString( $groups[0] )
-				." AND ".$ssql.$lt.$this->_connection->prepareString($groups[count($groups) - 1]).")";
-		}
-
-		if($hasNull)
-		{
-			$ret .= ($ret ? ' OR ' : '').$ssql.' IS NULL';
-			$ret .= ' OR '.$ssql.'=\'\'';
-		}
-
-		return $ret ? '('.$ret.')' : '';
-	}
 }
 
 
@@ -353,169 +194,6 @@ class ReportDateField extends ReportField
 	function __construct($name, $interval, $alias, $table, $connection, $cipherer)
 	{
 		parent::__construct($name, $interval, $alias, $table, $connection, $cipherer);
-	}
-
-	function setStart($start)
-	{
-		$this->_start = $start;
-		if($this->_interval == 0)
-			$this->_sqlname = $this->alias();
-		else
-			$this->_sqlname = $this->alias().'MIN';
-		return $start + ($this->_interval > 0 ? $this->_interval : 1);
-	}
-
-	function getSqlList($all = true)
-	{
-	    $grp = array();
-
-		$fname = $this->_oldAlgorithm ? RunnerPage::_getFieldSQLDecrypt($this->_name, $this->_connection, $this->pSet, $this->cipherer) : cached_ffn($this->_name);
-		if($all)
-		{
-		// array = (year, quarter, month, week, day of week, full date, hour, minute)
-		// each element = array(sql begin, sql end, prev index)
-			if( $this->_connection->dbType == nDATABASE_MySQL )
-			{
-				$symbols = array(array('YEAR(', ')', -1), array('QUARTER(', ')', 0), array('MONTH(', ')', 0),
-						 array('WEEK(', ')', 0), array('DATE(', ')', -1),
-						 array('HOUR(', ')', 4), array('MINUTE(', ')', 5));
-			}
-			elseif( $this->_connection->dbType == nDATABASE_PostgreSQL )
-			{
-				$symbols = array(array('date_part(\'year\', ', ')', -1), array('date_trunc(\'quarter\', ', ')', -1), array('date_trunc(\'month\', ', ')', -1),
-						 array('date_trunc(\'week\', ', ')', -1), array('date_trunc(\'day\', ', ')', -1),
-						 array('date_trunc(\'hour\', ', ')', 1), array('date_trunc(\'minute\', ', ')', -1));
-			}
-			elseif( $this->_connection->dbType == nDATABASE_MSSQLServer )
-			{
-				$symbols = array(array('DATEPART(year, ', ')', -1), array('DATEPART(quarter, ', ')', 0), array('DATEPART(month, ', ')', 0),
-						 array('DATEPART(week, ', ')', 0), array('DATEPART(day, ', ')', 2),
-						 array('DATEPART(hour, ', ')', 4), array('DATEPART(minute, ', ')', 5));
-			}
-			elseif( $this->_connection->dbType == nDATABASE_Access )
-			{
-				global $locale_info;
-				$first_day_of_week=1;
-				if($locale_info["LOCALE_IFIRSTDAYOFWEEK"]=="0")
-					$first_day_of_week=2;
-
-				$symbols = array(array('DatePart(\'yyyy\', ', ')', -1), array('DatePart(\'q\', ', ')', 0), array('DatePart(\'m\', ', ')', 0),
-						 array('DatePart(\'ww\', ', ','.$first_day_of_week.')', 0), array('DatePart(\'d\', ', ')', 2),
-						 array('DatePart(\'h\', ', ')', 4), array('DatePart(\'n\', ', ')', 5));
-			}
-			elseif( $this->_connection->dbType == nDATABASE_Oracle )
-			{
-				$symbols = array(array('EXTRACT(year from ', ')', -1), array('FLOOR(EXTRACT(month from ', ')/3)', 0), array('EXTRACT(month from ', ')', 0),
-						 array('TRUNC(', ', \'D\')', -1), array('TRUNC(', ', \'J\')', -1),
-						 array('TRUNC(hour from ', ')', -1), array('TRUNC(minute from ', ')', -1));
-			}
-
-			$idx = $this->_interval - 1;
-			do
-			{
-				array_unshift($grp, $symbols[$idx][0].cached_ffn($this->_name).$symbols[$idx][1]);
-				$idx = $symbols[$idx][2];
-			}
-			while($idx >= 0);
-		}
-
-		return $grp;
-	}
-
-	function getSelectSql($hasGrouping = false)
-	{
-		$fname = $this->_oldAlgorithm ? RunnerPage::_getFieldSQLDecrypt($this->_name, $this->_connection, $this->pSet, $this->cipherer) : cached_ffn($this->_name, true);
-		if($this->_interval == 0)
-		{
-			return $fname . ' as ' . cached_ffn($this->alias());
-		}
-		else
-		{
-			$grp = $this->getSqlList();
-
-			for($nCnt = 0; $nCnt < count($grp); $nCnt ++)
-			{
-				$grp[$nCnt] .=  ' as ' . cached_ffn($this->_alias.($nCnt + $this->_start));
-			}
-
-			if($hasGrouping)
-			{
-				$grp[] = 'MIN('.$fname.') as '.cached_ffn($this->alias().'MIN');
-				$grp[] = 'MAX('.$fname.') as '.cached_ffn($this->alias().'MAX');
-			}
-			else
-				$grp[] = $fname.' as '.cached_ffn($this->alias().'MIN');
-
-	        return join(', ', $grp);
-		}
-	}
-
-	function getGroupSql()
-	{
-		if($this->_interval == 0)
-		{
-			return cached_ffn($this->_name);
-		}
-		else
-		{
-			$grp = $this->getSqlList();
-	        return join(', ', $grp);
-		}
-	}
-
-	function getOrderSql()
-	{
-		if($this->_interval == 0)
-		{
-			$fname = $this->_oldAlgorithm ? RunnerPage::_getFieldSQLDecrypt($this->_name, $this->_connection, $this->pSet, $this->cipherer) : cached_ffn($this->_name);
-			return $fname.' '.$this->_orderBy.' ';
-		}
-		else
-		{
-			$grp = $this->getSqlList();
-			$newgrp = array();
-			foreach($grp as $g)
-				$newgrp[] = $g . ' '.$this->_orderBy.' ';
-	        return join(', ', $newgrp);
-		}
-	}
-
-	function getWhereSql($groups)
-	{
-		$ret = '';
-		$hasNull = $this->cutNull($groups, true);
-
-		if(count($groups) > 0)
-		{
-			$lt = '';
-			$gt = '';
-
-			if($this->_interval == 0)
-			{
-				$this->getLtGt($lt, $gt);
-
-				$ret = '('.cached_ffn($this->_name).' '.$gt.' '.$this->_connection->addDateQuotes($groups[0]).
-					' AND '.cached_ffn($this->_name).' '.$lt.' '.$this->_connection->addDateQuotes($groups[count($groups)-1]).')';
-			}
-			else
-			{
-				if($groups[0]['MIN'] <= $groups[count($groups) - 1]['MAX'])
-				{
-					$ret = '('.cached_ffn($this->_name).' >= '.$this->_connection->addDateQuotes($groups[0]['MIN']).
-						' AND '.cached_ffn($this->_name).' <= '.$this->_connection->addDateQuotes($groups[count($groups)-1]['MAX']).')';
-				}
-				else
-				{
-					$ret = '('.cached_ffn($this->_name).' <= '.$this->_connection->addDateQuotes($groups[0]['MAX']).
-						' AND '.cached_ffn($this->_name).' >= '.$this->_connection->addDateQuotes($groups[count($groups)-1]['MIN']).')';
-				}
-			}
-		}
-
-		if($hasNull)
-			$ret .= ($ret ? ' OR ' : '').cached_ffn($this->_name).' IS NULL ';
-
-		return $ret ? '('.$ret.')' : '';
 	}
 
 	function getFieldName($fieldValue, $data = null, $pageObject = null )
@@ -541,51 +219,17 @@ class ReportDateField extends ReportField
 				return str_format_datetime($date);
 			}
 		}
+		return formatDateIntervalValue( $fieldValue, $this->_interval );
 
-		switch($this->_interval)
-		{
-			case 1:
-				$date = cached_db2time($value);
-				return $date[0];
-
-			case 2:
-				$date = cached_db2time($value);
-				return $date[0] . '/Q' . ( floor(($date[1]-1)/3) + 1 );
-
-			case 3:
-				$date = cached_db2time($value);
-				return @$locale_info["LOCALE_SABBREVMONTHNAME".$date[1]]." ".$date[0];
-
-			case 4:
-				return cached_formatweekstart($value);
-
-			case 5:
-				$date = cached_db2time($value);
-				return format_shortdate($date);
-
-			case 6:
-				$date = db2time($value);
-				$date[4]=0;
-				$date[5]=0;
-				return str_format_datetime($date);
-
-			case 7:
-				$date = db2time($value);
-				$date[5]=0;
-				return str_format_datetime($date);
-		}
 	}
 
 	function getGroup($data)
 	{
-		if($this->_interval == 0)
+		if( $this->_interval == 0)
 			return $data[$this->alias()];
 		else
 		{
-			if($data[$this->alias().'MIN'] == null || $data[$this->alias().'MAX'] == null)
-				return null;
-			else
-				return array('MIN' => $data[$this->alias().'MIN'], 'MAX' => $data[$this->alias().'MAX']);
+			return DataSource::groupValueDate( $data[$this->alias()], $this->_interval );
 		}
 	}
 
@@ -593,63 +237,11 @@ class ReportDateField extends ReportField
 	{
 		if(!$this->_recordBasedRequest)
 		{
-			if($this->_interval == 0)
-			{
-				return $data[$this->alias()];
-			}
-			else
-			{
-		        $key = array();
-				for($nCnt = $this->_start; $nCnt < $this->_interval + $this->_start; $nCnt++)
-				{
-		            $key []= $data[$this->_alias.$nCnt];
-		        }
-		        return join('-', $key);
-			}
+			return $data[$this->alias()];
 		}
 		else
 		{
-			$strdate = $data[$this->_name];
-			if($strdate == null)
-				return 'NULL';
-
-			if($this->_interval == 0)
-			{
-				return $strdate;
-			}
-			else
-			{
-				switch($this->_interval)
-				{
-					case 1:
-						$date = cached_db2time($strdate);
-						return $date[0];
-
-					case 2:
-						$date = cached_db2time($strdate);
-						return $date[0].'-'.intval($date[1]/3);
-
-					case 3:
-						$date = cached_db2time($strdate);
-						return $date[0].'-'.$date[1];
-
-					case 4:
-						$start = cached_getweekstart($strdate);
-						return $start[0].'-'.$start[1].'-'.$start[2];
-
-					case 5:
-						$date = cached_db2time($strdate);
-						return $date[0].'-'.$date[1].'-'.$date[2];
-
-					case 6:
-						$date = db2time($strdate);
-						return $date[0].'-'.$date[1].'-'.$date[2].'-'.$date[3];
-
-					case 7:
-						$date = db2time($strdate);
-						return $date[0].'-'.$date[1].'-'.$date[2].'-'.$date[3].'-'.$date[4];
-				}
-			}
+			return DataSource::groupValueDate( $data[ $this->_name ], $this->_interval );
 		}
 	}
 
@@ -658,84 +250,32 @@ class ReportDateField extends ReportField
 		return true;
 	}
 
-	function cutNull(&$range, $checkEmpty = false)
-	{
-		$ret = false;
-		$out = array();
-		for($nCnt = 0; $nCnt < count($range); $nCnt++)
-		{
-			$b = false;
-			if($range[$nCnt] === null)
-			{
-				$b = true;
-				$ret = true;
-			}
-			else
-			{
-				if($checkEmpty)
-				{
-					if(is_array($range[$nCnt]))
-					{
-						if(!$range[$nCnt]['MIN'] || strcasecmp($range[$nCnt]['MIN'], 'null') == 0)
-						{
-							$b = true;
-							$ret = true;
-						}
-					}
-					else
-					{
-						if(!$range[$nCnt] || strcasecmp($range[$nCnt], 'null') == 0)
-						{
-							$b = true;
-							$ret = true;
-						}
-					}
-				}
-			}
-
-			if(!$b)
-			{
-				$out []= $range[$nCnt];
-			}
-		}
-		$range = $out;
-		return $ret;
-	}
 
 }
 
-function getFormattedValue($pageObject, $value, $fieldName, $strViewFormat, $strEditFormat = '', $mode = MODE_LIST, $record = array() )
-{
-	if($strViewFormat == FORMAT_TIME && is_numeric($value))
-	{
-		$val = '';
+function getFormattedValue( $pageObject, $value, $fieldName, $strViewFormat, $total = '', $record = array() ) {
+	if( $strViewFormat == FORMAT_TIME && is_numeric( $value ) ) {
+		if( $total == 'AVG' )
+			$value = round( $value, 0 );
 
-		$d = intval($value / 86400);
-		$h = intval(($value % 86400) / 3600);
-		$m = intval((($value % 86400) % 3600) / 60);
-		$s = (($value % 86400) % 3600) % 60;
-
-		$val .= $d > 0 ? $d . 'd ' : '';
-		$val .= str_format_time(array(0, 0, 0, $h, $m, $s));
-		if( $pageObject->pdfJsonMode() ) {
-			$val = "'" . $val . "'";
-		}
-	}
-	else 
-	{
-		if( basicViewFormat( $strViewFormat ) ) 
-		{
-			$arrValues = array($fieldName => $value);
-		}
-		else 
-		{
-			$arrValues = $record;
-			$arrValues[ $fieldName ] = $value;
-		} 
-		$val = $pageObject->formatReportFieldValue( $fieldName, $arrValues );
+		include_once getabspath('classes/controls/ViewTimeField.php');
+		return ViewTimeField::getFormattedTotals(
+			$fieldName,
+			$value,
+			$pageObject->pSet,
+			$pageObject->pdfJsonMode(),
+			$total == 'SUM'
+		);
 	}
 
-	return $val;
+	if( basicViewFormat( $strViewFormat ) ) {
+		$arrValues = array( $fieldName => $value );
+	} else {
+		$arrValues = $record;
+		$arrValues[ $fieldName ] = $value;
+	}
+
+	return $pageObject->formatReportFieldValue( $fieldName, $arrValues );
 }
 
 $cache_db2time = array();
@@ -798,39 +338,11 @@ function cached_formatweekstart($strtime)
 		return $cache_formatweekstart[$strtime];
 }
 
-$cache_fullfieldname = array();
-
-function cached_ffn($field, $forGroupedField = false)
-{
-	global $cache_fullfieldname, $strTableName, $cman;
-	if(!isset($cache_fullfieldname[$field]))
-	{
-		// commented for bug 6660. Correct fix needed
-		//
-		if(!$wr_is_standalone && !$forGroupedField)
-			$res = GetFullFieldName($field,$strTableName,false);
-		else
-		{
-			$connection = $cman->byTable( $strTableName );
-			$res = $connection->addFieldWrappers($field);  //#9875
-		}
-		$cache_fullfieldname[$field] = $res;
-		return $res;
-	}
-	else
-		return $cache_fullfieldname[$field];
-}
-
 ///////////////////////////////////////////////////////////////////////////////////
 class SQLStatement
 {
 	var $_fields = array();
 	var $_hasDetails = true;
-	var $_originalSql = null;
-	var $_order_in;
-	var $_order_out;
-	var $_order_old;
-	var $_aggregates = array();
 	var $_skipCount = 0;
 
 	var $_reportGlobalSummary = true;
@@ -888,26 +400,20 @@ class SQLStatement
 	var $_cipherer;
 	var $pageObject;
 
-	var $searchWhereClause = "";
-	var $searchHavingClause = "";
 
-	function __construct($sql, $order, $groupsTotal, $connection, &$params, $searchWhereClause, $searchHavingClause, $cipherer, $pageObject)
+
+	function __construct($sql, $order, $groupsTotal, $connection, &$params,  $cipherer, $pageObject )
 	{
 		// copy properties to object
 		RunnerApply($this, $params);
 		$this->_connection = $connection;
 		$this->_cipherer = $cipherer;
-		$this->searchWhereClause = $searchWhereClause;
-		$this->searchHavingClause = $searchHavingClause;
 		$this->pSet = new ProjectSettings($this->tName, PAGE_REPORT);
 		$this->pageObject = $pageObject;
 		if(!is_array($sql))
 			die ('Invalid sql parameter');
 
 		global $reportCaseSensitiveGroupFields;
-
-		// add search WHERE and HAVING clauses to the page's SQL
-		$this->_originalSql = $this->applyWhere($sql);
 
 		$start = 0;
 
@@ -981,99 +487,9 @@ class SQLStatement
 			$this->_fields []= $f;
 		}
 
-		// order
-		if($order)
-		{
-			$order_in = array();
-			$order_out = array();
-			$order_old = array();
-
-			foreach($order as $o)
-			{
-				$order_in []= $o[2] . ' as ' . cached_ffn('originalorder'.$o[0]);
-				$order_out []= cached_ffn('originalorder'.$o[0]).' '.$o[1];
-				$groupField = false;
-
-				for($i=0; $i<count($this->repGroupFields); $i++)
-	        	{
-			        for($j=0; $j<count($this->fieldsArr); $j++)
-			        {
-				        if ($this->repGroupFields[$i]['strGroupField'] == $this->fieldsArr[$j]['name'])
-				        {
-							$fieldIndex = $this->pSet->getFieldIndex($this->repGroupFields[$i]['strGroupField']);
-							if($fieldIndex == $o[0])
-							{
-								$n = $this->repGroupFields[$i]['groupOrder']-1;
-								$this->_fields[$n]->_orderBy = $o[1];
-								$groupField = true;
-							}
-	        			}
-	        		}
-	        	}
-//	don't add group fields to the $order_old
-				if(!$groupField)
-					$order_old []= $o[2].' '.$o[1];
-			}
-			$this->_order_in = join(', ', $order_in);
-			$this->_order_out = join(', ', $order_out);
-			$this->_order_old = join(', ', $order_old);
-		}
-
-        for($i=0; $i<count($this->fieldsArr); $i++)
-        {
-			if ($this->fieldsArr[$i]['totalMax'])
-			{
-				$this->_aggregates []= 'MAX('.cached_ffn($this->fieldsArr[$i]['name'], true).') as '.cached_ffn($this->fieldsArr[$i]['name']."MAX");
-            }
-            if ($this->fieldsArr[$i]['totalMin']){
-				$this->_aggregates []= 'MIN('.cached_ffn($this->fieldsArr[$i]['name'], true).') as '.cached_ffn($this->fieldsArr[$i]['name']."MIN");
-            }
-            if ($this->fieldsArr[$i]['totalAvg']){
-	            if (!IsDateFieldType($this->pSet->getFieldType($this->fieldsArr[$i]['name'])))
-	            {
-					$this->_aggregates []= 'AVG('.cached_ffn($this->fieldsArr[$i]['name'], true).') as '.cached_ffn($this->fieldsArr[$i]['name']."AVG");
-					$this->_aggregates []= 'COUNT('.cached_ffn($this->fieldsArr[$i]['name'], true).') as '.cached_ffn($this->fieldsArr[$i]['name']."NAVG");
-	            }
-			}
-			if ($this->fieldsArr[$i]['totalSum']){
-				if (!IsDateFieldType($this->pSet->getFieldType($this->fieldsArr[$i]['name'])))
-	            {
-	          		$this->_aggregates []= 'SUM('.cached_ffn($this->fieldsArr[$i]['name'], true).') as '.cached_ffn($this->fieldsArr[$i]['name']."SUM");
-	            }
-			}
-        }
-
 
 		$this->_reportSummary = $this->repPageSummary || $this->repGlobalSummary;
 		$this->_groupsTotal = $groupsTotal;
-	}
-
-	function getOriginal($useOriginalOrder = true)
-	{
-		global $strTableName;
-		$sql = $this->_originalSql;
-		if( $this->pageObject) 
-		{
-			if( $this->pageObject->pageType == PAGE_REPORT ) {
-				if($this->pageObject->eventsObject->exists("BeforeQueryReport"))
-				{
-					$hwhere = $sql[2];
-					$this->pageObject->eventsObject->BeforeQueryReport($hwhere);
-					$sql[2] = $hwhere;
-				}
-			}
-			else {
-				if($this->pageObject->eventsObject->exists("BeforeQueryReportPrint"))
-				{
-					$hwhere = $sql[2];
-					$this->pageObject->eventsObject->BeforeQueryReportPrint($hwhere);
-					$sql[2] = $hwhere;
-				}
-				
-			}
-		}
-		return $sql[0].' '.($useOriginalOrder && $this->_order_in && !$this->_oldAlgorithm ? ', ' . $this->_order_in . ' ' : '').$sql[1].' '.
-			($sql[2] ? ' WHERE ' . $sql[2] : '').' '.$sql[3].' '.($sql[4] ? ' HAVING ' . $sql[4] : '');
 	}
 
 	function setRecordBasedRequest($recordBasedRequest)
@@ -1091,238 +507,6 @@ class SQLStatement
 	function field($num)
 	{
 		return $this->_fields[$num];
-	}
-
-	function getSQLLimits($sql, $from)
-	{
-		if($from >= 0 && $this->_groupsTotal > 0)
-		{
-			if( $this->_connection->dbType == nDATABASE_MySQL || $this->_connection->dbType == nDATABASE_PostgreSQL )
-			{
-				$out = $sql.' LIMIT '.intval($this->_groupsTotal).' OFFSET '.intval($from);
-				$this->_skipCount = 0;
-			}
-			elseif( $this->_connection->dbType == nDATABASE_MSSQLServer || $this->_connection->dbType == nDATABASE_Access )
-			{
-				$nsel = stripos($sql, "select");
-				$out = substr_replace($sql, 'select top '.($from + $this->_groupsTotal), $nsel, strlen("select"));
-				$this->_skipCount = $from;
-			}
-			elseif( $this->_connection->dbType == nDATABASE_Oracle )
-			{
-				$out = 'select * from (select original2.*, rownum as '.cached_ffn('rownumber').' from ('.
-					$sql.") original2) where ".cached_ffn('rownumber').' between '.$from.' and '.($from + $this->_groupsTotal);
-				$this->_skipCount = 0;
-			}
-
-			return $out;
-		}
-
-		return $sql;
-	}
-
-	function sqlg($donotlimit = false, $doorder = true)
-	{
-		$hsql = array();
-
-		$s = array();
-		$g = array();
-		$o = array();
-
-		if($this->_hasGroups)
-		{
-			$s []= $this->_fields[0]->getSelectSql(true);
-			$g []= $this->_fields[0]->getGroupSql();
-			$o []= $this->_fields[0]->getOrderSql();
-		}
-
-		if(count($s))
-			$hsql['select'] []= join(', ', $s);
-		if(count($g))
-			$hsql['groupby'] []= join(', ', $g);
-		if(count($o) && $doorder)
-			$hsql['orderby'] = join(', ', $o);
-
-		if($this->_limitLevel == 1 && !$donotlimit)
-			$hsql['limits'] = 1;
-
-		return $this->buildsql($hsql);
-	}
-
-	function sqlcg()
-	{
-		$gsql = $this->sqlg(true, false);
-		return 'select count(*) as '.cached_ffn("c").' from ('.$gsql.') countgroups';
-	}
-
-	function sqlt()
-	{
-		$hsql = array();
-		$hsql['select'] []= 'count(1) as '.cached_ffn('countField');
-		if(count($this->_aggregates))
-			$hsql['select'] []= join(', ', $this->_aggregates);
-		return $this->buildsql($hsql);
-	}
-
-	function sql2($groups = null)
-	{
-		$hsql = array();
-
-		if(!$this->_hasGroups || $this->_recordBasedRequest)
-		{
-			$hsql['original'] = true;
-
-			$o = array();
-			foreach($this->_fields as $f)
-				$o []= $f->getOrderSql();
-			if(count($o))
-				$hsql['orderby'] = join(', ', $o);
-		}
-		else
-		{
-			if($this->repShowDet)
-			{
-				$hsql['select'] []= 'original.*';
-			}
-			else
-			{
-				if(count($this->_aggregates))
-					$hsql['select'] []= join(', ', $this->_aggregates);
-			}
-
-			$s = array();
-			$g = array();
-			$o = array();
-
-			foreach($this->_fields as $f)
-			{
-				$s []= $f->getSelectSql(!$this->repShowDet);
-				if(!$this->repShowDet)
-					$g []= $f->getGroupSql();
-				$o []= $f->getOrderSql();
-			}
-
-			if($this->_reportSummary && $this->_hasGroups && !$this->repShowDet)
-			{
-				$hsql['select'] []= 'count(1) as '.cached_ffn('countField');
-			}
-
-			if(count($s))
-			{
-				$hsql['select'] []= join(', ', $s);
-			}
-
-			if($groups !== null && count($groups))
-			{
-				$where = $this->_fields[0]->getWhereSql($groups);
-				if($where)
-					$hsql['where'] = $where;
-			}
-
-			if(count($g))
-			{
-				$hsql['groupby'] = $g;
-			}
-
-			if(count($o))
-			{
-				$hsql['orderby'] = join(', ', $o);
-			}
-		}
-
-		if($this->_limitLevel == 2)
-		{
-			$hsql['limits'] = 1;
-		}
-
-		if($this->repShowDet)
-		{
-			$hsql['origorder'] = 1;
-		}
-
-		return $hsql;
-	}
-
-	function buildsql($hsql)
-	{
-		$this->_skipCount = 0;
-		$ordered = false;
-
-		if(count($hsql) == 0 || $hsql['original'])
-		{
-			$sql = $this->getOriginal();
-		}
-		else
-		{
-			$sql = 'SELECT ';
-			if($hsql['select'] && count($hsql['select']) > 0)
-				$sql .= join(', ', $hsql['select']);
-			else
-				$sql .= ' * ';
-			$sql .= ' FROM ('.$this->getOriginal($hsql['origorder']).') original';
-			if($hsql['where'] && count($hsql['where']) > 0)
-				$sql .= ' WHERE '.$hsql['where'];
-			if($hsql['groupby'] && count($hsql['groupby']) > 0)
-				$sql .= ' GROUP BY '.join(', ', $hsql['groupby']);
-		}
-
-		$osql = '';
-		if($hsql['orderby'] && count($hsql['orderby']) > 0)
-		{
-			$osql .= $hsql['orderby'];
-			$ordered = true;
-		}
-		if($hsql['origorder'])
-		{
-			if(!$this->_oldAlgorithm)
-			{
-				if($this->_order_out)
-				{
-					$osql .= ($osql ? ', ' : '').$this->_order_out;
-				}
-			}
-			else
-			{
-				if($this->_order_old)
-				{
-					$osql .= ($osql ? ', ' : '').$this->_order_old;
-				}
-			}
-		}
-		if($osql)
-		{
-			$sql .= ' ORDER BY '.$osql;
-		}
-
-		if($hsql['limits'])
-			$sql = $this->getSQLLimits($sql, $this->_from);
-
-		return $sql;
-	}
-
-	/**
-	 * Add search WHERE and HAVING clauses
-	 * to the SQL representation array
-	 * @param &Array sql
-	 * @return Array;
-	 */
-	function applyWhere(&$sql)
-	{
-		if($this->searchWhereClause)
-		{
-			// set SQL WHERE
-			$sql[2] = whereAdd($sql[2], $this->searchWhereClause);
-		}
-		if($this->searchHavingClause)
-		{
-			// set SQL HAVING
-			if( $sql[4] )
-				$sql[4] = '('.$sql[4].') AND ';
-
-			$sql[4] .= '('.$this->searchHavingClause.') ';
-		}
-
-		return $sql;
 	}
 
 	function setOldAlgorithm($useOldAlgorithm = true)
@@ -1614,6 +798,7 @@ class Summarable
 
 class ReportGroups extends Summarable
 {
+	var $_report;
 	var $_global;
 	var $_totalRecords;
 	var $_maxpages;
@@ -1661,7 +846,7 @@ class ReportGroups extends Summarable
 	// table fields list
 	var $fieldsArr = array();
 
-	function __construct(&$sql, $connection, $groupsTotal, &$params)
+	function __construct(&$sql, $connection, $groupsTotal, &$params, $report )
 	{
 		// copy properties to object
 		parent::__construct($params);
@@ -1669,6 +854,7 @@ class ReportGroups extends Summarable
 		$this->_groupsTotal = $groupsTotal;
 		$this->_sql =& $sql;
 		$this->_connection = $connection;
+		$this->_report = $report;
 	}
 
 	function init($from = 0)
@@ -1693,7 +879,7 @@ class ReportGroups extends Summarable
 	{
 		$field = $this->_sql->field(0);
 		$firstKey = $field->getKey($data);
-		if($firstKey != $this->_oldFirst)
+		if($firstKey !== $this->_oldFirst)
 		{
 			$this->_nGroup ++;
 			$this->_oldFirst = $firstKey;
@@ -1721,20 +907,27 @@ class ReportGroups extends Summarable
 
 			if ($this->repGroupFieldsCount)
 			{
-				$sql = $this->_sql->sqlg();
-		        $qResult = $this->_connection->query( $sql );
-		        while($data = $this->cipherer->DecryptFetchedArray( $qResult->fetchAssoc() ))
+
+				$dc = $this->_report->pageObject->getSubsetDataCommand();
+				$dc->totals = array(
+					array(
+						"alias" => "grp0",
+						"field" => $this->repGroupFields[0]["strGroupField"],
+						"modifier" => $this->repGroupFields[0]["groupInterval"],
+						"direction" => $this->_report->groupOrderDirection( 0 )
+					)
+				);
+				$dc->startRecord = $this->_from;
+				$dc->reccount = $this->_groupsTotal;
+				$qResult = $this->_report->pageObject->getDataSource()->getTotals( $dc );
+
+
+		        while( ($data = $this->cipherer->DecryptFetchedArray( $qResult->fetchAssoc() )) && count($groups) < $this->_groupsTotal )
 				{
-					$groups[] = $this->_sql->getGroup($data);
+					$groups[] = $data["grp0"];
 				}
 				if(count($groups) < $this->_groupsTotal)
 					$this->_allGroupsUsed = true;
-			}
-
-			if($this->_sql->_skipCount > 0)
-			{
-				array_splice($groups, 0, $this->_sql->_skipCount);
-				$this->_allGroupsUsed = false;
 			}
 
 			if($from > 0)
@@ -1764,10 +957,15 @@ class ReportGroups extends Summarable
 				}
 				else
 				{
-					$sql = $this->_sql->sqlcg();
-					$fetchedArray = $this->_connection->query( $sql )->fetchAssoc();
-			        $data = $this->cipherer->DecryptFetchedArray( $fetchedArray );
-					return $data['c'];
+					$dc = $this->_report->pageObject->getSubsetDataCommand();
+					$dc->totals = array(
+						array(
+							"alias" => "grp0",
+							"field" => $this->repGroupFields[0]["strGroupField"],
+							"modifier" => $this->repGroupFields[0]["groupInterval"]
+						)
+					);
+					return $this->_report->pageObject->getDataSource()->getTotalCount( $dc );
 				}
 			}
 		}else{
@@ -1864,13 +1062,13 @@ class ReportLogic extends Summarable
 	var $pageObject = null;
 	var $pSet = null;
 
-    function __construct($sql, $order, $connection, $groupsTotal, $groupsPerPage, &$params, $searchWhereClause, $searchHavingClause, $pageObject = null)
+    function __construct( $order, $connection, $groupsTotal, $groupsPerPage, &$params, $pageObject = null )
     {
 		parent::__construct($params);
         $this->_connection = $connection;
 		$this->cipherer = new RunnerCipherer($this->tName);
-		$this->_sql = new SQLStatement($sql, $order, $groupsTotal, $connection, $params, $searchWhereClause, $searchHavingClause, $this->cipherer, $pageObject );
-		$this->_groups = new ReportGroups($this->_sql, $connection, $groupsTotal, $params);
+		$this->_sql = new SQLStatement( array(), $order, $groupsTotal, $connection, $params, $this->cipherer, $pageObject );
+		$this->_groups = new ReportGroups($this->_sql, $connection, $groupsTotal, $params, $this );
 		$this->_groupsTotal = $groupsTotal;
 		$this->_groupsPerPage = $groupsPerPage;
 		$this->pSet = new ProjectSettings($this->tName, PAGE_REPORT);
@@ -2022,7 +1220,11 @@ class ReportLogic extends Summarable
 
 				if(!isset($level['values'][ $groupKey ]))
 				{
-					$level['values'][ $groupKey ] = array();
+					/* required for ASP conversion, $groupKey can be big int, 2.2E9 and more */
+					$newArray = array();
+					$level['values'][ $groupKey ] = $newArray;
+
+
 					$level =& $level['values'][ $groupKey ];
 					$field = $this->_sql->field( $groupIndex );
 					$this->_printRecordCount +=  $field->_rowsInHeader;
@@ -2115,7 +1317,6 @@ class ReportLogic extends Summarable
 	function recordVisible($nRecord)
 	{
 		return
-//			$this->_doPaging ||  // all records are printed, so there is no invisible records
 			$this->_sql->_limitLevel == 1 || // only visible records were selected due to group filtering
 			$this->_groupsTotal == 0 || // 'show all' mode
 			($this->_sql->_limitLevel == 2 && // DB specific record filter
@@ -2140,27 +1341,146 @@ class ReportLogic extends Summarable
 			else
 			{
 				$totals = array();
-				$sql = $this->_sql->sqlt();
-				if($sql !== false)
-				{
-					$totalRecords = 0;
-					$fetchedArray = $this->_connection->query( $sql )->fetchAssoc();
-					$data = $this->cipherer->DecryptFetchedArray( $fetchedArray );
-					
-					$data["countField"] = $this->pageObject->limitRowCount( $data["countField"] );						
 
-					$this->addSummary(false, $totals, $data, $totalRecords);
-				}
+				$dc = $this->getTotalCommand( false );
+				$rs = $this->pageObject->getDataSource()->getTotals( $dc );
+				$fetchedArray = $rs->fetchAssoc();
+				$data = $this->cipherer->DecryptFetchedArray( $fetchedArray );
+
+				$totalRecords = 0;
+				$data["countField"] = $this->pageObject->limitRowCount( $data["countField"] );
+
+				$this->addSummary(false, $totals, $data, $totalRecords);
 				return $totals;
 			}
 		}
+	}
+
+	/**
+	 * Data command that returns all records and group values
+	 * @return DsCommand
+	 */
+	function getDataCommand( $from ) {
+		$orderIndices = $this->pSet->getOrderIndexes();
+
+		//	select all records, add group values to the field list
+		$dc = $this->pageObject->getSubsetDataCommand();
+		$orderFieldIndices = array();
+		$dc->order = array();
+		foreach( $this->repGroupFields as $idx => $grp ) {
+			$gField = $grp["strGroupField"];
+			if( !$grp["groupInterval"] ) {
+				$orderFieldIndices[ $this->pSet->getFieldIndex( $gField ) ] = true;
+			}
+			$alias = "grp" . $idx;
+			$dc->extraColumns[] = new DsFieldData( "", $alias, $gField , $grp["groupInterval"] );
+
+			$dc->order[] = array( "column" => $alias, "dir" => $this->groupOrderDirection( $idx ) );
+		}
+		//	add the rest of orders
+		foreach( $orderIndices as $o ) {
+			if(  !$orderFieldIndices[ $o[0] ] )
+				$dc->order[] = array( "index" => $o[0], "dir" => $o[1] );
+		}
+
+		//	add limits
+		if( !count( $this->repGroupFields ) ) {
+			$dc->startRecord = $from;
+			$dc->reccount = $this->_groupsTotal ? $this->_groupsTotal : -1;
+		}
+		return $dc;
+	}
+
+	/**
+	 * @param Boolean addGroups - group results
+	 * @return DsCommand
+	 */
+	function getTotalCommand( $addGroups ) {
+		//	Only group values are needed, make GROUP BY query.
+		$dc = $this->pageObject->getSubsetDataCommand();
+
+		if( $addGroups ) {
+			foreach( $this->repGroupFields as $idx => $grp ) {
+				$gField = $grp["strGroupField"];
+				$alias = "grp" . $idx;
+				$dc->totals[] = array(
+					"alias" => $alias,
+					"field" => $gField,
+					"modifier" => $grp["groupInterval"],
+					"direction" => $this->groupOrderDirection( $idx )
+				);
+			}
+		}
+		//	add count
+		$dc->totals[] = array(
+			"alias" => "countField",
+			"total" => "count"
+		);
+		//	add totals
+		foreach( $this->fieldsArr as $f)
+		{
+			$field = &$f["name"];
+			if ($f['totalMax'])
+			{
+				$dc->totals[] = array(
+					"alias" => $field."MAX",
+					"field" => $field,
+					"total" => "max"
+				);
+			}
+			if( $f['totalMin'] ) {
+				$dc->totals[] = array(
+					"alias" => $field."MIN",
+					"field" => $field,
+					"total" => "min"
+				);
+			}
+			if( $f['totalAvg'] && !IsDateFieldType($this->pSet->getFieldType( $field )) ) {
+				$dc->totals[] = array(
+					"alias" => $field."AVG",
+					"field" => $field,
+					"total" => "avg"
+				);
+				$dc->totals[] = array(
+					"alias" => $field."NAVG",
+					"field" => $field,
+					"total" => "count"
+				);
+			}
+			if( $f['totalSum'] && !IsDateFieldType($this->pSet->getFieldType( $field )) ) {
+				$dc->totals[] = array(
+					"alias" => $field."SUM",
+					"field" => $field,
+					"total" => "sum"
+				);
+			}
+		}
+		return $dc;
+	}
+
+	/**
+	 * @param Array
+	 * @return DsCondition
+	 */
+	function getGroupFilter( &$groups ) {
+		$gField = $this->repGroupFields[0]["strGroupField"];
+		$modifier = $this->repGroupFields[0]["groupInterval"];
+		$firstGroup = $groups[0];
+		$lastGroup = $groups[ count( $groups ) - 1 ];
+		if( $this->groupOrderDirection( 0 ) == "DESC" ) {
+			$t = $firstGroup;
+			$firstGroup = $lastGroup;
+			$lastGroup = $t;
+		}
+		$condition1 = DataCondition::_Not( DataCondition::FieldIs( $gField, dsopLESS, $firstGroup, dsCASE_DEFAULT, $modifier ) );
+		$condition2 = DataCondition::_Not( DataCondition::FieldIs( $gField, dsopMORE, $lastGroup, dsCASE_DEFAULT, $modifier ) );
+		return DataCondition::_And( array( $condition1, $condition2 ) );
 	}
 
 	function getReport($from = 0 )
 	{
 		$this->init($from);
 
-//		$this->_doPaging = $from == -1;
 
 		//	split to pages at server
 		$this->_doPaging = ( $this->_groupsPerPage != 0 );
@@ -2180,13 +1500,7 @@ class ReportLogic extends Summarable
       	}
 
 		// retrieve ALL records from table
-//		$this->_fullRequest = $this->_doPaging || ($this->repGlobalSummary && $isExistTimeFormatField);
 		$this->_fullRequest = ($this->repGlobalSummary && $isExistTimeFormatField);
-
-		// MYSQL version < 5.0
-		// a very bad thing to do, but we need this for global summary and pagination
-		if( !$this->_connection->checkDBSubqueriesSupport() )
-			$this->_fullRequest = true;
 
 		if( $this->_connection->dbType != nDATABASE_MySQL  && $this->_connection->dbType != nDATABASE_PostgreSQL
 			&& $this->_connection->dbType != nDATABASE_MSSQLServer && $this->_connection->dbType != nDATABASE_Oracle
@@ -2195,16 +1509,20 @@ class ReportLogic extends Summarable
 			$this->_fullRequest = true;
 		}
 
+		$entType = $this->pSet->getEntityType();
+		if( $entType === titREST_REPORT || $entType === titSQL_REPORT ) {
+			$this->_fullRequest = true;
+		}
+
 		// use non-optimized algorithm
 		$this->_recordBasedRequest = $this->_fullRequest;
 
 		// request records if there is no grouping
-		if(!$this->repGroupFieldsCount)
+		if( !$this->repGroupFieldsCount )
 			$this->_recordBasedRequest=true;
 
 		//////////////////////////////// start building report
 		$this->_sql->setRecordBasedRequest($this->_recordBasedRequest);
-//		if($this->_doPaging || $this->_fullRequest)
 		if( $this->_fullRequest)
 		{
 			$this->_sql->_limitLevel = 0; // no limits
@@ -2221,39 +1539,28 @@ class ReportLogic extends Summarable
 		$nRow = 0;
 		$nRowVisible = 0;
 
-		if(!$this->_recordBasedRequest)
+		if( !$this->_recordBasedRequest )
 		{
 			// get groups to show
 			$groups = $this->_groups->getDisplayGroups($from);
 
-			// iterate through records in these groups
-			$hsql = $this->_sql->sql2($groups);
-			
-			if( $this->pageObject) 
-			{
-				if( $this->pageObject->pageType == PAGE_REPORT ) {
-					if($this->pageObject->eventsObject->exists("BeforeQueryReport"))
-					{
-						$hwhere = $hsql['where'];
-						$this->pageObject->eventsObject->BeforeQueryReport($hwhere);
-						$hsql['where'] = $hwhere;
-					}
-				}
-				else {
-					if($this->pageObject->eventsObject->exists("BeforeQueryReportPrint"))
-					{
-						$hwhere = $hsql['where'];
-						$this->pageObject->eventsObject->BeforeQueryReportPrint($hwhere);
-						$hsql['where'] = $hwhere;
-					}
-					
-				}
+			$dc = $this->repShowDet
+				? $this->getDataCommand( $from )
+				: $this->getTotalCommand( true );
+
+			if( count( $groups ) ) {
+				$dc->filter = DataCondition::_And( array(
+					$dc->filter,
+					$this->getGroupFilter( $groups )
+				));
 			}
-				
-		
-			$sql = $this->_sql->buildsql($hsql);
-			$qResult = $this->_connection->query( $sql );
-		    while($data = $this->cipherer->DecryptFetchedArray( $qResult->fetchAssoc() ))
+			$qResult = $this->repShowDet
+				? $this->pageObject->getDataSource()->getList( $dc )
+				: $this->pageObject->getDataSource()->getTotals( $dc );
+			if( !$qResult ) {
+				showError( $this->pageObject->getDataSource()->lastError() );
+			}
+			while($data = $this->cipherer->DecryptFetchedArray( $qResult->fetchAssoc() ))
 		    {
 		    	$this->pageObject->recId = $nRow;
 				$this->setSummary($this->repShowDet, $data,
@@ -2263,13 +1570,16 @@ class ReportLogic extends Summarable
 		}
 		else
 		{
+			//	run original request only
+
 			$this->_groups->init($from);
-			$this->_sql->setOldAlgorithm();
+			$dc = $this->getDataCommand( $from );
 
-			$hsql = $this->_sql->sql2(null);
-			$sql = $this->_sql->buildsql($hsql);
+			$qResult = $this->pageObject->getDataSource()->getList( $dc );
+			if( !$qResult ) {
+				showError( $this->pageObject->getDataSource()->lastError() );
+			}
 
-			$qResult = $this->_connection->query( $sql );
 	        while($data = $this->cipherer->DecryptFetchedArray( $qResult->fetchAssoc() ))
 			{
 				if ($this->repGroupFieldsCount)
@@ -2283,9 +1593,8 @@ class ReportLogic extends Summarable
 
 				if ($this->repGroupFieldsCount)
 				{
-//					$visible = $this->_doPaging || $this->_groups->isVisibleGroup() || $this->_groupsTotal == 0;
 					$visible = $this->_groups->isVisibleGroup() || $this->_groupsTotal == 0;
-				}else{
+				} else {
 					$visible = $this->recordVisible($nRow);
 				}
 
@@ -2359,12 +1668,26 @@ class Report extends ReportLogic
 	// table fields list
 	var $fieldsArr = array();
 
-    function __construct($sql, $order, $connection, $groupsTotal, $groupsPerPage, &$params, $searchWhereClause, $searchHavingClause, $pageObject = null)
+    function __construct( $order, $connection, $groupsTotal, $groupsPerPage, &$params, $pageObject = null)
     {
-    	// copy properties to object
-//		RunnerApply($this, $params);
-		parent::__construct($sql, $order, $connection, $groupsTotal, $groupsPerPage, $params, $searchWhereClause, $searchHavingClause, $pageObject);
-    }
+		parent::__construct( $order, $connection, $groupsTotal, $groupsPerPage, $params, $pageObject);
+	}
+
+	/**
+	 * @param Integer - grIdx - order number of the group field
+	 * @return String "ASC" | "DESC"
+	 */
+	function groupOrderDirection( $grIdx ) {
+		$orderIndices =& $this->pSet->getOrderIndexes();
+		$gField = $this->repGroupFields[ $grIdx ]["strGroupField"];
+		$grFieldIdx = $this->pSet->getFieldIndex( $gField );
+		foreach( $orderIndices as $o ) {
+			if( $o[0] == $grFieldIdx ) {
+				return $o[1];
+			}
+		}
+		return 'ASC';
+	}
 
 	function getFormattedRow($value)
 	{
@@ -2379,30 +1702,30 @@ class Report extends ReportLogic
 
 		if($this->forExport)
 			$this->pageObject->setForExportVar($this->forExport);
-		for($i=0; $i<count($this->fieldsArr); $i++)
-		{
-			// for change pseudo foreach with condition with PHP for
-			// foreach Fields as @f filter @f.bReportPage && (@TABLE.bReportShowDetails || @TABLE.arrReportGroupFields[strGroupField==@f.strName && nGroupInterval==0].len) order nReportPageOrder
 
-			$pass = false;
 
-			for($j=0; $j<count($this->repGroupFields); $j++)
+		if ($this->pageObject->pdfJsonMode()) {
+			//	make sure all group fields in the row have values
+			for ($j = 0; $j < count($this->repGroupFields); $j++) {
+				$groupField = &$this->repGroupFields[$j];
+				$row[GoodFieldName($groupField['strGroupField']) . "_grval"] = "''";
+			}
+		}
+
+
+		if( $this->repShowDet ) {
+			for( $i=0; $i<count($this->fieldsArr); $i++ )
 			{
-				if (!$this->fieldsArr[$i]['repPage'] || !($this->repShowDet
-					|| ($this->repGroupFields[$j]['strGroupField'] == $this->fieldsArr[$i]['name']
-					&& $this->repGroupFields[$j]['groupInterval'] === 0)))
-				{
-					$pass = true;
+				$fieldData = &$this->fieldsArr[ $i ];
+
+				//	field value is not shown on the page
+				if( !$fieldData['repPage'] ) {
+					continue;
 				}
-			}
 
-			if ($pass)
-			{
-				continue;
+				$row[ $fieldData['goodName'] . "_value" ] = $this->pageObject->formatReportFieldValue( $fieldData['name'], $value, $keylink );
+				$row[ $fieldData['goodName'] . "_dbvalue" ] = $value[ $fieldData['name'] ];
 			}
-			
-			$row[$this->fieldsArr[$i]['goodName']."_value"] = $this->pageObject->formatReportFieldValue($this->fieldsArr[$i]['name'], $value, $keylink);
-			$row[$this->fieldsArr[$i]['goodName']."_dbvalue"] = $value[$this->fieldsArr[$i]['name']];
 		}
 
 		if ($this->repLayout == REPORT_BLOCK)
@@ -2442,10 +1765,7 @@ class Report extends ReportLogic
 						$begin[GoodFieldName($gname.'_firstnewgroup')] = true;
 					unset($begin[GoodFieldName('nonewgroup')]);
 				}
-				else
-				{
-					$begin[GoodFieldName($gname.'_newgroup')] = true;
-				}
+				$begin[GoodFieldName($gname.'_newgroup')] = true;
 				$end[GoodFieldName($gname.'_endgroup')] = true;
 
 				if ($this->repGroupFields[$i]['showGroupSummary'])
@@ -2462,19 +1782,47 @@ class Report extends ReportLogic
 							if ($this->fieldsArr[$j]['totalMax'])
 							{
 								$end["group".GoodFieldName($gname)."_total".$this->fieldsArr[$j]['goodName']."_max"] =
-									getFormattedValue($this->pageObject, $grp['summary'][$this->fieldsArr[$j]['name']]['MAX'], $this->fieldsArr[$j]['name'], $this->fieldsArr[$j]['viewFormat'], $this->fieldsArr[$j]['editFormat'], $this->mode, $values);
+									getFormattedValue(
+										$this->pageObject,
+										$grp['summary'][$this->fieldsArr[$j]['name']]['MAX'],
+										$this->fieldsArr[$j]['name'],
+										$this->fieldsArr[$j]['viewFormat'],
+										'MAX',
+										$values
+									);
 							}
 							if ($this->fieldsArr[$j]['totalMin']){
 								$end["group".GoodFieldName($gname)."_total".$this->fieldsArr[$j]['goodName']."_min"] =
-									getFormattedValue($this->pageObject, $grp['summary'][$this->fieldsArr[$j]['name']]['MIN'], $this->fieldsArr[$j]['name'], $this->fieldsArr[$j]['viewFormat'], $this->fieldsArr[$j]['editFormat'], $this->mode, $values);
+									getFormattedValue(
+										$this->pageObject,
+										$grp['summary'][$this->fieldsArr[$j]['name']]['MIN'],
+										$this->fieldsArr[$j]['name'],
+										$this->fieldsArr[$j]['viewFormat'],
+										'MIN',
+										$values
+									);
 							}
 							if ($this->fieldsArr[$j]['totalAvg']){
 								$end["group".GoodFieldName($gname)."_total".$this->fieldsArr[$j]['goodName']."_avg"] =
-									getFormattedValue($this->pageObject, $grp['summary'][$this->fieldsArr[$j]['name']]['AVG'], $this->fieldsArr[$j]['name'], $this->fieldsArr[$j]['viewFormat'], $this->fieldsArr[$j]['editFormat'], $this->mode, $values);
+									getFormattedValue(
+										$this->pageObject,
+										$grp['summary'][$this->fieldsArr[$j]['name']]['AVG'],
+										$this->fieldsArr[$j]['name'],
+										$this->fieldsArr[$j]['viewFormat'],
+										'AVG',
+										$values
+									);
 							}
 							if ($this->fieldsArr[$j]['totalSum']){
 								$end["group".GoodFieldName($gname)."_total".$this->fieldsArr[$j]['goodName']."_sum"] =
-									getFormattedValue($this->pageObject, $grp['summary'][$this->fieldsArr[$j]['name']]['SUM'], $this->fieldsArr[$j]['name'], $this->fieldsArr[$j]['viewFormat'], $this->fieldsArr[$j]['editFormat'], $this->mode, $values);
+									getFormattedValue(
+										$this->pageObject,
+										$grp['summary'][$this->fieldsArr[$j]['name']]['SUM'],
+										$this->fieldsArr[$j]['name'],
+										$this->fieldsArr[$j]['viewFormat'],
+										'SUM',
+										$values
+									);
 							}
 						}
 					}
@@ -2482,17 +1830,17 @@ class Report extends ReportLogic
 					{
 						$field = $this->_sql->field($nField);
 						$gvalue = $field->getFieldName($gkey, $grp['_first'], $this->pageObject );
-					    
+
 						if( $field->overrideFormat() )
 						{
 							if( $this->pageObject->pageType == PAGE_RPRINT ) {
-								if( $this->pageObject->pdfJsonMode() && IsDateFieldType( $this->pSet->getFieldType( $this->fieldsArr[$j]['name'] ) ) 
+								if( $this->pageObject->pdfJsonMode() && IsDateFieldType( $this->pSet->getFieldType( $this->fieldsArr[$j]['name'] ) )
 									&& ( $gvalue == 'NULL' || $field->_interval != 0 || !$field->_viewFormat ) ) {
-										// wrapp group date field value in case RunnerPage showDBValue isn't applyed 
+										// wrapp group date field value in case RunnerPage showDBValue isn't applyed
 										$gvalue = "'". jsreplace( $gvalue ) ."'";
 								}
 							}
-							
+
 							$begin[GoodFieldName(GoodFieldName($gname).'_grval')] = ($this->forExport == 'excel') ? runner_htmlspecialchars($gvalue) : $gvalue;
 							if ($this->showGroupSummaryCount)
 							{
@@ -2501,7 +1849,15 @@ class Report extends ReportLogic
 						}
 						else
 						{
-							$formattedValue = getFormattedValue($this->pageObject, $gvalue, $this->fieldsArr[$j]['name'], $this->fieldsArr[$j]['viewFormat'], $this->fieldsArr[$j]['editFormat'], $this->mode, $values);
+							$formattedValue = getFormattedValue(
+								$this->pageObject,
+								$gvalue,
+								$this->fieldsArr[$j]['name'],
+								$this->fieldsArr[$j]['viewFormat'],
+								'',
+								$values
+							);
+
 							$begin[GoodFieldName($gname.'_grval')] = ($this->forExport == 'excel') ? runner_htmlspecialchars($formattedValue) : $formattedValue;
 							if ($this->showGroupSummaryCount)
 							{
@@ -2526,18 +1882,43 @@ class Report extends ReportLogic
 				$fGoodName = $field['goodName'];
 				if(is_array($src[$fieldName]))
 				{
-					if ($field['totalSum'])
-					{
-						$page["page_total".$fGoodName."_sum"] = getFormattedValue($this->pageObject, $src[$fieldName]['SUM'], $fieldName, $field['viewFormat'], $field['editFormat'], $this->mode);
+					if( $field['totalSum'] ) {
+						$page["page_total".$fGoodName."_sum"] = getFormattedValue(
+							$this->pageObject,
+							$src[$fieldName]['SUM'],
+							$fieldName,
+							$field['viewFormat'],
+							'SUM'
+						);
 					}
-					if ($field['totalAvg']){
-						$page["page_total".$fGoodName."_avg"] = getFormattedValue($this->pageObject, $src[$fieldName]['AVG'], $fieldName, $field['viewFormat'], $field['editFormat'], $this->mode);
+					if( $field['totalAvg'] ) {
+						$page["page_total".$fGoodName."_avg"] = getFormattedValue(
+							$this->pageObject,
+							$src[$fieldName]['AVG'],
+							$fieldName,
+							$field['viewFormat'],
+							'AVG'
+						);
 					}
-					if ($field['totalMin']){
-						$page["page_total".$fGoodName."_min"] = getFormattedValue($this->pageObject, $src[$fieldName]['MIN'], $fieldName, $field['viewFormat'], $field['editFormat'], $this->mode);
+
+					if( $field['totalMin'] ) {
+						$page["page_total".$fGoodName."_min"] = getFormattedValue(
+							$this->pageObject,
+							$src[$fieldName]['MIN'],
+							$fieldName,
+							$field['viewFormat'],
+							'MIN'
+						);
 					}
-					if ($field['totalMax']){
-						$page["page_total".$fGoodName."_max"] = getFormattedValue($this->pageObject, $src[$fieldName]['MAX'], $fieldName, $field['viewFormat'], $field['editFormat'], $this->mode);
+
+					if( $field['totalMax'] ) {
+						$page["page_total".$fGoodName."_max"] = getFormattedValue(
+							$this->pageObject,
+							$src[$fieldName]['MAX'],
+							$fieldName,
+							$field['viewFormat'],
+							'MAX'
+						);
 					}
 				}
 			}
@@ -2560,18 +1941,44 @@ class Report extends ReportLogic
 				$fGoodName = $field['goodName'];
 				if(is_array($source["summary"][$fieldName]))
 				{
-					if ($field['totalMax'])
-					{
-						$result["global_total".$fGoodName."_max"] = getFormattedValue($this->pageObject, $source['summary'][$fieldName]['MAX'], $fieldName, $field['viewFormat'], $field['editFormat'], $this->mode);
+					if( $field['totalMax'] ) {
+						$result["global_total".$fGoodName."_max"] = getFormattedValue(
+							$this->pageObject,
+							$source['summary'][$fieldName]['MAX'],
+							$fieldName,
+							$field['viewFormat'],
+							'MAX'
+						);
 					}
-					if ($field['totalMin']){
-						$result["global_total".$fGoodName."_min"] = getFormattedValue($this->pageObject, $source['summary'][$fieldName]['MIN'], $fieldName, $field['viewFormat'], $field['editFormat'], $this->mode);
+
+					if( $field['totalMin'] ) {
+						$result["global_total".$fGoodName."_min"] = getFormattedValue(
+							$this->pageObject,
+							$source['summary'][$fieldName]['MIN'],
+							$fieldName,
+							$field['viewFormat'],
+							'MIN'
+						);
 					}
-					if ($field['totalAvg']){
-						$result["global_total".$fGoodName."_avg"] = getFormattedValue($this->pageObject, $source['summary'][$fieldName]['AVG'], $fieldName, $field['viewFormat'], $field['editFormat'], $this->mode);
+
+					if( $field['totalAvg'] ) {
+						$result["global_total".$fGoodName."_avg"] = getFormattedValue(
+							$this->pageObject,
+							$source['summary'][$fieldName]['AVG'],
+							$fieldName,
+							$field['viewFormat'],
+							'AVG'
+						);
 					}
-					if ($field['totalSum']){
-						$result["global_total".$fGoodName."_sum"] = getFormattedValue($this->pageObject, $source['summary'][$fieldName]['SUM'], $fieldName, $field['viewFormat'], $field['editFormat'], $this->mode);
+
+					if( $field['totalSum'] ) {
+						$result["global_total".$fGoodName."_sum"] = getFormattedValue(
+							$this->pageObject,
+							$source['summary'][$fieldName]['SUM'],
+							$fieldName,
+							$field['viewFormat'],
+							'SUM'
+						);
 					}
 				}
 			}

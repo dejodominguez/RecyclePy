@@ -17,11 +17,13 @@
 'changepwd_success_back' => array( 'changepwd_success_back' ),
 'changepwd_success_header' => array( 'changepwd_success_header' ) ),
 'cellMaps' => array(  ) ),
-'page' => array( 'labeledButtons' => array( 'update_records' => array(  ),
+'page' => array( 'verticalBar' => false,
+'labeledButtons' => array( 'update_records' => array(  ),
 'print_pages' => array(  ),
 'register_activate_message' => array(  ),
 'details_found' => array(  ) ),
-'hasCustomButtons' => false ),
+'hasCustomButtons' => false,
+'customButtons' => array(  ) ),
 'events' => array( 'maps' => array(  ),
 'mapsData' => array(  ),
 'buttons' => array(  ) ) );
@@ -74,5 +76,5 @@
 'changepwd_success_back' => array( 'type' => 'changepwd_success_back' ),
 'changepwd_success_header' => array( 'type' => 'changepwd_success_header' ) ),
 'dbProps' => array(  ),
-'version' => 4 );
+'version' => 7 );
 		?>

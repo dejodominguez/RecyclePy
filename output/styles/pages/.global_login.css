@@ -1,11 +1,28 @@
 [data-cellid="top_c2"][data-page=".global_login"][data-cellid="top_c2"][data-page=".global_login"][data-cellid="top_c2"][data-page=".global_login"] {
   white-space: normal;
 }
+[data-cellid="grid_c"][data-page=".global_login"][data-cellid="grid_c"][data-page=".global_login"][data-cellid="grid_c"][data-page=".global_login"] {
+  background-color: #bc5454;
+  font-size: 22px;
+}
 [data-cellid="footer_c1"][data-page=".global_login"][data-cellid="footer_c1"][data-page=".global_login"][data-cellid="footer_c1"][data-page=".global_login"] {
   width: 33.33333333%;
 }
 [data-cellid="footer_c2"][data-page=".global_login"][data-cellid="footer_c2"][data-page=".global_login"][data-cellid="footer_c2"][data-page=".global_login"] {
   width: 66.66666667%;
+}
+[data-cellid="footer_c3"][data-page=".global_login"][data-cellid="footer_c3"][data-page=".global_login"][data-cellid="footer_c3"][data-page=".global_login"] {
+  width: 66.66666667%;
+}
+[data-cellid="footer_c4"][data-page=".global_login"][data-cellid="footer_c4"][data-page=".global_login"][data-cellid="footer_c4"][data-page=".global_login"] {
+  background-color: #d67979;
+  width: 33.33333333%;
+}
+[data-cellid="footer_c5"][data-page=".global_login"][data-cellid="footer_c5"][data-page=".global_login"][data-cellid="footer_c5"][data-page=".global_login"] {
+  width: 66.66666667%;
+}
+[data-cellid="footer_c"][data-page=".global_login"][data-cellid="footer_c"][data-page=".global_login"][data-cellid="footer_c"][data-page=".global_login"] {
+  width: 33.33333333%;
 }
 [data-page=".global_login"][data-itemid="login_header"] {
   font-weight: bold;

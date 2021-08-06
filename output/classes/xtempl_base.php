@@ -122,7 +122,7 @@ class XTempl_Base
 		$this->assign_method("map", $this, "xt_event_map", array());
 		
 		$this->assign( "projectPath", projectPath() );
-		
+	
 		if( !$hideAddedCharts ) //#9607 1. Temporary fix
 		{
 		}
@@ -261,13 +261,18 @@ $mlang_charsets["Spanish"]="Windows-1252";;
 
 	function xt_event($params)
 	{
+		global $projectLanguage;
 		if( $this->jsonMode ) {
-			ob_start();
-			$this->xt_doevent( $params );
-			$out = jsreplace( ob_get_contents() );
-			ob_end_clean();
-			echo $out;
-			return;
+			if( $projectLanguage !== "aspx" ) {
+				ob_start();
+				$this->xt_doevent( $params );
+				$out = jsreplace( ob_get_contents() );
+				ob_end_clean();
+				echo $out;
+				return;
+			} else {
+				return jsreplace( $this->xt_doevent( $params ) );
+			}
 		}
 		return $this->xt_doevent( $params );
 	}
@@ -275,9 +280,12 @@ $mlang_charsets["Spanish"]="Windows-1252";;
 	function customLabel($params)
 	{
 		$ret = GetCustomLabel($params["custom1"]);
-		echo $this->jsonMode 
-			? str_replace( "'", "\\'", $ret )
-			: $ret;
+
+		if ( $this->jsonMode )  {
+			$ret = jsreplace( $ret );
+		}
+
+		echo $ret;
 	}
 	
 	

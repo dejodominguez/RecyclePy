@@ -21,36 +21,21 @@ if( !Security::userHasFieldPermissions( $table, $field, PAGE_LIST, $pageName, fa
 	return;
 
 $pSet = new ProjectSettings( $table, PAGE_LIST, $pageName );
-$gQuery = $pSet->getSQLQuery();
-
-if( !$gQuery->HasGroupBy() )
-{
-	// Do not select any fields except current (file) field.
-	// If query has 'group by' clause then other fields are used in it and we may not simply cut 'em off.
-	// Just don't do anything in that case.
-	$gQuery->RemoveAllFieldsExcept( $pSet->getFieldIndex($field) );
-}
 
 $_connection = $cman->byTable( $table );
 
-//	construct sql
-$keysArr = $pSet->getTableKeys();
 $keys = array();
-foreach( $keysArr as $ind=>$k )
-{	
-	$keys[$k] = postvalue("key".($ind + 1));
-}
-$where = KeyWhere($keys, $table);
-
-if( $pSet->getAdvancedSecurityType() == ADVSECURITY_VIEW_OWN )
-{
-	$where = whereAdd( $where, SecuritySQL("Search") );	
+foreach( $pSet->getTableKeys() as $ind => $k ) {
+	$keys[ $k ] = postvalue("key".($ind + 1));
 }
 
+$dc = new DsCommand();
+$dc->filter = Security::SelectCondition( "S", $pSet );
+$dc->keys = $keys;
 
-$sql = $gQuery->gSQLWhere( $where );
-$qResult = $_connection->query( $sql );
-if( !$qResult || !($data = $qResult->fetchAssoc()) )
+$dataSource = getDataSource( $table, $pSet, $_connection );
+$qResult = $dataSource->getSingle( $dc );
+if( !$qResult || !( $data = $qResult->fetchAssoc() ) )
 	return;
 
 $value = $_connection->stripSlashesBinary( $data[$field ] );

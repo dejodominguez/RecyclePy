@@ -6,7 +6,7 @@
  *  Modify PHP/EventTemplates/events.txt instead.
  *
  */
- 
+
  class eventclass_gestionregistrosorigen  extends eventsBase
 {
 	function __construct()
@@ -18,6 +18,12 @@
 
 //	handlers
 
+		
+		
+		
+		
+		
+		
 		
 		
 		

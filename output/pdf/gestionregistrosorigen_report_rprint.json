@@ -1,0 +1,298 @@
+
+pdfDocument = {
+{BEGIN backgroundImage}
+	background: {
+		image: {$backgroundImage},
+		{BEGIN bgWidth}
+		imgWidth: {$bgWidth},
+		imgHeight: {$bgHeight},
+		{END bgWidth}
+	},
+{END backgroundImage}
+	styles: {
+				bodycell: {
+			fontSize:12,
+		},
+		headcell: {
+			fontSize:12,
+			bold: true
+		},
+
+	
+						pagesummary: {
+		fillColor: '#ffffbb',
+	},
+	globalsummary: {
+		fillColor: '#ffe0b0',
+	},
+			},
+	defaultStyle: {
+		fontSize: 14,
+	},
+	"content": [
+		{BEGIN body}
+		{BEGIN embedded_grid}
+		{
+			text: '{$jscaption public_GestionRegistrosOrigen_Report}',
+		},
+		{END embedded_grid}
+		{ 
+			{BEGIN standalone_page}
+			pageBreak: 'before',
+			{END standalone_page}
+			{BEGIN embedded_grid}
+			embeddedPage: true,
+			{END embedded_grid}
+			layout: {
+				hLineWidth: function(i, node) { return 0.1; },
+				vLineWidth: function(i, node) { 
+					if( node.table.embeddedPage ) {
+						return (i === 0 || i === node.table.widths.length) ? 0.1 : 0;
+					} else  {
+						return 0.1; 
+					}
+				},
+				hLineColor: function(i, node) { return 'gray'; },
+				vLineColor: function(i, node) { return 'gray'; },
+			},
+			table: {
+				{BEGIN embedded_grid}
+				embeddedPage: true,
+				{END embedded_grid}
+				
+				tableForm: true,
+				headerRows: 0 + 1 {BEGIN embedded_grid} -1 {END embedded_grid} ,
+
+				widths: [
+														"%",
+										"%",
+										"%",
+										"%",
+										"%",
+										"%",
+										"%",
+										"%",
+										"%",
+										"%",
+										"%",
+															],
+							
+				body: [
+				{BEGIN standalone_page}
+					[
+						{
+							colSpan: 11,
+							border:[false, false,false,false],
+							stack: [
+
+																										
+{
+	table: {
+	
+				
+		location: 'top',
+		
+		
+		widths: [
+								"*", 
+					 ],	
+		
+	
+		body: [
+				
+				[
+																{
+	cellId: 'c2',
+	col:0,
+	row:0,
+		
+		
+	//	static colspan/rowspan
+		
+			
+	
+	
+			"stack": [
+		
+				
+			{"text":"{$jspagetitlelabel public_GestionRegistrosOrigen_Report rprint}","hidden":"{$item_hide_print_header}","fontSize":30},
+				
+				
+			{"text":"{$printtabheader_text}","hidden":"{$item_hide_print_subheader}"},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+											],
+		
+		]
+	}
+}
+,
+								
+																										
+{
+	table: {
+	
+				
+		location: 'above-grid',
+		
+		
+		widths: [
+								"*", 
+					 ],	
+		
+	
+		body: [
+				
+				[
+																{
+	cellId: 'c1',
+	col:0,
+	row:0,
+		
+		
+	//	static colspan/rowspan
+		
+			
+	
+	
+			"text": [
+		
+				
+			{"text":"Página %current% / %total%","hidden":"{$item_hide_print_pages}","isHtml":true,"page_indicator":true},
+				
+		  ],
+  "border": [ false, false, false, false ],
+              "alignment": 'left',
+  },
+
+											],
+		
+		]
+	}
+}
+,
+															]
+						},
+					],
+				{END standalone_page}
+
+																
+[	
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report id_ges_reg_origen }',
+		alignment: '{$id_ges_reg_origen_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report nombre_usuario }',
+		alignment: '{$nombre_usuario_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report nombre_completo }',
+		alignment: '{$nombre_completo_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report direc_usuario }',
+		alignment: '{$direc_usuario_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report descri_barrio }',
+		alignment: '{$descri_barrio_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report cantidad_origen }',
+		alignment: '{$cantidad_origen_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report descri_med_tip_origen }',
+		alignment: '{$descri_med_tip_origen_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report descri_residuo }',
+		alignment: '{$descri_residuo_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report id_usuario }',
+		alignment: '{$id_usuario_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report gps_mapa_goo }',
+		alignment: '{$gps_mapa_goo_align}',
+	},
+		{
+		text: '{$jslabel public_GestionRegistrosOrigen_Report foto_origen }',
+		alignment: '{$foto_origen_align}',
+	},
+	],
+
+{BEGIN grid_row}
+	{BEGIN row_data}
+[	
+		{	
+		text: {$id_ges_reg_origen_value},
+		alignment: '{$id_ges_reg_origen_align}',
+	},
+		{	
+		text: {$nombre_usuario_value},
+		alignment: '{$nombre_usuario_align}',
+	},
+		{	
+		text: {$nombre_completo_value},
+		alignment: '{$nombre_completo_align}',
+	},
+		{	
+		text: {$direc_usuario_value},
+		alignment: '{$direc_usuario_align}',
+	},
+		{	
+		text: {$descri_barrio_value},
+		alignment: '{$descri_barrio_align}',
+	},
+		{	
+		text: {$cantidad_origen_value},
+		alignment: '{$cantidad_origen_align}',
+	},
+		{	
+		text: {$descri_med_tip_origen_value},
+		alignment: '{$descri_med_tip_origen_align}',
+	},
+		{	
+		text: {$descri_residuo_value},
+		alignment: '{$descri_residuo_align}',
+	},
+		{	
+		text: {$id_usuario_value},
+		alignment: '{$id_usuario_align}',
+	},
+		{	
+		text: {$gps_mapa_goo_value},
+		alignment: '{$gps_mapa_goo_align}',
+	},
+		{	
+		text: {$foto_origen_value},
+		alignment: '{$foto_origen_align}',
+	},
+	],
+	{END row_data}
+{END grid_row}
+
+
+
+
+
+
+
+
+
+
+
+									]
+			
+			}
+		},
+		{END body}
+	]
+}

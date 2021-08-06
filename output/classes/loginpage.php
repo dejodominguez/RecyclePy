@@ -8,10 +8,8 @@ class LoginPage extends RunnerPage
 {
 	public $auditObj = null;
 
-	// autologin on session expired
-	public $notRedirect = false;
-
 	public $rememberPassword = 0;
+	public $rememberMachine = 0;
 
 	public $var_pUsername = "";
 	public $var_pPassword = "";
@@ -26,20 +24,28 @@ class LoginPage extends RunnerPage
 	protected $loggedByCredentials = false;
 	public $messageType = MESSAGE_ERROR;
 
-	/*** 2 factorauth*/
-	public $twoFactAuth = false;
-	public $SMSCode;
+	/**
+	 * Second message displayed after the first one
+	 */
 
-	protected $SMSCodeSent;
-	protected $phoneNumber;
-	protected $pnoneNotInQuery;
-	protected $skipSecondStep;
-	/***/
+	public $twoFactorCode;
+
+	protected $twoFactAuth = false;
+
+	protected $SMSCodeSent = false;
+
+	protected $pnoneNotInQuery = false;
+
+	protected $skipSecondStep = false;
 
 	protected $securityPlugins;
 
 	protected $controlsData = array();
 
+	// tp restore session on add/edit pages
+	public $restore = "";
+	
+	
 	/**
 	 * @constructor
 	 */
@@ -49,7 +55,7 @@ class LoginPage extends RunnerPage
 
 
 		$this->pSetEdit = $this->pSet;
-		$this->pSetSearch = new ProjectSettings($this->tName, PAGE_SEARCH);
+		// $this->pSetSearch = new ProjectSettings($this->tName, PAGE_SEARCH);
 		$this->auditObj = GetAuditObject();
 
 		if( $this->getLayoutVersion() === PD_BS_LAYOUT )
@@ -127,24 +133,37 @@ class LoginPage extends RunnerPage
 		if( $globalEvents->exists("BeforeProcessLogin") )
 			$globalEvents->BeforeProcessLogin( $this );
 
-		if ( $this->twoFactAuth )
+
+		$twoFactorSettings =& Security::twoFactorSettings();
+		if ( !GetGlobalData( "keepLoggedIn" ) || $twoFactorSettings["available"] )
 		{
 			$this->hideItemType("remember_password");
-			$this->hideItemType("continue_login_button");
 		}
 
-		if( $this->action == "resendCode" && $this->isFirstAuthStepSuccessful() )
-		{
-			$this->SMSCodeSent = $this->sendCodeBySMS();
-			$this->reportFirstAuthStepResult( true );
-			return;
+
+		$sessionLevel = Security::userSessionLevel();
+
+		if( $this->action == "" ) {
+			if( $sessionLevel !== LOGGED_FULL && $sessionLevel !== LOGGED_NONE ) {
+				Security::clearSecuritySession();
+				$sessionLevel = Security::userSessionLevel();
+			}
 		}
 
-		if( $this->action == "verifyCode" && $this->isFirstAuthStepSuccessful() )
+
+		if( $this->action == "resendCode" && $sessionLevel === LOGGED_2F_PENDING )
 		{
-			$verified = $this->doVerifySMSCode( $this->SMSCode );
-			$this->reportSecondAuthStepResult( $verified );
-			return;
+			$this->sendTwoFactorCode();
+		}
+
+		if( $this->action == "verifyCode" && $sessionLevel === LOGGED_2F_PENDING )
+		{
+			$this->verifyTwoFactorCode( $this->twoFactorCode );
+		}
+
+		if( $this->action == "resendActivation" && $sessionLevel === LOGGED_ACTIVATION_PENDING )
+		{
+			//$this->resendActivation();
 		}
 
 		if( $this->action == "logout" )
@@ -158,70 +177,70 @@ class LoginPage extends RunnerPage
 			$plugin = $this->securityPlugins[ postvalue("plugin") ];
 			if( $plugin )
 			{
-				$logged = $this->LoginWithSP( $plugin, postvalue('plugin_token') );
-				if ( $this->mode == LOGIN_POPUP ) {
-					$this->reportLogStatus( $logged );
-					return;
-				}
-
-				if( $logged ) {
-					$this->redirectAfterSuccessfulLogin();
-					return;
-				}
+				$this->LoginWithSP( $plugin, postvalue('plugin_token') );
 				// stay and show errors
 			}
 		}
 
 		$this->refineMessage();
-		
+
 		$this->readControls();
-		$this->prepareEditControls();
 
 		if( $this->isActionSubmit() )
 		{
-			if( $this->isLoginAccessAllowed() )
-			{
-				$this->setCredentialsCookie( $this->var_pUsername, $this->var_pPassword );
-				$this->loggedByCredentials = $this->doLoginRoutine();
-			}
+			$this->doLoginRoutine();
 
-			if( $this->twoFactAuth && $this->mode != LOGIN_EMBEDED )
-			{
-				$this->reportFirstAuthStepResult( $this->loggedByCredentials );
-				return;
+			if( Security::userSessionLevel() === LOGGED_2F_PENDING ) {
+				$this->sendTwoFactorCode();
 			}
+		}
+		
+		$this->prepareEditControls();
 
-			if( $this->loggedByCredentials && $this->mode == LOGIN_SIMPLE )
-			{
+		//	show page depending on session level and mode
+		$sessionLevel = Security::userSessionLevel();
+
+		//	logged in ok
+		if( $sessionLevel === LOGGED_FULL && !Security::isGuest()) {
+
+			if( $this->mode == LOGIN_POPUP ) {
+				if( !$this->restore )
+					$this->pageData["redirectUrl"] = $this->getLoggedInRedirectUrl();
+			} else {
 				$this->redirectAfterSuccessfulLogin();
 				return;
 			}
 
-			if( $this->mode == LOGIN_POPUP || $this->mode == LOGIN_EMBEDED && !$this->twoFactAuth )
-			{
-				$this->reportLogStatus( $this->loggedByCredentials );
+		} else if( $sessionLevel === LOGGED_2F_PENDING ) {
+		//	prompt for 2factor code
+			$this->hideMainLoginItems();
+			$this->prepareTwoFactorMessage();
+
+		} else if( $sessionLevel === LOGGED_ACTIVATION_PENDING ) {
+		//	tell about activation
+
+			$this->hideMainLoginItems();
+			$this->hideTwoFactorItems();
+
+		} else if( $sessionLevel === LOGGED_2FSETUP_PENDING ) {
+			if( $this->mode == LOGIN_POPUP ) {
+				$this->pageData["redirectUrl"] = GetTableLink("userinfo");
+			} else {
+				$this->redirectToUserInfo();
 				return;
 			}
+		} else {
+		//	nothing, just first page access
 
-			if ( $this->twoFactAuth )
-			{
-				if ( $this->loggedByCredentials )
-					$this->hideMainLoginItems();
-				else
-					$this->hideSMSFormItems();
-			}
-		}
-		else
-		{
-			$this->hideSMSFormItems();
+			$this->hideTwoFactorItems();
 
 			if( $this->mode == LOGIN_SIMPLE ) {
 				//	try logging in with saved credentials
-				if( !isLogged() || isLoggedAsGuest() )
+				if( !isLogged() || Security::isGuest() )
 				{
 					Security::tryRelogin();
 				}
-				if( isLogged() && !isLoggedAsGuest() )
+				if( isLogged() && !Security::isGuest() )
 				{
 					HeaderRedirect("menu");
 					return;
@@ -232,7 +251,7 @@ class LoginPage extends RunnerPage
 		$_SESSION["MyURL"] = $this->myurl;
 		$this->assignFieldBlocksAndLabels();
 
-		if( $this->mode != LOGIN_EMBEDED && $this->captchaExists() )
+		if( $this->captchaExists() )
 			$this->displayCaptcha();
 
 		$this->addCommonJs();
@@ -252,15 +271,18 @@ class LoginPage extends RunnerPage
 		$this->hideItemType("username_label");
 		$this->hideItemType("password_label");
 		$this->hideItemType("guest_login");
+		$this->hideItemType("remember_password");
+		
+		$this->hideElement("bsloginregister");
 	}
-	
-	protected function hideSMSFormItems()
+
+	protected function hideTwoFactorItems()
 	{
-		if ( $this->twoFactAuth ) {
-			$this->hideItemType("auth_code");
-			$this->hideItemType("verify_button");
-			$this->hideItemType("resend_button");
-		}
+		$this->hideItemType("auth_code");
+		$this->hideItemType("verify_button");
+		$this->hideItemType("resend_button");
+		$this->hideItemType("remember_machine");
+		$this->hideItemType("twofactor_message");
 	}
 
 	protected function isActionSubmit()
@@ -269,79 +291,55 @@ class LoginPage extends RunnerPage
  	}
 
 	/**
-	 * @return Boolean
+	 * try login, create session, call events
 	 */
 	protected function doLoginRoutine()
 	{
+		if( !$this->isLoginAccessAllowed() ) {
+			return false;
+		}
+		if( !$this->checkCaptcha()) {
+			return false;
+		}
+
 		$this->readControls();
-		
+
 		if( !$this->callBeforeLoginEvent() )
 			return false;
 
-		$logged = $this->LogIn( $this->var_pUsername, $this->var_pPassword );
+		$userFound = $this->createSession( $this->var_pUsername, $this->var_pPassword );
 
-		if( !$logged )
+		if( !$userFound )
 		{
-			$this->callAfterUnsuccessfulLoginEvent();
+			Security::auditLoginFail( $this->var_pUsername );
+			$this->callAfterUnsuccessfulLoginEvent( $this->var_pUsername, $this->var_pPassword );
 			return false;
 		}
 
-		if( $this->twoFactAuth )
-		{
-			$this->SMSCodeSent = $this->sendCodeBySMS();
+		$sessionLevel = Security::userSessionLevel();
 
-			if( $this->SMSCodeSent && $this->skipSecondStep )
-			{
-				// phone filed value is empty or not a valid phone number make a user logged in
-				$this->doVerifySMSCode( "" );
+		//	remeber this machine is in effect, skip 2FA
+		if( $sessionLevel === LOGGED_2F_PENDING ) {
+			if( $this->verifyRememberMachineCookie( $_COOKIE['2ftoken']) ) {
+				Security::elevateSession();
 			}
+			$sessionLevel = Security::userSessionLevel();
 		}
-		else
-			$this->callAfterSuccessfulLoginEvent();
+
+		//	successful login, call events
+		if( $sessionLevel === LOGGED_FULL && !Security::isGuest() ) {
+			if( $this->rememberPassword ) {
+				Security::setKeepLoggedCookie( true );
+			} else {
+				Security::setKeepLoggedCookie( false );
+			}
+			Security::auditLoginSuccess();
+			$this->callAfterSuccessfulLoginEvent( $this->var_pUsername, $this->var_pPassword, Security::currentUserData() );
+		}
 
 		return true;
 	}
 
-	/**
-	 * @return Boolean
-	 */
-	protected function isFirstAuthStepSuccessful()
-	{
-		if( !$this->twoFactAuth )
-			return false;
-
-		if( isset( $_SESSION["firsAuthStepData"] ) )
-			return true;
-
-		return false;
-	}
-
-	/**
-	 * @param Boolean logged
-	 */
-	protected function reportFirstAuthStepResult( $logged )
-	{
-		if( $this->skipSecondStep )
-		{
-			$this->reportSecondAuthStepResult( true );
-			exit();
-		}
-
-		$returnJSON = array();
-
-		$returnJSON["message"] = $this->message;
-		$returnJSON["success"] = $logged && $this->SMSCodeSent;
-		$returnJSON["logged"] = $logged;
-		if( $logged )
-		{
-			$parts = $this->getSecondStepMarkupBlocks( $this->SMSCodeSent );
-			$returnJSON["loginfields"] = $parts["loginfields"];
-			$returnJSON["loginbuttons"] = $parts["loginbuttons"];
-		}
-
-		echo printJSON( $returnJSON );
-		exit();
-	}
 
 	/**
 	 * @param Boolean codeSent
@@ -361,135 +359,59 @@ class LoginPage extends RunnerPage
 			$this->xt->assign("resendButtonClass", "rnr-invisible-button");
 	}
 
-	/**
-	 * @param Boolean codeSent
-	 * @return Array
-	 */
-	protected function getSecondStepMarkupBlocks( $codeSent )
-	{
-		$this->doAssignForSecondAuthStep( $codeSent );
 
-		$parts = array();
-		$parts["loginfields"] = $this->xt->fetch_loaded("user_code");
-		$parts["loginbuttons"] = $this->xt->fetch_loaded("user_code_buttons");
-		return $parts;
-	}
-
-	/**
-	 * @return String
-	 */
-	protected function getMaskedPhone()
-	{
-		$number = $this->getPhoneNumber();
-		$smsMaskLength = GetGlobalData("smsMaskLength", 4);
-
-		$astrixStringLength = strlen( $number ) - $smsMaskLength;
-		$number = preg_replace( "/[^+]/", "*", substr($number, 0, $astrixStringLength) ).substr($number, $astrixStringLength);
-
-		return $number;
-	}
-
-	/**
-	 * @return Boolean
-	 */
-	protected function checkPhoneFieldInQuery()
-	{
-		global $cLoginTable;
-
-		$phoneField = GetGlobalData("strPhoneField", "");
-		if( !array_key_exists( $phoneField, $_SESSION["firsAuthStepData"] ) )
-		{
-			$this->pnoneNotInQuery = true;
-			$this->message = "Two factor authorization is not possible."
-				." Add <b>".$phoneField."</b> field to the <b>".$cLoginTable."</b> table SQL query.";
-
-			return false;
+	protected function prepareTwoFactorMessage() {
+		$destination = Security::twoFactorDeliveryInfo( Security::provisionalUserData() );
+		$twofMessage = "";
+		if( $destination["method"] === "phone" ) {
+			$twofMessage = str_replace( "%phone%", $destination["address"], "Un mensaje de texto con su código ha sido enviada a: %phone%" );
+		} else if( $destination["method"] === "email" ) {
+			$twofMessage = str_replace( "%email%", $destination["address"], "Un correo electrónico con su código ha sido enviada a %email%." );
+		} else if( $destination["method"] === "totp" ) {
+			$twofMessage = str_replace(
+				array( "%username%", "%site%" ),
+				array( "<br><b>".Security::provisionalUsername()."</b>", "<b>".$destination["address"]."</b>" ),
+				"Introduzca el código de su aplicación para la autenticación correspondiente a %username% en %site%."
+			);
+			$this->hideItemType("resend_button");
 		}
+		$this->xt->assign('twofactor_message', $twofMessage );
 
-		return true;
 	}
-
-	/**
-	 * @return Boolean
-	 */
-	protected function sendCodeBySMS()
+	protected function sendTwoFactorCode()
 	{
-		if( !$this->checkPhoneFieldInQuery() )
-			return false;
-
-		$number = $this->getPhoneNumber();
-		if( strlen( $number ) < 5 )
-		{
-			// phone filed value is empty or not a valid phone number, make a user logged in
-			$this->skipSecondStep = true;
-
-			if( $this->mode == LOGIN_EMBEDED )
-				$this->pageData["twoStepEmbedRedirect"] = $this->getLoggedInRedirectUrl();
-
+		$ret = Security::generateAndSendTwoFactorCode();
+		if( !$ret ) {
 			return true;
 		}
-
-		$smsCode = generateUserCode( GetGlobalData("smsCodeLength", 6) );
-		$_SESSION["smsCode"] = $smsCode;
-		//$_SESSION["smsCode"] = "123456"; //Debug
-
-		$smsText = myfile_get_contents( getabspath("email/".mlang_getcurrentlang()."/twofactorauth.txt"), "r");
-		$smsText = str_replace( "%code%", $smsCode, $smsText );
-
-		//$ret = array(); //Debug
-		//$ret["success"] = true; //Debug
-		$ret = runner_sms( $number, $smsText );
 		if( !$ret["success"] )
 		{
 			$this->message = "el envío de mensajes de error"." ".$ret["error"];
+			$this->messageType = MESSAGE_ERROR;
+			return false;
 		}
-		else
-		{
-			$this->messageType = MESSAGE_INFO;
-			$this->message = str_replace( "%phone%", $this->getMaskedPhone(), "Un mensaje de texto con su código ha sido enviada a: %phone%" );
-		}
-
-		return $ret["success"];
+		
+		//return true; //?
 	}
 
+
 	/**
-	 * @param String code
-	 * @return Boolean
 	 */
-	protected function doVerifySMSCode( $code )
+	protected function verifyTwoFactorCode( $code )
 	{
-		global $globalEvents, $cUserNameField, $cPasswordField, $cDisplayNameField;
+		if( Security::checkTwoFactorCode( $code ) ) {
 
-		if( !$this->twoFactAuth )
-			return;
+			
+			Security::elevateSession();
+			$this->setRememberMachineCookie( true );
 
-		if( $this->skipSecondStep )
-			$verified = true;
-		else
-			$verified = $this->verifySMSCode( $code );
+			Security::auditLoginSuccess();
+			$this->callAfterSuccessfulLoginEvent( Security::getUserName(), '', Security::currentUserData() );
+		} else {
 
-		$data = $_SESSION["firsAuthStepData"];
-		$this->var_pUsername = $data[ $cUserNameField ];
-		$this->var_pPassword = $data[ $cPasswordField ];
-
-		if( $verified )
-		{
-			unset( $_SESSION["smsCode"] );
-			unset( $_SESSION["firsAuthStepData"] );
-
-			$_SESSION["UserID"] = $this->var_pUsername;
-			$userName = $data[ $cDisplayNameField ] != '' ? $data[ $cDisplayNameField ] : $this->var_pUsername;
-			$_SESSION["UserName"] = runner_htmlspecialchars( $userName );
-			$_SESSION["AccessLevel"] = ACCESS_LEVEL_USER;
-
-			SetAuthSessionData( $this->var_pUsername, $data, $this->var_pPassword, $this, true );
+			$this->setRememberMachineCookie( false );
+			$this->message = "Codigo erroneo";
 		}
-		else
-		{
-			$this->callAfterUnsuccessfulLoginEvent();
-		}
-
-		return $verified;
 	}
 
 	/**
@@ -501,36 +423,6 @@ class LoginPage extends RunnerPage
 		return $code == $_SESSION["smsCode"];
 	}
 
-	/**
-	 * @param Boolean
-	 */
-	protected function reportSecondAuthStepResult( $verified )
-	{
-		$returnJSON = array();
-		$returnJSON["success"] = $verified;
-
-		$returnJSON["secondStepSkipped"] = $this->skipSecondStep;
-
-		if( !$verified )
-			$returnJSON["message"] = "Codigo erroneo";
-		else
-		{
-			if( $this->mode == LOGIN_POPUP )
-				$returnJSON["message"] = "Se ha identificado correctamente.";
-
-			$returnJSON["redirect"] = $this->getLoggedInRedirectUrl();
-
-			if( $this->notRedirect )
-			{
-				$this->xt->assign("continuebutton_attrs", 'href="#" id="continueButton"');
-				$this->xt->assign("continue_button", true);
-				$returnJSON["loginbuttons"] = $this->xt->fetch_loaded("continue_button");
-			}
-		}
-
-		echo printJSON( $returnJSON );
-		exit();
-	}
 
 	/**
 	 * @return String
@@ -543,35 +435,9 @@ class LoginPage extends RunnerPage
 		return GetTableLink("menu");
 	}
 
-	/**
-	 * @return String
-	 */
-	protected function getPhoneNumber()
-	{
-		if( $this->phoneNumber )
-			return $this->phoneNumber;
-
-		if( isset( $_SESSION["firsAuthStepData"] ) )
-			$data = $_SESSION["firsAuthStepData"];
-		else
-			$data = $this->getUserData( $this->var_pUsername, $this->var_pPassword );
-
-		if( !$data )
-			return "";
-
-		$number = $data[ GetGlobalData("strPhoneField", "") ];
-		$number = preg_replace("/[^\+\d]/", "", $number);
-
-		if( $number[0] == "+" && strlen( $number ) > 10 )
-			$this->phoneNumber = $number;
-		else
-			$this->phoneNumber = GetGlobalData("strCounryCode", "").$number;
-
-		return $this->phoneNumber;
-	}
 
 	/**
-	 *
+	 *	????
 	 */
 	protected function refineMessage()
 	{
@@ -582,7 +448,7 @@ class LoginPage extends RunnerPage
 		elseif( $this->message == "loginblocked" && strlen( $_SESSION["loginBlockMessage"] ) )
 			$this->message = $_SESSION["loginBlockMessage"];
 
-		if( $this->isBootstrap() && $this->message )
+		if( $this->message )
 		{
 			$this->xt->assign("message_class", "alert-danger" );
 		}
@@ -607,14 +473,14 @@ class LoginPage extends RunnerPage
 		}
 	}
 
-	/**
-	 * run AfterSuccessfulLogin event
-	 */
-	protected function callAfterSuccessfulLoginEvent()
+	protected function callAfterSuccessfulLoginEvent( $username, $password = '', $userData = array() )
 	{
-		//login succeccful
-		// dummy
-		// if login method is not AD then ASL event fires in SetAuthSessionData
+		global $globalEvents;
+
+		if( $globalEvents->exists("AfterSuccessfulLogin") )
+		{
+			$globalEvents->AfterSuccessfulLogin( $username, $password, $userData, $this );
+		}
 	}
 
 	/**
@@ -630,10 +496,16 @@ class LoginPage extends RunnerPage
 			HeaderRedirect("menu");
 	}
 
+
+	protected function redirectToUserInfo()
+	{
+		HeaderRedirect("userinfo");
+	}
+
 	/**
 	 * Run AfterUnsuccessfulLogin event
 	 */
-	public function callAfterUnsuccessfulLoginEvent()
+	public function callAfterUnsuccessfulLoginEvent( $username, $password = "" )
 	{
 		global $globalEvents;
 
@@ -641,45 +513,13 @@ class LoginPage extends RunnerPage
 
 		// invalid login
 		if( $globalEvents->exists("AfterUnsuccessfulLogin") )
-			$globalEvents->AfterUnsuccessfulLogin( $this->var_pUsername, $this->var_pPassword, $message, $this, $this->controlsData );
+			$globalEvents->AfterUnsuccessfulLogin( $username, $password, $message, $this, $this->controlsData );
 
 		if( $message == "" && !$this->message )
 			$this->message = "Conexión inválida";
 		else if( $message )
 			$this->message = $message;
 	}
-
-
-	/**
-	 * @param Boolean logged
-	 */
-	protected function reportLogStatus( $logged )
-	{
-		$returnJSON = array();
-
-		$returnJSON["success"] = $logged;
-
-		if( $this->message )
-		{
-			$returnJSON['message'] = $this->message;
-		}
-		elseif ($logged)
-		{
-			$returnJSON['redirect'] = $this->getLoggedInRedirectUrl();
-		}
-
-		if( $this->mode == LOGIN_EMBEDED )
-		{
-			if( strlen( $_SESSION["loginBlockMessage"] ) )
-				$returnJSON['messageParam'] = "loginblocked";
-			else
-				$returnJSON['messageParam'] = "invalidlogin";
-		}
-
-		echo printJSON($returnJSON);
-		exit();
-	}
-
 
 	/**
 	 * @return Boolean
@@ -702,7 +542,7 @@ class LoginPage extends RunnerPage
 	 * run before login event
 	 * @return Boolean
 	 */
-	protected function callBeforeLoginEvent()
+	protected function callBeforeLoginEvent( $data = null )
 	{
 		global $globalEvents;
 
@@ -710,19 +550,38 @@ class LoginPage extends RunnerPage
 			return true;
 
 		$message = "";
-		$ret = $globalEvents->BeforeLogin( $this->var_pUsername, $this->var_pPassword, $message, $this, $this->controlsData );
+		if( !$data ) {
+			$data = &$this->controlsData;
+		}
+		if( !$data ) {
+			$data = array();
+		}
+		$ret = $globalEvents->BeforeLogin( $this->var_pUsername, $this->var_pPassword, $message, $this, $data );
 
 		if( $message )
 			$this->message = $message;
 
-		if( !$ret )
-		{
-			$this->callAfterUnsuccessfulLoginEvent();
-		}
-
 		return $ret;
 	}
 
+	/**
+	 * @param String pUsername
+	 * @param String pPassword
+	 * @return Boolean
+	 */
+	protected function logInHardcoded( $username, $password )
+	{
+		//	 username and password are hardcoded
+		$cUserName = GetGlobalData( "UserName" );
+		$cPassword = GetGlobalData( "Password" );
+
+		if( Security::verifyHardcodedLogin( $username, $password ) )
+		{
+			Security::createUserSession( $username );
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * @param String username
@@ -737,153 +596,60 @@ class LoginPage extends RunnerPage
 	}
 
 	/**
+	 * try create user session
 	 * @param String username
 	 * @param String password
-	 * @return Boolean
+	 * @return Boolean true when session created, false otherwise
 	 */
-	public function checkUsernamePassword( $username, $password )
+	public function createSession( $username, $password )
 	{
-		global $globalSettings, $caseInsensitiveUsername;
+		if( Security::loginMethod() === SECURITY_HARDCODED ) {
+			return $this->logInHardcoded( $username, $password );
+		}
 
-		if( $globalSettings["nLoginMethod"] == SECURITY_NONE )
+		$data = Security::fetchUserData( $username, $password, false, $this->controlsData );
+		if( !$data ) {
 			return false;
-
-		if( $globalSettings["nLoginMethod"] == SECURITY_HARDCODED )
-		{
-			return $password == $globalSettings["Password"] && ( $username == $globalSettings["UserName"]
-				|| $caseInsensitiveUsername && strtoupper( $username ) == strtoupper( $globalSettings["UserName"] ) );
 		}
 
-		if( $globalSettings["nLoginMethod"] == SECURITY_TABLE )
-		{
-			$data = $this->getUserData( $username, $password );
-			return $data ? true : false;
-		}
-
-		return false;
-	}
-
-	/**
-	 * @param String username
-	 * @param String password
-	 * @param Boolean skipPasswordCheck
-	 */
-	public function getUserData( $username, $password, $skipPasswordCheck = false )
-	{
-		global $cPasswordField, $cDisplayNameField, $globalSettings, $caseInsensitiveUsername;
-
-		if( $globalSettings["nLoginMethod"] != SECURITY_TABLE )
-			return false;
-
-		$loginSet = ProjectSettings::getForLogin();
-		$cipherer = RunnerCipherer::getForLogin( $loginSet );
-		$bcrypted = ( $globalSettings["bEncryptPasswords"] && $globalSettings["nEncryptPasswordMethod"] == 0 );
-		$originalPassword = $password;
-
-		$strSQL = $this->getSelectSQL( $skipPasswordCheck || $bcrypted, $username, $password, $loginSet, $cipherer );
-	 	$data = $cipherer->DecryptFetchedArray( $this->connection->query( $strSQL )->fetchAssoc() );
-		if ( $data && $skipPasswordCheck || $this->verifyUserFetchedData($bcrypted, $data, $username, $password, $originalPassword) )
-		{
-			return $data;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Login method
-	 * @param String pUsername
-	 * @param String pPassword
-	 * @return Boolean
-	 */
-	public function LogIn( $pUsername, $pPassword, $skipPasswordCheck = false, $fireEvents = true )
-	{
-		if( !$skipPasswordCheck && !$this->checkCaptcha() )
-			return false;
-
-		// username and password are stored in the database
-		global $cPasswordField, $cDisplayNameField;
-
-		$strUsername = (string)$pUsername;
-		$strPassword = (string)$pPassword;
-
-		$data = $this->getUserData( $pUsername, $pPassword, $skipPasswordCheck );
-		if( $data )
-		{
-			$pDisplayUsername = $data[ $cDisplayNameField ] != '' ? $data[ $cDisplayNameField ] : $strUsername;
-			DoLogin( false, $pUsername, $pDisplayUsername, "", ACCESS_LEVEL_USER, $pPassword, $this );
-
-			if( !$this->twoFactAuth )
-				SetAuthSessionData( $pUsername, $data, $pPassword, $this, $fireEvents );
-			else
-				$_SESSION["firsAuthStepData"] = $data;
-
-			return true;
-		}
-
-		if( $fireEvents )
-			$this->doAfterUnsuccessfulLog( $pUsername );
-		return false;
-	}
-
-	/**
-	 * @return Boolean
-	 */
-	protected function verifyUserFetchedData( $bcrypted, $data, $strUsername, $processedPass, $rawPass )
-	{
-		global $cUserNameField, $cPasswordField;
-
-		if( !$data )
-			return false;
-
-		if( $bcrypted )
-			return passwordVerify( $rawPass, $data[ $cPasswordField ] );
-
-		return $this->pSet->getCaseSensitiveUsername( @$data[ $cUserNameField ] ) == $this->pSet->getCaseSensitiveUsername( $strUsername )
-				&& @$data[ $cPasswordField ] == $processedPass;
-	}
-
-	/**
-	 * @return String
-	 */
-	protected function getSelectSQL( $skipPasswordCheck, $strUsername, $strPassword, $loginSet, $cipherer )
-	{
-		global $cUserNameFieldType, $cPasswordFieldType, $cUserNameField, $cPasswordField;
-
-		$passWhere = "";
-		$activateWhere = "";
-
-		if( !$skipPasswordCheck )
-		{
-			$strPassword = $this->getSqlPreparedLoginTableValue( $strPassword, $cPasswordField, $cPasswordFieldType, $cipherer );
-			if( $loginSet )
-				$passWhere = " and ". $this->connection->comparisonSQL( $this->getFieldSQLDecrypt($cPasswordField), $strPassword, false );
-			else
-				$passWhere = " and ". $this->connection->comparisonSQL( $this->connection->addFieldWrappers($cPasswordField), $strPassword, false );
-		}
-
-
-		$strUsername = $this->getSqlPreparedLoginTableValue( $strUsername, $cUserNameField, $cUserNameFieldType, $cipherer );
+		global $cDisplayNameField, $cUserNameField;
+		$displayName = $data[ $cDisplayNameField ];
 		
-		if( $loginSet )
-		{
-			$controlsWhere = $this->getControlsWhere( $cipherer );
-			
-			$where = $this->connection->comparisonSQL(
-				$this->getFieldSQLDecrypt($cUserNameField),
-				$strUsername,
-				$this->pSet->isCaseInsensitiveUsername()
-				)
-				. $passWhere . $activateWhere . $controlsWhere;
-
-			// don't remove $tempSQLQuery. PHP 5.0 compatibility
-			$tempSQLQuery = $loginSet->GetTableData(".sqlquery");
-			return $tempSQLQuery->buildSQL_default( array( $where ) );
+		//	always use username from DB to avoid upper/lower case issues
+		$username = $data[ $cUserNameField ];
+		
+		if( $displayName == '' ) {
+			$displayName = $username;
 		}
 
-		return "select * from ".$this->connection->addTableWrappers("public.Usuarios")
-				." where ".$this->connection->addFieldWrappers($cUserNameField)."=".$strUsername.$passWhere.$activateWhere;
+		//	verify activation status
+		if( GetGlobalData( "userRequireActivation" ) ) {
+			if( $data[ GetGlobalData( "userActivationField" ) ] != 1 ) {
+				Security::createProvisionalSession( LOGGED_ACTIVATION_PENDING, $username, $displayName, $data );
+				return true;
+			}
+		}
+
+		//	verify two factor authentication
+		if( Security::verifyTwoFactorEnabled( $data ) ) {
+			if( !Security::machineTwoFactorTrusted( $data ) ) {
+				Security::createProvisionalSession( LOGGED_2F_PENDING, $username, $displayName, $data );
+				return true;
+			}
+		} else {
+			$twofSettings =& Security::twoFactorSettings();
+			//	if 2f is required, make user enable it
+			if( $twofSettings["required"] ) {
+				Security::createProvisionalSession( LOGGED_2FSETUP_PENDING, $username, $displayName, $data );
+				return true;
+			}
+		}
+
+		//	good to go, log in
+		Security::createUserSession( $username, $displayName, $data );
+		return true;
 	}
+
 
 	/**
 	 * Logout
@@ -896,7 +662,9 @@ class LoginPage extends RunnerPage
 		if( $this->auditObj )
 			$this->auditObj->LogLogout();
 
-		$username = $_SESSION["UserID"] != "Guest" ? $_SESSION["UserID"] : "";
+		$username = Security::isGuest()
+			? ""
+			: Security::getUserName();
 
 		unset( $_SESSION["MyURL"] );
 
@@ -932,6 +700,56 @@ class LoginPage extends RunnerPage
 	}
 
 	/**
+	 * @return DsCommand
+	 */
+	protected function pluginUserCommand( $externalId ) {
+		$externalIdField = GetGlobalData("SpUserIdField", "");
+		if( $externalIdField ) {
+			$dc = new DsCommand();
+			$dc->filter = DataCondition::FieldEquals( $externalIdField, $externalId );
+			$commands[] = $dc;
+		}
+	}
+
+	/**
+	 * get plugin user info from the database
+	 * @return Array( 
+	 * 	"data" => data from the database 
+	 *  "dc" => DsCommand that actually found the user
+	 * )
+	 */
+	public function fetchPluginUser( $externalId ) {
+
+		$commands = array();
+
+		//	search in the external id field first
+		$externalIdField = GetGlobalData("SpUserIdField", "");
+		if( $externalIdField ) {
+			$dc = new DsCommand();
+			$dc->filter = DataCondition::FieldEquals( $externalIdField, $externalId );
+			$commands[] = $dc;
+		}
+
+		//	search in the username next
+		global $cUserNameField;
+		$dc = new DsCommand();
+		$dc->filter = DataCondition::FieldEquals( $cUserNameField, $externalId );
+		$commands[] = $dc;
+
+		$dataSource = getLoginDataSource();
+		foreach( $commands as $dc ) {
+			$qResult = $dataSource->getSingle( $dc );
+			if( $qResult ) {
+				$data = $dataSource->decryptRecord( $qResult->fetchAssoc() );
+				if( $data ) {
+					return array( "data" => $data, "dc" => $dc );
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 *	@param Object $plugin - Security Plugin object
 	 *	@param string $token - token received from third-party server
 	 *	@param Boolean $addNewUser - add a new user into the database if none exists
@@ -950,23 +768,15 @@ class LoginPage extends RunnerPage
 
 		$name = $info["name"];
 		$email = $info["email"];
-		$userIdField = GetGlobalData("SpUserIdField", "");
+		$externalIdField = GetGlobalData("SpUserIdField", "");
 
 		// check if the user already has a record in the users table
-		$strSQL = "select * from ".$this->connection->addTableWrappers( "public.Usuarios" )
-			." where "
-			.$this->connection->addFieldWrappers( $cUserNameField )
-			."="
-			.$this->connection->prepareString( $info["id"] );
-
-		if( $userIdField != '' ) {
-			$strSQL .= " or "
-				.$this->connection->addFieldWrappers( $userIdField )
-				."="
-				.$this->connection->prepareString( $info["id"] );
+		$data = null;
+		$pluginUserRecord = $this->fetchPluginUser( $info["id"] );
+		if( $pluginUserRecord ) {
+			$data = $pluginUserRecord["data"];
+			$dc = $pluginUserRecord["dc"];
 		}
-
-		$data = $this->connection->query( $strSQL )->fetchAssoc();
 
 		if( $data )
 		{
@@ -975,58 +785,61 @@ class LoginPage extends RunnerPage
 			$pDisplayUsername = $info["name"]
 				? $info["name"]
 				: $data[ $cDisplayNameField ];
+			$data =& $this->updatePluginUserData( $info, $data, $dc );
 		}
 		else if( $addNewUser )
 		{
 			// insert new user
 			$data = array();
 
-			$pPassword = generatePassword(10);
+			$pPassword = generatePassword(20);
 			if( GetGlobalData("bEncryptPasswords") && !$this->cipherer->isFieldEncrypted( $cPasswordField ) ) {
 				$pPassword = $this->getPasswordHash( $pPassword );
 			}
-			$data[ $cPasswordField ] = $pPassword;
+			$dc = new DsCommand;
+			$dc->values[ $cPasswordField ] = $pPassword;
 
-			$usernameField = $userIdField ? $userIdField : $cUserNameField;
-			$data[ $usernameField ] = $info["id"];
+			//	fill in both username and userid fields
+			$dc->values[ $cUserNameField ] = $info["id"];
+			if( $externalIdField )
+				$dc->values[ $externalIdField ] = $info["id"];
 
-			if( $cDisplayNameField && $cDisplayNameField != $usernameField )
-				$data[ $cDisplayNameField ] = $info["name"];
+			if( $cDisplayNameField && $cDisplayNameField != $cUserNameField )
+				$dc->values[ $cDisplayNameField ] = $info["name"];
 
 			$emailField = GetEmailField();
-			if( $emailField && $emailField != $usernameField )
-				$data[ $emailField ] = $info["email"];
+			if( $emailField && $emailField != $cUserNameField )
+				$dc->values[ $emailField ] = $info["email"];
 
-	
-			$blobfields = array();
-			$retval = DoInsertRecord( "public.Usuarios", $data, $blobfields, $this );
-			if( !$retval )
-				return false;
+			if( GetGlobalData( "userRequireActivation" ) ) {
+				$data[ GetGlobalData( "userActivationField" ) ] = 1;
+			}
 
+			//	update image
+			global $cUserpicField;
+			if( $cUserpicField && $info["picture"] != "" ) {
+				$dc->values[ $cUserpicField ] = $info["picture"];
+			}
+
+			$dataSource = getLoginDataSource();
+			$data = $dataSource->insertSingle( $dc );
 			$pDisplayUsername = $info[ "name" ];
 		} else {
 			return false;
 		}
 
-		if( !$this->callBeforeLoginEvent() ) {
+		if( !$this->callBeforeLoginEvent( $info ) ) {
 			return false;
 		}
 
 		$this->loggedWithSP = true;
 		$_SESSION["pluginLogin"] = true;
 
-		DoLogin( false, $info["id"], $pDisplayUsername, "", ACCESS_LEVEL_USER, $pPassword, $this );
-		SetAuthSessionData( $info["id"], $data, $pPassword, $pageObject );
-		return true;
-	}
+		Security::createUserSession( $info["id"], $info[ "name" ], $data );
+		Security::auditLoginSuccess();
+		$this->callAfterSuccessfulLoginEvent( $info["id"], $data[ $cPasswordField ], $data );
 
-	/**
-	 * Check is captcha exists on current page
-	 * @intellisense
-	 */
-	function captchaExists()
-	{
-		return $this->pSet->hasCaptcha();
+		return true;
 	}
 
 	/**
@@ -1046,19 +859,54 @@ class LoginPage extends RunnerPage
 	}
 
 	/**
-	 *
+	 * calc some checksum of the two factor settings
 	 */
-	public function setCredentialsCookie($pUsername, $pPassword)
+	protected function remeberMachineChecksum() {
+		$twofSettings =& Security::twoFactorSettings();
+		$elements = array();
+		$data =& Security::currentUserData();
+		if( !$data ) {
+			return false;
+		}
+		$elements[] = $data[ $twofSettings["twoFactorField"] ];
+		$elements[] = $data[ $twofSettings["phoneField"] ];
+		$elements[] = $data[ $twofSettings["emailField"] ];
+		$elements[] = $data[ $twofSettings["totpField"] ];
+		return implode( '', $elements );
+	}
+
+	
+	/**
+	 * This function is supposed to be called with $success=true after session elevation
+	 */
+	public function setRememberMachineCookie( $success = true )
 	{
 		//	set jwt cookie
-		if( $this->rememberPassword ) {
+		$twofSettings =& Security::twoFactorSettings();
+		if( $success && $this->rememberMachine && $twofSettings["remember"] ) {
 			$secondsIn30 = 30 * 1440 * 60;
-			setProjectCookie("token", jwt_encode( array( "username" => $pUsername ), $secondsIn30 ), time() + $secondsIn30, true );
+			setProjectCookie("2ftoken", jwt_encode( array( 
+				"2fusername" => Security::getUserName(), 
+				"host" => projectHost(),
+				"checksum" => getPasswordHash( $this->remeberMachineChecksum() )
+			), $secondsIn30 ), time() + $secondsIn30, true );
 		} else {
-			setProjectCookie("token", "", time() - 1);
+			setProjectCookie("2ftoken", "", time() - 1, true );
 		}
-
 	}
+
+	public function verifyRememberMachineCookie( $jwt ) {
+		$twofSettings =& Security::twoFactorSettings();
+		if( !$twofSettings["remember"] ) {
+			return false;
+		}
+		$payload = jwt_verify_decode( $jwt );
+		if( !$payload )
+			return false;
+		return $payload["2fusername"] === Security::provisionalUsername()
+			&& passwordVerify( $this->remeberMachineChecksum(), $payload["checksum"] );
+	}
+
 
 	/**
 	 *
@@ -1074,8 +922,9 @@ class LoginPage extends RunnerPage
 	{
 		global $pagesData;
 		$this->body["begin"] .= GetBaseScriptsForPage(false);
-		$this->body["begin"] .= "<form method=\"post\" action='".GetTableLink("login")."' id=\"form".$this->id."\" name=\"form".$this->id."\">
-								<input type=\"hidden\" name=\"btnSubmit\" value=\"Login\">";
+		$this->body["begin"] .= "<form method=\"post\" action='".GetTableLink("login", "", "page=".rawurlencode( $this->pageName ))."' ".
+								"id=\"form".$this->id."\" name=\"form".$this->id."\">"
+									."<input type=\"hidden\" name=\"btnSubmit\" value=\"Login\">";
 		$this->body["end"] .= "</form>";
 
 		$this->body['end'] .= '<script>';
@@ -1084,7 +933,7 @@ class LoginPage extends RunnerPage
 		$this->body['end'] .= "Runner.applyPagesData( ".my_json_encode( $pagesData )." );";
 		$this->body['end'] .= "window.settings = ".my_json_encode($this->jsSettings).";</script>";
 
-		$this->body["end"] .= "<script type=\"text/javascript\" src=\"".GetRootPathForResources("include/runnerJS/RunnerAll.js?33793")."\"></script>";
+		$this->body["end"] .= "<script type=\"text/javascript\" src=\"".GetRootPathForResources("include/runnerJS/RunnerAll.js?37251")."\"></script>";
 		$this->body["end"] .= '<script>'.$this->PrepareJS()."</script>";
 
 		$this->xt->assignbyref("body", $this->body);
@@ -1118,51 +967,26 @@ class LoginPage extends RunnerPage
 		$this->xt->assign("id", $this->id);
 		$this->xt->assign("loginlink_attrs", 'id="submitLogin'.$this->id.'"');
 
-		if( $this->loggedByCredentials && $this->mode == LOGIN_EMBEDED && $this->twoFactAuth && $this->skipSecondStep )
-			return;
-
 		$this->assignSPButtons();
 
 		$this->setLangParams();
 
 		$rememberbox_checked = "";
-		if( $rememberPassword || @$_COOKIE["token"] )
-			$rememberbox_checked = " checked";
+		if( $this->rememberPassword )
+			$this->xt->assign("rememberbox_attrs", "checked" );
 
-		$this->xt->assign("rememberbox_attrs", ($this->is508 ? "id=\"remember_password\" " : "")
-			."name=\"remember_password\" value=\"1\"".$rememberbox_checked);
-
-		$this->xt->assign( "guestlink_block", $this->mode == LOGIN_SIMPLE && guestHasPermissions() && isGuestLoginAvailable() );
+		$this->xt->assign( "guestlink_block", $this->mode == LOGIN_SIMPLE && Security::guestLoginAvailable() );
 
 		$this->xt->assign("username_label", true);
 		$this->xt->assign("password_label", true);
-		$this->xt->assign("remember_password_label", true);
 
 
 		if( $this->is508 && !$this->isBootstrap() )
 		{
 			$this->xt->assign_section("username_label", "<label for=\"username\">", "</label>");
 			$this->xt->assign_section("password_label", "<label for=\"password\">", "</label>");
-			$this->xt->assign_section("remember_password_label", "<label for=\"remember_password\">", "</label>");
 		}
 
-		if( $this->message || $this->mode == LOGIN_POPUP || $this->twoFactAuth || $this->securityPlugins )
-		{
-			$this->xt->assign("message_block", true);
-			if ( $this->isBootstrap() )
-				$this->xt->assign("message", runner_htmlspecialchars( $this->message ) );
-			else
-			{
-				$this->xt->assign("message", "<div id='login_message' class='message rnr-error'>"
-					.runner_htmlspecialchars( $this->message )."</div>");
-			}
-
-			if( $this->isBootstrap() )
-				$this->xt->assign("message_class", $this->messageType == MESSAGE_INFO ? "alert-success" : "alert-danger" );
-
-			if( !$this->message )
-				$this->hideElement("message");
-		}
 
 		if( strlen( $this->var_pUsername ) )
 		{
@@ -1174,11 +998,6 @@ class LoginPage extends RunnerPage
 			$this->xt->assign("username_attrs",($this->is508 ? "id=\"username\" " : ""));
 		}
 
-		if( strlen( $this->var_pPassword ) )
-		{
-			$this->xt->assign("password_attrs", ($this->is508 ? " id=\"password\"": "")
-				." value=\"".runner_htmlspecialchars($this->var_pPassword)."\"");
-		}
 		else if ( !$this->twoFactAuth )
 		{
 			$this->xt->assign("password_attrs", ($this->is508 ? " id=\"password\"": ""));
@@ -1190,21 +1009,13 @@ class LoginPage extends RunnerPage
 			$this->xt->assign("guestlink_attrs", "href=\"".GetTableLink("menu")."\"");
 
 
-		if( $this->loggedByCredentials && $this->mode == LOGIN_EMBEDED && $this->twoFactAuth )
-		{
-			$this->doAssignForSecondAuthStep( !$this->pnoneNotInQuery );
-			$this->hideElement("bsloginregister");
-		}
-		else
-		{
-			$this->xt->assign("main_loginfields", true);
-			$this->xt->assign("signin_button", true);
-		}
+		
+		$this->xt->assign("main_loginfields", true);
+		$this->xt->assign("signin_button", true);
 
-		if( $this->mode == LOGIN_POPUP || $this->mode == LOGIN_EMBEDED && $this->twoFactAuth )
+		if( $this->mode == LOGIN_POPUP )
 		{
-			if( $this->notRedirect )
-			{
+			if( $this->restore && Security::userSessionLevel() === LOGGED_FULL && !Security::isGuest() ) {
 				$continuebutton_attrs = 'href="#" id="continueButton"';
 
 				if ( $this->getLayoutVersion() !== PD_BS_LAYOUT )
@@ -1212,6 +1023,11 @@ class LoginPage extends RunnerPage
 
 				$this->xt->assign("continuebutton_attrs", $continuebutton_attrs);
 				$this->xt->assign("continue_button", true);
+				
+				$this->hideMainLoginItems();
+				$this->hideTwoFactorItems();
+				$this->message = mlang_message("SUCCES_LOGGED_IN");
+				$this->messageType = MESSAGE_INFO;
 			}
 
 			$this->xt->assign("footer", false);
@@ -1221,6 +1037,24 @@ class LoginPage extends RunnerPage
 			$this->xt->assign("registerlink_attrs", 'name="RegisterPage" data-table="'.runner_htmlspecialchars($cLoginTable).'"');
 			$this->xt->assign("forgotpasswordlink_attrs", 'name="ForgotPasswordPage"');
 		}
+		
+		if( $this->message || $this->mode == LOGIN_POPUP || $this->twoFactAuth || $this->securityPlugins )
+		{
+			$this->xt->assign("message_block", true);
+			$this->xt->assign("message",  $this->message );
+
+			if( $this->isBootstrap() )
+				$this->xt->assign("message_class", $this->messageType == MESSAGE_INFO ? "alert-success" : "alert-danger" );
+
+			if( !$this->message )
+				$this->hideElement("message");
+		}
+
+		$twofSettings =& Security::twoFactorSettings();
+		if( !$twofSettings["remember"] ) {
+			$this->hideItemType("remember_machine");
+		}
+
 	}
 
 	/**
@@ -1234,8 +1068,7 @@ class LoginPage extends RunnerPage
 			$globalEvents->BeforeShowLogin($this->xt, $this->templatefile, $this);
 
 		// load popup login page
-		if( $this->mode == LOGIN_POPUP || $this->mode == LOGIN_EMBEDED && $this->twoFactAuth )
-		{
+		if( $this->mode == LOGIN_POPUP ) {
 			$this->displayAJAX( $this->templatefile, $this->id + 1 );
 			exit();
 		}
@@ -1264,9 +1097,6 @@ class LoginPage extends RunnerPage
 		if( $pageMode == "popup" )
 			return LOGIN_POPUP;
 
-		if( $pageMode == "embeded" )
-			return LOGIN_EMBEDED;
-
 		return LOGIN_SIMPLE;
 	}
 
@@ -1292,21 +1122,6 @@ class LoginPage extends RunnerPage
 		return parent::element2Item( $name );
 	}
 
-	public function assignFieldBlocksAndLabels()
-	{
-		$editFields = $this->pSet->getPageFields();
-
-		foreach($editFields as $fName)
-		{
-			$gfName = GoodFieldName($fName);
-
-			$this->xt->assign($gfName."_fieldblock", true);
-
-			if( $this->is508 && !$this->isBootstrap() )
-				$this->xt->assign_section($gfName."_label","<label for=\"" . $this->getInputElementId( $fName ) . "\">","</label>");
-		}
-	}
-
 	function createProjectSettings() {
 		global $cLoginTable;
 		$table = $this->tName;	// GLOBAL_PAGES
@@ -1326,12 +1141,15 @@ class LoginPage extends RunnerPage
 
 	protected function prepareEditControls()
 	{
-		if( $this->mode == LOGIN_EMBEDED )
+		if( Security::userSessionLevel() === LOGGED_2F_PENDING )
 			return;
 		
+		/*if( $this->mode == LOGIN_EMBEDED )
+			return;*/
+
 		$defvalues = $this->controlsData;
 		$controlFields = $this->pSet->getPageFields();
-		
+
 		foreach( $controlFields as $fName )
 		{
 			$parameters = array();
@@ -1340,24 +1158,24 @@ class LoginPage extends RunnerPage
 			$parameters["field"] = $fName;
 			$parameters["value"] = $defvalues[ $fName ];
 			$parameters["pageObj"] = $this;
-			
+
 			$this->xt->assign_function( GoodFieldName( $fName )."_editcontrol", "xt_buildeditcontrol", $parameters );
-			
+
 			if( $this->pSet->isUseRTE( $fName ) )
 				$_SESSION[ $this->sessionPrefix."_".$fName."_rte" ] = $defvalues[ $fName ];
-			
+
 			$firstElementId = $this->getControl( $fName, $this->id )->getFirstElementId();
 			if( $firstElementId )
 				$this->xt->assign("labelfor_" . goodFieldName( $fName ), $firstElementId);
-			
-			
+
+
 			$controls = array();
 			$controls["controls"] = array();
 			$controls["controls"]["id"] = $this->id;
 			$controls["controls"]["mode"] = "add";
 			$controls["controls"]["ctrlInd"] = 0;
 			$controls["controls"]["fieldName"] = $fName;
-			
+
 			$preload = $this->fillPreload( $fName, $controlFields, $defvalues );
 			if( $preload !== false )
 			{
@@ -1365,16 +1183,16 @@ class LoginPage extends RunnerPage
 				if( !$defvalues[ $fName ] && count( $preload["vals"] ) > 0 )
 					$defvalues[ $fName ] = $preload["vals"][0];
 			}
-			
+
 			$this->fillControlsMap( $controls );
 			$this->fillControlFlags( $fName );
-			
+
 			// fill special settings for a time picker
 			if( $this->pSet->getEditFormat( $fName ) == "Time" )
 				$this->fillTimePickSettings( $fName, $defvalues[ $fName ] );
 		}
 	}
-	
+
 	/**
 	 * read values from page's controls
 	 */
@@ -1383,13 +1201,13 @@ class LoginPage extends RunnerPage
 		$avalues = array();
 		$blobfields = array();
 		$filename_values = array();
-		
+
 		foreach( $this->pSet->getPageFields() as $f )
 		{
 			$control = $this->getControl( $f, $this->id );
 			$control->readWebValue( $avalues, $blobfields, NULL, NULL, $filename_values );
 		}
-		
+
 		foreach( $avalues as $f => $value )
 		{
 			// skip blob fields
@@ -1405,7 +1223,7 @@ class LoginPage extends RunnerPage
 	{
 		if( !$this->controlsData )
 			return "";
-		
+
 		$controlsWhereParts = array();
 		foreach( $this->controlsData as $f => $value )
 		{
@@ -1413,10 +1231,10 @@ class LoginPage extends RunnerPage
 			$_value = $cipherer->MakeDBValue( $f, $value, "", true );
 			$controlsWhereParts[] = $this->getFieldSQLDecrypt( $f ) . ' = ' . $_value;
 		}
-		
+
 		return " and " . implode( " and ", $controlsWhereParts );
 	}
-	
+
 	/**
 	 * Remove excessive validation for page.
 	 * Unset "DenyDuplicated" for login controls
@@ -1429,11 +1247,50 @@ class LoginPage extends RunnerPage
 			if( $denyPos !== FALSE )
 				array_splice( $fData["basicValidate"], $denyPos, 1 );
 		}
-		
+
 		if( $fData && $fData["customMessages"] )
 			unset( $fData["customMessages"]["DenyDuplicated"] );
-		
+
 		return $fData;
+	}
+
+	protected function hasProvisionalSession() {
+		$sessionLevel = Security::userSessionLevel();
+		return $sessionLevel == LOGGED_2F_PENDING || $sessionLevel == LOGGED_ACTIVATION_PENDING;
+	}
+
+	/**
+	 * save new user info in the database
+	 */
+	protected function updatePluginUserData( $info, $data, $dc ) {
+		global $cDisplayNameField, $cEmailField, $cUserpicField, $cUserNameField;
+		$newData = array();
+		
+		$externalIdField = GetGlobalData("SpUserIdField", "");
+		if( $externalIdField && $data[ $externalIdField ] != $info["id"] ) {
+			$newData[ $externalIdField ] = $info[ "id" ];
+			$data[ $externalIdField ] = $info[ "id" ];
+		}
+		if( $cUserNameField != $cDisplayNameField && $info[ "name" ] != $data[ $cDisplayNameField ] ) {
+			$newData[ $cDisplayNameField ] = $info[ "name" ];
+			$data[ $cDisplayNameField ] = $info[ "name" ];
+		}
+		if( $cEmailField && $cEmailField != $cDisplayNameField && $info[ "email" ] != $data[ $cEmailField ] ) {
+			$newData[ $cEmailField ] = $info[ "email" ];
+			$data[ $cEmailField ] = $info[ "email" ];
+		}
+		if( $cUserpicField && $info[ "picture" ] != $data[ $cUserpicField ] ) {
+			$newData[ $cUserpicField ] = $info[ "picture" ];
+			$data[ $cUserpicField ] = $info[ "picture" ];
+		}
+		
+		if( count( $newData ) ) {
+			//	update user in the database
+			$dc->values = $newData;
+			$dataSource = getLoginDataSource();
+			$dataSource->updateSingle( $dc, false );
+		}
+		return $data;
 	}
 }
 ?>

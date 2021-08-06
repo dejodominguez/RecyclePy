@@ -62,7 +62,7 @@ class ViewDatabaseFileField extends ViewControl
 	 * @prarm String keylink
 	 * @return String
 	 */
-	public function getExportValue(&$data, $keylink = "")
+	public function getExportValue(&$data, $keylink = "", $html = false )
 	{
 		return "código binario demasiado grande – no puede ser desplegado";
 	}

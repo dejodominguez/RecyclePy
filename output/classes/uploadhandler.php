@@ -14,6 +14,7 @@ class UploadHandler
 {
 	public $formStamp;
 	public $pageType;
+	public $pageName;
 	
 	/**
 	 * The datasource table name
@@ -33,6 +34,7 @@ class UploadHandler
     function __construct($options=null) {
 		$this->formStamp = "";
 		$this->pageType = "";
+		$this->pageName = "";
 		$this->table = "";
 		$this->field = "";
 		$this->tkeys = "";	
@@ -383,7 +385,9 @@ class UploadHandler
         	$userFile["error"] = $file["error"];
         $hasThumbnail = $file["thumbnail"] != "";
 	    $userFile["url"] = GetTableLink("mfhandler", "", "file=".rawurlencode($userFile["name"])."&table=".rawurlencode($this->table)
-	    	."&field=".rawurlencode($this->field)."&pageType=".rawurlencode($this->pageType)
+			."&field=".rawurlencode($this->field)
+			."&pageType=".rawurlencode($this->pageType)
+			."&page=".rawurlencode($this->pageName)
 	    	.($this->tkeys != "" ? $this->tkeys : "&fkey=".$this->formStamp));
 	    if($hasThumbnail)
         	$userFile["thumbnail_url"] = $userFile["url"]."&thumbnail=1";

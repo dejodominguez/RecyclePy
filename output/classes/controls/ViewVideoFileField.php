@@ -79,7 +79,7 @@ class ViewVideoFileField extends ViewFileField
 				else
 				{
 					$userFile = $this->upload_handler->buildUserFile($file);
-					$href = $userFile["url"];
+					$href = projectURL() . $userFile["url"];
 					if(!$this->getContainer()->pSet->isRewindEnabled($this->field))
 						$href .= (strpos($href, '?') === false ? '?' : '&').'norange=1';
 					if($file["type"] == "application/octet-stream")

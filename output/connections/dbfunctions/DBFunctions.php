@@ -164,8 +164,11 @@ class DBFunctions
 	 */		
 	public function addFieldWrappers( $strName )
 	{
-		if( substr($strName, 0, 1) == $this->strLeftWrapper )
-			return $strName;
+		$strName = str_replace( 
+			array( $this->strLeftWrapper, $this->strRightWrapper ),
+			'',
+			$strName
+		);
 		return $this->strLeftWrapper.$strName.$this->strRightWrapper;
 	}
 
@@ -280,9 +283,10 @@ class DBFunctions
 		return $value;
 	}	
 
-	public function queryPage( $connection, $strSQL, $pageStart, $pageSize, $applyLimit ) {
+	public function limitedQuery( $connection, $strSQL, $skip, $total, $applyLimit ) 
+	{
 		$qResult =  $connection->query( $strSQL );
-		$qResult->seekPage( $pageSize, $pageStart );
+		$qResult->seekRecord( $skip );
 		return $qResult;
 	}
 	

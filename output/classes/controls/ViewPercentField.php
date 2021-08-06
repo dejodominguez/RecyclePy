@@ -3,7 +3,7 @@ class ViewPercentField extends ViewControl
 {
 	public function showDBValue( &$data, $keylink, $html = true )
 	{
-		if( $data[ $this->field ] == null || $data[ $this->field ] == "" )
+		if( $data[ $this->field ] === null || $data[ $this->field ] === "" )
 			return "";
 		
 		$result = ( $data[$this->field] * 100 )."%";

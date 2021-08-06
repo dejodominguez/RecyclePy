@@ -68,7 +68,7 @@
 									{BEGIN grid_block}
 {BEGIN message_block}
 <div data-grid-message data-pageid="{$pageid}" class="alert {$message_class}" role="alert" {$grid_message_attrs}>{$message}</div>
-{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes}  rnr-b-grid rnr-gridtable" 
+{END message_block}<table data-location="grid" id="form_grid_{$pageid}" data-makeup="small" {$form_grid} data-pageid="{$pageid}" class=" table {$grid_classes} r-horizontal-grid  rnr-b-grid rnr-gridtable" 
 	cellpadding="0" 
 	data-body-height="2"
 >
@@ -99,7 +99,7 @@
 	 
 		{BEGIN IdMedTipOrigen_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdMedTipOrigen">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field2" {$item_simple_grid_field2} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdMedTipOrigen" data-fieldname="IdMedTipOrigen">
 	{$label public_MedTipoOrigen IdMedTipOrigen }	</span>
 {END IdMedTipOrigen_fieldheadercolumn}
 
@@ -124,7 +124,7 @@
 	 
 		{BEGIN DescriMedTipOrigen_fieldheadercolumn}
  
-	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriMedTipOrigen">
+	<span data-itemtype="grid_field_label" data-itemid="simple_grid_field3" {$item_simple_grid_field3} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriMedTipOrigen" data-fieldname="DescriMedTipOrigen">
 	{$label public_MedTipoOrigen DescriMedTipOrigen }	</span>
 {END DescriMedTipOrigen_fieldheadercolumn}
 
@@ -164,7 +164,7 @@
 
 	 
 		{BEGIN IdMedTipOrigen_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdMedTipOrigen" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field" {$item_simple_grid_field} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="IdMedTipOrigen" data-fieldname="IdMedTipOrigen" data-default-width >
 {$IdMedTipOrigen_value}
 </span>
 {END IdMedTipOrigen_fieldcolumn}	
@@ -187,7 +187,7 @@
 
 	 
 		{BEGIN DescriMedTipOrigen_fieldcolumn}
-<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriMedTipOrigen" data-default-width >
+<span data-itemtype="grid_field" data-itemid="simple_grid_field1" {$item_simple_grid_field1} data-pageid="{$pageid}" data-record-id="{$recId}" data-field="DescriMedTipOrigen" data-fieldname="DescriMedTipOrigen" data-default-width >
 {$DescriMedTipOrigen_value}
 </span>
 {END DescriMedTipOrigen_fieldcolumn}	

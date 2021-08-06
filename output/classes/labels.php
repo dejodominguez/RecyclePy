@@ -220,7 +220,7 @@ class Labels {
 	 * @param String lng
 	 * @return String
 	 */
-	static function getPlaceholder( $table, $field, $lng )
+	static function getPlaceholder( $table, $field, $lng = "" )
 	{
 		global $placeHolders;
 
@@ -245,7 +245,7 @@ class Labels {
 	 * @param String lng
 	 * @return Boolean
 	 */
-	static function setPlaceholder( $table, $field, $placeHolder, $lng )
+	static function setPlaceholder( $table, $field, $placeHolder, $lng = "" )
 	{
 		global $placeHolders;
 

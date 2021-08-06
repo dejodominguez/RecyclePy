@@ -13,23 +13,13 @@ add_nocache_headers();
 if( !ViewPage::processEditPageSecurity( $strTableName ) )
 	return;	
 
-
-
-
-
-
-	
-			
-
-
-
 $pageMode = ViewPage::readViewModeFromRequest();
 
 $xt = new Xtempl();
 
 // $keys could not be set properly if editid params were no passed
 $keys = array();
-$keys["IdReciclador"] = postvalue("editid1");
+$keys["id_reciclador"] = postvalue("editid1");
 
 //array of params for classes
 $params = array();
@@ -44,6 +34,8 @@ $params["tName"] = $strTableName;
 $params["pdfMode"] = postvalue("pdf") !== "";
 
 $params["masterTable"] = postvalue("mastertable");
+if( $params["masterTable"] )
+	$params["masterKeysReq"] = RunnerPage::readMasterKeysFromRequest();
 
 if( $pageMode == VIEW_DASHBOARD ) 
 {
@@ -61,10 +53,6 @@ if( $pageMode == VIEW_POPUP )
 	$params["dashTName"] = postvalue("dashTName");
 }
 
-if( $params["masterTable"] )
-{
-	$params["masterKeysReq"] = ViewPage::processMasterKeys();
-}
 $params["pdfBackgroundImage"] = postvalue("pdfBackgroundImage");
 
 $pageObject = new ViewPage($params);

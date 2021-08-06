@@ -32,9 +32,7 @@ class PostgreFunctions extends DBFunctions
 	 */	
 	public function addSlashes( $str )
 	{
-		##if @ext=="php"##
-		return pg_escape_string( $str );
-		##endif##
+				return pg_escape_string( $str );
 		return parent::addSlashes( $str );
 	}
 
@@ -44,10 +42,8 @@ class PostgreFunctions extends DBFunctions
 	 */		
 	public function addSlashesBinary( $str )
 	{		
-		##if @ext=="php"##
-		if( $this->postgreDbVersion < 9 )
+				if( $this->postgreDbVersion < 9 )
 			return "'".pg_escape_bytea($str)."'";
-		##endif##
 		
 		if( !strlen($str) )
 			return "''";
@@ -62,26 +58,10 @@ class PostgreFunctions extends DBFunctions
 	 */	
 	public function stripSlashesBinary( $str )
 	{
-		##if @ext=="php"##
-		if( $this->postgreDbVersion < 9 )	
+				if( $this->postgreDbVersion < 9 )	
 			return pg_unescape_bytea($str);
-		##endif##
 			
 		return hex2bin( substr($str, 2) );	
-	}
-
-
-	/**
-	 * adds wrappers to field name if required
-	 * @param String strName
-	 * @return String	 
-	 */
-	public function addFieldWrappers( $strName )
-	{
-		if( substr($strName, 0, 1) == $this->strLeftWrapper )
-			return $strName;
-			
-		return $this->strLeftWrapper.$strName.$this->strRightWrapper;
 	}
 	
 	
@@ -135,10 +115,10 @@ class PostgreFunctions extends DBFunctions
 	{
 		return false;
 	}
-	public function queryPage( $connection, $strSQL, $pageStart, $pageSize, $applyLimit ) 
+	public function limitedQuery( $connection, $strSQL, $skip, $total, $applyLimit ) 
 	{
-		if( $applyLimit ) {
-			$strSQL.= " limit ".$pageSize." offset ".(($pageStart - 1) * $pageSize);
+		if( $applyLimit && ( $skip || $total >= 0 ) ) {
+			$strSQL.= " limit ". ($total >= 0 ? $total : "ALL" )." offset ". $skip;
 		}
 		return $connection->query( $strSQL );
 	}
